@@ -1,6 +1,8 @@
-# ChemEng 프로젝트 지침서
+# 프로젝트 지침서
 
 이 프로젝트의 지침은 `docs/guidelines/` 디렉토리에서 주제별로 관리됩니다.
+
+> **AI 에이전트는 [CLAUDE.md](./CLAUDE.md) 를 먼저 읽으세요.** 30초 오리엔테이션 + 작업별 진입점 표.
 
 ## ⚠️ 중요 공지
 
@@ -37,6 +39,16 @@
 - [표준 폼 핸들링 (Standard Form Handling)](./docs/guidelines/form-handling.md)
 - [데이터베이스 마이그레이션 (Database Migration)](./docs/guidelines/database-migration.md) ⚠️ **필독**
 - [모노레포 및 의존성 관리 가이드 (Monorepo & Dependency Management)](./docs/guidelines/monorepo.md)
+- [모듈 개발 (Module Development)](./docs/guidelines/module-development.md)
+- [에러 핸들링 (Error Handling)](./docs/guidelines/error-handling.md)
+- [상태 관리 (State Management)](./docs/guidelines/state-management.md)
+- [국제화 (i18n)](./docs/guidelines/i18n.md)
+- [테스팅 (Testing)](./docs/guidelines/testing.md)
+- [AI 협업 (AI Collaboration)](./docs/guidelines/ai-collaboration.md)
+
+## 패키지 인덱스
+
+새 작업 시작 전 [packages/INDEX.md](./packages/INDEX.md) 로 패키지 매트릭스 확인.
 
 ## 📦 의존성 관리 규칙
 

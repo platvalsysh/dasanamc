@@ -2,6 +2,20 @@ import { type RouteConfigEntry } from "@react-router/dev/routes";
 import { type BaseModule, type ModuleRoutes } from "../types";
 import { prisma } from "@repo/database";
 
+/**
+ * 모든 기능 모듈을 중앙에서 등록·조회하는 싱글톤 매니저.
+ *
+ * - 앱 부팅 시 `register(modules)` 1회 호출 (`apps/web/app/modules.server.ts`)
+ * - 라우트는 `getRoutes("public" | "admin" | "api")` 로 React Router 에 합쳐짐
+ * - 권한/역할은 `syncWithDatabase()` 로 DB 와 동기화
+ *
+ * @example
+ * import { moduleManager } from "@repo/core/server";
+ * import { module as board } from "@repo/module-board/module";
+ *
+ * moduleManager.register([board]);
+ * const adminRoutes = moduleManager.getRoutes("admin");
+ */
 export class ModuleManager {
   private modules: Map<string, BaseModule> = new Map();
 
@@ -10,7 +24,8 @@ export class ModuleManager {
     return this._isRegistered;
   }
   /**
-   * Register a module or a list of modules
+   * 모듈 1개 또는 배열을 등록한다. 이미 등록된 상태에서 다시 호출하면 경고 후 덮어쓴다.
+   * 보통 앱 부팅 진입점에서 1회만 호출.
    */
   public register(moduleOrModules: BaseModule | BaseModule[]) {
     if (this._isRegistered) {
@@ -32,21 +47,25 @@ export class ModuleManager {
   }
 
   /**
-   * Get all registered modules
+   * 등록된 모든 모듈을 `{ [name]: module }` 형태로 반환.
+   * 관리자 메뉴 빌더 등에서 모듈 메타데이터를 표시할 때 사용.
    */
   public getModules(): Record<string, BaseModule> {
     return Object.fromEntries(this.modules);
   }
 
   /**
-   * Get a specific module by name
+   * 이름으로 특정 모듈 조회. 없으면 `undefined`.
    */
   public getModule(name: string): BaseModule | undefined {
     return this.modules.get(name);
   }
 
   /**
-   * Get aggregated routes by type
+   * 타입별로 모든 모듈의 라우트를 평탄화하여 반환.
+   * `apps/web/app/routes.ts` 에서 React Router 의 `RouteConfig` 에 합치는 용도.
+   *
+   * @param type - "public" (공개), "admin" (관리자), "api" (JSON API)
    */
   public getRoutes(type: keyof ModuleRoutes): RouteConfigEntry[] {
     return Array.from(this.modules.values()).flatMap(
@@ -55,7 +74,8 @@ export class ModuleManager {
   }
 
   /**
-   * Get aggregated permissions from all modules
+   * 모든 모듈의 권한을 모듈명별로 그룹화하여 반환.
+   * 관리자 메뉴 빌더가 권한 선택 드롭다운 채울 때 사용.
    */
   public getPermissions() {
     return Array.from(this.modules.values()).map((module) => {
@@ -67,7 +87,8 @@ export class ModuleManager {
   }
 
   /**
-   * Get aggregated admin menu item units from all modules
+   * 모든 모듈이 선언한 관리자 메뉴 항목 유닛을 평탄화하여 반환.
+   * 관리자가 메뉴 빌더에서 골라 끼울 수 있는 _후보_ 목록.
    */
   public getAdminMenuItemUnits() {
     return Array.from(this.modules.values()).flatMap(
@@ -76,10 +97,8 @@ export class ModuleManager {
   }
 
   /**
-   * Sync permissions and roles with the database
-   */
-  /**
-   * Sync a specific existing module with the database
+   * 특정 모듈의 권한/역할을 DB 에 upsert. 역할의 권한 매핑은 코드 정의를 _완전 일치_ 시키므로
+   * DB 에만 추가된 매핑은 삭제됨에 주의.
    */
   public async syncModule(moduleName: string) {
     const module = this.modules.get(moduleName);
@@ -162,7 +181,8 @@ export class ModuleManager {
   }
 
   /**
-   * Sync permissions and roles with the database
+   * 등록된 모든 모듈에 대해 `syncModule` 을 순차 실행.
+   * 앱 부팅 시 권한/역할 코드 정의를 DB 와 일치시키는 진입점.
    */
   public async syncWithDatabase() {
     console.log("Syncing modules with database...");
@@ -174,7 +194,8 @@ export class ModuleManager {
     console.log("Modules synced with database.");
   }
   /**
-   * Check if a role is managed by a module (system role)
+   * 코드(모듈)에서 정의된 역할인지 (관리자 UI 에서 임의 생성한 역할이 아닌지) 확인.
+   * 시스템 역할은 보통 UI 에서 삭제 불가.
    */
   public isSystemRole(roleName: string): boolean {
     for (const module of this.modules.values()) {
@@ -186,7 +207,7 @@ export class ModuleManager {
   }
 
   /**
-   * Check if a permission is managed by a module (system permission)
+   * 코드(모듈)에서 정의된 권한인지 확인. 시스템 권한은 UI 에서 삭제 불가.
    */
   public isSystemPermission(permissionName: string): boolean {
     for (const module of this.modules.values()) {

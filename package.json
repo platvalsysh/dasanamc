@@ -12,6 +12,7 @@
     "db:migrate": "pnpm --filter @repo/database db:migrate",
     "db:pull": "pnpm --filter @repo/database db:pull",
     "db:gen": "pnpm --filter @repo/database db:gen",
+    "new:module": "node scripts/new-module.mjs",
     "remove-node-modules": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
     "format": "prettier --ignore-path .gitignore --ignore-path .prettierignore --write .",
     "format:check": "prettier --ignore-path .gitignore --ignore-path .prettierignore --check .",
