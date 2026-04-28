@@ -51,9 +51,8 @@ pnpm new:module <이름>  # 신규 모듈 스캐폴드
 ## 외주 프로젝트로 이 템플릿을 시작할 때
 
 1. 이 저장소 복제 → 새 리모트 연결
-2. `apps/web/app/modules.server.ts` 에서 사용할 모듈만 남기기
-3. 사용 안 하는 `packages/module-*` 디렉토리 삭제 가능 (의존성 끊긴 후)
+2. `.env.example` → `.env` 복사 후 클라이언트별 시크릿 채우기. `ENABLED_MODULES` 로 사용할 모듈만 활성화 (예: `ENABLED_MODULES=board,bxmember`). `core`/`auth`/`admin` 은 항상 활성
+3. (선택) 영원히 안 쓸 모듈은 `packages/module-*` 디렉토리 자체를 삭제 가능 (`apps/web/app/modules.server.ts` import 제거 후)
 4. `apps/web/app/components/` 의 홈페이지 컨텐츠 수정
-5. `.env.example` → `.env` 복사 후 클라이언트별 시크릿 채우기
 
 > 이 템플릿은 chemeng 프로젝트로부터 복사된 시점 스냅샷이다. 시작 전 `git log --oneline -1` 로 시점 확인.
