@@ -9,6 +9,8 @@
     "dev": "turbo dev",
     "start": "pnpm --filter web start",
     "typecheck": "turbo typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "db:migrate": "pnpm --filter @repo/database db:migrate",
     "db:pull": "pnpm --filter @repo/database db:pull",
     "db:gen": "pnpm --filter @repo/database db:gen",
@@ -32,7 +34,8 @@
     "eslint-plugin-unused-imports": "^4.3.0",
     "prettier": "catalog:",
     "syncpack": "^14.2.0",
-    "typescript-eslint": "^8.52.0"
+    "typescript-eslint": "^8.52.0",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "@tiptap/core": "catalog:",
