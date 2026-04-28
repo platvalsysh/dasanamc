@@ -10,6 +10,20 @@
   ],
   "versionGroups": [
     {
+      "label": "Modules must not depend on other modules (use @repo/core or @repo/shared-*). Legacy violators carved out — track in docs/guidelines/monorepo.md and migrate gradually.",
+      "packages": [
+        "@repo/module-*",
+        "!@repo/module-board",
+        "!@repo/module-bxmember",
+        "!@repo/module-editor",
+        "!@repo/module-newsletter",
+        "!@repo/module-organization",
+        "!@repo/module-sponsors"
+      ],
+      "dependencies": ["@repo/module-*"],
+      "isBanned": true
+    },
+    {
       "label": "Use catalog: for external dependencies",
       "packages": ["**"],
       "dependencies": ["**"],

@@ -48,6 +48,20 @@ pnpm typecheck
 - **내부 의존성**: 모든 내부 패키지(@repo/**)는 `workspace:*` 형식을 사용합니다. (오타 주의: `workspace:^`은 사용하지 않습니다.)
 - **PeerDependencies**: 라이브러리 중복 설치와 Hook 오류 방지를 위해 React, React Router 등은 PeerDependency로 관리됩니다.
 - **빌드 및 운영 필수 패키지**: Vercel 등 배포 환경에서 빌드 시 필요한 패키지나 런타임에 필요한 패키지는 **절대 `devDependencies`에 넣지 말고 `dependencies`에 명시**해야 합니다. `pnpm-workspace.yaml`의 `catalog:` 기능을 활용하여 버전을 관리하되, 설치 위치가 `dependencies`인지를 반드시 확인하십시오. (예: `typescript`, `turbo`, `vite`, Tailwind 플러그인 등)
+- **모듈 간 직접 의존 금지**: `@repo/module-*` 패키지는 다른 `@repo/module-*` 를 dependency 로 선언할 수 없다. syncpack `versionGroups` 의 `isBanned` 룰이 강제. 공통 코드는 `@repo/core`, `@repo/auth`, `@repo/database` 또는 새로운 `@repo/shared-*` 로 승격. 동일한 룰이 ESLint `no-restricted-imports` 로도 적용 (런타임 import 차단).
+
+#### 레거시 위반 (정리 대상)
+
+신규 모듈은 절대 다른 모듈을 import 하지 못한다. 아래 패키지는 기존 위반이 남아있어 syncpack/eslint 모두 카브아웃 중. 점진적으로 공통 API 를 `@repo/core` 또는 신규 `@repo/shared-*` 로 승격하여 정리.
+
+| 패키지 | 위반 의존성 | 정리 방향 |
+|---|---|---|
+| `module-board` | `module-editor`, `module-file` | editor 결합부는 `core` 의 hook/component slot 으로 추출, file API 는 shared-file |
+| `module-editor` | `module-file` | tiptap 업로드 핸들러를 함수형 props 로 받도록 |
+| `module-bxmember` | `module-file`, `module-sms` | 파일 첨부와 SMS 발송 인터페이스를 shared-* 로 이전 |
+| `module-newsletter` | `module-file` | 위와 동일 |
+| `module-organization` | `module-sms` | shared-sms |
+| `module-sponsors` | `module-file` | shared-file |
 
 ### 주요 명령어
 의존성 불일치를 해결하거나 파일 포맷을 관리할 때 사용합니다.
