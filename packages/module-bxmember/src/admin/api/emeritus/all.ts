@@ -2,6 +2,7 @@ import { prisma } from "@repo/database";
 import { useAuthServerContext } from "@repo/auth/server";
 import type { ActionFunctionArgs } from "react-router";
 
+import { getErrorMessage } from "@repo/core/utils";
 export async function action({ request, context }: ActionFunctionArgs) {
   const auth = useAuthServerContext(context);
   if (!auth.checkPermissions(["bxmember.member.list"])) {
@@ -36,8 +37,8 @@ export async function action({ request, context }: ActionFunctionArgs) {
       }
     });
 
-  } catch (e: any) {
+  } catch (e) {
     console.error("Fetch All Emerituss Error", e);
-    return Response.json({ success: false, error: e.message }, { status: 500 });
+    return Response.json({ success: false, error: getErrorMessage(e) }, { status: 500 });
   }
 }

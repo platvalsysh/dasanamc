@@ -3,6 +3,7 @@ import { useAuthServerContext } from "@repo/auth/server";
 import { type ActionFunctionArgs, data } from "react-router";
 
 
+import { getErrorMessage } from "@repo/core/utils";
 const getSmsContent = (content?: string, vars?: Record<string, string>) => {
   if (!content) return "";
   const newVal = vars || {};
@@ -158,9 +159,9 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
   try {
     await service.send(solapiMessages);
-  } catch (e: any) {
+  } catch (e) {
     console.error("Kakao Send Error", e);
-    return Response.json({ success: false, error: e.message }, { status: 500 });
+    return Response.json({ success: false, error: getErrorMessage(e) }, { status: 500 });
   }
 
   return Response.json({ success: true, sentCount: solapiMessages.length });

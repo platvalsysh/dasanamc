@@ -5,6 +5,7 @@ import { JsonResponse } from "@repo/core/server";
 import { FileService } from "@repo/module-file/module";
 import { useAuthServerContext } from "@repo/auth/server";
 
+import { getErrorMessage } from "@repo/core/utils";
 export async function action({ request, context }: ActionFunctionArgs) {
   const auth = useAuthServerContext(context);
   if (!auth.checkPermissions(["bxmember.member.excel.upload"])) {
@@ -171,8 +172,8 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
     return JsonResponse.ok({ success: true, count: successCount });
 
-  } catch (error: any) {
+  } catch (error) {
     console.error("Excel Processing Error:", error);
-    return JsonResponse.error(error.message || "Processing failed", 500);
+    return JsonResponse.error(getErrorMessage(error) || "Processing failed", 500);
   }
 }

@@ -125,7 +125,7 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
     identifier: identifierData?.identifier || "",
     email: userContext.email,
     profile,
-    extra_vars: (profile?.extra_vars || {}) as Record<string, any>
+    extra_vars: (profile?.extra_vars || {}) as Record<string, string | undefined>
   };
 }
 
@@ -216,15 +216,15 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
     };
   }
 
-  const data = result.data as any;
+  const data = result.data as Record<string, string | undefined>;
 
   try {
     const existingProfile = await prisma.profiles.findUnique({
       where: { user_id: userId },
     });
-    const currentExtraVars = (existingProfile?.extra_vars || {}) as Record<string, any>;
-    let updateData: any = {};
-    let newExtraVars: any = { ...currentExtraVars };
+    const currentExtraVars = (existingProfile?.extra_vars || {}) as Record<string, string | undefined>;
+    const updateData: Record<string, unknown> = {};
+    const newExtraVars: Record<string, string | undefined> = { ...currentExtraVars };
 
     if (intent === "account") {
       updateData.display_name = data.display_name;
@@ -235,7 +235,7 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
       
       if (cleanNewPhone !== cleanOldPhone) {
         const verifiedToken = readCookie(request, VERIFIED_COOKIE);
-        if (!verifyVerifiedToken(data.cellphone_number, verifiedToken)) {
+        if (!verifyVerifiedToken(data.cellphone_number ?? "", verifiedToken)) {
           return { error: "휴대폰 인증 정보가 올바르지 않거나 만료되었습니다. 다시 인증해 주세요.", intent };
         }
       }
@@ -317,7 +317,7 @@ export default function MyPage() {
   const [isVerified, setIsVerified] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isPhoneChanging, setIsPhoneChanging] = useState(false);
-  const processedDataRef = useRef<any>(null);
+  const processedDataRef = useRef<typeof fetcher.data | null>(null);
 
   useMemo(() => {
     if (!fetcher.data || !("success" in fetcher.data) || !fetcher.data.success) return;

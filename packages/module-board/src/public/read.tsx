@@ -7,6 +7,7 @@ import { Read as SkinRead } from "../components/skins/read";
 import { useAuthServerContext } from "@repo/auth/server";
 
 import { z } from "zod";
+import { getErrorMessage } from "@repo/core/utils";
 import { 
   BoardCommentCreateSchema, 
   BoardCommentDeleteSchema, 
@@ -154,7 +155,7 @@ export async function action({ request, params, context }: LoaderFunctionArgs) {
             parentId: parent_id,
         });
         return { success: true };
-      } catch (e: any) {
+      } catch (e) {
         return { error: "댓글 작성에 실패했습니다." };
       }
   }
@@ -177,7 +178,7 @@ export async function action({ request, params, context }: LoaderFunctionArgs) {
             manage: permissions.manage,
         });
         return { success: true };
-    } catch (e: any) {
+    } catch (e) {
         return { error: "댓글 삭제에 실패했습니다." };
     }
   }
@@ -192,8 +193,8 @@ export async function action({ request, params, context }: LoaderFunctionArgs) {
              ipAddress
          });
          return { success: true };
-     } catch (e: any) {
-         return { error: e.message || "Failed to vote" };
+     } catch (e) {
+         return { error: getErrorMessage(e) || "Failed to vote" };
      }
   }
 
@@ -207,8 +208,8 @@ export async function action({ request, params, context }: LoaderFunctionArgs) {
              ipAddress
          });
          return { success: true };
-     } catch (e: any) {
-         return { error: e.message || "Failed to report" };
+     } catch (e) {
+         return { error: getErrorMessage(e) || "Failed to report" };
      }
   }
 
@@ -228,8 +229,8 @@ export async function action({ request, params, context }: LoaderFunctionArgs) {
               ipAddress
           });
           return { success: true };
-      } catch (e: any) {
-          return { error: e.message || "Failed to vote" };
+      } catch (e) {
+          return { error: getErrorMessage(e) || "Failed to vote" };
       }
   }
 

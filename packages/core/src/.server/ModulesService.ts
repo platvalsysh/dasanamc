@@ -52,7 +52,7 @@ export class ModulesService {
     module: string;
     mid: string;
     browser_title?: string;
-    extra_vars?: Record<string, any>;
+    extra_vars?: Prisma.InputJsonValue;
   }) {
     return prisma.modules.create({
       data: {
@@ -69,7 +69,7 @@ export class ModulesService {
     data: {
       mid: string;
       browser_title?: string;
-      extra_vars?: Record<string, any>;
+      extra_vars?: Prisma.InputJsonValue;
     },
   ) {
     return prisma.modules.update({
@@ -84,7 +84,7 @@ export class ModulesService {
 
   static async updateModuleExtraVars(
     id: string,
-    extra_vars: Record<string, any>,
+    extra_vars: Prisma.InputJsonValue,
   ) {
     return prisma.modules.update({
       where: { id },
@@ -110,7 +110,7 @@ export class ModulesService {
           module_id: currentModule.id,
           module: currentModule.module,
           mid: currentModule.mid,
-          payload: currentModule as any,
+          payload: currentModule as unknown as Prisma.InputJsonValue,
         },
       });
 

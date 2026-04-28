@@ -1,6 +1,7 @@
 import { type ActionFunctionArgs } from "react-router";
 import { getSmsFailoverConfig, setSmsFailoverConfig } from "../../../.server/config";
 
+import { getErrorMessage } from "@repo/core/utils";
 export async function action({ request, context }: ActionFunctionArgs) {
 
   if (request.method === "GET") {
@@ -20,8 +21,8 @@ export async function action({ request, context }: ActionFunctionArgs) {
       const config = JSON.parse(configData);
       await setSmsFailoverConfig(config);
       return Response.json({ success: true });
-    } catch (e: any) {
-      return Response.json({ success: false, error: e.message }, { status: 400 });
+    } catch (e) {
+      return Response.json({ success: false, error: getErrorMessage(e) }, { status: 400 });
     }
   }
 

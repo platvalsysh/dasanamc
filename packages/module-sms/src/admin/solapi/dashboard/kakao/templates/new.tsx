@@ -9,6 +9,7 @@ import { Label } from "@repo/ui-admin/components/ui/label";
 import { Textarea } from "@repo/ui-admin/components/ui/textarea";
 import { AlertCircle } from "lucide-react";
 
+import { getErrorMessage } from "@repo/core/utils";
 export async function loader({ params, request }: LoaderFunctionArgs) {
   const { profile, channelId } = params;
   if (!profile || !channelId) throw new Error("Profile and Channel ID are required");
@@ -54,9 +55,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
             securityFlag: false
         });
         return redirect(`/admin/sms/solapi/dashboard/${profile}/kakao/channels/${channelId}/templates`);
-    } catch (e: any) {
+    } catch (e) {
         console.error("Failed to create template", e);
-        return { error: e.message || "Failed to create template" };
+        return { error: getErrorMessage(e) || "Failed to create template" };
     }
 }
 

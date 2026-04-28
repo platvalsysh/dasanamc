@@ -2,6 +2,7 @@ import { SolapiSmsProvider } from "@repo/module-sms/server";
 import { useAuthServerContext } from "@repo/auth/server";
 import { type ActionFunctionArgs, data } from "react-router";
 
+import { getErrorMessage } from "@repo/core/utils";
 export async function action({ request, context }: ActionFunctionArgs) {
   const auth = useAuthServerContext(context);
   // Check permission for member list or similar high-level permission
@@ -21,8 +22,8 @@ export async function action({ request, context }: ActionFunctionArgs) {
   try {
     const fileInfo = await provider.getFile(fileId);
     return Response.json({ success: true, fileInfo });
-  } catch (e: any) {
+  } catch (e) {
     console.error(`Failed to fetch Solapi file info for ${fileId}`, e);
-    return Response.json({ success: false, error: e.message }, { status: 500 });
+    return Response.json({ success: false, error: getErrorMessage(e) }, { status: 500 });
   }
 }

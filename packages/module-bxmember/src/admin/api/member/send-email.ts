@@ -2,6 +2,7 @@ import { useAuthServerContext } from "@repo/auth/server";
 import { sendEmail } from "../../member/utils/email.server";
 import type { ActionFunctionArgs } from "react-router";
 
+import { getErrorMessage } from "@repo/core/utils";
 export async function action({ request, context }: ActionFunctionArgs) {
   const auth = useAuthServerContext(context);
   if (!auth.checkPermissions(["bxmember.member.list"])) {
@@ -39,9 +40,9 @@ export async function action({ request, context }: ActionFunctionArgs) {
       const emailPromises = uniqueEmails.map(to => sendEmail({ to, subject, html }));
       await Promise.all(emailPromises);
 
-  } catch (e: any) {
+  } catch (e) {
     console.error("Email Send Error", e);
-    return Response.json({ success: false, error: e.message }, { status: 500 });
+    return Response.json({ success: false, error: getErrorMessage(e) }, { status: 500 });
   }
 
   return Response.json({ success: true, sentCount: uniqueEmails.length });

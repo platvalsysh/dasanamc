@@ -2,6 +2,7 @@ import { prisma } from "@repo/database";
 import { type ActionFunctionArgs, data as response } from "react-router";
 import { useAuthServerContext } from "@repo/auth/server";
 
+import { getErrorMessage } from "@repo/core/utils";
 /**
  * 엑셀 데이터를 통한 그룹 구성원 일괄 추가 API
  * 
@@ -113,8 +114,8 @@ export async function action({ request, context }: ActionFunctionArgs) {
         });
 
         return response({ success: true });
-    } catch (e: any) {
+    } catch (e) {
         console.error("Member add excel error:", e);
-        return response({ success: false, error: e.message || "데이터 처리 중 오류가 발생했습니다." }, { status: 500 });
+        return response({ success: false, error: getErrorMessage(e) || "데이터 처리 중 오류가 발생했습니다." }, { status: 500 });
     }
 }

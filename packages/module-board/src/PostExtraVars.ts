@@ -35,15 +35,15 @@ export class PostExtraVars implements PostExtraVarsShape {
   }
 
 
-  static fromJson(value: any) {
-    let parsed: any = {};
+  static fromJson(value: unknown) {
+    let parsed: Partial<PostExtraVarsShape> = {};
     try {
         const json = typeof value === 'string' ? JSON.parse(value) : value;
         const result = PostExtraVarsSchema.safeParse(json);
         if (result.success) {
             parsed = result.data;
         }
-    } catch (e) {
+    } catch {
         // Parsing error
     }
     return new PostExtraVars(parsed);

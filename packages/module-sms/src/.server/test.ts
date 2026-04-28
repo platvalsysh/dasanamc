@@ -1,6 +1,7 @@
 import { smsService } from "./SmsService";
 import type { SmsModuleConfig } from "./types";
 
+import { getErrorMessage } from "@repo/core/utils";
 async function main() {
   console.log("Testing SMS Service...");
 
@@ -64,8 +65,8 @@ async function main() {
   });
   */
 
-  } catch (e: any) {
-    console.log("Caught expected error (likely due to missing DB config):", e.message);
+  } catch (e) {
+    console.log("Caught expected error (likely due to missing DB config):", getErrorMessage(e));
   }
 }
 

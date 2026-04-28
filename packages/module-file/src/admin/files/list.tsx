@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { FileThumbnail } from "../../FileThumbnail";
 
+import { getErrorMessage } from "@repo/core/utils";
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const auth = useAuthServerContext(context);
   if (!auth.checkPermissions(["file.admin.read"])) {
@@ -74,9 +75,9 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
     try {
       await FileService.deleteFile(fileId);
       return { success: true, message: "File deleted successfully" };
-    } catch (error: any) {
+    } catch (error) {
        console.error("Failed to delete file:", error);
-       return { error: error.message || "Failed to delete file" };
+       return { error: getErrorMessage(error) || "Failed to delete file" };
     }
   }
 

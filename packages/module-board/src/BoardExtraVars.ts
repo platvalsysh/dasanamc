@@ -140,15 +140,15 @@ export class BoardExtraVars implements BoardExtraVarsShape {
     this.list_count = merged.list_count;
   }
 
-  static fromJson(value: any) {
-    let parsed: any = {};
+  static fromJson(value: unknown) {
+    let parsed: Partial<BoardExtraVarsShape> = {};
     try {
       const json = typeof value === "string" ? JSON.parse(value) : value;
       const result = BoardExtraVarsSchema.safeParse(json);
       if (result.success) {
         parsed = result.data;
       }
-    } catch (e) {
+    } catch {
       // Parsing error
     }
     return new BoardExtraVars(parsed);

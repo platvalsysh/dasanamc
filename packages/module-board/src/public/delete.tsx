@@ -4,6 +4,7 @@ import { useAuthServerContext } from "@repo/auth/server";
 import { z } from "zod";
 import { prisma } from "@repo/database";
 
+import { getErrorMessage } from "@repo/core/utils";
 // Validate params
 const paramsSchema = z.object({
   boardName: z.string(),
@@ -47,7 +48,7 @@ export async function action({ params, context }: ActionFunctionArgs) {
   try {
     await BoardService.deleteDocument(id);
     return redirect(`/board/${boardName}`);
-  } catch (e: any) {
-    throw new Response(e.message || "Failed to delete", { status: 500 });
+  } catch (e) {
+    throw new Response(getErrorMessage(e) || "Failed to delete", { status: 500 });
   }
 }

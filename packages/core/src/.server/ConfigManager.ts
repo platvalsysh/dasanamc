@@ -1,4 +1,5 @@
 import { prisma } from "@repo/database";
+import type { Prisma } from "@repo/database";
 
 /**
  * Configuration cache entry with TTL
@@ -34,7 +35,7 @@ type ConfigScope = "site" | "auth";
  */
 export class ConfigManager {
   private static instance: ConfigManager;
-  private cache: Map<string, CacheEntry<any>> = new Map();
+  private cache: Map<string, CacheEntry<unknown>> = new Map();
   private readonly TTL_MS = 1000; // 1 second TTL
 
   private constructor() {}
@@ -59,7 +60,7 @@ export class ConfigManager {
   /**
    * Check if cache entry is still valid (within TTL)
    */
-  private isCacheValid(entry: CacheEntry<any>): boolean {
+  private isCacheValid(entry: CacheEntry<unknown>): boolean {
     return Date.now() - entry.timestamp < this.TTL_MS;
   }
 
@@ -174,11 +175,11 @@ export class ConfigManager {
       create: {
         scope,
         key,
-        value: value as any,
+        value: value as Prisma.InputJsonValue,
         description,
       },
       update: {
-        value: value as any,
+        value: value as Prisma.InputJsonValue,
         description,
         updated_at: new Date(),
       },

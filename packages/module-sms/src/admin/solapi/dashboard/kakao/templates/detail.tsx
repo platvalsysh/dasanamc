@@ -19,6 +19,7 @@ import { Input } from "@repo/ui-admin/components/ui/input";
 import { Label } from "@repo/ui-admin/components/ui/label";
 import { useState, useEffect } from "react";
 
+import { getErrorMessage } from "@repo/core/utils";
 export async function loader({ params }: LoaderFunctionArgs) {
   const { profile, templateId } = params;
   if (!profile || !templateId) throw new Error("Profile and Template ID are required");
@@ -56,9 +57,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
              
              return { success: "Template name updated successfully." };
         }
-    } catch (e: any) {
+    } catch (e) {
         console.error("Action failed", e);
-        return { error: e.message || "Action failed" };
+        return { error: getErrorMessage(e) || "Action failed" };
     }
     return null;
 }

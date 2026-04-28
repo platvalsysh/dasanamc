@@ -4,6 +4,7 @@ import type { ActionFunctionArgs } from "react-router";
 import { Form, useActionData, useNavigation } from "react-router";
 import { ConsoleSmsProvider } from "../../../../.server/providers/ConsoleSmsProvider";
 
+import { getErrorMessage } from "@repo/core/utils";
 export async function action({ request, params }: ActionFunctionArgs) {
   const { profile } = params;
   if (!profile) throw new Error("Profile is required");
@@ -18,8 +19,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
       const sender = new ConsoleSmsProvider(profile);
       await sender.send({ to: testPhone, text });
       return { success: true, message: `SMS sent to ${testPhone} (Console)` };
-  } catch (e: any) {
-      return { error: e.message };
+  } catch (e) {
+      return { error: getErrorMessage(e) };
   }
 }
 

@@ -41,6 +41,27 @@ import { useFetcher, useSearchParams, useLoaderData } from "react-router";
 import type { AdminUsersLoaderData } from "./page";
 
 
+type AlumniRow = {
+  seq: number;
+  name_kor?: string;
+  email?: string;
+  cellphone_number?: string;
+  major?: string;
+  graduate_year?: string | number;
+  user_id?: string | null;
+  user_name?: string;
+  email_address?: string;
+  enter_year?: string;
+};
+
+type UserActionData = {
+  success?: boolean;
+  error?: string;
+  message?: string;
+  alumni?: AlumniRow[];
+  intent?: string;
+};
+
 interface UserTableProps {
   users: AdminUsersLoaderData['users'];
   loading: boolean;
@@ -66,7 +87,7 @@ export function UserTable({
   onToggleUser,
   fetchUsers,
 }: UserTableProps) {
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<UserActionData>();
   const [searchParams] = useSearchParams();
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
 
@@ -101,7 +122,7 @@ export function UserTable({
   const [newPassword, setNewPassword] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [alumniSearch, setAlumniSearch] = useState<{
-    results: any[];
+    results: AlumniRow[];
     loading: boolean;
     query: { name: string; phone: string; email: string; year: string };
   }>({
@@ -168,21 +189,21 @@ export function UserTable({
 
   // Update search results when fetcher completes
   useEffect(() => {
-    if (fetcher.data && (fetcher.data as any).alumni) {
+    if (fetcher.data?.alumni) {
       setAlumniSearch(prev => ({
         ...prev,
-        results: (fetcher.data as any).alumni,
+        results: fetcher.data!.alumni!,
         loading: false
       }));
     }
-    if (fetcher.data && (fetcher.data as any).success && ((fetcher.data as any).intent === "match-alumni" || (fetcher.data as any).intent === "unmatch-alumni")) {
+    if (fetcher.data?.success && (fetcher.data.intent === "match-alumni" || fetcher.data.intent === "unmatch-alumni")) {
       setMatchModal(prev => ({ ...prev, open: false }));
     }
   }, [fetcher.data]);
 
   // Close modals on success
   useEffect(() => {
-    if (fetcher.data && (fetcher.data as any).success) {
+    if (fetcher.data?.success) {
       setPasswordModal((prev: { open: boolean; userId: string; userName: string }) => ({ ...prev, open: false }));
       setEmailModal((prev: { open: boolean; userId: string; currentEmail: string }) => ({ ...prev, open: false }));
       setNewPassword("");
@@ -293,16 +314,16 @@ export function UserTable({
   return (
     <div className="bg-white border border-gray-200">
       {/* Feedback Message */}
-      {fetcher.data && (fetcher.data as any).message && (
+      {fetcher.data?.message && (
         <div className="mb-4 p-4 bg-green-50 border border-green-200 text-green-700 flex items-center gap-2">
           <CheckCircle className="w-4 h-4" />
-          {(fetcher.data as any).message}
+          {fetcher.data.message}
         </div>
       )}
-      {fetcher.data && (fetcher.data as any).error && (
+      {fetcher.data?.error && (
         <div className="mb-4 p-4 bg-red-50 border border-red-200 text-red-700 flex items-center gap-2">
           <XCircle className="w-4 h-4" />
-          {(fetcher.data as any).error}
+          {fetcher.data.error}
         </div>
       )}
 
@@ -437,7 +458,7 @@ export function UserTable({
                   <td className="px-6 py-4">
                     <div className="flex flex-wrap gap-1">
                       {user.roles.length > 0 ? (
-                        user.roles.map((role: any) => (
+                        user.roles.map((role) => (
                           <div key={role.id}>{getRoleBadge(role.display_name)}</div>
                         ))
                       ) : (
@@ -778,7 +799,7 @@ export function UserTable({
                             size="sm" 
                             className="h-7 text-xs"
                             onClick={() => handleMatchAlumni(alumni.seq)}
-                            disabled={fetcher.state !== "idle" || (matchModal.user?.bxmember?.seq === alumni.seq) || (alumni.user_id && alumni.user_id !== matchModal.user?.id)}
+                            disabled={fetcher.state !== "idle" || (matchModal.user?.bxmember?.seq === alumni.seq) || !!(alumni.user_id && alumni.user_id !== matchModal.user?.id)}
                           >
                             {matchModal.user?.bxmember?.seq === alumni.seq ? "현재 매칭됨" : alumni.user_id ? "다른 사용자 매칭" : "매칭선택"}
                           </Button>
@@ -863,7 +884,7 @@ function DeleteUserModal({
 }: { 
   user: AdminUsersLoaderData['users'][number]; 
   onClose: () => void;
-  fetcher: any;
+  fetcher: ReturnType<typeof useFetcher<UserActionData>>;
 }) {
   const [isHardDelete, setIsHardDelete] = useState(false);
   const [confirmText, setConfirmText] = useState("");
@@ -963,11 +984,11 @@ function UserDetailForm({
   user: AdminUsersLoaderData['users'][number]; 
   mode: "view" | "edit";
   onClose: () => void;
-  fetcher: any;
+  fetcher: ReturnType<typeof useFetcher<UserActionData>>;
   allRoles: AdminUsersLoaderData['allRoles'];
 }) {
-  const profile = (user.profile || {}) as any;
-  const extraVars = (profile.extra_vars || {}) as Record<string, any>;
+  const profile = (user.profile || {}) as NonNullable<typeof user.profile> & Record<string, unknown>;
+  const extraVars = (profile.extra_vars || {}) as Record<string, string | undefined>;
   
   const [formData, setFormData] = useState({
     display_name: profile.display_name || user.name || "",
@@ -975,7 +996,7 @@ function UserDetailForm({
     allow_message: profile.allow_message ? "Y" : "N",
   });
 
-  const [localExtraVars, setLocalExtraVars] = useState<Record<string, any>>({ ...extraVars });
+  const [localExtraVars, setLocalExtraVars] = useState<Record<string, string | undefined>>({ ...extraVars });
   const [selectedRoleIds, setSelectedRoleIds] = useState<string[]>(user.roles.map(r => r.id));
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {

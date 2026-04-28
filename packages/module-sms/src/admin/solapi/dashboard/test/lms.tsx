@@ -4,6 +4,7 @@ import type { ActionFunctionArgs } from "react-router";
 import { Form, useActionData, useNavigation } from "react-router";
 import { SolapiSmsProvider } from "../../../../.server/providers/SolapiSmsProvider";
 
+import { getErrorMessage } from "@repo/core/utils";
 export async function action({ request, params }: ActionFunctionArgs) {
   const { profile } = params;
   if (!profile) throw new Error("Profile is required");
@@ -19,8 +20,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
       const sender = new SolapiSmsProvider(profile);
       await sender.sendLMS({ to: testPhone, title, text });
       return { success: true, message: `LMS sent to ${testPhone} (Solapi)` };
-  } catch (e: any) {
-      return { error: e.message };
+  } catch (e) {
+      return { error: getErrorMessage(e) };
   }
 }
 

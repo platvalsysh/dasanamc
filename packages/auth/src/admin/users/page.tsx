@@ -33,6 +33,7 @@ import bcrypt from "bcrypt";
 import { createClient } from "@supabase/supabase-js";
 import { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } from "@repo/env/server";
 
+import { getErrorMessage } from "@repo/core/utils";
 const serverSupabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!, {
   auth: {
     autoRefreshToken: false,
@@ -184,7 +185,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   // Date range filtering
   if (dateStart || dateEnd) {
-    const dateQuery: any = {};
+    const dateQuery: { gte?: Date; lte?: Date } = {};
     if (dateStart) dateQuery.gte = new Date(dateStart);
     if (dateEnd) {
       const end = new Date(dateEnd);
@@ -277,7 +278,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       })
     );
 
-    const name = (user.profiles?.extra_vars as any)?.user_name || "";
+    const name = (user.profiles?.extra_vars as Record<string, unknown> | null)?.user_name as string || "";
     const nickname = user.profiles?.display_name || "";
     const profile_image = user.profiles?.profile_image;
     const identifier = user.identifiers?.identifier || "";
@@ -387,11 +388,11 @@ export async function action({ request }: ActionFunctionArgs) {
       });
 
       return { success: true, message: "새 사용자가 성공적으로 생성되었습니다." };
-    } catch (e: any) {
-      if (e.code === "P2002") {
+    } catch (e) {
+      if ((e as { code?: string }).code === "P2002") {
         return { error: "이미 존재하는 이메일입니다." };
       }
-      return { error: "사용자 생성 중 오류가 발생했습니다: " + e.message };
+      return { error: "사용자 생성 중 오류가 발생했습니다: " + getErrorMessage(e) };
     }
   }
 
@@ -449,8 +450,8 @@ export async function action({ request }: ActionFunctionArgs) {
       });
 
       return { success: true, message: "사용자 정보 및 권한이 성공적으로 업데이트되었습니다." };
-    } catch (e: any) {
-      return { error: "정보 업데이트 중 오류가 발생했습니다: " + e.message };
+    } catch (e) {
+      return { error: "정보 업데이트 중 오류가 발생했습니다: " + getErrorMessage(e) };
     }
   }
 
@@ -463,8 +464,8 @@ export async function action({ request }: ActionFunctionArgs) {
         },
       });
       return { success: true, message: "사용자가 성공적으로 삭제(비활성화)되었습니다." };
-    } catch (e: any) {
-      return { error: "사용자 삭제 중 오류가 발생했습니다: " + e.message };
+    } catch (e) {
+      return { error: "사용자 삭제 중 오류가 발생했습니다: " + getErrorMessage(e) };
     }
   }
 
@@ -486,8 +487,8 @@ export async function action({ request }: ActionFunctionArgs) {
       });
 
       return { success: true, message: "사용자가 시스템에서 완전히 삭제되었습니다." };
-    } catch (e: any) {
-      return { error: "영구 삭제 중 오류가 발생했습니다: " + e.message };
+    } catch (e) {
+      return { error: "영구 삭제 중 오류가 발생했습니다: " + getErrorMessage(e) };
     }
   }
 
@@ -530,8 +531,8 @@ export async function action({ request }: ActionFunctionArgs) {
         take: 30,
       });
       return { success: true, alumni };
-    } catch (e: any) {
-      return { error: "동문 검색 중 오류가 발생했습니다: " + e.message };
+    } catch (e) {
+      return { error: "동문 검색 중 오류가 발생했습니다: " + getErrorMessage(e) };
     }
   }
 
@@ -578,8 +579,8 @@ export async function action({ request }: ActionFunctionArgs) {
         }
       });
       return { success: true, message: "동문 매칭 및 역할 부여가 성공적으로 완료되었습니다." };
-    } catch (e: any) {
-      return { error: "동문 매칭 중 오류가 발생했습니다: " + e.message };
+    } catch (e) {
+      return { error: "동문 매칭 중 오류가 발생했습니다: " + getErrorMessage(e) };
     }
   }
 
@@ -607,8 +608,8 @@ export async function action({ request }: ActionFunctionArgs) {
         }
       });
       return { success: true, message: "동문 매칭이 해제되었습니다." };
-    } catch (e: any) {
-      return { error: "매칭 해제 중 오류가 발생했습니다: " + e.message };
+    } catch (e) {
+      return { error: "매칭 해제 중 오류가 발생했습니다: " + getErrorMessage(e) };
     }
   }
 
@@ -696,11 +697,11 @@ export default function AdminUsers() {
     allowMessage: true,
   });
 
-  const pageFetcher = useFetcher();
+  const pageFetcher = useFetcher<{ success?: boolean; error?: string; message?: string }>();
 
   // Handle success feedback and modal close
   useEffect(() => {
-    if (pageFetcher.data && (pageFetcher.data as any).success) {
+    if (pageFetcher.data?.success) {
       setIsCreateModalOpen(false);
       setCreateFormData({ 
         email: "", 
@@ -1037,10 +1038,10 @@ export default function AdminUsers() {
             <DialogTitle>새 사용자 추가</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 py-4">
-            {pageFetcher.data && (pageFetcher.data as any).error && (
+            {pageFetcher.data?.error && (
               <div className="p-3 bg-red-50 border border-red-200 text-red-700 flex items-center gap-2 text-sm">
                 <XCircle className="w-4 h-4" />
-                {(pageFetcher.data as any).error}
+                {pageFetcher.data.error}
               </div>
             )}
             <div className="grid gap-2">

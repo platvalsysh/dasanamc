@@ -6,6 +6,7 @@ import * as path from "path";
 import { Form, useActionData, useNavigation, type ActionFunctionArgs } from "react-router";
 import { SolapiSmsProvider } from "../../../../.server/providers/SolapiSmsProvider";
 
+import { getErrorMessage } from "@repo/core/utils";
 export async function action({ request, params }: ActionFunctionArgs) {
   const { profile } = params;
   if (!profile) throw new Error("Profile is required");
@@ -42,12 +43,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
       return { success: true, message: `MMS sent to ${testPhone} (Solapi)` + (imageId ? " with image" : "") };
 
-  } catch (e: any) {
+  } catch (e) {
       // Clean up after error
       if (tempFilePath) {
         try { fs.unlinkSync(tempFilePath); } catch (e) {}
       }
-      return { error: e.message };
+      return { error: getErrorMessage(e) };
   }
 }
 

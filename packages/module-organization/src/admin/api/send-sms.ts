@@ -2,6 +2,7 @@ import { smsService, getSmsTestConfig } from "@repo/module-sms/server";
 import { useAuthServerContext } from "@repo/auth/server";
 import { type ActionFunctionArgs, data } from "react-router";
 
+import { getErrorMessage } from "@repo/core/utils";
 export async function action({ request, context }: ActionFunctionArgs) {
     const auth = useAuthServerContext(context);
     if (!auth.checkPermissions(["organization.manage"])) {
@@ -46,9 +47,9 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
     try {
         await smsService.sendMany(messages);
-    } catch (e: any) {
+    } catch (e) {
         console.error("SMS Send Error", e);
-        return Response.json({ success: false, error: e.message }, { status: 500 });
+        return Response.json({ success: false, error: getErrorMessage(e) }, { status: 500 });
     }
 
     return Response.json({ success: true, sentCount: validRecipients.length });

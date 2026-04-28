@@ -2,6 +2,7 @@ import { SolapiSmsProvider } from "@repo/module-sms/server";
 import { useAuthServerContext } from "@repo/auth/server";
 import { type ActionFunctionArgs, data } from "react-router";
 
+import { getErrorMessage } from "@repo/core/utils";
 export async function action({ request, context }: ActionFunctionArgs) {
   const auth = useAuthServerContext(context);
   if (!auth.checkPermissions(["bxmember.member.list"])) {
@@ -25,8 +26,8 @@ export async function action({ request, context }: ActionFunctionArgs) {
     });
 
     return Response.json({ success: true, templates: result.templateList || [] });
-  } catch (e: any) {
+  } catch (e) {
     console.error("Failed to fetch Kakao templates", e);
-    return Response.json({ success: false, error: e.message }, { status: 500 });
+    return Response.json({ success: false, error: getErrorMessage(e) }, { status: 500 });
   }
 }

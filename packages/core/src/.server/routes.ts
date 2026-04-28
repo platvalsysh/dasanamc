@@ -10,14 +10,23 @@ function stripFileExtension(file: string) {
   return file.replace(/\.[a-z0-9]+$/i, "");
 }
 
+type RouteManifestItem = {
+  id: string;
+  parentId: string | undefined;
+  file: string;
+  path: string | undefined;
+  index: boolean | undefined;
+  caseSensitive: boolean | undefined;
+};
+
 export function configRoutesToRouteManifest(routes: RouteConfigEntry[]) {
-  let routeManifest: Record<string, Record<string, any>> = {};
+  const routeManifest: Record<string, RouteManifestItem> = {};
   const rootDirectory = findProjectRoot(process.cwd());
   const appDirectory = Path.join(rootDirectory, "apps/web/app");
 
   function walk(route: RouteConfigEntry, parentId?: string) {
     let id = route.id || createRouteId(route.file);
-    let manifestItem: Record<string, any> = {
+    const manifestItem: RouteManifestItem = {
       id,
       parentId,
       file: Path.isAbsolute(route.file)

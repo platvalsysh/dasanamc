@@ -28,6 +28,7 @@ import { useState } from "react";
 
 import { getSmsModuleConfig, addSmsProfile, deleteSmsProfile, setDefaultSmsProfile } from "../.server/config";
 
+import { getErrorMessage } from "@repo/core/utils";
 export async function loader({ request }: LoaderFunctionArgs) {
   const config = await getSmsModuleConfig();
   const supportedProviders = smsService.getSupportedProviders();
@@ -60,8 +61,8 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     return { success: true };
-  } catch (error: any) {
-    return { error: error.message };
+  } catch (error) {
+    return { error: getErrorMessage(error) };
   }
 }
 

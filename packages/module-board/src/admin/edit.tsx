@@ -43,7 +43,7 @@ const READ_DISPLAY_OPTIONS = [
 ];
 
 import { BoardExtraVars, type BoardPermissionConfig } from "../BoardExtraVars";
-import { prisma } from "@repo/database";
+import { prisma, type Prisma } from "@repo/database";
 import { useState } from "react";
 import { BoardPermissionSelector } from "./components/BoardPermissionSelector";
 
@@ -112,7 +112,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     await ModulesService.updateModule(params.id!, {
       mid,
       browser_title: browser_title || undefined,
-      extra_vars: currentExtraVars.toJSON(),
+      extra_vars: currentExtraVars.toJSON() as unknown as Prisma.InputJsonValue,
     });
 
     return redirect("/admin/board");
