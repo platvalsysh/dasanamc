@@ -1,0 +1,23 @@
+{
+  "common.save": "Save",
+  "common.save_changes": "Save Changes",
+  "common.cancel": "Cancel",
+  "common.delete": "Delete",
+  "common.edit": "Edit",
+  "common.add": "Add",
+  "common.confirm": "Confirm",
+  "common.close": "Close",
+  "common.loading": "Loading...",
+  "common.create_item": "Create Item",
+  "common.required": "Required",
+  "common.optional": "Optional",
+  "common.error.unknown": "An unknown error occurred.",
+  "common.error.network": "Network error. Please try again shortly.",
+  "common.error.unauthorized": "Unauthorized.",
+  "common.error.not_found": "Not found.",
+  "auth.login": "Log in",
+  "auth.logout": "Log out",
+  "auth.sign_up": "Sign up",
+  "auth.email": "Email",
+  "auth.password": "Password"
+}

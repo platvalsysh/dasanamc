@@ -25,7 +25,7 @@ import type {
   Permission,
   AdminMenuItemUnit,
 } from "@repo/core/types";
-import { getIcons, getIcon } from "@repo/core/ui";
+import { getIcons, getIcon, t } from "@repo/core/ui";
 import { useState, useEffect } from "react";
 import React from "react";
 import Select from "react-select";
@@ -387,14 +387,14 @@ function MenuItemDialog({
             onClick={onClose}
             className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200"
           >
-            Cancel
+            {t("common.cancel")}
           </button>
           {mode === "edit" && (
             <button
               onClick={() => onSave(formData)}
               className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
             >
-              {initialItem ? "Save Changes" : "Create Item"}
+              {initialItem ? t("common.save_changes") : t("common.create_item")}
             </button>
           )}
         </div>
