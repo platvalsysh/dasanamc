@@ -1,6 +1,18 @@
 import { useState, useMemo, useEffect, useRef } from "react";
-import crypto from "node:crypto";
-import { useAuthServerContext, useSupabaseServerContext } from "../../.server";
+import {
+  useAuthServerContext,
+  useSupabaseServerContext,
+  signVerificationToken,
+  verifyVerificationToken,
+  signVerifiedToken,
+  verifyVerifiedToken,
+  readCookie,
+  setVerificationCookie,
+  setVerifiedCookie,
+  clearCookie,
+  VERIFICATION_COOKIE,
+  VERIFIED_COOKIE,
+} from "../../.server";
 import { smsService } from "@repo/module-sms";
 import {
   Button,
@@ -19,58 +31,13 @@ import {
 import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
+  data as routerData,
   redirect,
   useFetcher,
   useLoaderData,
 } from "react-router";
 import { prisma } from "@repo/database";
 import { z } from "zod";
-
-const VERIFY_SECRET = process.env.AUTH_SECRET || "default-secret-for-phone-verify";
-
-function signVerificationToken(phone: string, code: string): string {
-  const expiry = Date.now() + 5 * 60 * 1000; // 5 min
-  const payload = `${phone}:${expiry}`;
-  const signature = crypto.createHmac("sha256", VERIFY_SECRET).update(`${phone}:${code}:${expiry}`).digest("hex");
-  return Buffer.from(`${payload}:${signature}`).toString("base64");
-}
-
-function verifyVerificationToken(phone: string, token: string, code: string): boolean {
-  try {
-    const decoded = Buffer.from(token, "base64").toString("utf-8");
-    const parts = decoded.split(":");
-    if (parts.length !== 3) return false;
-    const [tPhone, tExpiry, tSignature] = parts;
-    if (tPhone !== phone) return false;
-    if (Date.now() > parseInt(tExpiry)) return false;
-    const expectedSignature = crypto.createHmac("sha256", VERIFY_SECRET).update(`${tPhone}:${code}:${tExpiry}`).digest("hex");
-    return expectedSignature === tSignature;
-  } catch {
-    return false;
-  }
-}
-
-function signVerifiedToken(phone: string): string {
-  const expiry = Date.now() + 60 * 60 * 1000; // 1 hour
-  const payload = `verified:${phone}:${expiry}`;
-  const signature = crypto.createHmac("sha256", VERIFY_SECRET).update(payload).digest("hex");
-  return Buffer.from(`${payload}:${signature}`).toString("base64");
-}
-
-function verifyVerifiedToken(phone: string, token: string): boolean {
-  try {
-    const decoded = Buffer.from(token, "base64").toString("utf-8");
-    const parts = decoded.split(":");
-    if (parts.length !== 4) return false;
-    const [prefix, tPhone, tExpiry, tSignature] = parts;
-    if (prefix !== "verified" || tPhone !== phone) return false;
-    if (Date.now() > parseInt(tExpiry)) return false;
-    const expectedSignature = crypto.createHmac("sha256", VERIFY_SECRET).update(`${prefix}:${tPhone}:${tExpiry}`).digest("hex");
-    return expectedSignature === tSignature;
-  } catch {
-    return false;
-  }
-}
 
 const AccountSchema = z.object({
   display_name: z.string().min(1, "닉네임을 입력해 주세요."),
@@ -175,7 +142,7 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
   if (intent === "send-code") {
     const phone = formData.get("cellphone_number") as string;
     if (!phone) return { error: "휴대폰 번호를 입력해 주세요.", intent };
-    
+
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     try {
       await smsService.sendKakao({
@@ -189,7 +156,11 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
         },
       });
       const token = signVerificationToken(phone, code);
-      return { success: true, token, message: "인증번호가 발송되었습니다.", intent };
+      const expiresAt = Date.now() + 5 * 60 * 1000;
+      return routerData(
+        { success: true, codeSent: true, expiresAt, message: "인증번호가 발송되었습니다.", intent },
+        { headers: { "Set-Cookie": setVerificationCookie(token) } },
+      );
     } catch (e) {
       console.error("SMS Send Error:", e);
       return { error: "인증번호 발송에 실패했습니다.", intent };
@@ -199,11 +170,17 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
   if (intent === "verify-code") {
     const phone = formData.get("cellphone_number") as string;
     const code = formData.get("verify_code") as string;
-    const token = formData.get("token") as string;
-    
+    const token = readCookie(request, VERIFICATION_COOKIE);
+
     if (verifyVerificationToken(phone, token, code)) {
       const verifiedToken = signVerifiedToken(phone);
-      return { success: true, verified: true, verifiedToken, message: "인증되었습니다.", intent };
+      const headers = new Headers();
+      headers.append("Set-Cookie", setVerifiedCookie(verifiedToken));
+      headers.append("Set-Cookie", clearCookie(VERIFICATION_COOKIE));
+      return routerData(
+        { success: true, verified: true, message: "인증되었습니다.", intent },
+        { headers },
+      );
     }
     return { error: "인증번호가 일치하지 않거나 만료되었습니다.", intent };
   }
@@ -257,7 +234,7 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
       const cleanOldPhone = (currentExtraVars.cellphone_number || "").replace(/-/g, "");
       
       if (cleanNewPhone !== cleanOldPhone) {
-        const verifiedToken = formData.get("verifiedToken") as string;
+        const verifiedToken = readCookie(request, VERIFIED_COOKIE);
         if (!verifyVerifiedToken(data.cellphone_number, verifiedToken)) {
           return { error: "휴대폰 인증 정보가 올바르지 않거나 만료되었습니다. 다시 인증해 주세요.", intent };
         }
@@ -317,6 +294,13 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
       data: updateData,
     });
 
+    if (intent === "personal") {
+      return routerData(
+        { success: true, message: "정보가 수정되었습니다.", intent },
+        { headers: { "Set-Cookie": clearCookie(VERIFIED_COOKIE) } },
+      );
+    }
+
     return { success: true, message: "정보가 수정되었습니다.", intent };
   } catch (e) {
     console.error("Failed to update profile:", e);
@@ -330,34 +314,21 @@ export default function MyPage() {
   const [editingSection, setEditingSection] = useState<string | null>(null);
 
   const [showVerifyCode, setShowVerifyCode] = useState(false);
-  const [verificationToken, setVerificationToken] = useState("");
-  const [verifiedToken, setVerifiedToken] = useState("");
   const [isVerified, setIsVerified] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isPhoneChanging, setIsPhoneChanging] = useState(false);
   const processedDataRef = useRef<any>(null);
 
-  // 인증 관련 데이터 처리
   useMemo(() => {
-    if (fetcher.data?.success) {
-      if (fetcher.data.intent === "send-code" && fetcher.data.token) {
-        setVerificationToken(fetcher.data.token);
-        setShowVerifyCode(true);
-        setIsVerified(false);
-        try {
-          const decoded = atob(fetcher.data.token);
-          const expiry = parseInt(decoded.split(":")[1]);
-          setTimeLeft(Math.max(0, Math.floor((expiry - Date.now()) / 1000)));
-        } catch (e) {
-          setTimeLeft(300);
-        }
-      }
-      if (fetcher.data.intent === "verify-code" && fetcher.data.verified) {
-        setIsVerified(true);
-        if (fetcher.data.verifiedToken) {
-          setVerifiedToken(fetcher.data.verifiedToken);
-        }
-      }
+    if (!fetcher.data || !("success" in fetcher.data) || !fetcher.data.success) return;
+    if (fetcher.data.intent === "send-code" && "codeSent" in fetcher.data && fetcher.data.codeSent) {
+      setShowVerifyCode(true);
+      setIsVerified(false);
+      const expiresAt = "expiresAt" in fetcher.data ? (fetcher.data.expiresAt as number) : 0;
+      setTimeLeft(Math.max(0, Math.floor((expiresAt - Date.now()) / 1000)));
+    }
+    if (fetcher.data.intent === "verify-code" && "verified" in fetcher.data && fetcher.data.verified) {
+      setIsVerified(true);
     }
   }, [fetcher.data]);
 
@@ -379,7 +350,7 @@ export default function MyPage() {
   const [showMaster, setShowMaster] = useState(!!extra_vars.master_major);
   const [showDoctor, setShowDoctor] = useState(!!extra_vars.doctor_major);
 
-  const error = fetcher.data?.error;
+  const error = fetcher.data && "error" in fetcher.data ? fetcher.data.error : undefined;
   const loading = fetcher.state === "submitting";
   const successIntent = fetcher.data?.success ? fetcher.data.intent : null;
 
@@ -573,7 +544,7 @@ export default function MyPage() {
                               fetcher.submit(fd, { method: "post" });
                             }}
                           >
-                            {verificationToken ? "재발송" : "인증번호 발송"}
+                            {showVerifyCode ? "재발송" : "인증번호 발송"}
                           </Button>
                         )}
                       </div>
@@ -590,19 +561,17 @@ export default function MyPage() {
                           )}
                         </Label>
                         <div className="flex gap-2">
-                          <Input 
-                            id="verify_code" 
-                            name="verify_code" 
-                            placeholder="인증번호 6자리" 
-                            required 
+                          <Input
+                            id="verify_code"
+                            name="verify_code"
+                            placeholder="인증번호 6자리"
+                            required
                             readOnly={isVerified}
                             className="flex-1"
                           />
-                          <input type="hidden" name="token" value={verificationToken} />
-                          <input type="hidden" name="verifiedToken" value={verifiedToken} />
-                          <Button 
-                            type="button" 
-                            variant="outline" 
+                          <Button
+                            type="button"
+                            variant="outline"
                             size="sm"
                             className="shrink-0"
                             disabled={isVerified || timeLeft === 0}
@@ -614,7 +583,6 @@ export default function MyPage() {
                               fd.append("intent", "verify-code");
                               fd.append("cellphone_number", phone);
                               fd.append("verify_code", code);
-                              fd.append("token", verificationToken);
                               fetcher.submit(fd, { method: "post" });
                             }}
                           >
