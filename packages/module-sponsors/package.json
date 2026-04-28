@@ -1,0 +1,42 @@
+{
+  "name": "@repo/module-sponsors",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./module": "./src/module.server.ts",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@repo/auth": "workspace:*",
+    "@repo/core": "workspace:*",
+    "@repo/database": "workspace:*",
+    "@repo/env": "workspace:*",
+    "@repo/module-file": "workspace:*",
+    "@repo/ui": "workspace:*",
+    "@repo/ui-admin": "workspace:*",
+    "@supabase/supabase-js": "catalog:",
+    "@repo/config-typescript": "workspace:*"
+  },
+  "devDependencies": {
+    "@react-router/dev": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-tsconfig-paths": "catalog:",
+    "lucide-react": "catalog:",
+    "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "lucide-react": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:",
+    "zod": "catalog:"
+  }
+}

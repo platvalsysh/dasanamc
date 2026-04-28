@@ -1,0 +1,59 @@
+{
+  "name": "@repo/module-file",
+  "version": "1.0.3",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./server": "./src/.server/index.ts",
+    "./module": "./src/module.server.ts",
+    "./ui": "./src/ui/index.tsx",
+    "./types": "./src/types.ts",
+    "./constants": "./src/constants.ts",
+    "./variants": "./src/FileVariants.ts",
+    "./routes": "./src/routes.server.ts",
+    "./thumbnail": "./src/FileThumbnail.ts",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@react-router/node": "catalog:",
+    "@repo/auth": "workspace:*",
+    "@repo/core": "workspace:*",
+    "@repo/database": "workspace:*",
+    "@repo/env": "workspace:*",
+    "@repo/ui": "workspace:*",
+    "@repo/ui-admin": "workspace:*",
+    "@supabase/supabase-js": "catalog:",
+    "@uppy/core": "catalog:",
+    "@uppy/dashboard": "catalog:",
+    "@uppy/react": "catalog:",
+    "@uppy/xhr-upload": "catalog:",
+    "date-fns": "catalog:",
+    "sharp": "catalog:",
+    "sonner": "catalog:",
+    "@repo/config-typescript": "workspace:*"
+  },
+  "devDependencies": {
+    "@react-router/dev": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-tsconfig-paths": "catalog:",
+    "lucide-react": "catalog:",
+    "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "lucide-react": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:",
+    "zod": "catalog:"
+  }
+}

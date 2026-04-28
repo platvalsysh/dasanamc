@@ -1,0 +1,58 @@
+{
+  "name": "chemeng-mono",
+  "version": "1.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "start": "pnpm --filter web start",
+    "typecheck": "turbo typecheck",
+    "db:migrate": "pnpm --filter @repo/database db:migrate",
+    "db:pull": "pnpm --filter @repo/database db:pull",
+    "db:gen": "pnpm --filter @repo/database db:gen",
+    "remove-node-modules": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
+    "format": "prettier --ignore-path .gitignore --ignore-path .prettierignore --write .",
+    "format:check": "prettier --ignore-path .gitignore --ignore-path .prettierignore --check .",
+    "eslint": "eslint .",
+    "eslint:fix": "eslint --fix .",
+    "catalog:update": "npx pnpm-update-catalogs",
+    "syncpack:fix": "syncpack fix",
+    "syncpack:format": "syncpack format",
+    "syncpack:check": "syncpack lint"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@typescript-eslint/eslint-plugin": "^8.52.0",
+    "@typescript-eslint/parser": "^8.52.0",
+    "eslint": "^9.39.2",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-unused-imports": "^4.3.0",
+    "prettier": "catalog:",
+    "syncpack": "^14.2.0",
+    "typescript-eslint": "^8.52.0"
+  },
+  "dependencies": {
+    "@tiptap/core": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:",
+    "uuid": "^13.0.0",
+    "tailwindcss": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@tailwindcss/typography": "catalog:",
+    "vite": "catalog:",
+    "vite-tsconfig-paths": "catalog:",
+    "vite-plugin-restart": "^2.0.0",
+    "@react-router/dev": "catalog:",
+    "typescript": "catalog:",
+    "turbo": "^2.8.17",
+    "zod": "catalog:",
+    "lucide-react": "catalog:"
+  },
+  "packageManager": "pnpm@9.5.0",
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

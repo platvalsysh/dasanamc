@@ -1,0 +1,23 @@
+/* YouTube Embed Styles */
+.tiptap {
+  div[data-youtube-video] {
+    cursor: move;
+    /* padding-right: 24px; */
+    width: 100%;
+    margin: 1.5rem 0;
+
+    iframe {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      max-width: 100%;
+      border-radius: 0.5rem;
+      display: block;
+      margin: 0 auto;
+    }
+
+    &.ProseMirror-selectednode iframe {
+      outline: 2px solid var(--purple, #6a00f5);
+    }
+  }
+}

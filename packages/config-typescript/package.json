@@ -1,0 +1,24 @@
+{
+  "name": "@repo/config-typescript",
+  "version": "1.0.0",
+  "private": true,
+  "files": [
+    "base.json",
+    "react.json"
+  ],
+  "exports": {
+    "./base.json": "./base.json",
+    "./react.json": "./react.json"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:"
+  },
+  "devDependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:"
+  }
+}

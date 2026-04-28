@@ -1,0 +1,30 @@
+# General
+node_modules
+.DS_Store
+.env
+.env.keys
+*.tsbuildinfo
+
+# Build outputs
+dist
+build
+
+# pnpm
+.pnpm-store
+
+# Turbo
+.turbo
+
+# React Router
+.react-router
+
+# dotenv
+.env.local
+.env.*.local
+
+# Vercel
+.vercel
+
+# Legacy
+logs/
+.cache/

@@ -1,0 +1,50 @@
+{
+  "name": "@repo/module-bxmember",
+  "version": "1.0.5",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./module": "./src/module.server.ts",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@repo/auth": "workspace:*",
+    "@repo/core": "workspace:*",
+    "@repo/database": "workspace:*",
+    "@repo/module-file": "workspace:*",
+    "@repo/module-sms": "workspace:*",
+    "@repo/ui": "workspace:*",
+    "@repo/ui-admin": "workspace:*",
+    "@supabase/supabase-js": "catalog:",
+    "date-fns": "catalog:",
+    "nodemailer": "^7.0.12",
+    "react-select": "catalog:",
+    "xlsx": "^0.18.5",
+    "@repo/config-typescript": "workspace:*"
+  },
+  "devDependencies": {
+    "@react-router/dev": "catalog:",
+    "@types/node": "catalog:",
+    "@types/nodemailer": "^7.0.4",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-tsconfig-paths": "catalog:",
+    "lucide-react": "catalog:",
+    "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "lucide-react": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:",
+    "zod": "catalog:"
+  }
+}

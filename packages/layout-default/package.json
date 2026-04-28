@@ -1,0 +1,39 @@
+{
+  "name": "@repo/layout-default",
+  "version": "1.0.4",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./layout": "./src/layout.tsx",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "radix-ui": "catalog:",
+    "@repo/auth": "workspace:*",
+    "@repo/core": "workspace:*",
+    "@repo/ui": "workspace:*",
+    "class-variance-authority": "catalog:",
+    "lucide-react": "catalog:",
+    "@repo/config-typescript": "workspace:*"
+  },
+  "devDependencies": {
+    "@react-router/dev": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-tsconfig-paths": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:"
+  }
+}

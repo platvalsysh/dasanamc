@@ -1,0 +1,138 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+body {
+  --tt-toolbar-height: 44px;
+  --tt-theme-text: var(--tt-gray-light-900);
+
+  .dark & {
+    --tt-theme-text: var(--tt-gray-dark-900);
+  }
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  color: var(--tt-theme-text);
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  padding: 0;
+  overscroll-behavior-y: none;
+}
+
+html,
+body {
+  overscroll-behavior-x: none;
+}
+
+html,
+body,
+#root,
+#app {
+  height: 100%;
+  background-color: var(--tt-bg-color);
+}
+
+::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--tt-scrollbar-color) transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--tt-scrollbar-color);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tiptap.ProseMirror {
+  font-family: "DM Sans", sans-serif;
+}
+
+.simple-editor-wrapper {
+  position: relative;
+  width: 100%;
+  // width: 100vw;
+  // height: 100vh;
+  // overflow: auto; // Removed to allow sticky positioning relative to viewport
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+
+  // Override toolbar styles to be sticky at top for all devices
+  .tiptap-toolbar[data-variant="fixed"] {
+    position: sticky;
+    top: var(--header-height, 5.51rem);
+    z-index: 40;
+
+    @media (max-width: 480px) {
+      position: sticky;
+      top: var(--header-height, 5.51rem);
+      height: auto;
+      border-bottom: 1px solid var(--tt-toolbar-border-color);
+      border-top: none;
+      padding: 0.5rem;
+      flex-wrap: nowrap; // Keep mobile scrollable behavior if items overflow
+      overflow-x: auto; // Allow horizontal scroll if items don't fit
+    }
+  }
+}
+
+.simple-editor-content {
+  max-width: 648px;
+  width: 100%;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.simple-editor-content .tiptap.ProseMirror.simple-editor {
+  flex: 1;
+  padding: 3rem 3rem 30vh;
+}
+
+@media screen and (max-width: 480px) {
+  .simple-editor-content .tiptap.ProseMirror.simple-editor {
+    padding: 1rem 1.5rem 30vh;
+  }
+}
+
+/* Indent support */
+.tiptap .indent-1 {
+  margin-left: 2em;
+}
+.tiptap .indent-2 {
+  margin-left: 4em;
+}
+.tiptap .indent-3 {
+  margin-left: 6em;
+}
+.tiptap .indent-4 {
+  margin-left: 8em;
+}
+.tiptap .indent-5 {
+  margin-left: 10em;
+}
+.tiptap .indent-6 {
+  margin-left: 12em;
+}
+.tiptap .indent-7 {
+  margin-left: 14em;
+}
+
+/* Line height support */
+.tiptap .lh-1 {
+  line-height: 1;
+}
+.tiptap .lh-15 {
+  line-height: 1.5;
+}
+.tiptap .lh-2 {
+  line-height: 2;
+}

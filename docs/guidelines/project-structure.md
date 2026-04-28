@@ -1,0 +1,101 @@
+# 프로젝트 구조 (Modular Monolith)
+
+이 프로젝트는 pnpm workspace를 사용한 모노레포 구조로 되어 있습니다.
+
+- `apps/web/`: 메인 웹 애플리케이션 (React Router v7).
+  - `package.json`: 필요한 모듈과 레이아웃 패키지를 의존성으로 추가합니다.
+  - `app/layouts/`: 레이아웃 컴포넌트 재정의 (패키지 레이아웃을 import하여 사용).
+- `packages/`: 기능 모듈 및 공통 패키지.
+  - `[module-name]/`: 기능 단위 모듈 (예: `module-example`, `auth`).
+    - 예제 모듈 폴더 위치: `packages/module-example`
+    - `package.json`:
+      - `exports`:
+        - `\"./server\"`: 서버 사이드 로직 (`src/.server/index.ts`).
+        - `\"./module\"`: 모듈 정의 (`src/module.server.ts`).
+    - `src/`:
+      - `module.server.ts`: 모듈 정의 파일 (라우트, 권한, 관리자 메뉴 등록).
+        - `name`: 모듈 이름.
+        - `routes`: 라우트 정의 (`routesPublic`, `routesAdmin`, `routesApi`).
+        - `permissions`: 권한 목록.
+        - `functions`: 모듈 생명주기 훅 (예: `delete` - 비동기 삭제 처리).
+        - `adminMenuItemUnits`: 관리자 메뉴 아이템 목록.
+      - `routes.server.ts`: 라우트 정의.
+        - `routesPublic`: 공개 라우트 (`RouteConfig` 배열).
+        - `routesAdmin`: 관리자 라우트 (`RouteConfig` 배열).
+        - `routesApi`: API 라우트 (`RouteConfig` 배열).
+        - `adminMenuItemUnits`: 관리자 메뉴 아이템 정의 (`AdminMenuItemUnit[]`).
+      - `permissions.ts`: 권한 정의.
+        - `permissionList`: 권한 목록 배열.
+        - `permission`: 권한 이름 상수 객체.
+        - `permissions`: 읽기 전용 권한 배열.
+      - `public/`: 공개 페이지 및 컴포넌트.
+        - `index/page.tsx`: 페이지 컴포넌트.
+      - `admin/`: 관리자 페이지 및 컴포넌트.
+        - `index/page.tsx`: 관리자 페이지 컴포넌트.
+        - `list/page.tsx`: 목록 페이지 컴포넌트.
+        - `create/page.tsx`: 생성 페이지 컴포넌트.
+      - `api/`: API 라우트 핸들러.
+        - `list.ts`: 목록 조회 API (loader 함수 export).
+        - `view.ts`: 상세 조회 API (loader 함수 export).
+        - `create.ts`: 생성 API (action 함수 export).
+        - `edit.ts`: 수정 API (action 함수 export).
+        - `delete.ts`: 삭제 API (action 함수 export).
+        - `admin/`: 관리자 API 라우트 핸들러.
+          - `list.ts`, `view.ts`, `create.ts`, `edit.ts`, `delete.ts`: 관리자용 API.
+      - `.server/`: 서버 사이드 전용 코드 (DB 접근, 설정 등).
+        - `index.ts`: 서버 사이드 export 진입점.
+        - `server-config.ts`: 모듈 설정 관리.
+  - `[layout-name]/`: 레이아웃 패키지 (예: `layout-example`).
+    - `package.json`:
+      - `exports`:
+        - `"./layout"`: 레이아웃 컴포넌트 (`src/layout.tsx`).
+    - `src/`:
+      - `layout.tsx`: 레이아웃 컴포넌트.
+  - `auth/`: 인증 모듈 (로그인, 회원가입 등).
+    - `package.json`:
+      - `exports`:
+        - `\"./server\"`: 서버 사이드 로직 (`src/.server/index.ts`).
+        - `\"./module\"`: 모듈 정의 (`src/module.server.ts`).
+        - `\"./ui\"`: UI 컴포넌트 (`src/ui/index.tsx`).
+        - `\"./types\"`: 타입 정의 (`src/types/index.ts`).
+    - `src/`:
+      - `module.server.ts`: 모듈 정의 파일.
+      - `routes.server.ts`: 라우트 정의 (`routesPublic`, `routesAdmin`).
+      - `public/`: 공개 페이지 (로그인, 회원가입 등).
+      - `admin/`: 관리자 페이지.
+      - `ui/`: UI 컴포넌트 및 훅.
+      - `types/`: 타입 정의 및 권한 정의.
+      - `.server/`: 서버 사이드 전용 코드.
+  - `admin/`: 관리자 모듈.
+    - `package.json`:
+      - `exports`:
+        - `\"./server\"`: 서버 사이드 로직 (`src/.server/index.ts`).
+        - `\"./module\"`: 모듈 정의 (`src/module.server.ts`).
+    - `src/`:
+      - `module.server.ts`: 모듈 정의 파일.
+      - `routes.server.ts`: 라우트 정의 (`routesAdmin`).
+      - `routes/`: 관리자 페이지.
+  - `ui/`: 공통 UI 컴포넌트 라이브러리.
+    - `package.json`:
+      - `exports`:
+        - `"."`: 메인 진입점.
+        - `"./*"`: 서브 경로 진입점 (예: `import { Button } from "@repo/ui/button"`).
+  - `core/`: 패키지 간의 연결 또는 패키지와 애플리케이션(`apps/web`) 간의 연결을 담당하는 공통 로직.
+    - `package.json`:
+      - `exports`:
+        - `\"./server\"`: 서버 사이드 로직 (`src/.server/index.ts`).
+          - `ModulesService`: 모듈 CRUD 및 비동기 삭제(Soft Delete + Cleanup) 관리.
+        - `\"./types\"`: 타입 정의 (`src/types/index.ts`).
+  - `database/`: Prisma 스키마 및 DB 클라이언트.
+    - `package.json`:
+      - `exports`:
+        - `"."`: DB 클라이언트 (`src/index.server.ts`).
+  - `env/`: 환경 변수 및 공통 설정.
+    - `package.json`:
+      - `exports`:
+        - `"./server"`: 서버 사이드 환경 변수 (`src/index.server.ts`).
+  - `config-typescript/`: 공통 TypeScript 설정.
+    - `package.json`:
+      - `exports`:
+        - `\"./base.json\"`: 기본 TypeScript 설정.
+        - `\"./react.json\"`: React Router용 TypeScript 설정.

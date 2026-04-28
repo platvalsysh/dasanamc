@@ -1,0 +1,149 @@
+/* File Upload UI Styles */
+
+.file-upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Dropzone */
+.file-upload-dropzone {
+  border: 2px dashed #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #f9fafb;
+
+  &:hover,
+  &.is-dragging {
+    border-color: #6366f1; /* Indigo-500 */
+    background-color: #eef2ff; /* Indigo-50 */
+  }
+
+  .dropzone-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .dropzone-icon-wrapper {
+    padding: 0.75rem;
+    background-color: #f3f4f6;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+  }
+
+  .primary-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .secondary-text {
+    font-size: 0.8rem;
+    color: #9ca3af;
+  }
+}
+
+/* Files Grid */
+.files-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.file-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  position: relative;
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+    .remove-button {
+      opacity: 1;
+    }
+  }
+}
+
+.file-preview {
+  height: 100px;
+  background-color: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+
+  .file-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .remove-button {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #e5e7eb;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition:
+      opacity 0.2s,
+      background-color 0.2s;
+
+    &:hover {
+      background-color: #fee2e2;
+      color: #ef4444;
+    }
+  }
+}
+
+.file-info {
+  padding: 0.5rem;
+}
+
+.file-name {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #374151;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0.25rem;
+}
+
+.file-status {
+  height: 0.75rem; /* fixed height for alignment */
+  display: flex;
+  align-items: center;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 4px;
+  background-color: #e5e7eb;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #6366f1;
+  transition: width 0.3s ease;
+}

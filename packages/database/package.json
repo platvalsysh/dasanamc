@@ -1,0 +1,43 @@
+{
+  "name": "@repo/database",
+  "version": "1.0.3",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.server.ts",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "db:migrate": "tsx scripts/migrate.ts && npm run db:pull",
+    "db:pull": "prisma db pull --force && npm run db:gen",
+    "db:generate": "prisma generate",
+    "db:gen": "prisma generate",
+    "db:studio": "prisma studio",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.1.0",
+    "@prisma/client": "catalog:",
+    "@repo/env": "workspace:*",
+    "pg": "^8.16.3",
+    "@repo/config-typescript": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@types/pg": "^8.16.0",
+    "glob": "^13.0.0",
+    "prisma": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:",
+    "tsx": "^4.21.0",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-tsconfig-paths": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:"
+  }
+}

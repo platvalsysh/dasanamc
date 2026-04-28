@@ -1,0 +1,62 @@
+{
+  "name": "@repo/module-board",
+  "version": "1.0.15",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./server": "./src/.server/index.ts",
+    "./module": "./src/module.server.ts",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@repo/auth": "workspace:*",
+    "@repo/core": "workspace:*",
+    "@repo/database": "workspace:*",
+    "@repo/module-editor": "workspace:*",
+    "@repo/module-file": "workspace:*",
+    "@repo/ui": "workspace:*",
+    "@repo/ui-admin": "workspace:*",
+    "@tiptap/extension-color": "catalog:",
+    "@tiptap/extension-image": "catalog:",
+    "@tiptap/extension-link": "catalog:",
+    "@tiptap/extension-placeholder": "catalog:",
+    "@tiptap/extension-table": "catalog:",
+    "@tiptap/extension-table-cell": "catalog:",
+    "@tiptap/extension-table-header": "catalog:",
+    "@tiptap/extension-table-row": "catalog:",
+    "@tiptap/extension-text-align": "catalog:",
+    "@tiptap/extension-text-style": "catalog:",
+    "@tiptap/extension-underline": "catalog:",
+    "@tiptap/react": "catalog:",
+    "@tiptap/starter-kit": "catalog:",
+    "date-fns": "catalog:",
+    "html-to-text": "^9.0.5",
+    "@repo/config-typescript": "workspace:*"
+  },
+  "peerDependencies": {
+    "lucide-react": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@react-router/dev": "catalog:",
+    "@types/html-to-text": "^9.0.4",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-tsconfig-paths": "catalog:",
+    "lucide-react": "catalog:",
+    "zod": "catalog:"
+  }
+}

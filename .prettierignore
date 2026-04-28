@@ -1,0 +1,5 @@
+**/generated/
+**/public/
+**/module-editor/components/
+**/module-editor/hooks/
+**/module-editor/lib/

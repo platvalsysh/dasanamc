@@ -1,0 +1,30 @@
+{
+  "indent": "  ",
+  "semverGroups": [
+    {
+      "label": "Ignore internal @repo packages",
+      "packages": ["**"],
+      "dependencies": ["@repo/**"],
+      "isIgnored": true
+    }
+  ],
+  "versionGroups": [
+    {
+      "label": "Use catalog: for external dependencies",
+      "packages": ["**"],
+      "dependencies": ["**"],
+      "dependencyTypes": ["prod", "dev", "peer", "resolutions"],
+      "preferVersion": "catalog:"
+    }
+  ],
+  "sortAz": [
+    "contributors",
+    "dependencies",
+    "devDependencies",
+    "keywords",
+    "peerDependencies",
+    "resolutions",
+    "scripts"
+  ],
+  "sortFirst": ["name", "description", "version", "author"]
+}
