@@ -41,6 +41,15 @@ import {
 } from "react-router";
 import { prisma } from "@repo/database";
 import { z } from "zod";
+import {
+  emailSchema,
+  displayNameSchema,
+  passwordSchema,
+  personalFields,
+  allEducationFields,
+  officeFields,
+  settingsFields,
+} from "@repo/schema";
 
 /**
  * 리버스 프록시 환경을 고려하여 Request 객체로부터 실제 Origin을 추출합니다.
@@ -64,51 +73,22 @@ export function getRequestOrigin(request: Request): string {
 }
 
 const SignUpSchema = z.object({
-  email: z.string().email("올바른 이메일 형식이 아닙니다."),
-  display_name: z.string().min(1, "닉네임을 입력해 주세요."),
-  password: z.string().min(6, "비밀번호는 최소 6자 이상이어야 합니다."),
+  email: emailSchema,
+  display_name: displayNameSchema,
+  password: passwordSchema,
   "repeat-password": z.string(),
-  name_kor: z.string().min(1, "이름을 입력해 주세요."),
-  sex: z.string().min(1, "성별을 선택해 주세요."),
-  cellphone_number: z.string().min(1, "휴대폰 번호를 입력해 주세요."),
-  phone_number: z.string().optional(),
-  address: z.string().optional(),
-  enter_year: z.string().optional(),
-  major: z.string().optional(),
-  graduate_year: z.string().optional(),
-  graduate_month: z.enum(["", "2", "8"]).optional(),
-  graduate_number: z.string().optional(),
-  master_major: z.string().optional(),
-  master_graduate_year: z.string().optional(),
-  master_graduate_month: z.enum(["", "2", "8"]).optional(),
-  master_graduate_number: z.string().optional(),
-  doctor_major: z.string().optional(),
-  doctor_graduate_year: z.string().optional(),
-  doctor_graduate_month: z.enum(["", "2", "8"]).optional(),
-  doctor_graduate_number: z.string().optional(),
-  office_name: z.string().optional(),
-  office_position: z.string().optional(),
-  job_class: z.string().optional(),
-  office_phone_number: z.string().optional(),
-  office_area: z.string().optional(),
-  office_address: z.string().optional(),
-  office_career: z.string().optional(),
-  search_agree: z.enum(["Y", "N"]).default("N"),
-  o_cellphone_number: z.enum(["Y", "N"]).default("N"),
-  o_email_address: z.enum(["Y", "N"]).default("N"),
-  o_office_name: z.enum(["Y", "N"]).default("N"),
-  o_office_position: z.enum(["Y", "N"]).default("N"),
-  allow_mailing: z.enum(["Y", "N"]).default("N"),
-  allow_message: z.enum(["Y", "N"]).default("N"),
+  ...personalFields,
+  ...allEducationFields,
+  ...officeFields,
+  ...settingsFields,
 }).refine((data) => data.password === data["repeat-password"], {
   message: "비밀번호가 일치하지 않습니다.",
   path: ["repeat-password"],
 }).refine((data) => {
-  // 학사 학과, 석사 전공, 박사 전공 중 하나라도 입력되었는지 확인
   return !!(data.major || data.master_major || data.doctor_major);
 }, {
   message: "학사, 석사, 박사 정보 중 최소 하나는 입력하거나 선택해야 합니다.",
-  path: ["major"] // 학력 정보 섹션의 첫 번째 관련 필드에 매핑
+  path: ["major"]
 });
 
 export async function loader({ context }: LoaderFunctionArgs) {

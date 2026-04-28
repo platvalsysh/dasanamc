@@ -8,7 +8,8 @@
 |---|---|---|
 | [@repo/core](core/) | 모듈 시스템 코어 (`createModule`, `ModuleManager`, `JsonResponse`) | `./server`, `./module`, `./types`, `./ui`, `./utils` |
 | [@repo/database](database/) | Prisma 클라이언트 + SQL 마이그레이션 + 생성 타입 | `@repo/database` |
-| [@repo/env](env/) | `process.env` 타입 안전 접근 | `./` |
+| [@repo/env](env/) | `process.env` 타입 안전 접근 (`ENABLED_MODULES` 등) | `./server` |
+| [@repo/schema](schema/) | 공용 zod 필드 스키마 (sign-up / mypage / 사용자 편집 공유) | `./`, `./profile` |
 | [@repo/config-typescript](config-typescript/) | tsconfig base | `./base.json` 외 |
 
 ## 인증/관리
@@ -62,7 +63,15 @@ apps/web
 
 ## 외주 프로젝트 모듈 선별 절차
 
-1. `apps/web/app/modules.server.ts` 의 `modules` 배열에서 미사용 모듈 import 제거
+빠른 비활성화 (코드 보존):
+
+1. `.env` 에 `ENABLED_MODULES=board,bxmember` 식으로 사용할 모듈만 명시
+2. `pnpm dev` — 화이트리스트 외 모듈은 라우트·메뉴·권한에 등록되지 않음
+3. `core`/`auth`/`admin` 은 화이트리스트 무관 항상 활성
+
+영구 삭제:
+
+1. `apps/web/app/modules.server.ts` 의 `allModules` 배열에서 import 제거
 2. `pnpm install` 로 워크스페이스 재해석
 3. `pnpm typecheck` 통과 확인 — 만약 다른 모듈이 직접 import 하고 있다면 의존성 위반 (위 규칙 참고)
 4. 위반 없는 미사용 모듈은 `packages/module-{name}/` 디렉토리째 삭제 가능

@@ -38,63 +38,42 @@ import {
 } from "react-router";
 import { prisma } from "@repo/database";
 import { z } from "zod";
+import {
+  displayNameSchema,
+  passwordStrongSchema,
+  koreanNameSchema,
+  sexSchema,
+  allEducationFields,
+  officeFields,
+  settingsFields,
+} from "@repo/schema";
 
 const AccountSchema = z.object({
-  display_name: z.string().min(1, "닉네임을 입력해 주세요."),
+  display_name: displayNameSchema,
 });
 
 const PersonalSchema = z.object({
-  name_kor: z.preprocess((val) => val ?? "", z.string().min(1, "이름을 입력해 주세요.")),
-  sex: z.preprocess((val) => val ?? "", z.string().min(1, "성별을 선택해 주세요.")),
+  name_kor: z.preprocess((val) => val ?? "", koreanNameSchema),
+  sex: z.preprocess((val) => val ?? "", sexSchema),
   cellphone_number: z.preprocess((val) => val ?? "", z.string().optional()),
   phone_number: z.preprocess((val) => val ?? "", z.string().optional()),
   address: z.preprocess((val) => val ?? "", z.string().optional()),
 });
 
-const EducationSchema = z.object({
-  enter_year: z.string().optional(),
-  major: z.string().optional(),
-  graduate_year: z.string().optional(),
-  graduate_month: z.enum(["", "2", "8"]).optional(),
-  graduate_number: z.string().optional(),
-  master_major: z.string().optional(),
-  master_graduate_year: z.string().optional(),
-  master_graduate_month: z.enum(["", "2", "8"]).optional(),
-  master_graduate_number: z.string().optional(),
-  doctor_major: z.string().optional(),
-  doctor_graduate_year: z.string().optional(),
-  doctor_graduate_month: z.enum(["", "2", "8"]).optional(),
-  doctor_graduate_number: z.string().optional(),
-}).refine((data) => {
+const EducationSchema = z.object(allEducationFields).refine((data) => {
   return !!(data.major || data.master_major || data.doctor_major);
 }, {
   message: "학사, 석사, 박사 정보 중 최소 하나는 입력하거나 선택해야 합니다.",
   path: ["major"]
 });
 
-const OfficeSchema = z.object({
-  office_name: z.string().optional(),
-  office_position: z.string().optional(),
-  job_class: z.string().optional(),
-  office_phone_number: z.string().optional(),
-  office_area: z.string().optional(),
-  office_address: z.string().optional(),
-  office_career: z.string().optional(),
-});
+const OfficeSchema = z.object(officeFields);
 
-const SettingsSchema = z.object({
-  search_agree: z.enum(["Y", "N"]).default("N"),
-  o_cellphone_number: z.enum(["Y", "N"]).default("N"),
-  o_email_address: z.enum(["Y", "N"]).default("N"),
-  o_office_name: z.enum(["Y", "N"]).default("N"),
-  o_office_position: z.enum(["Y", "N"]).default("N"),
-  allow_mailing: z.enum(["Y", "N"]).default("N"),
-  allow_message: z.enum(["Y", "N"]).default("N"),
-});
+const SettingsSchema = z.object(settingsFields);
 
 const PasswordSchema = z.object({
-  password: z.string().min(8, "비밀번호는 최소 8자 이상이어야 합니다."),
-  confirm_password: z.string().min(8, "비밀번호 확인을 입력해 주세요."),
+  password: passwordStrongSchema,
+  confirm_password: passwordStrongSchema,
 }).refine((data) => data.password === data.confirm_password, {
   message: "비밀번호가 일치하지 않습니다.",
   path: ["confirm_password"],

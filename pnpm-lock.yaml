@@ -575,6 +575,9 @@ importers:
       '@repo/module-sms':
         specifier: workspace:*
         version: link:../module-sms
+      '@repo/schema':
+        specifier: workspace:*
+        version: link:../schema
       '@repo/ui':
         specifier: workspace:*
         version: link:../ui
@@ -1711,6 +1714,22 @@ importers:
       zod:
         specifier: 'catalog:'
         version: 3.25.76
+
+  packages/schema:
+    dependencies:
+      '@repo/config-typescript':
+        specifier: workspace:*
+        version: link:../config-typescript
+      zod:
+        specifier: 'catalog:'
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 25.0.3
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
 
   packages/ui:
     dependencies:
@@ -10840,7 +10859,7 @@ snapshots:
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
 
   '@typescript-eslint/eslint-plugin@8.52.0(@typescript-eslint/parser@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
