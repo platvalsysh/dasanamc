@@ -1,14 +1,10 @@
 import { module as auth } from "@repo/auth/module";
 import { module as admin } from "@repo/admin/module";
 import { module as board } from "@repo/module-board/module";
-import { module as bxmember } from "@repo/module-bxmember/module";
 import { module as file } from "@repo/module-file/module";
 import { module as core } from "@repo/core/module";
 import { module as sms } from "@repo/module-sms/module";
-import { module as sponsors } from "@repo/module-sponsors/module";
-import { module as organization } from "@repo/module-organization/module";
 import { module as newsletter } from "@repo/module-newsletter/module";
-import { module as schedule } from "@repo/module-schedule/module";
 import { ENABLED_MODULES } from "@repo/env/server";
 
 // 사이트에 끼울 수 있는 후보 모듈 전체 (편집 모듈은 사용처에 따라 추가).
@@ -17,13 +13,9 @@ const allModules = [
   auth,
   admin,
   board,
-  bxmember,
   file,
   sms,
-  sponsors,
-  organization,
   newsletter,
-  schedule,
 ];
 
 // 화이트리스트 환경변수와 무관하게 항상 활성화되는 필수 모듈.

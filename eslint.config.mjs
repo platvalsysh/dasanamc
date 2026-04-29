@@ -68,11 +68,8 @@ export default [
     files: ["packages/module-*/**/*.{ts,tsx}"],
     ignores: [
       "packages/module-board/**",
-      "packages/module-bxmember/**",
       "packages/module-editor/**",
       "packages/module-newsletter/**",
-      "packages/module-organization/**",
-      "packages/module-sponsors/**",
     ],
     rules: {
       "no-restricted-imports": [

@@ -47,15 +47,6 @@ echo "✓ Dumped modules"
 pg_dump "$DB_URL" --table=core.profiles --schema-only --no-owner --no-acl > packages/core/migrate/008_profiles.sql
 echo "✓ Dumped profiles"
 
-# Module-bxmember package tables
-echo "Dumping modules schema tables (bxmember)..."
-
-pg_dump "$DB_URL" --table=modules.bxmember --schema-only --no-owner --no-acl > packages/module-bxmember/migrate/001_bxmember.sql
-echo "✓ Dumped bxmember"
-
-pg_dump "$DB_URL" --table=modules.bxprofessor --schema-only --no-owner --no-acl > packages/module-bxmember/migrate/002_bxprofessor.sql
-echo "✓ Dumped bxprofessor"
-
 # Module-board package tables
 echo "Dumping modules schema tables (board)..."
 

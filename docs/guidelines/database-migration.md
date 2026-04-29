@@ -44,10 +44,9 @@ packages/
 │       ├── 001_comments.sql
 │       ├── 002_documents.sql
 │       └── ...
-└── module-bxmember/
+└── module-newsletter/
     └── migrate/
-        ├── 001_bxmember.sql
-        └── 002_bxprofessor.sql
+        └── 001_newsletters.sql
 ```
 
 ## 마이그레이션 파일 명명 규칙
@@ -96,7 +95,7 @@ CREATE TABLE migrate.history (
 
 - `core-001_admin_permissions.sql`
 - `module-board-001_comments.sql`
-- `module-bxmember-001_bxmember.sql`
+- `module-newsletter-001_newsletters.sql`
 
 ## 새 마이그레이션 파일 생성
 

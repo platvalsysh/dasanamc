@@ -58,10 +58,7 @@ pnpm typecheck
 |---|---|---|
 | `module-board` | `module-editor`, `module-file` | editor 결합부는 `core` 의 hook/component slot 으로 추출, file API 는 shared-file |
 | `module-editor` | `module-file` | tiptap 업로드 핸들러를 함수형 props 로 받도록 |
-| `module-bxmember` | `module-file`, `module-sms` | 파일 첨부와 SMS 발송 인터페이스를 shared-* 로 이전 |
-| `module-newsletter` | `module-file` | 위와 동일 |
-| `module-organization` | `module-sms` | shared-sms |
-| `module-sponsors` | `module-file` | shared-file |
+| `module-newsletter` | `module-file` | 위와 동일 (shared-file 추출) |
 
 ### 주요 명령어
 의존성 불일치를 해결하거나 파일 포맷을 관리할 때 사용합니다.
