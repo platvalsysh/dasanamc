@@ -1,8 +1,7 @@
-# chemeng-template
+# dasanamc
 
-React Router 7 + pnpm + Turborepo 기반 **모듈식 홈페이지 외주 템플릿**.
-
-기능 모듈을 골라 끼우는 방식으로 외주 프로젝트마다 빠르게 시작한다.
+React Router 7 + pnpm + Turborepo 기반 외주 프로젝트.
+[chemeng-template](../chemeng-template) 에서 분기.
 
 - AI 에이전트는 [CLAUDE.md](CLAUDE.md) 를 먼저 읽기
 - 운영 규칙은 [AGENTS.md](AGENTS.md)
