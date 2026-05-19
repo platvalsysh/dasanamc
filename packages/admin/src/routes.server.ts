@@ -14,6 +14,7 @@ export const routesAdmin = [
     moduleRoute("/admin/system/settings", "./routes/system/settings/general.tsx"),
     moduleRoute("/admin/system/settings/general", "./routes/system/settings/general.tsx"),
     moduleRoute("/admin/system/settings/menu", "./routes/system/settings/menu.tsx"),
+    moduleRoute("/admin/system/settings/registration", "./routes/system/settings/registration.tsx"),
     moduleRoute("/admin/system/settings/appearance", "./routes/system/settings/appearance.tsx"),
     moduleRoute("/admin/system/settings/email", "./routes/system/settings/email.tsx"),
     moduleRoute("/admin/system/settings/notifications", "./routes/system/settings/notifications.tsx"),

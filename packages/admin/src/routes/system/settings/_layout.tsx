@@ -12,6 +12,7 @@ import {
   Menu,
   Box,
   Package,
+  UserPlus,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -37,6 +38,13 @@ const settingSections: SettingSection[] = [
     description: "관리자 메뉴 구성",
     icon: <Menu className="w-5 h-5" />,
     path: "/admin/system/settings/menu",
+  },
+  {
+    id: "registration",
+    title: "회원가입",
+    description: "SMS/이메일 인증 + 수집 정보 토글",
+    icon: <UserPlus className="w-5 h-5" />,
+    path: "/admin/system/settings/registration",
   },
   {
     id: "appearance",
