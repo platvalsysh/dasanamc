@@ -3,8 +3,7 @@
 React Router 7 + pnpm + Turborepo 기반 외주 프로젝트.
 [chemeng-template](../chemeng-template) 에서 분기.
 
-- AI 에이전트는 [CLAUDE.md](CLAUDE.md) 를 먼저 읽기
-- 운영 규칙은 [AGENTS.md](AGENTS.md)
+- AI 에이전트는 [CLAUDE.md](CLAUDE.md) 를 먼저 읽기 (운영 규칙 + 작업 지도 + 외주 시작 절차)
 - 패키지 매트릭스는 [packages/INDEX.md](packages/INDEX.md)
 - 주제별 가이드는 [docs/guidelines/](docs/guidelines/)
 

@@ -28,3 +28,7 @@ build
 # Legacy
 logs/
 .cache/
+
+# AI agent / MCP local config (시크릿 포함 가능)
+.claude/
+.mcp.json

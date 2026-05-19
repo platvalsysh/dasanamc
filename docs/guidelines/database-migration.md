@@ -15,16 +15,15 @@
 데이터베이스 스키마를 변경하려면 **반드시** 다음 순서를 따르세요:
 
 1. **SQL 마이그레이션 파일 작성** → `packages/{패키지}/migrate/` 디렉토리에 `.sql` 파일 생성
-2. **`npm run db:migrate`** → SQL 마이그레이션 실행
-3. **`npm run db:pull`** → 데이터베이스 스키마를 Prisma 스키마로 동기화
-4. **`npm run db:gen`** → Prisma Client 재생성
+2. **`pnpm db:migrate`** → SQL 마이그레이션 + `db:pull` + `db:gen` 일괄 실행 (`packages/database` 의 `db:migrate` 스크립트가 셋을 묶음)
 
 ```bash
 # 올바른 순서
-npm run db:migrate  # 1. SQL 마이그레이션 실행
-npm run db:pull     # 2. DB → Prisma 스키마 동기화
-npm run db:gen      # 3. Prisma Client 생성
+pnpm db:migrate
 ```
+
+> 마이그레이션만 적용하고 Prisma 재생성은 스킵하려면
+> `pnpm --filter @repo/database exec tsx scripts/migrate.ts` 를 사용한다.
 
 ## 개요
 
@@ -63,12 +62,6 @@ packages/
 ### 모든 마이그레이션 실행
 
 ```bash
-npm run db:migrate
-```
-
-또는
-
-```bash
 pnpm db:migrate
 ```
 
@@ -103,7 +96,7 @@ CREATE TABLE migrate.history (
 1. 해당 패키지의 `migrate/` 디렉토리에 새 SQL 파일 생성
 2. 순번을 기존 파일보다 높게 설정
 3. SQL DDL 작성
-4. `npm run db:migrate && npm run db:pull && npm run db:gen` 실행
+4. `pnpm db:migrate` 실행 (`db:pull` + `db:gen` 자동 포함)
 
 #### 예시 1: 새 테이블 생성
 
@@ -139,10 +132,8 @@ CREATE INDEX modules_browser_title_idx
 #### 실행 순서 (다시 한번 강조)
 
 ```bash
-# 1. SQL 파일 생성 후
-npm run db:migrate  # SQL 마이그레이션 실행
-npm run db:pull     # Prisma 스키마 업데이트
-npm run db:gen      # Prisma Client 재생성
+# SQL 파일 생성 후
+pnpm db:migrate     # SQL 마이그레이션 + db:pull + db:gen 일괄
 ```
 
 ### 2. 기존 DB 스키마로부터 새 부트스트랩 만들기
@@ -269,8 +260,27 @@ DELETE FROM migrate.history WHERE id = 'core-001_admin_permissions.sql';
 DROP SCHEMA migrate CASCADE;
 ```
 
+## Supabase Auth JWT Hook (수동 1회)
+
+`packages/core/migrate/100_access_token_hook.sql` 은 JWT claims 에
+`roles`/`display_name`/`profile_image` 를 주입하는 `custom_access_token_hook`
+함수를 멱등으로 생성한다. 그러나 **함수 생성만으로는 동작하지 않는다** —
+Supabase Cloud 의 프로젝트 설정에서 hook 을 등록해야 한다.
+
+신규 외주 프로젝트 셋업 시 1회만:
+
+1. Supabase Dashboard → **Authentication → Hooks**
+2. **Customize Access Token (JWT) Claims** 행
+3. Hook type: **Postgres**, schema `public`, function `custom_access_token_hook`
+4. Enable hook → Save
+5. 기존 세션은 구 JWT 사용 중이므로 **로그아웃 → 재로그인**
+
+이 단계 없이는 `/admin` 권한 체크가 통과되지 않는다 (AuthServerContext 가
+JWT claims 의 `roles` 를 읽기 때문). 자세히 [CLAUDE.md](../../CLAUDE.md) §외주 시작 절차.
+
 ## 관련 파일
 
 - **마이그레이션 스크립트**: `packages/database/scripts/migrate.ts`
 - **부트스트랩 모델**: `packages/core/migrate/000_init.sql` (멱등 패턴 참고)
+- **JWT hook**: `packages/core/migrate/100_access_token_hook.sql`
 - **Prisma 스키마**: `packages/database/prisma/schema.prisma`

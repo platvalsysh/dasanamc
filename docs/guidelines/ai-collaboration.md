@@ -1,14 +1,7 @@
 # AI 협업 가이드
 
-이 저장소에서 AI 에이전트(Claude Code, Cursor 등)와 효과적으로 협업하는 법.
-
-## AI 에이전트 입장에서 본 진입 순서
-
-1. [CLAUDE.md](../../CLAUDE.md) — 30초 오리엔테이션
-2. [AGENTS.md](../../AGENTS.md) — 운영 규칙 (한국어 응답, DB 정책, Windows 셸)
-3. [packages/INDEX.md](../../packages/INDEX.md) — 패키지 매트릭스
-4. (작업 영역) `packages/{대상}/README.md`
-5. (작업 주제) [docs/guidelines/](.) — 컨벤션
+AI 에이전트에게 일을 시키는 **사람** 쪽의 가이드. 에이전트 진입점과 운영
+규칙은 [CLAUDE.md](../../CLAUDE.md) 가 단일 소스.
 
 ## 인간이 AI에게 일을 시킬 때
 
@@ -38,7 +31,7 @@
 
 | 사고 | 예방 |
 |---|---|
-| `schema.prisma` 직접 수정 | [AGENTS.md](../../AGENTS.md) 명시. SQL 마이그레이션 강제 |
+| `schema.prisma` 직접 수정 | [CLAUDE.md](../../CLAUDE.md) 명시. SQL 마이그레이션 강제 |
 | 새 의존성을 `devDependencies` 로 (Vercel 빌드 깨짐) | [monorepo.md](monorepo.md) 명시 |
 | 모듈 간 직접 import | (계획) syncpack 룰로 차단 |
 | 시크릿을 클라이언트 state 로 | [state-management.md](state-management.md) |

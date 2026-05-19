@@ -73,12 +73,15 @@ const isDeleting = fetcher.state !== "idle";
 
 ## TanStack Query 는?
 
-이 프로젝트는 일부 위젯에서 TanStack Query 도입 중 (커밋 `9756bcb`, `abf0e91`).
+dasanamc 템플릿에는 현재 미도입 (의존성/사용처 모두 없음). 새 모듈도
+React Router 의 `loader`/`action` 으로 충분한 경우가 대부분이라 굳이 들이지
+않는다.
 
-- **언제 쓰나**: 같은 데이터를 여러 위젯이 polling/refetch 해야 하는 대시보드
+도입을 검토할 때:
+
+- **언제 쓰나**: 같은 데이터를 여러 위젯이 polling/refetch 해야 하는 대시보드,
+  optimistic update 가 빈번한 화면, 실시간 동기화
 - **언제 안 쓰나**: 한 페이지에서만 보는 데이터 — `loader` 가 충분
-
-새 모듈 작성 시 기본은 loader/action. 정말 필요할 때만 TanStack 도입.
 
 ## 안티 패턴
 

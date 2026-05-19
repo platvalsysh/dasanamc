@@ -10,8 +10,8 @@
     - 예제 모듈 폴더 위치: `packages/module-example`
     - `package.json`:
       - `exports`:
-        - `\"./server\"`: 서버 사이드 로직 (`src/.server/index.ts`).
-        - `\"./module\"`: 모듈 정의 (`src/module.server.ts`).
+        - `"./server"`: 서버 사이드 로직 (`src/.server/index.ts`).
+        - `"./module"`: 모듈 정의 (`src/module.server.ts`).
     - `src/`:
       - `module.server.ts`: 모듈 정의 파일 (라우트, 권한, 관리자 메뉴 등록).
         - `name`: 모듈 이름.
@@ -54,10 +54,10 @@
   - `auth/`: 인증 모듈 (로그인, 회원가입 등).
     - `package.json`:
       - `exports`:
-        - `\"./server\"`: 서버 사이드 로직 (`src/.server/index.ts`).
-        - `\"./module\"`: 모듈 정의 (`src/module.server.ts`).
-        - `\"./ui\"`: UI 컴포넌트 (`src/ui/index.tsx`).
-        - `\"./types\"`: 타입 정의 (`src/types/index.ts`).
+        - `"./server"`: 서버 사이드 로직 (`src/.server/index.ts`).
+        - `"./module"`: 모듈 정의 (`src/module.server.ts`).
+        - `"./ui"`: UI 컴포넌트 (`src/ui/index.tsx`).
+        - `"./types"`: 타입 정의 (`src/types/index.ts`).
     - `src/`:
       - `module.server.ts`: 모듈 정의 파일.
       - `routes.server.ts`: 라우트 정의 (`routesPublic`, `routesAdmin`).
@@ -69,8 +69,8 @@
   - `admin/`: 관리자 모듈.
     - `package.json`:
       - `exports`:
-        - `\"./server\"`: 서버 사이드 로직 (`src/.server/index.ts`).
-        - `\"./module\"`: 모듈 정의 (`src/module.server.ts`).
+        - `"./server"`: 서버 사이드 로직 (`src/.server/index.ts`).
+        - `"./module"`: 모듈 정의 (`src/module.server.ts`).
     - `src/`:
       - `module.server.ts`: 모듈 정의 파일.
       - `routes.server.ts`: 라우트 정의 (`routesAdmin`).
@@ -83,9 +83,9 @@
   - `core/`: 패키지 간의 연결 또는 패키지와 애플리케이션(`apps/web`) 간의 연결을 담당하는 공통 로직.
     - `package.json`:
       - `exports`:
-        - `\"./server\"`: 서버 사이드 로직 (`src/.server/index.ts`).
+        - `"./server"`: 서버 사이드 로직 (`src/.server/index.ts`).
           - `ModulesService`: 모듈 CRUD 및 비동기 삭제(Soft Delete + Cleanup) 관리.
-        - `\"./types\"`: 타입 정의 (`src/types/index.ts`).
+        - `"./types"`: 타입 정의 (`src/types/index.ts`).
   - `database/`: Prisma 스키마 및 DB 클라이언트.
     - `package.json`:
       - `exports`:
@@ -97,5 +97,5 @@
   - `config-typescript/`: 공통 TypeScript 설정.
     - `package.json`:
       - `exports`:
-        - `\"./base.json\"`: 기본 TypeScript 설정.
-        - `\"./react.json\"`: React Router용 TypeScript 설정.
+        - `"./base.json"`: 기본 TypeScript 설정.
+        - `"./react.json"`: React Router용 TypeScript 설정.
