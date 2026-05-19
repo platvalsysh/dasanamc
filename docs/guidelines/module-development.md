@@ -35,10 +35,31 @@ export const module = createModule("<name>")
     { name: "ROLE_<NAME>_EDITOR", display_name: "Editor", permission_names: ["<name>.create"] },
   ])
   .adminMenuItemUnits([
-    { id: "<name>-list", label: "...", icon: "...", path: "/admin/<name>", permission: "<name>.list" },
+    {
+      id: "<name>-list",
+      label: "...",
+      icon: "...",
+      path: "/admin/<name>",
+      permission: "<name>.list",
+      group: "콘텐츠",   // 사이드바 그룹 이름 (생략 시 모듈 이름이 그룹)
+      order: 10,         // 그룹 내 순서 (작을수록 위, 생략 시 100)
+    },
   ])
+  .functions({
+    // 모듈 인스턴스(core.modules 행) 삭제 시 외부 리소스 정리 훅.
+    // ModulesService.deleteModule 이 트랜잭션 commit 후 호출.
+    // 예: 첨부 파일(S3) 삭제, 자식 documents 삭제 등.
+    delete: async (deletedModule) => {
+      const moduleId = deletedModule.module_id;
+      // await FileService.deleteFilesByModuleId(moduleId);
+      // await prisma.documents.deleteMany({ where: { module_id: moduleId } });
+    },
+  })
   .build();
 ```
+
+- 메뉴/권한 시스템 전반은 [permissions.md](permissions.md) 참고
+- `.functions.delete` 의 인자 타입은 `core.deleted_modules` 행 (백업 row)
 
 ### 2. 라우트 ([src/routes.server.ts](../../packages/module-example/src/routes.server.ts))
 
