@@ -32,3 +32,6 @@ logs/
 # AI agent / MCP local config (시크릿 포함 가능)
 .claude/
 .mcp.json
+
+# Playwright MCP 임시 산출물 (console 로그, accessibility snapshot, 스크린샷)
+.playwright-mcp/
