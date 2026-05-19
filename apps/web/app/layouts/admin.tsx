@@ -9,12 +9,15 @@ import { useAuthServerContext } from "@repo/auth/server";
 import { getAdminMenu } from "@repo/core/server";
 
 export async function loader({
+  request,
   context,
 }: LoaderFunctionArgs<RouterContextProvider>) {
   const auth = useAuthServerContext(context);
   const isLogged = auth.isLogged();
   if (!isLogged) {
-    throw redirect("/auth/login");
+    const url = new URL(request.url);
+    const redirectTo = url.pathname + url.search;
+    throw redirect(`/auth/login?redirectTo=${encodeURIComponent(redirectTo)}`);
   }
 
   const menuConfig = await getAdminMenu();

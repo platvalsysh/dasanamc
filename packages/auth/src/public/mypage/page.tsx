@@ -84,7 +84,8 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
   const isLogged = auth.isLogged();
   if (!isLogged) {
     const url = new URL(request.url);
-    return redirect(`/auth/login?next=${url.pathname}`);
+    const redirectTo = url.pathname + url.search;
+    return redirect(`/auth/login?redirectTo=${encodeURIComponent(redirectTo)}`);
   }
 
   const userContext = auth.getUser();

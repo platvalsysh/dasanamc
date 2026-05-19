@@ -33,7 +33,7 @@ export async function action({ params, context }: ActionFunctionArgs) {
 
 
   const user = auth.getUser();
-  if (!user) return redirect("/login");
+  if (!user) return redirect("/auth/login");
 
   // Fetch Document
   const document = await prisma.documents.findUnique({ where: { id } });

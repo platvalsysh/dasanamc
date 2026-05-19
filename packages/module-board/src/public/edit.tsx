@@ -105,8 +105,8 @@ export async function action({ request, params, context }: ActionFunctionArgs) {
   }
 
   const user = auth.getUser();
-  if (!user) return redirect("/login");
-  
+  if (!user) return redirect("/auth/login");
+
   const document = await prisma.documents.findUnique({ where: { id } });
     if (!document) {
       throw new Response("Document Not Found", { status: 404 });

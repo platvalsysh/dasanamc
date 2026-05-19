@@ -12,6 +12,7 @@ import {
   Link,
   redirect,
   useFetcher,
+  useSearchParams,
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
 } from "react-router";
@@ -22,11 +23,13 @@ import bcrypt from "bcrypt";
 import type { SignInWithPasswordCredentials } from "@supabase/supabase-js";
 import { getAuthLoginConfig } from "../../.server/server-config";
 
-export async function loader({ context }: LoaderFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
   const auth = useAuthServerContext(context);
   const isLogged = auth.isLogged();
   if (isLogged) {
-    return redirect("/");
+    const url = new URL(request.url);
+    const redirectTo = url.searchParams.get("redirectTo") || "/";
+    return redirect(redirectTo);
   }
   return {};
 }
@@ -136,7 +139,10 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
   const supabase = useSupabaseServerContext(context);
   const formData = await request.formData();
   const url = new URL(request.url);
-  const redirectTo = url.searchParams.get("redirectTo") || "/";
+  const redirectTo =
+    (formData.get("redirectTo") as string | null) ||
+    url.searchParams.get("redirectTo") ||
+    "/";
 
   const identifier = formData.get("identifier") as string; // Can be email or login_id
   const password = formData.get("password") as string;
@@ -164,6 +170,8 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
 
 export default function Login() {
   const fetcher = useFetcher<typeof action>();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") || "";
   const error = fetcher.data?.error;
   const loading = fetcher.state === "submitting";
 
@@ -179,6 +187,9 @@ export default function Login() {
           <Card className="border-none shadow-none bg-transparent p-0">
             <CardContent>
               <fetcher.Form method="post">
+                {redirectTo && (
+                  <input type="hidden" name="redirectTo" value={redirectTo} />
+                )}
                 <div className="flex flex-col gap-6">
                   <div className="grid gap-2">
                     <Label htmlFor="identifier">이메일 또는 아이디</Label>

@@ -83,7 +83,7 @@ export async function action({ request, params, context }: ActionFunctionArgs) {
   if (!permissions.write) throw new Response("쓰기 권한이 없습니다.", { status: 403 });
 
   const user = auth.getUser();
-  if (!user) throw redirect("/login");
+  if (!user) throw redirect("/auth/login");
 
   const formData = await request.formData();
   const values = Object.fromEntries(formData);
