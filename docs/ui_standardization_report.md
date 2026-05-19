@@ -41,9 +41,8 @@
 - **조직 관리자**: 계층적 조직 관리 UI를 리팩토링했습니다.
 - **알림톡 모달**: 새로 구현 및 리팩토링된 `OrganizationGroupAlimtalkModal`은 엄격한 각진 디자인 규칙을 따르며 `PositionTransferList`를 사용합니다.
 
-### 📩 module-sms / module-newsletter
+### 📩 module-sms
 - **SMS 설정**: 제공자 관리 및 대시보드 개요 페이지를 리팩토링했습니다.
-- **뉴스레터**: 신규/수정 폼 및 파일 업로더 컴포넌트를 표준화했습니다.
 
 ---
 

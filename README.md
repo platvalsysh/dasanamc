@@ -42,7 +42,7 @@ cp .env.example .env
 - **DATABASE_URL / DIRECT_URL**: Supabase 의 Connection Pooler / Direct
 - **`ENABLED_MODULES`**: 클라이언트가 쓸 모듈만 (예: `board,file,sms`). 비우면 전체 활성
 
-활성 가능한 기능 모듈: `board`, `editor`, `file`, `newsletter`, `sms`
+활성 가능한 기능 모듈: `board`, `editor`, `file`, `sms`
 (`core`, `auth`, `admin` 은 `ENABLED_MODULES` 와 무관하게 항상 활성)
 
 ### 3단계 — DB 초기 세팅
@@ -63,7 +63,7 @@ pnpm --filter web db:init-permissions    # 권한 시드
 
 | 위치 | 무엇을 |
 |---|---|
-| [apps/web/app/components/](apps/web/app/components/) (`hero-carousel`, `feature-section`, `news-section`, `newsletter-section`, `site-footer`) | 홈페이지 섹션 컨텐츠 |
+| [apps/web/app/components/](apps/web/app/components/) (`hero-carousel`, `feature-section`, `news-section`, `site-footer`) | 홈페이지 섹션 컨텐츠 |
 | [apps/web/app/routes/home.tsx](apps/web/app/routes/home.tsx) | 홈 라우트 조립 |
 | [apps/web/app/routes/about/](apps/web/app/routes/about/) | 회사 소개 정적 페이지 |
 | [apps/web/app/routes/](apps/web/app/routes/) (`rules`, `privacy`, `email-reject`, `familysites`, `events`) | 이용약관 / 개인정보 / 이벤트 |
@@ -138,7 +138,6 @@ packages/
   module-board                 게시판
   module-editor                위지위그 (TipTap)
   module-file                  파일 업로드
-  module-newsletter            뉴스레터
   module-sms                   SMS / 카카오 알림톡
 ```
 

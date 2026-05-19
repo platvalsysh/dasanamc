@@ -1,7 +1,6 @@
 import type { Route } from "./+types/home";
 import { HeroCarousel } from "~/components/hero-carousel";
 import { NewsSection } from "~/components/news-section";
-import { NewsletterSection } from "~/components/newsletter-section";
 import { FeatureSection } from "~/components/feature-section";
 import { SiteFooter } from "~/components/site-footer";
 
@@ -29,7 +28,6 @@ export default function Home() {
         {/* Right Column - Scrollable Content */}
         <div className="flex flex-col bg-white">
           <NewsSection />
-          <NewsletterSection />
           <FeatureSection />
           <SiteFooter />
         </div>

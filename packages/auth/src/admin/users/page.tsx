@@ -45,7 +45,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const searchTerm = url.searchParams.get("search") || "";
   const searchField = url.searchParams.get("searchField") || "all";
-  const matchStatuses = url.searchParams.get("matchStatuses")?.split(",").filter(Boolean) || [];
   const dateStart = url.searchParams.get("dateStart") || "";
   const dateEnd = url.searchParams.get("dateEnd") || "";
   const dateField = url.searchParams.get("dateField") || "created_at";
@@ -165,24 +164,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
   }
 
-  // Matching status filtering
-  if (matchStatuses.length > 0 && !matchStatuses.includes("all")) {
-    const matchConditions = [];
-    if (matchStatuses.includes("matched")) {
-      matchConditions.push({ bxmember: { some: {} } });
-    }
-    if (matchStatuses.includes("unmatched")) {
-      matchConditions.push({ bxmember: { none: {} } });
-    }
-
-    if (matchConditions.length > 0) {
-      where.AND = [
-        ...(Array.isArray(where.AND) ? where.AND : where.AND ? [where.AND] : []),
-        matchConditions.length === 1 ? matchConditions[0] : { OR: matchConditions }
-      ];
-    }
-  }
-
   // Date range filtering
   if (dateStart || dateEnd) {
     const dateQuery: { gte?: Date; lte?: Date } = {};
@@ -229,16 +210,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
           },
         },
         profiles: true,
-        bxmember: {
-          select: {
-            seq: true,
-            name_kor: true,
-            email: true,
-            graduate_year: true,
-            major: true,
-            cellphone_number: true,
-          }
-        },
         admin_user_roles_admin_user_roles_user_idTousers: {
           where: { is_active: true },
           select: {
@@ -299,7 +270,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
       phone: user.phone || "",
       roles: assignedRoles,
       status,
-      bxmember: user.bxmember[0] || null, // Pick the first matched record if any
       joinDate: user.created_at ? user.created_at.toISOString() : null,
       lastLogin: user.last_sign_in_at ? user.last_sign_in_at.toISOString() : null,
       emailConfirmedAt: user.email_confirmed_at ? user.email_confirmed_at.toISOString() : null,
@@ -492,127 +462,6 @@ export async function action({ request }: ActionFunctionArgs) {
     }
   }
 
-  if (intent === "search-alumni") {
-    const name = formData.get("name") as string;
-    const phone = formData.get("phone") as string;
-    const email = formData.get("email") as string;
-    const year = formData.get("year") as string;
-
-    try {
-      const orConditions = [
-        name ? { name_kor: { contains: name } } : {},
-        phone ? { cellphone_number: { contains: phone.replace(/-/g, "") } } : {},
-        email ? { email: { contains: email } } : {},
-      ].filter(cond => Object.keys(cond).length > 0);
-
-      const where: Prisma.bxmemberWhereInput = {};
-      
-      if (orConditions.length > 0) {
-        where.OR = orConditions;
-      }
-
-      if (year) {
-        const yearCondition = {
-          OR: [
-            { graduate_year: { contains: year } },
-            { enter_year: { contains: year } }
-          ]
-        };
-        
-        if (where.OR) {
-          where.AND = [yearCondition];
-        } else {
-          where.AND = [yearCondition];
-        }
-      }
-
-      const alumni = await prisma.bxmember.findMany({
-        where,
-        take: 30,
-      });
-      return { success: true, alumni };
-    } catch (e) {
-      return { error: "동문 검색 중 오류가 발생했습니다: " + getErrorMessage(e) };
-    }
-  }
-
-  if (intent === "match-alumni") {
-    const alumniSeq = parseInt(formData.get("alumniSeq") as string, 10);
-    const userIdToMatch = formData.get("userId") as string;
-
-    try {
-      await prisma.$transaction(async (tx) => {
-        // 1. Unbind any existing match for this user
-        await tx.bxmember.updateMany({
-          where: { user_id: userIdToMatch },
-          data: { user_id: null }
-        });
-
-        // 2. Bind the new one
-        await tx.bxmember.update({
-          where: { seq: alumniSeq },
-          data: { user_id: userIdToMatch }
-        });
-
-        // 3. Automatically assign "동문회원" role
-        const alumniRole = await tx.admin_roles.findFirst({
-          where: { display_name: "동문회원" }
-        });
-
-        if (alumniRole) {
-          await tx.admin_user_roles.upsert({
-            where: {
-              user_id_role_id: {
-                user_id: userIdToMatch,
-                role_id: alumniRole.id
-              }
-            },
-            create: {
-              user_id: userIdToMatch,
-              role_id: alumniRole.id,
-              is_active: true
-            },
-            update: {
-              is_active: true
-            }
-          });
-        }
-      });
-      return { success: true, message: "동문 매칭 및 역할 부여가 성공적으로 완료되었습니다." };
-    } catch (e) {
-      return { error: "동문 매칭 중 오류가 발생했습니다: " + getErrorMessage(e) };
-    }
-  }
-
-  if (intent === "unmatch-alumni") {
-    try {
-      await prisma.$transaction(async (tx) => {
-        // 1. Unbind from bxmember
-        await tx.bxmember.updateMany({
-          where: { user_id: userId },
-          data: { user_id: null }
-        });
-
-        // 2. Remove "동문회원" role
-        const alumniRole = await tx.admin_roles.findFirst({
-          where: { display_name: "동문회원" }
-        });
-
-        if (alumniRole) {
-          await tx.admin_user_roles.deleteMany({
-            where: { 
-              user_id: userId,
-              role_id: alumniRole.id
-            }
-          });
-        }
-      });
-      return { success: true, message: "동문 매칭이 해제되었습니다." };
-    } catch (e) {
-      return { error: "매칭 해제 중 오류가 발생했습니다: " + getErrorMessage(e) };
-    }
-  }
-
   return { error: "알 수 없는 작업입니다." };
 }
 
@@ -679,7 +528,6 @@ export default function AdminUsers() {
   const [searchField, setSearchField] = useState(searchParams.get("searchField") || "all");
   const [selectedRoles, setSelectedRoles] = useState<string[]>(searchParams.get("roles")?.split(",").filter(Boolean) || []);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>(searchParams.get("statuses")?.split(",").filter(Boolean) || []);
-  const [selectedMatchStatuses, setSelectedMatchStatuses] = useState<string[]>(searchParams.get("matchStatuses")?.split(",").filter(Boolean) || []);
   const [dateRange, setDateRange] = useState({
     start: searchParams.get("dateStart") || "",
     end: searchParams.get("dateEnd") || "",
@@ -719,7 +567,6 @@ export default function AdminUsers() {
     setSearchField(searchParams.get("searchField") || "all");
     setSelectedRoles(searchParams.get("roles")?.split(",").filter(Boolean) || []);
     setSelectedStatuses(searchParams.get("statuses")?.split(",").filter(Boolean) || []);
-    setSelectedMatchStatuses(searchParams.get("matchStatuses")?.split(",").filter(Boolean) || []);
     setDateRange({
       start: searchParams.get("dateStart") || "",
       end: searchParams.get("dateEnd") || "",
@@ -791,27 +638,6 @@ export default function AdminUsers() {
     params.set("page", "1");
     setSearchParams(params);
   };
-
-  const handleMatchStatusToggle = (status: string) => {
-    let newStatuses: string[];
-    if (status === "all") {
-      newStatuses = [];
-    } else {
-      if (selectedMatchStatuses.includes(status)) {
-        newStatuses = selectedMatchStatuses.filter((s) => s !== status);
-      } else {
-        newStatuses = [...selectedMatchStatuses, status];
-      }
-    }
-    
-    setSelectedMatchStatuses(newStatuses);
-    const params = new URLSearchParams(searchParams);
-    if (newStatuses.length > 0) params.set("matchStatuses", newStatuses.join(","));
-    else params.delete("matchStatuses");
-    params.set("page", "1");
-    setSearchParams(params);
-  };
-
 
   const handlePageChange = (newPage: number) => {
     const params = new URLSearchParams(searchParams);
@@ -886,17 +712,6 @@ export default function AdminUsers() {
           </div>
 
           <MultiSelect
-            label="매칭"
-            options={[
-              { label: "매칭됨", value: "matched" },
-              { label: "미매칭", value: "unmatched" }
-            ]}
-            selectedValues={selectedMatchStatuses}
-            onToggle={handleMatchStatusToggle}
-            placeholder="매칭 상태"
-          />
-
-          <MultiSelect
             label="역할"
             options={[
               ...allRoles.map(r => ({ label: r.display_name, value: r.name })),
@@ -949,7 +764,7 @@ export default function AdminUsers() {
             </SelectContent>
           </Select>
 
-          {(searchTerm || dateRange.start || dateRange.end || selectedRoles.length > 0 || selectedStatuses.length > 0 || selectedMatchStatuses.length > 0) && (
+          {(searchTerm || dateRange.start || dateRange.end || selectedRoles.length > 0 || selectedStatuses.length > 0) && (
             <Button
               variant="ghost"
               size="sm"
@@ -957,7 +772,6 @@ export default function AdminUsers() {
                 setSearchTerm("");
                 setSelectedRoles([]);
                 setSelectedStatuses([]);
-                setSelectedMatchStatuses([]);
                 setDateRange({ start: "", end: "", field: "created_at" });
                 setSearchParams(new URLSearchParams());
               }}

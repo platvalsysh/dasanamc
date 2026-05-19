@@ -44,7 +44,7 @@ export const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
  * 활성화할 기능 모듈 화이트리스트.
  *
  * - 미설정/빈 문자열 → 모든 모듈 활성 (개발 기본값).
- * - 콤마 구분 (예: "board,bxmember,sms") → 해당 모듈만 등록.
+ * - 콤마 구분 (예: "board,file,sms") → 해당 모듈만 등록.
  * - `core`, `auth`, `admin` 은 화이트리스트와 무관하게 항상 활성 (필수 인프라).
  *
  * 외주 프로젝트에서 사용 안 하는 모듈을 빠르게 끄는 용도. 모듈 디렉토리를

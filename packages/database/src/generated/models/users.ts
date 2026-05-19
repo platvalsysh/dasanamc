@@ -463,7 +463,6 @@ export type usersWhereInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.Admin_user_rolesListRelationFilter
   identifiers?: Prisma.XOR<Prisma.IdentifiersNullableScalarRelationFilter, Prisma.identifiersWhereInput> | null
   profiles?: Prisma.XOR<Prisma.ProfilesNullableScalarRelationFilter, Prisma.profilesWhereInput> | null
-  bxmember?: Prisma.BxmemberListRelationFilter
   comment_vote_log?: Prisma.Comment_vote_logListRelationFilter
   comments?: Prisma.CommentsListRelationFilter
   document_read_history?: Prisma.Document_read_historyListRelationFilter
@@ -520,7 +519,6 @@ export type usersOrderByWithRelationInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesOrderByRelationAggregateInput
   identifiers?: Prisma.identifiersOrderByWithRelationInput
   profiles?: Prisma.profilesOrderByWithRelationInput
-  bxmember?: Prisma.bxmemberOrderByRelationAggregateInput
   comment_vote_log?: Prisma.comment_vote_logOrderByRelationAggregateInput
   comments?: Prisma.commentsOrderByRelationAggregateInput
   document_read_history?: Prisma.document_read_historyOrderByRelationAggregateInput
@@ -580,7 +578,6 @@ export type usersWhereUniqueInput = Prisma.AtLeast<{
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.Admin_user_rolesListRelationFilter
   identifiers?: Prisma.XOR<Prisma.IdentifiersNullableScalarRelationFilter, Prisma.identifiersWhereInput> | null
   profiles?: Prisma.XOR<Prisma.ProfilesNullableScalarRelationFilter, Prisma.profilesWhereInput> | null
-  bxmember?: Prisma.BxmemberListRelationFilter
   comment_vote_log?: Prisma.Comment_vote_logListRelationFilter
   comments?: Prisma.CommentsListRelationFilter
   document_read_history?: Prisma.Document_read_historyListRelationFilter
@@ -721,7 +718,6 @@ export type usersCreateInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
@@ -778,7 +774,6 @@ export type usersUncheckedCreateInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
@@ -835,7 +830,6 @@ export type usersUpdateInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
@@ -892,7 +886,6 @@ export type usersUncheckedUpdateInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
@@ -1325,22 +1318,6 @@ export type usersUpdateOneRequiredWithoutProfilesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.usersUpdateToOneWithWhereWithoutProfilesInput, Prisma.usersUpdateWithoutProfilesInput>, Prisma.usersUncheckedUpdateWithoutProfilesInput>
 }
 
-export type usersCreateNestedOneWithoutBxmemberInput = {
-  create?: Prisma.XOR<Prisma.usersCreateWithoutBxmemberInput, Prisma.usersUncheckedCreateWithoutBxmemberInput>
-  connectOrCreate?: Prisma.usersCreateOrConnectWithoutBxmemberInput
-  connect?: Prisma.usersWhereUniqueInput
-}
-
-export type usersUpdateOneWithoutBxmemberNestedInput = {
-  create?: Prisma.XOR<Prisma.usersCreateWithoutBxmemberInput, Prisma.usersUncheckedCreateWithoutBxmemberInput>
-  connectOrCreate?: Prisma.usersCreateOrConnectWithoutBxmemberInput
-  upsert?: Prisma.usersUpsertWithoutBxmemberInput
-  disconnect?: Prisma.usersWhereInput | boolean
-  delete?: Prisma.usersWhereInput | boolean
-  connect?: Prisma.usersWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.usersUpdateToOneWithWhereWithoutBxmemberInput, Prisma.usersUpdateWithoutBxmemberInput>, Prisma.usersUncheckedUpdateWithoutBxmemberInput>
-}
-
 export type usersCreateNestedOneWithoutComment_vote_logInput = {
   create?: Prisma.XOR<Prisma.usersCreateWithoutComment_vote_logInput, Prisma.usersUncheckedCreateWithoutComment_vote_logInput>
   connectOrCreate?: Prisma.usersCreateOrConnectWithoutComment_vote_logInput
@@ -1478,7 +1455,6 @@ export type usersCreateWithoutIdentitiesInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
@@ -1534,7 +1510,6 @@ export type usersUncheckedCreateWithoutIdentitiesInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
@@ -1606,7 +1581,6 @@ export type usersUpdateWithoutIdentitiesInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
@@ -1662,7 +1636,6 @@ export type usersUncheckedUpdateWithoutIdentitiesInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
@@ -1718,7 +1691,6 @@ export type usersCreateWithoutMfa_factorsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
@@ -1774,7 +1746,6 @@ export type usersUncheckedCreateWithoutMfa_factorsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
@@ -1846,7 +1817,6 @@ export type usersUpdateWithoutMfa_factorsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
@@ -1902,7 +1872,6 @@ export type usersUncheckedUpdateWithoutMfa_factorsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
@@ -1958,7 +1927,6 @@ export type usersCreateWithoutOauth_authorizationsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
@@ -2014,7 +1982,6 @@ export type usersUncheckedCreateWithoutOauth_authorizationsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
@@ -2086,7 +2053,6 @@ export type usersUpdateWithoutOauth_authorizationsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
@@ -2142,7 +2108,6 @@ export type usersUncheckedUpdateWithoutOauth_authorizationsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
@@ -2198,7 +2163,6 @@ export type usersCreateWithoutOauth_consentsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
@@ -2254,7 +2218,6 @@ export type usersUncheckedCreateWithoutOauth_consentsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
@@ -2326,7 +2289,6 @@ export type usersUpdateWithoutOauth_consentsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
@@ -2382,7 +2344,6 @@ export type usersUncheckedUpdateWithoutOauth_consentsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
@@ -2438,7 +2399,6 @@ export type usersCreateWithoutOne_time_tokensInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
@@ -2494,7 +2454,6 @@ export type usersUncheckedCreateWithoutOne_time_tokensInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
@@ -2566,7 +2525,6 @@ export type usersUpdateWithoutOne_time_tokensInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
@@ -2622,7 +2580,6 @@ export type usersUncheckedUpdateWithoutOne_time_tokensInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
@@ -2678,7 +2635,6 @@ export type usersCreateWithoutSessionsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
@@ -2734,7 +2690,6 @@ export type usersUncheckedCreateWithoutSessionsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
@@ -2806,7 +2761,6 @@ export type usersUpdateWithoutSessionsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
@@ -2862,7 +2816,6 @@ export type usersUncheckedUpdateWithoutSessionsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
@@ -2918,7 +2871,6 @@ export type usersCreateWithoutWebauthn_challengesInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
@@ -2974,7 +2926,6 @@ export type usersUncheckedCreateWithoutWebauthn_challengesInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
@@ -3046,7 +2997,6 @@ export type usersUpdateWithoutWebauthn_challengesInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
@@ -3102,7 +3052,6 @@ export type usersUncheckedUpdateWithoutWebauthn_challengesInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
@@ -3158,7 +3107,6 @@ export type usersCreateWithoutWebauthn_credentialsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
@@ -3214,7 +3162,6 @@ export type usersUncheckedCreateWithoutWebauthn_credentialsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
@@ -3286,7 +3233,6 @@ export type usersUpdateWithoutWebauthn_credentialsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
@@ -3342,7 +3288,6 @@ export type usersUncheckedUpdateWithoutWebauthn_credentialsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
@@ -3398,7 +3343,6 @@ export type usersCreateWithoutAdmin_user_roles_admin_user_roles_granted_byTouser
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
@@ -3454,7 +3398,6 @@ export type usersUncheckedCreateWithoutAdmin_user_roles_admin_user_roles_granted
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
@@ -3515,7 +3458,6 @@ export type usersCreateWithoutAdmin_user_roles_admin_user_roles_user_idTousersIn
   admin_user_roles_admin_user_roles_granted_byTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_granted_byTousersInput
   identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
@@ -3571,7 +3513,6 @@ export type usersUncheckedCreateWithoutAdmin_user_roles_admin_user_roles_user_id
   admin_user_roles_admin_user_roles_granted_byTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_granted_byTousersInput
   identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
@@ -3643,7 +3584,6 @@ export type usersUpdateWithoutAdmin_user_roles_admin_user_roles_granted_byTouser
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
@@ -3699,7 +3639,6 @@ export type usersUncheckedUpdateWithoutAdmin_user_roles_admin_user_roles_granted
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
@@ -3766,7 +3705,6 @@ export type usersUpdateWithoutAdmin_user_roles_admin_user_roles_user_idTousersIn
   admin_user_roles_admin_user_roles_granted_byTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_granted_byTousersNestedInput
   identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
@@ -3822,7 +3760,6 @@ export type usersUncheckedUpdateWithoutAdmin_user_roles_admin_user_roles_user_id
   admin_user_roles_admin_user_roles_granted_byTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_granted_byTousersNestedInput
   identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
@@ -3878,7 +3815,6 @@ export type usersCreateWithoutIdentifiersInput = {
   admin_user_roles_admin_user_roles_granted_byTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_granted_byTousersInput
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
@@ -3934,7 +3870,6 @@ export type usersUncheckedCreateWithoutIdentifiersInput = {
   admin_user_roles_admin_user_roles_granted_byTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_granted_byTousersInput
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
@@ -4006,7 +3941,6 @@ export type usersUpdateWithoutIdentifiersInput = {
   admin_user_roles_admin_user_roles_granted_byTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_granted_byTousersNestedInput
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
@@ -4062,7 +3996,6 @@ export type usersUncheckedUpdateWithoutIdentifiersInput = {
   admin_user_roles_admin_user_roles_granted_byTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_granted_byTousersNestedInput
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
@@ -4118,7 +4051,6 @@ export type usersCreateWithoutProfilesInput = {
   admin_user_roles_admin_user_roles_granted_byTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_granted_byTousersInput
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
@@ -4174,7 +4106,6 @@ export type usersUncheckedCreateWithoutProfilesInput = {
   admin_user_roles_admin_user_roles_granted_byTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_granted_byTousersInput
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
@@ -4246,7 +4177,6 @@ export type usersUpdateWithoutProfilesInput = {
   admin_user_roles_admin_user_roles_granted_byTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_granted_byTousersNestedInput
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
@@ -4302,247 +4232,6 @@ export type usersUncheckedUpdateWithoutProfilesInput = {
   admin_user_roles_admin_user_roles_granted_byTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_granted_byTousersNestedInput
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
-  comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
-  comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
-  document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
-  document_vote_log?: Prisma.document_vote_logUncheckedUpdateManyWithoutUsersNestedInput
-  documents?: Prisma.documentsUncheckedUpdateManyWithoutUsersNestedInput
-  files?: Prisma.filesUncheckedUpdateManyWithoutUsersNestedInput
-}
-
-export type usersCreateWithoutBxmemberInput = {
-  instance_id?: string | null
-  id: string
-  aud?: string | null
-  role?: string | null
-  email?: string | null
-  encrypted_password?: string | null
-  email_confirmed_at?: Date | string | null
-  invited_at?: Date | string | null
-  confirmation_token?: string | null
-  confirmation_sent_at?: Date | string | null
-  recovery_token?: string | null
-  recovery_sent_at?: Date | string | null
-  email_change_token_new?: string | null
-  email_change?: string | null
-  email_change_sent_at?: Date | string | null
-  last_sign_in_at?: Date | string | null
-  raw_app_meta_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  raw_user_meta_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  is_super_admin?: boolean | null
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
-  phone?: string | null
-  phone_confirmed_at?: Date | string | null
-  phone_change?: string | null
-  phone_change_token?: string | null
-  phone_change_sent_at?: Date | string | null
-  confirmed_at?: Date | string | null
-  email_change_token_current?: string | null
-  email_change_confirm_status?: number | null
-  banned_until?: Date | string | null
-  reauthentication_token?: string | null
-  reauthentication_sent_at?: Date | string | null
-  is_sso_user?: boolean
-  deleted_at?: Date | string | null
-  is_anonymous?: boolean
-  identities?: Prisma.identitiesCreateNestedManyWithoutUsersInput
-  mfa_factors?: Prisma.mfa_factorsCreateNestedManyWithoutUsersInput
-  oauth_authorizations?: Prisma.oauth_authorizationsCreateNestedManyWithoutUsersInput
-  oauth_consents?: Prisma.oauth_consentsCreateNestedManyWithoutUsersInput
-  one_time_tokens?: Prisma.one_time_tokensCreateNestedManyWithoutUsersInput
-  sessions?: Prisma.sessionsCreateNestedManyWithoutUsersInput
-  webauthn_challenges?: Prisma.webauthn_challengesCreateNestedManyWithoutUsersInput
-  webauthn_credentials?: Prisma.webauthn_credentialsCreateNestedManyWithoutUsersInput
-  admin_user_roles_admin_user_roles_granted_byTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_granted_byTousersInput
-  admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
-  identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
-  profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
-  comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
-  document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
-  document_vote_log?: Prisma.document_vote_logCreateNestedManyWithoutUsersInput
-  documents?: Prisma.documentsCreateNestedManyWithoutUsersInput
-  files?: Prisma.filesCreateNestedManyWithoutUsersInput
-}
-
-export type usersUncheckedCreateWithoutBxmemberInput = {
-  instance_id?: string | null
-  id: string
-  aud?: string | null
-  role?: string | null
-  email?: string | null
-  encrypted_password?: string | null
-  email_confirmed_at?: Date | string | null
-  invited_at?: Date | string | null
-  confirmation_token?: string | null
-  confirmation_sent_at?: Date | string | null
-  recovery_token?: string | null
-  recovery_sent_at?: Date | string | null
-  email_change_token_new?: string | null
-  email_change?: string | null
-  email_change_sent_at?: Date | string | null
-  last_sign_in_at?: Date | string | null
-  raw_app_meta_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  raw_user_meta_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  is_super_admin?: boolean | null
-  created_at?: Date | string | null
-  updated_at?: Date | string | null
-  phone?: string | null
-  phone_confirmed_at?: Date | string | null
-  phone_change?: string | null
-  phone_change_token?: string | null
-  phone_change_sent_at?: Date | string | null
-  confirmed_at?: Date | string | null
-  email_change_token_current?: string | null
-  email_change_confirm_status?: number | null
-  banned_until?: Date | string | null
-  reauthentication_token?: string | null
-  reauthentication_sent_at?: Date | string | null
-  is_sso_user?: boolean
-  deleted_at?: Date | string | null
-  is_anonymous?: boolean
-  identities?: Prisma.identitiesUncheckedCreateNestedManyWithoutUsersInput
-  mfa_factors?: Prisma.mfa_factorsUncheckedCreateNestedManyWithoutUsersInput
-  oauth_authorizations?: Prisma.oauth_authorizationsUncheckedCreateNestedManyWithoutUsersInput
-  oauth_consents?: Prisma.oauth_consentsUncheckedCreateNestedManyWithoutUsersInput
-  one_time_tokens?: Prisma.one_time_tokensUncheckedCreateNestedManyWithoutUsersInput
-  sessions?: Prisma.sessionsUncheckedCreateNestedManyWithoutUsersInput
-  webauthn_challenges?: Prisma.webauthn_challengesUncheckedCreateNestedManyWithoutUsersInput
-  webauthn_credentials?: Prisma.webauthn_credentialsUncheckedCreateNestedManyWithoutUsersInput
-  admin_user_roles_admin_user_roles_granted_byTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_granted_byTousersInput
-  admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
-  identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
-  profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
-  comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
-  document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
-  document_vote_log?: Prisma.document_vote_logUncheckedCreateNestedManyWithoutUsersInput
-  documents?: Prisma.documentsUncheckedCreateNestedManyWithoutUsersInput
-  files?: Prisma.filesUncheckedCreateNestedManyWithoutUsersInput
-}
-
-export type usersCreateOrConnectWithoutBxmemberInput = {
-  where: Prisma.usersWhereUniqueInput
-  create: Prisma.XOR<Prisma.usersCreateWithoutBxmemberInput, Prisma.usersUncheckedCreateWithoutBxmemberInput>
-}
-
-export type usersUpsertWithoutBxmemberInput = {
-  update: Prisma.XOR<Prisma.usersUpdateWithoutBxmemberInput, Prisma.usersUncheckedUpdateWithoutBxmemberInput>
-  create: Prisma.XOR<Prisma.usersCreateWithoutBxmemberInput, Prisma.usersUncheckedCreateWithoutBxmemberInput>
-  where?: Prisma.usersWhereInput
-}
-
-export type usersUpdateToOneWithWhereWithoutBxmemberInput = {
-  where?: Prisma.usersWhereInput
-  data: Prisma.XOR<Prisma.usersUpdateWithoutBxmemberInput, Prisma.usersUncheckedUpdateWithoutBxmemberInput>
-}
-
-export type usersUpdateWithoutBxmemberInput = {
-  instance_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  aud?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  encrypted_password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email_confirmed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  invited_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmation_token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  confirmation_sent_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  recovery_token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recovery_sent_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  email_change_token_new?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email_change?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email_change_sent_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  last_sign_in_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  raw_app_meta_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  raw_user_meta_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  is_super_admin?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone_confirmed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  phone_change?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone_change_token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone_change_sent_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  email_change_token_current?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email_change_confirm_status?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  banned_until?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  reauthentication_token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  reauthentication_sent_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  is_sso_user?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  is_anonymous?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  identities?: Prisma.identitiesUpdateManyWithoutUsersNestedInput
-  mfa_factors?: Prisma.mfa_factorsUpdateManyWithoutUsersNestedInput
-  oauth_authorizations?: Prisma.oauth_authorizationsUpdateManyWithoutUsersNestedInput
-  oauth_consents?: Prisma.oauth_consentsUpdateManyWithoutUsersNestedInput
-  one_time_tokens?: Prisma.one_time_tokensUpdateManyWithoutUsersNestedInput
-  sessions?: Prisma.sessionsUpdateManyWithoutUsersNestedInput
-  webauthn_challenges?: Prisma.webauthn_challengesUpdateManyWithoutUsersNestedInput
-  webauthn_credentials?: Prisma.webauthn_credentialsUpdateManyWithoutUsersNestedInput
-  admin_user_roles_admin_user_roles_granted_byTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_granted_byTousersNestedInput
-  admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
-  identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
-  profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
-  comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
-  document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
-  document_vote_log?: Prisma.document_vote_logUpdateManyWithoutUsersNestedInput
-  documents?: Prisma.documentsUpdateManyWithoutUsersNestedInput
-  files?: Prisma.filesUpdateManyWithoutUsersNestedInput
-}
-
-export type usersUncheckedUpdateWithoutBxmemberInput = {
-  instance_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  aud?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  encrypted_password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email_confirmed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  invited_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmation_token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  confirmation_sent_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  recovery_token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recovery_sent_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  email_change_token_new?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email_change?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email_change_sent_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  last_sign_in_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  raw_app_meta_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  raw_user_meta_data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  is_super_admin?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone_confirmed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  phone_change?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone_change_token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone_change_sent_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  confirmed_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  email_change_token_current?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email_change_confirm_status?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  banned_until?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  reauthentication_token?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  reauthentication_sent_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  is_sso_user?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  deleted_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  is_anonymous?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  identities?: Prisma.identitiesUncheckedUpdateManyWithoutUsersNestedInput
-  mfa_factors?: Prisma.mfa_factorsUncheckedUpdateManyWithoutUsersNestedInput
-  oauth_authorizations?: Prisma.oauth_authorizationsUncheckedUpdateManyWithoutUsersNestedInput
-  oauth_consents?: Prisma.oauth_consentsUncheckedUpdateManyWithoutUsersNestedInput
-  one_time_tokens?: Prisma.one_time_tokensUncheckedUpdateManyWithoutUsersNestedInput
-  sessions?: Prisma.sessionsUncheckedUpdateManyWithoutUsersNestedInput
-  webauthn_challenges?: Prisma.webauthn_challengesUncheckedUpdateManyWithoutUsersNestedInput
-  webauthn_credentials?: Prisma.webauthn_credentialsUncheckedUpdateManyWithoutUsersNestedInput
-  admin_user_roles_admin_user_roles_granted_byTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_granted_byTousersNestedInput
-  admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
-  identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
-  profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
@@ -4599,7 +4288,6 @@ export type usersCreateWithoutComment_vote_logInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
   document_vote_log?: Prisma.document_vote_logCreateNestedManyWithoutUsersInput
@@ -4655,7 +4343,6 @@ export type usersUncheckedCreateWithoutComment_vote_logInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
   document_vote_log?: Prisma.document_vote_logUncheckedCreateNestedManyWithoutUsersInput
@@ -4727,7 +4414,6 @@ export type usersUpdateWithoutComment_vote_logInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
   document_vote_log?: Prisma.document_vote_logUpdateManyWithoutUsersNestedInput
@@ -4783,7 +4469,6 @@ export type usersUncheckedUpdateWithoutComment_vote_logInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
   document_vote_log?: Prisma.document_vote_logUncheckedUpdateManyWithoutUsersNestedInput
@@ -4839,7 +4524,6 @@ export type usersCreateWithoutCommentsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
   document_vote_log?: Prisma.document_vote_logCreateNestedManyWithoutUsersInput
@@ -4895,7 +4579,6 @@ export type usersUncheckedCreateWithoutCommentsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
   document_vote_log?: Prisma.document_vote_logUncheckedCreateNestedManyWithoutUsersInput
@@ -4967,7 +4650,6 @@ export type usersUpdateWithoutCommentsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
   document_vote_log?: Prisma.document_vote_logUpdateManyWithoutUsersNestedInput
@@ -5023,7 +4705,6 @@ export type usersUncheckedUpdateWithoutCommentsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
   document_vote_log?: Prisma.document_vote_logUncheckedUpdateManyWithoutUsersNestedInput
@@ -5079,7 +4760,6 @@ export type usersCreateWithoutDocument_read_historyInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
   document_vote_log?: Prisma.document_vote_logCreateNestedManyWithoutUsersInput
@@ -5135,7 +4815,6 @@ export type usersUncheckedCreateWithoutDocument_read_historyInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
   document_vote_log?: Prisma.document_vote_logUncheckedCreateNestedManyWithoutUsersInput
@@ -5207,7 +4886,6 @@ export type usersUpdateWithoutDocument_read_historyInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
   document_vote_log?: Prisma.document_vote_logUpdateManyWithoutUsersNestedInput
@@ -5263,7 +4941,6 @@ export type usersUncheckedUpdateWithoutDocument_read_historyInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
   document_vote_log?: Prisma.document_vote_logUncheckedUpdateManyWithoutUsersNestedInput
@@ -5319,7 +4996,6 @@ export type usersCreateWithoutDocument_vote_logInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
@@ -5375,7 +5051,6 @@ export type usersUncheckedCreateWithoutDocument_vote_logInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
@@ -5447,7 +5122,6 @@ export type usersUpdateWithoutDocument_vote_logInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
@@ -5503,7 +5177,6 @@ export type usersUncheckedUpdateWithoutDocument_vote_logInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
@@ -5559,7 +5232,6 @@ export type usersCreateWithoutDocumentsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
@@ -5615,7 +5287,6 @@ export type usersUncheckedCreateWithoutDocumentsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
@@ -5687,7 +5358,6 @@ export type usersUpdateWithoutDocumentsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
@@ -5743,7 +5413,6 @@ export type usersUncheckedUpdateWithoutDocumentsInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
@@ -5799,7 +5468,6 @@ export type usersCreateWithoutFilesInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyCreateNestedManyWithoutUsersInput
@@ -5855,7 +5523,6 @@ export type usersUncheckedCreateWithoutFilesInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedCreateNestedManyWithoutUsers_admin_user_roles_user_idTousersInput
   identifiers?: Prisma.identifiersUncheckedCreateNestedOneWithoutUsersInput
   profiles?: Prisma.profilesUncheckedCreateNestedOneWithoutUsersInput
-  bxmember?: Prisma.bxmemberUncheckedCreateNestedManyWithoutUsersInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedCreateNestedManyWithoutUsersInput
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutUsersInput
   document_read_history?: Prisma.document_read_historyUncheckedCreateNestedManyWithoutUsersInput
@@ -5927,7 +5594,6 @@ export type usersUpdateWithoutFilesInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUpdateManyWithoutUsersNestedInput
@@ -5983,7 +5649,6 @@ export type usersUncheckedUpdateWithoutFilesInput = {
   admin_user_roles_admin_user_roles_user_idTousers?: Prisma.admin_user_rolesUncheckedUpdateManyWithoutUsers_admin_user_roles_user_idTousersNestedInput
   identifiers?: Prisma.identifiersUncheckedUpdateOneWithoutUsersNestedInput
   profiles?: Prisma.profilesUncheckedUpdateOneWithoutUsersNestedInput
-  bxmember?: Prisma.bxmemberUncheckedUpdateManyWithoutUsersNestedInput
   comment_vote_log?: Prisma.comment_vote_logUncheckedUpdateManyWithoutUsersNestedInput
   comments?: Prisma.commentsUncheckedUpdateManyWithoutUsersNestedInput
   document_read_history?: Prisma.document_read_historyUncheckedUpdateManyWithoutUsersNestedInput
@@ -6007,7 +5672,6 @@ export type UsersCountOutputType = {
   webauthn_credentials: number
   admin_user_roles_admin_user_roles_granted_byTousers: number
   admin_user_roles_admin_user_roles_user_idTousers: number
-  bxmember: number
   comment_vote_log: number
   comments: number
   document_read_history: number
@@ -6027,7 +5691,6 @@ export type UsersCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   webauthn_credentials?: boolean | UsersCountOutputTypeCountWebauthn_credentialsArgs
   admin_user_roles_admin_user_roles_granted_byTousers?: boolean | UsersCountOutputTypeCountAdmin_user_roles_admin_user_roles_granted_byTousersArgs
   admin_user_roles_admin_user_roles_user_idTousers?: boolean | UsersCountOutputTypeCountAdmin_user_roles_admin_user_roles_user_idTousersArgs
-  bxmember?: boolean | UsersCountOutputTypeCountBxmemberArgs
   comment_vote_log?: boolean | UsersCountOutputTypeCountComment_vote_logArgs
   comments?: boolean | UsersCountOutputTypeCountCommentsArgs
   document_read_history?: boolean | UsersCountOutputTypeCountDocument_read_historyArgs
@@ -6114,13 +5777,6 @@ export type UsersCountOutputTypeCountAdmin_user_roles_admin_user_roles_granted_b
  */
 export type UsersCountOutputTypeCountAdmin_user_roles_admin_user_roles_user_idTousersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.admin_user_rolesWhereInput
-}
-
-/**
- * UsersCountOutputType without action
- */
-export type UsersCountOutputTypeCountBxmemberArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.bxmemberWhereInput
 }
 
 /**
@@ -6214,7 +5870,6 @@ export type usersSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   admin_user_roles_admin_user_roles_user_idTousers?: boolean | Prisma.users$admin_user_roles_admin_user_roles_user_idTousersArgs<ExtArgs>
   identifiers?: boolean | Prisma.users$identifiersArgs<ExtArgs>
   profiles?: boolean | Prisma.users$profilesArgs<ExtArgs>
-  bxmember?: boolean | Prisma.users$bxmemberArgs<ExtArgs>
   comment_vote_log?: boolean | Prisma.users$comment_vote_logArgs<ExtArgs>
   comments?: boolean | Prisma.users$commentsArgs<ExtArgs>
   document_read_history?: boolean | Prisma.users$document_read_historyArgs<ExtArgs>
@@ -6352,7 +6007,6 @@ export type usersInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   admin_user_roles_admin_user_roles_user_idTousers?: boolean | Prisma.users$admin_user_roles_admin_user_roles_user_idTousersArgs<ExtArgs>
   identifiers?: boolean | Prisma.users$identifiersArgs<ExtArgs>
   profiles?: boolean | Prisma.users$profilesArgs<ExtArgs>
-  bxmember?: boolean | Prisma.users$bxmemberArgs<ExtArgs>
   comment_vote_log?: boolean | Prisma.users$comment_vote_logArgs<ExtArgs>
   comments?: boolean | Prisma.users$commentsArgs<ExtArgs>
   document_read_history?: boolean | Prisma.users$document_read_historyArgs<ExtArgs>
@@ -6379,7 +6033,6 @@ export type $usersPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     admin_user_roles_admin_user_roles_user_idTousers: Prisma.$admin_user_rolesPayload<ExtArgs>[]
     identifiers: Prisma.$identifiersPayload<ExtArgs> | null
     profiles: Prisma.$profilesPayload<ExtArgs> | null
-    bxmember: Prisma.$bxmemberPayload<ExtArgs>[]
     comment_vote_log: Prisma.$comment_vote_logPayload<ExtArgs>[]
     comments: Prisma.$commentsPayload<ExtArgs>[]
     document_read_history: Prisma.$document_read_historyPayload<ExtArgs>[]
@@ -6829,7 +6482,6 @@ export interface Prisma__usersClient<T, Null = never, ExtArgs extends runtime.Ty
   admin_user_roles_admin_user_roles_user_idTousers<T extends Prisma.users$admin_user_roles_admin_user_roles_user_idTousersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$admin_user_roles_admin_user_roles_user_idTousersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$admin_user_rolesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   identifiers<T extends Prisma.users$identifiersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$identifiersArgs<ExtArgs>>): Prisma.Prisma__identifiersClient<runtime.Types.Result.GetResult<Prisma.$identifiersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   profiles<T extends Prisma.users$profilesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$profilesArgs<ExtArgs>>): Prisma.Prisma__profilesClient<runtime.Types.Result.GetResult<Prisma.$profilesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  bxmember<T extends Prisma.users$bxmemberArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$bxmemberArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$bxmemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   comment_vote_log<T extends Prisma.users$comment_vote_logArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$comment_vote_logArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$comment_vote_logPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   comments<T extends Prisma.users$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$commentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   document_read_history<T extends Prisma.users$document_read_historyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.users$document_read_historyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$document_read_historyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -7563,30 +7215,6 @@ export type users$profilesArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   include?: Prisma.profilesInclude<ExtArgs> | null
   where?: Prisma.profilesWhereInput
-}
-
-/**
- * users.bxmember
- */
-export type users$bxmemberArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the bxmember
-   */
-  select?: Prisma.bxmemberSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the bxmember
-   */
-  omit?: Prisma.bxmemberOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.bxmemberInclude<ExtArgs> | null
-  where?: Prisma.bxmemberWhereInput
-  orderBy?: Prisma.bxmemberOrderByWithRelationInput | Prisma.bxmemberOrderByWithRelationInput[]
-  cursor?: Prisma.bxmemberWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.BxmemberScalarFieldEnum | Prisma.BxmemberScalarFieldEnum[]
 }
 
 /**

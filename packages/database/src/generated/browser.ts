@@ -158,16 +158,6 @@ export type webauthn_challenges = Prisma.webauthn_challengesModel
  */
 export type webauthn_credentials = Prisma.webauthn_credentialsModel
 /**
- * Model custom_migrations
- * 
- */
-export type custom_migrations = Prisma.custom_migrationsModel
-/**
- * Model seeds
- * 
- */
-export type seeds = Prisma.seedsModel
-/**
  * Model admin_permissions
  * 
  */
@@ -218,31 +208,6 @@ export type profiles = Prisma.profilesModel
  */
 export type board_templates = Prisma.board_templatesModel
 /**
- * Model bxemeritus
- * 
- */
-export type bxemeritus = Prisma.bxemeritusModel
-/**
- * Model bxmember
- * 
- */
-export type bxmember = Prisma.bxmemberModel
-/**
- * Model bxmember_group_members
- * 
- */
-export type bxmember_group_members = Prisma.bxmember_group_membersModel
-/**
- * Model bxmember_groups
- * 
- */
-export type bxmember_groups = Prisma.bxmember_groupsModel
-/**
- * Model bxprofessor
- * 
- */
-export type bxprofessor = Prisma.bxprofessorModel
-/**
  * Model comment_vote_log
  * 
  */
@@ -282,33 +247,3 @@ export type documents = Prisma.documentsModel
  * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
  */
 export type files = Prisma.filesModel
-/**
- * Model newsletters
- * 
- */
-export type newsletters = Prisma.newslettersModel
-/**
- * Model organization_groups
- * 
- */
-export type organization_groups = Prisma.organization_groupsModel
-/**
- * Model organization_members
- * 
- */
-export type organization_members = Prisma.organization_membersModel
-/**
- * Model organization_positions
- * 
- */
-export type organization_positions = Prisma.organization_positionsModel
-/**
- * Model schedules
- * 
- */
-export type schedules = Prisma.schedulesModel
-/**
- * Model sponsors
- * 
- */
-export type sponsors = Prisma.sponsorsModel

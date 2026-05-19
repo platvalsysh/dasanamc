@@ -1,13 +1,10 @@
 import { type MetaFunction } from "react-router";
 import { type LoaderFunctionArgs } from "react-router";
 import { useLoaderData } from "react-router";
-import { 
-  Users, 
+import {
+  Users,
   ArrowUpRight,
   ArrowDownRight,
-  UserCheck,
-  GraduationCap,
-  School
 } from "lucide-react";
 import { prisma } from "@repo/database";
 
@@ -22,45 +19,15 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const now = new Date();
   const thirtyDaysAgo = new Date(now.setDate(now.getDate() - 30));
 
-  const [
-    totalUsers,
-    totalUsersLastMonth,
-    chemengUsers,
-    chemengUsersLastMonth,
-    alumniCount,
-    professorCount
-  ] = await Promise.all([
-    // 1. Total Users
+  const [totalUsers, totalUsersLastMonth] = await Promise.all([
     prisma.users.count(),
     prisma.users.count({
       where: {
         created_at: {
-          lt: thirtyDaysAgo
-        }
-      }
-    }),
-    // 2. Chemeng Admin Users
-    prisma.admin_user_roles.count({
-      where: {
-        admin_roles: {
-          name: 'chemeng'
-        }
-      }
-    }),
-    prisma.admin_user_roles.count({
-      where: {
-        admin_roles: {
-          name: 'chemeng'
+          lt: thirtyDaysAgo,
         },
-        granted_at: {
-          lt: thirtyDaysAgo
-        }
-      }
+      },
     }),
-    // 3. Alumni Count (bxmember)
-    prisma.bxmember.count(),
-    // 4. Professor Count (bxprofessor)
-    prisma.bxprofessor.count()
   ]);
 
   // Calculate growth percentages
@@ -75,20 +42,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return {
     totalUsers: {
       value: totalUsers,
-      change: calculateGrowth(totalUsers, totalUsersLastMonth)
+      change: calculateGrowth(totalUsers, totalUsersLastMonth),
     },
-    chemengUsers: {
-      value: chemengUsers,
-      change: calculateGrowth(chemengUsers, chemengUsersLastMonth)
-    },
-    alumniCount: {
-      value: alumniCount,
-      change: null
-    },
-    professorCount: {
-      value: professorCount,
-      change: null
-    }
   };
 }
 
@@ -102,31 +57,7 @@ export default function AdminDashboard() {
       change: data.totalUsers.change,
       icon: <Users className="w-5 h-5" />,
       description: "전체 가입 사용자",
-      color: "blue"
-    },
-    {
-      title: "동문 회원",
-      value: data.chemengUsers.value.toLocaleString(),
-      change: data.chemengUsers.change,
-      icon: <UserCheck className="w-5 h-5" />,
-      description: "인증된 동문 회원",
-      color: "green"
-    },
-    {
-      title: "동문 데이터",
-      value: data.alumniCount.value.toLocaleString(),
-      change: data.alumniCount.change,
-      icon: <GraduationCap className="w-5 h-5" />,
-      description: "동문 명부 데이터",
-      color: "purple"
-    },
-    {
-      title: "교수진",
-      value: data.professorCount.value.toLocaleString(),
-      change: data.professorCount.change,
-      icon: <School className="w-5 h-5" />,
-      description: "등록된 교수진",
-      color: "orange"
+      color: "blue",
     },
   ];
 

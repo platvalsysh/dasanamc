@@ -69,7 +69,6 @@ export default [
     ignores: [
       "packages/module-board/**",
       "packages/module-editor/**",
-      "packages/module-newsletter/**",
     ],
     rules: {
       "no-restricted-imports": [

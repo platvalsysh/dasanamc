@@ -36,27 +36,27 @@ npm run db:gen      # 3. Prisma Client 생성
 packages/
 ├── core/
 │   └── migrate/
-│       ├── 001_admin_permissions.sql
-│       ├── 002_admin_role_permissions.sql
+│       ├── 000_init.sql                        # 스키마 + 베이스 테이블 부트스트랩 (idempotent)
+│       ├── 009_add_browser_title_to_modules.sql
 │       └── ...
-├── module-board/
-│   └── migrate/
-│       ├── 001_comments.sql
-│       ├── 002_documents.sql
-│       └── ...
-└── module-newsletter/
+└── module-board/
     └── migrate/
-        └── 001_newsletters.sql
+        ├── 001_init.sql                        # 모듈 베이스 테이블 (modules.documents/comments)
+        ├── 003_add_thumbnail_to_documents.sql
+        └── ...
 ```
 
 ## 마이그레이션 파일 명명 규칙
 
-- **형식**: `{순번}_{테이블명}.sql`
-- **순번**: 3자리 숫자 (001, 002, 003, ...)
-- **예시**:
-  - `001_admin_permissions.sql`
-  - `002_admin_role_permissions.sql`
-  - `010_users.sql`
+- **형식**: `{순번}_{설명}.sql`
+- **순번**: 3자리 숫자 (000, 001, 002, ...)
+- **각 패키지의 첫 번째 파일은 `000_init.sql` (또는 의존 순서가 필요하면 `001_init.sql`)** — 스키마/베이스 테이블을 idempotent하게 생성하는 부트스트랩
+- 예시:
+  - `000_init.sql` — 패키지의 스키마 + 모든 베이스 테이블 일괄 생성
+  - `009_add_browser_title_to_modules.sql` — 기존 테이블에 컬럼 추가
+  - `010_board_templates.sql` — 새 테이블 추가
+
+> **basename 동률 주의**: 마이그레이션 실행 순서는 basename 알파벳 순. 두 패키지에서 같은 basename 을 쓰면 path 알파벳 순으로 동률 해결 (`core/000_init.sql` < `module-board/000_init.sql`). 단, 의존 관계가 있으면 모호하지 않게 다른 순번을 쓸 것 (예: module-board는 `001_init.sql`).
 
 ## 마이그레이션 실행
 
@@ -93,9 +93,8 @@ CREATE TABLE migrate.history (
 
 ### ID 형식 예시
 
-- `core-001_admin_permissions.sql`
-- `module-board-001_comments.sql`
-- `module-newsletter-001_newsletters.sql`
+- `core-000_init.sql`
+- `module-board-001_init.sql`
 
 ## 새 마이그레이션 파일 생성
 
@@ -146,19 +145,9 @@ npm run db:pull     # Prisma 스키마 업데이트
 npm run db:gen      # Prisma Client 재생성
 ```
 
-### 2. pg_dump를 사용하여 생성
+### 2. 기존 DB 스키마로부터 새 부트스트랩 만들기
 
-기존 테이블 스키마를 덤프하려면:
-
-```bash
-./packages/database/scripts/dump-migrations.sh
-```
-
-이 스크립트는:
-
-- 환경변수에서 `DIRECT_URL`을 읽음
-- 각 테이블의 스키마를 해당 마이그레이션 파일에 덤프
-- 소유자 및 ACL 정보는 제외
+새 모듈을 추가하면서 베이스 테이블을 idempotent하게 정의하려면 `pg_dump --schema-only --no-owner --no-acl --table=schema.table` 출력을 참고로 `CREATE TABLE IF NOT EXISTS ...` 형태로 재작성한다. FK는 `DO $$ ... pg_constraint 체크 ... END $$` 패턴으로 감싸 멱등 보장. `packages/core/migrate/000_init.sql` 이 참고 모델.
 
 ## 마이그레이션 작성 가이드라인
 
@@ -217,15 +206,18 @@ CREATE INDEX documents_author_id_idx ON modules.documents USING btree (author_id
 
 ## 마이그레이션 실행 순서
 
-마이그레이션은 **파일명 기준 알파벳 순서**로 실행됩니다:
+마이그레이션은 **파일 basename 기준 알파벳 순서**로 실행됩니다 (basename 동률시 full path tiebreaker).
 
-1. `core/001_admin_permissions.sql`
-2. `core/002_admin_role_permissions.sql`
-3. `module-board/001_comments.sql`
-4. `module-board/002_documents.sql`
-5. ...
+```
+000_create_storage_buckets.sql   (module-file)  # Supabase storage.buckets INSERT
+000_init.sql                     (core)         # core/modules 스키마 + core.* 베이스 테이블
+001_files.sql                    (module-file)  # modules.files (core.modules FK 필요)
+001_init.sql                     (module-board) # modules.documents/comments
+003_add_thumbnail_to_documents.sql (module-board)
+...
+```
 
-> **주의**: 패키지 간 의존성이 있는 경우, 파일명 순서를 고려하여 작성하세요.
+> **주의**: 패키지 간 cross-FK 의존성이 있으면 의존 받는 쪽이 더 이른 순번을 쓰도록 명시적 번호 지정. 같은 basename 사용 가급적 회피.
 
 ## 롤백
 
@@ -280,5 +272,5 @@ DROP SCHEMA migrate CASCADE;
 ## 관련 파일
 
 - **마이그레이션 스크립트**: `packages/database/scripts/migrate.ts`
-- **덤프 스크립트**: `packages/database/scripts/dump-migrations.sh`
+- **부트스트랩 모델**: `packages/core/migrate/000_init.sql` (멱등 패턴 참고)
 - **Prisma 스키마**: `packages/database/prisma/schema.prisma`

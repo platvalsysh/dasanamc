@@ -41,24 +41,10 @@ import { useFetcher, useSearchParams, useLoaderData } from "react-router";
 import type { AdminUsersLoaderData } from "./page";
 
 
-type AlumniRow = {
-  seq: number;
-  name_kor?: string;
-  email?: string;
-  cellphone_number?: string;
-  major?: string;
-  graduate_year?: string | number;
-  user_id?: string | null;
-  user_name?: string;
-  email_address?: string;
-  enter_year?: string;
-};
-
 type UserActionData = {
   success?: boolean;
   error?: string;
   message?: string;
-  alumni?: AlumniRow[];
   intent?: string;
 };
 
@@ -115,91 +101,8 @@ export function UserTable({
     userId: "",
     currentEmail: "",
   });
-  const [matchModal, setMatchModal] = useState<{ open: boolean; user: AdminUsersLoaderData['users'][number] | null }>({
-    open: false,
-    user: null,
-  });
   const [newPassword, setNewPassword] = useState("");
   const [newEmail, setNewEmail] = useState("");
-  const [alumniSearch, setAlumniSearch] = useState<{
-    results: AlumniRow[];
-    loading: boolean;
-    query: { name: string; phone: string; email: string; year: string };
-  }>({
-    results: [],
-    loading: false,
-    query: { name: "", phone: "", email: "", year: "" },
-  });
-
-  // Pre-fill search when modal opens
-  useEffect(() => {
-    if (matchModal.open && matchModal.user) {
-      const initialQuery = {
-        name: matchModal.user.name || "",
-        phone: matchModal.user.phone || "",
-        email: matchModal.user.email || "",
-        year: "",
-      };
-      setAlumniSearch(prev => ({
-        ...prev,
-        query: initialQuery
-      }));
-      handleSearchAlumni(initialQuery);
-    } else {
-      setAlumniSearch({
-        results: [],
-        loading: false,
-        query: { name: "", phone: "", email: "", year: "" },
-      });
-    }
-  }, [matchModal.open, matchModal.user]);
-
-  const handleSearchAlumni = (query: { name: string; phone: string; email: string; year: string }) => {
-    setAlumniSearch(prev => ({ ...prev, loading: true }));
-    const formData = new FormData();
-    formData.append("intent", "search-alumni");
-    formData.append("name", query.name);
-    formData.append("phone", query.phone);
-    formData.append("email", query.email);
-    formData.append("year", query.year);
-    fetcher.submit(formData, { method: "post" });
-  };
-
-  const handleMatchAlumni = (alumniSeq: number) => {
-    if (!matchModal.user) return;
-    const formData = new FormData();
-    formData.append("intent", "match-alumni");
-    formData.append("userId", matchModal.user.id);
-    formData.append("alumniSeq", alumniSeq.toString());
-    fetcher.submit(formData, { method: "post" });
-  };
-
-  const [unmatchConfirmOpen, setUnmatchConfirmOpen] = useState(false);
-  const [unmatchConfirmText, setUnmatchConfirmText] = useState("");
-
-  const handleUnmatchAlumni = () => {
-    if (!matchModal.user || unmatchConfirmText !== "매칭해제") return;
-    const formData = new FormData();
-    formData.append("intent", "unmatch-alumni");
-    formData.append("userId", matchModal.user.id);
-    fetcher.submit(formData, { method: "post" });
-    setUnmatchConfirmOpen(false);
-    setUnmatchConfirmText("");
-  };
-
-  // Update search results when fetcher completes
-  useEffect(() => {
-    if (fetcher.data?.alumni) {
-      setAlumniSearch(prev => ({
-        ...prev,
-        results: fetcher.data!.alumni!,
-        loading: false
-      }));
-    }
-    if (fetcher.data?.success && (fetcher.data.intent === "match-alumni" || fetcher.data.intent === "unmatch-alumni")) {
-      setMatchModal(prev => ({ ...prev, open: false }));
-    }
-  }, [fetcher.data]);
 
   // Close modals on success
   useEffect(() => {
@@ -347,9 +250,6 @@ export function UserTable({
                 역할
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                동문 매칭
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 상태
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -465,33 +365,6 @@ export function UserTable({
                         getRoleBadge("일반 사용자")
                       )}
                     </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {user.bxmember ? (
-                      <div className="flex flex-col text-xs space-y-0.5">
-                        <div className="flex items-center text-green-700 font-bold">
-                          <CheckCircle className="w-3 h-3 mr-1" /> 매칭됨
-                        </div>
-                        <div className="text-gray-500">
-                          {user.bxmember.name_kor} ({user.bxmember.graduate_year}졸)
-                        </div>
-                        <button 
-                          onClick={() => setMatchModal({ open: true, user })}
-                          className="text-blue-600 hover:text-blue-800 underline text-[10px] text-left"
-                        >
-                          변경하기
-                        </button>
-                      </div>
-                    ) : (
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="h-7 text-xs px-2 border-dashed border-gray-300 hover:border-blue-500 hover:text-blue-600"
-                        onClick={() => setMatchModal({ open: true, user })}
-                      >
-                        <GraduationCap className="w-3 h-3 mr-1" /> 매칭하기
-                      </Button>
-                    )}
                   </td>
                   <td className="px-6 py-4">{getStatusBadge(user.status)}</td>
                   <td className="px-6 py-4 text-xs text-gray-500">
@@ -665,213 +538,6 @@ export function UserTable({
             fetcher={fetcher}
           />
         )}
-      </Dialog>
-      
-      {/* Match Alumni Modal */}
-      <Dialog open={matchModal.open} onOpenChange={(open) => setMatchModal(curr => ({ ...curr, open }))}>
-        <DialogContent className="sm:max-w-150 max-h-[80vh] overflow-hidden flex flex-col">
-          <DialogHeader>
-            <DialogTitle>동문 매칭 - {matchModal.user?.name}</DialogTitle>
-          </DialogHeader>
-          
-          <div className="py-4 space-y-4 flex-1 overflow-y-auto pr-2">
-            {/* Target User Info */}
-            <div className="bg-gray-50 p-4 border border-gray-200 flex justify-between items-center">
-              <div className="flex-1">
-                <h4 className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-2">대상 사용자 정보</h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex items-center gap-2">
-                    <UserIcon className="w-4 h-4 text-gray-400" />
-                    <div>
-                      <p className="text-[10px] text-gray-400">닉네임 / 성명</p>
-                      <p className="text-sm font-medium">{matchModal.user?.nickname} / {matchModal.user?.name}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-gray-400" />
-                    <div>
-                      <p className="text-[10px] text-gray-400">이메일 / 아이디</p>
-                      <p className="text-sm font-medium">{matchModal.user?.email || "-"} / {matchModal.user?.identifier}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <Button 
-                variant="outline" 
-                size="sm"
-                className="ml-4 h-9"
-                onClick={() => matchModal.user && setDetailModal({ open: true, user: matchModal.user, mode: "view" })}
-              >
-                <Eye className="w-3 h-3 mr-1" /> 전체 프로필 보기
-              </Button>
-            </div>
-
-            <div className="bg-blue-50 p-3 border border-blue-100 text-sm text-blue-800 flex items-start gap-2">
-              <Info className="w-4 h-4 mt-0.5 shrink-0" />
-              <div>
-                <p className="font-semibold">매칭 가이드</p>
-                <p>시스템 사용자를 기존 동문 명부(`bxmember`)와 연결합니다. 매칭 시 해당 사용자에게 <span className="font-bold underline">"동문회원" 역할이 자동으로 부여</span>됩니다.</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-5 gap-2">
-              <div className="space-y-1">
-                <Label htmlFor="search-name" className="text-[10px]">이름</Label>
-                <Input 
-                  id="search-name"
-                  value={alumniSearch.query.name}
-                  onChange={(e) => setAlumniSearch(prev => ({ ...prev, query: { ...prev.query, name: e.target.value } }))}
-                  placeholder="이름"
-                  className="h-8 text-xs"
-                />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="search-phone" className="text-[10px]">연락처</Label>
-                <Input 
-                  id="search-phone"
-                  value={alumniSearch.query.phone}
-                  onChange={(e) => setAlumniSearch(prev => ({ ...prev, query: { ...prev.query, phone: e.target.value } }))}
-                  placeholder="연락처"
-                  className="h-8 text-xs"
-                />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="search-email" className="text-[10px]">이메일</Label>
-                <Input 
-                  id="search-email"
-                  value={alumniSearch.query.email}
-                  onChange={(e) => setAlumniSearch(prev => ({ ...prev, query: { ...prev.query, email: e.target.value } }))}
-                  placeholder="이메일"
-                  className="h-8 text-xs"
-                />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="search-year" className="text-[10px]">기수/년도</Label>
-                <Input 
-                  id="search-year"
-                  value={alumniSearch.query.year}
-                  onChange={(e) => setAlumniSearch(prev => ({ ...prev, query: { ...prev.query, year: e.target.value } }))}
-                  placeholder="2024"
-                  className="h-8 text-xs"
-                />
-              </div>
-              <div className="space-y-1 flex items-end">
-                <Button 
-                  onClick={() => handleSearchAlumni(alumniSearch.query)}
-                  className="w-full h-8"
-                  size="sm"
-                  disabled={alumniSearch.loading}
-                >
-                  <Search className="w-3 h-3 mr-1" /> 검색
-                </Button>
-              </div>
-            </div>
-
-            <div className="border border-gray-200">
-              <table className="w-full text-sm">
-                <thead className="bg-gray-50 border-b">
-                  <tr>
-                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500">이름</th>
-                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500">전공/학과</th>
-                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500">졸업년도</th>
-                    <th className="px-3 py-2 text-right"></th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y">
-                  {alumniSearch.loading ? (
-                    <tr>
-                      <td colSpan={4} className="px-3 py-8 text-center text-gray-500">
-                        검색 중...
-                      </td>
-                    </tr>
-                  ) : alumniSearch.results.length > 0 ? (
-                    alumniSearch.results.map((alumni) => (
-                      <tr key={alumni.seq} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-3 py-2">
-                          <div className="font-medium text-gray-900">{alumni.name_kor}</div>
-                          <div className="text-[10px] text-gray-400">{alumni.email || alumni.cellphone_number || "-"}</div>
-                        </td>
-                        <td className="px-3 py-2 text-gray-600">{alumni.major || "-"}</td>
-                        <td className="px-3 py-2 text-gray-600">{alumni.graduate_year}년</td>
-                        <td className="px-3 py-2 text-right">
-                          <Button 
-                            variant="secondary" 
-                            size="sm" 
-                            className="h-7 text-xs"
-                            onClick={() => handleMatchAlumni(alumni.seq)}
-                            disabled={fetcher.state !== "idle" || (matchModal.user?.bxmember?.seq === alumni.seq) || !!(alumni.user_id && alumni.user_id !== matchModal.user?.id)}
-                          >
-                            {matchModal.user?.bxmember?.seq === alumni.seq ? "현재 매칭됨" : alumni.user_id ? "다른 사용자 매칭" : "매칭선택"}
-                          </Button>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={4} className="px-3 py-8 text-center text-gray-500">
-                        검색 결과가 없습니다.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          
-          <DialogFooter className="mt-4 pt-4 border-t flex justify-between items-center">
-            <div>
-              {matchModal.user?.bxmember && (
-                <Button 
-                  variant="destructive" 
-                  size="sm"
-                  onClick={() => setUnmatchConfirmOpen(true)}
-                  disabled={fetcher.state !== "idle"}
-                >
-                  매칭 해제하기
-                </Button>
-              )}
-            </div>
-            <Button variant="outline" onClick={() => setMatchModal(curr => ({ ...curr, open: false }))}>닫기</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Unmatch Confirmation Modal */}
-      <Dialog open={unmatchConfirmOpen} onOpenChange={setUnmatchConfirmOpen}>
-        <DialogContent className="sm:max-w-100">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-red-600">
-              <XCircle className="w-5 h-5" /> 동문 매칭 해제
-            </DialogTitle>
-          </DialogHeader>
-          <div className="py-4 space-y-4">
-            <div className="bg-red-50 p-3 border border-red-100 text-sm text-red-800">
-              <p>이 사용자의 동문 매칭을 해제하시겠습니까? 해제 시 <span className="font-bold">"동문회원" 역할이 비활성화</span>됩니다.</p>
-            </div>
-            <div className="space-y-2">
-              <Label className="text-xs text-gray-500">계속하려면 아래에 <span className="font-bold text-gray-900">매칭해제</span>를 입력하세요.</Label>
-              <Input 
-                value={unmatchConfirmText}
-                onChange={(e) => setUnmatchConfirmText(e.target.value)}
-                placeholder="매칭해제"
-                className="h-9"
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => {
-              setUnmatchConfirmOpen(false);
-              setUnmatchConfirmText("");
-            }}>취소</Button>
-            <Button 
-              variant="destructive" 
-              onClick={handleUnmatchAlumni}
-              disabled={unmatchConfirmText !== "매칭해제" || fetcher.state !== "idle"}
-            >
-              해제 확인
-            </Button>
-          </DialogFooter>
-        </DialogContent>
       </Dialog>
     </div>
   );

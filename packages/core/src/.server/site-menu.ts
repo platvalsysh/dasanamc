@@ -28,7 +28,6 @@ export const DEFAULT_HEADER_MENU: SiteMenuConfigItem[] = [
       { id: "notice-alumni", label: "동문 소식", to: "/board/AlumniNews" },
       { id: "notice-chemeng", label: "동문 경조사", to: "/board/Chemengnews" },
       { id: "notice-schedule", label: "동창회 일정", to: "/events" },
-      { id: "notice-newsletter", label: "동창 회보", to: "/board/Newsletter" },
     ],
   },
   {

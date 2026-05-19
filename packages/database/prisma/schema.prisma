@@ -450,7 +450,6 @@ model users {
   admin_user_roles_admin_user_roles_user_idTousers    admin_user_roles[]      @relation("admin_user_roles_user_idTousers")
   identifiers                                         identifiers?
   profiles                                            profiles?
-  bxmember                                            bxmember[]
   comment_vote_log                                    comment_vote_log[]
   comments                                            comments[]
   document_read_history                               document_read_history[]
@@ -458,6 +457,9 @@ model users {
   documents                                           documents[]
   files                                               files[]
 
+  @@index([created_at(sort: Desc)], map: "idx_users_created_at_desc")
+  @@index([email], map: "idx_users_email")
+  @@index([last_sign_in_at(sort: Desc)], map: "idx_users_last_sign_in_at_desc")
   @@index([instance_id])
   @@index([is_anonymous])
   @@schema("auth")
@@ -497,25 +499,6 @@ model webauthn_credentials {
 
   @@index([user_id])
   @@schema("auth")
-}
-
-model custom_migrations {
-  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  package_name String   @db.VarChar(100)
-  task_name    String   @db.VarChar(100)
-  executed_at  DateTime @default(now()) @db.Timestamptz(6)
-
-  @@unique([package_name, task_name], map: "pkg_task_unique_idx")
-  @@map("__custom_migrations")
-  @@schema("core")
-}
-
-model seeds {
-  name        String    @id
-  executed_at DateTime? @default(now()) @db.Timestamptz(6)
-
-  @@map("_seeds")
-  @@schema("core")
 }
 
 model admin_permissions {
@@ -653,111 +636,6 @@ model board_templates {
   modules    modules  @relation(fields: [module_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([module_id])
-  @@schema("modules")
-}
-
-model bxemeritus {
-  seq              BigInt  @id
-  name_kor         String? @db.VarChar(300)
-  email            String? @db.VarChar(300)
-  cellphone_number String? @db.VarChar(100)
-  remark           String?
-
-  @@schema("modules")
-}
-
-model bxmember {
-  seq                    Int                      @id
-  name_kor               String?                  @db.VarChar(300)
-  name_ch                String?                  @db.VarChar(300)
-  sex                    String?                  @db.VarChar(50)
-  major                  String?                  @db.VarChar(300)
-  graduate_number        String?                  @db.VarChar(100)
-  graduate_year          String?                  @db.VarChar(50)
-  graduate_month         String?                  @db.VarChar(50)
-  master_major           String?                  @db.VarChar(300)
-  master_graduate_number String?                  @db.VarChar(100)
-  master_graduate_year   String?                  @db.VarChar(100)
-  master_graduate_month  String?                  @db.VarChar(50)
-  doctor_major           String?                  @db.VarChar(300)
-  doctor_graduate_number String?                  @db.VarChar(100)
-  doctor_graduate_year   String?                  @db.VarChar(50)
-  doctor_graduate_month  String?                  @db.VarChar(50)
-  course                 String?                  @db.VarChar(300)
-  finish_flag            String?                  @db.VarChar(100)
-  finish_year            String?                  @db.VarChar(100)
-  decease                String?                  @db.VarChar(100)
-  remark                 String?                  @db.VarChar(300)
-  job_class              String?                  @db.VarChar(100)
-  office_zipcode         String?                  @db.VarChar(100)
-  office_address         String?                  @db.VarChar(300)
-  office_name            String?                  @db.VarChar(300)
-  office_position        String?                  @db.VarChar(300)
-  office_phone_number    String?                  @db.VarChar(100)
-  office_fax_number      String?                  @db.VarChar(100)
-  office_area            String?                  @db.VarChar(100)
-  email                  String?                  @db.VarChar(300)
-  zipcode                String?                  @db.VarChar(100)
-  address                String?                  @db.VarChar(300)
-  phone_number           String?                  @db.VarChar(100)
-  fax_number             String?                  @db.VarChar(100)
-  cellphone_number       String?                  @db.VarChar(100)
-  member_srl             BigInt?
-  enter_year             String?                  @db.VarChar(50)
-  search_agree           String?                  @db.VarChar(50)
-  is_major               String?                  @db.VarChar(50)
-  user_id                String?                  @db.Uuid
-  users                  users?                   @relation(fields: [user_id], references: [id], onUpdate: NoAction, map: "fk_bxmember_users")
-  bxmember_group_members bxmember_group_members[]
-  organization_members   organization_members[]
-
-  @@schema("modules")
-}
-
-model bxmember_group_members {
-  id                   String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  group_id             String                @db.Uuid
-  type                 String?
-  name                 String?
-  cellphone_number     String?
-  email                String?
-  ref_data             Json?                 @default("{}")
-  extra_vars           Json?                 @default("{}")
-  member_id            Int?
-  professor_id         BigInt?
-  created_at           DateTime?             @default(now()) @db.Timestamptz(6)
-  executive_id         String?               @db.Uuid
-  organization_members organization_members? @relation(fields: [executive_id], references: [id], onUpdate: NoAction)
-  bxmember_groups      bxmember_groups       @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  bxmember             bxmember?             @relation(fields: [member_id], references: [seq], onUpdate: NoAction)
-  bxprofessor          bxprofessor?          @relation(fields: [professor_id], references: [seq], onUpdate: NoAction)
-
-  @@index([executive_id], map: "idx_bxmember_group_members_executive_id")
-  @@index([group_id], map: "idx_bxmember_group_members_group_id")
-  @@index([member_id], map: "idx_bxmember_group_members_member_id")
-  @@index([professor_id], map: "idx_bxmember_group_members_professor_id")
-  @@schema("modules")
-}
-
-model bxmember_groups {
-  id                     String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name                   String
-  extra_vars             Json?                    @default("{}")
-  deleted_at             DateTime?                @db.Timestamptz(6)
-  created_at             DateTime?                @default(now()) @db.Timestamptz(6)
-  updated_at             DateTime?                @default(now()) @db.Timestamptz(6)
-  bxmember_group_members bxmember_group_members[]
-
-  @@schema("modules")
-}
-
-model bxprofessor {
-  seq                    BigInt                   @id
-  name_kor               String?                  @db.VarChar(300)
-  email                  String?                  @db.VarChar(300)
-  cellphone_number       String?                  @db.VarChar(100)
-  bxmember_group_members bxmember_group_members[]
-
   @@schema("modules")
 }
 
@@ -910,31 +788,29 @@ model documents {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model files {
-  id                                          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  module                                      String        @db.VarChar(255)
-  module_id                                   String?       @db.Uuid
-  target_id                                   String?       @db.Uuid
-  original_name                               String        @db.VarChar(255)
-  file_size                                   BigInt
-  mime_type                                   String?       @db.VarChar(255)
-  extension                                   String?       @db.VarChar(255)
-  storage_type                                String        @db.VarChar(10)
-  local_path                                  String?
-  s3_bucket                                   String?       @db.VarChar(100)
-  s3_key                                      String?
-  s3_region                                   String?       @db.VarChar(50)
-  status                                      String        @default("P") @db.Char(1)
-  created_at                                  DateTime?     @default(now()) @db.Timestamptz(6)
-  uploaded_at                                 DateTime?     @db.Timestamptz(6)
-  uploaded_by                                 String?       @db.Uuid
-  download_count                              BigInt        @default(0)
-  is_publish                                  Boolean       @default(false)
-  variants                                    Json?
-  documents                                   documents[]
-  modules                                     modules?      @relation(fields: [module_id], references: [id])
-  users                                       users?        @relation(fields: [uploaded_by], references: [id])
-  newsletters_newsletters_pdf_idTofiles       newsletters[] @relation("newsletters_pdf_idTofiles")
-  newsletters_newsletters_thumbnail_idTofiles newsletters[] @relation("newsletters_thumbnail_idTofiles")
+  id             String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  module         String      @db.VarChar(255)
+  module_id      String?     @db.Uuid
+  target_id      String?     @db.Uuid
+  original_name  String      @db.VarChar(255)
+  file_size      BigInt
+  mime_type      String?     @db.VarChar(255)
+  extension      String?     @db.VarChar(255)
+  storage_type   String      @db.VarChar(10)
+  local_path     String?
+  s3_bucket      String?     @db.VarChar(100)
+  s3_key         String?
+  s3_region      String?     @db.VarChar(50)
+  status         String      @default("P") @db.Char(1)
+  created_at     DateTime?   @default(now()) @db.Timestamptz(6)
+  uploaded_at    DateTime?   @db.Timestamptz(6)
+  uploaded_by    String?     @db.Uuid
+  download_count BigInt      @default(0)
+  is_publish     Boolean     @default(false)
+  variants       Json?
+  documents      documents[]
+  modules        modules?    @relation(fields: [module_id], references: [id])
+  users          users?      @relation(fields: [uploaded_by], references: [id])
 
   @@index([created_at(sort: Desc)])
   @@index([is_publish])
@@ -944,100 +820,6 @@ model files {
   @@index([status])
   @@index([target_id])
   @@index([uploaded_by])
-  @@schema("modules")
-}
-
-model newsletters {
-  id                                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title                                 String    @db.VarChar(255)
-  issue_number                          Int
-  pdf_id                                String    @db.Uuid
-  thumbnail_id                          String    @db.Uuid
-  created_at                            DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at                            DateTime? @default(now()) @db.Timestamptz(6)
-  files_newsletters_pdf_idTofiles       files     @relation("newsletters_pdf_idTofiles", fields: [pdf_id], references: [id], onUpdate: NoAction)
-  files_newsletters_thumbnail_idTofiles files     @relation("newsletters_thumbnail_idTofiles", fields: [thumbnail_id], references: [id], onUpdate: NoAction)
-
-  @@schema("modules")
-}
-
-model organization_groups {
-  id                     String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name                   String                   @db.VarChar(255)
-  order                  Int                      @default(0)
-  description            String?
-  created_at             DateTime                 @default(now()) @db.Timestamptz(6)
-  updated_at             DateTime                 @db.Timestamptz(6)
-  organization_members   organization_members[]
-  organization_positions organization_positions[]
-
-  @@schema("modules")
-}
-
-model organization_members {
-  id                     String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name                   String                   @db.VarChar(255)
-  major                  String?                  @db.VarChar(255)
-  gisu                   String?                  @db.VarChar(255)
-  group_id               String                   @db.Uuid
-  position_id            String                   @db.Uuid
-  member_id              Int?
-  order                  Int                      @default(0)
-  is_active              Boolean                  @default(true)
-  created_at             DateTime                 @default(now()) @db.Timestamptz(6)
-  updated_at             DateTime                 @db.Timestamptz(6)
-  bxmember_group_members bxmember_group_members[]
-  organization_groups    organization_groups      @relation(fields: [group_id], references: [id])
-  bxmember               bxmember?                @relation(fields: [member_id], references: [seq])
-  organization_positions organization_positions   @relation(fields: [position_id], references: [id])
-
-  @@index([group_id])
-  @@index([member_id])
-  @@index([position_id])
-  @@schema("modules")
-}
-
-model organization_positions {
-  id                   String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name                 String                 @db.VarChar(255)
-  order                Int                    @default(0)
-  group_id             String                 @db.Uuid
-  created_at           DateTime               @default(now()) @db.Timestamptz(6)
-  updated_at           DateTime               @db.Timestamptz(6)
-  description          String?
-  organization_members organization_members[]
-  organization_groups  organization_groups    @relation(fields: [group_id], references: [id])
-
-  @@index([group_id])
-  @@schema("modules")
-}
-
-model schedules {
-  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title        String    @db.VarChar(255)
-  start_date   DateTime  @db.Timestamptz(6)
-  end_date     DateTime  @db.Timestamptz(6)
-  location     String?   @db.VarChar(255)
-  content      String?
-  is_important Boolean?  @default(false)
-  created_at   DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at   DateTime? @default(now()) @db.Timestamptz(6)
-
-  @@index([start_date, end_date], map: "idx_schedules_date_range")
-  @@schema("modules")
-}
-
-model sponsors {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String    @db.VarChar(255)
-  logo        String?   @db.VarChar(1000)
-  url         String?   @db.VarChar(1000)
-  description String?
-  list_order  Int       @default(0)
-  is_active   Boolean   @default(true)
-  created_at  DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at  DateTime? @default(now()) @db.Timestamptz(6)
-
   @@schema("modules")
 }
 

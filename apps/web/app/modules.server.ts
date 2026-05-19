@@ -4,7 +4,6 @@ import { module as board } from "@repo/module-board/module";
 import { module as file } from "@repo/module-file/module";
 import { module as core } from "@repo/core/module";
 import { module as sms } from "@repo/module-sms/module";
-import { module as newsletter } from "@repo/module-newsletter/module";
 import { ENABLED_MODULES } from "@repo/env/server";
 
 // 사이트에 끼울 수 있는 후보 모듈 전체 (편집 모듈은 사용처에 따라 추가).
@@ -15,7 +14,6 @@ const allModules = [
   board,
   file,
   sms,
-  newsletter,
 ];
 
 // 화이트리스트 환경변수와 무관하게 항상 활성화되는 필수 모듈.

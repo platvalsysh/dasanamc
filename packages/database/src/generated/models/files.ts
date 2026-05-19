@@ -339,8 +339,6 @@ export type filesWhereInput = {
   documents?: Prisma.DocumentsListRelationFilter
   modules?: Prisma.XOR<Prisma.ModulesNullableScalarRelationFilter, Prisma.modulesWhereInput> | null
   users?: Prisma.XOR<Prisma.UsersNullableScalarRelationFilter, Prisma.usersWhereInput> | null
-  newsletters_newsletters_pdf_idTofiles?: Prisma.NewslettersListRelationFilter
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.NewslettersListRelationFilter
 }
 
 export type filesOrderByWithRelationInput = {
@@ -367,8 +365,6 @@ export type filesOrderByWithRelationInput = {
   documents?: Prisma.documentsOrderByRelationAggregateInput
   modules?: Prisma.modulesOrderByWithRelationInput
   users?: Prisma.usersOrderByWithRelationInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersOrderByRelationAggregateInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersOrderByRelationAggregateInput
 }
 
 export type filesWhereUniqueInput = Prisma.AtLeast<{
@@ -398,8 +394,6 @@ export type filesWhereUniqueInput = Prisma.AtLeast<{
   documents?: Prisma.DocumentsListRelationFilter
   modules?: Prisma.XOR<Prisma.ModulesNullableScalarRelationFilter, Prisma.modulesWhereInput> | null
   users?: Prisma.XOR<Prisma.UsersNullableScalarRelationFilter, Prisma.usersWhereInput> | null
-  newsletters_newsletters_pdf_idTofiles?: Prisma.NewslettersListRelationFilter
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.NewslettersListRelationFilter
 }, "id">
 
 export type filesOrderByWithAggregationInput = {
@@ -478,8 +472,6 @@ export type filesCreateInput = {
   documents?: Prisma.documentsCreateNestedManyWithoutFilesInput
   modules?: Prisma.modulesCreateNestedOneWithoutFilesInput
   users?: Prisma.usersCreateNestedOneWithoutFilesInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersCreateNestedManyWithoutFiles_newsletters_pdf_idTofilesInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersCreateNestedManyWithoutFiles_newsletters_thumbnail_idTofilesInput
 }
 
 export type filesUncheckedCreateInput = {
@@ -504,8 +496,6 @@ export type filesUncheckedCreateInput = {
   is_publish?: boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   documents?: Prisma.documentsUncheckedCreateNestedManyWithoutFilesInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersUncheckedCreateNestedManyWithoutFiles_newsletters_pdf_idTofilesInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersUncheckedCreateNestedManyWithoutFiles_newsletters_thumbnail_idTofilesInput
 }
 
 export type filesUpdateInput = {
@@ -530,8 +520,6 @@ export type filesUpdateInput = {
   documents?: Prisma.documentsUpdateManyWithoutFilesNestedInput
   modules?: Prisma.modulesUpdateOneWithoutFilesNestedInput
   users?: Prisma.usersUpdateOneWithoutFilesNestedInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersUpdateManyWithoutFiles_newsletters_pdf_idTofilesNestedInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersUpdateManyWithoutFiles_newsletters_thumbnail_idTofilesNestedInput
 }
 
 export type filesUncheckedUpdateInput = {
@@ -556,8 +544,6 @@ export type filesUncheckedUpdateInput = {
   is_publish?: Prisma.BoolFieldUpdateOperationsInput | boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   documents?: Prisma.documentsUncheckedUpdateManyWithoutFilesNestedInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersUncheckedUpdateManyWithoutFiles_newsletters_pdf_idTofilesNestedInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersUncheckedUpdateManyWithoutFiles_newsletters_thumbnail_idTofilesNestedInput
 }
 
 export type filesCreateManyInput = {
@@ -719,11 +705,6 @@ export type filesSumOrderByAggregateInput = {
   download_count?: Prisma.SortOrder
 }
 
-export type FilesScalarRelationFilter = {
-  is?: Prisma.filesWhereInput
-  isNot?: Prisma.filesWhereInput
-}
-
 export type filesCreateNestedManyWithoutUsersInput = {
   create?: Prisma.XOR<Prisma.filesCreateWithoutUsersInput, Prisma.filesUncheckedCreateWithoutUsersInput> | Prisma.filesCreateWithoutUsersInput[] | Prisma.filesUncheckedCreateWithoutUsersInput[]
   connectOrCreate?: Prisma.filesCreateOrConnectWithoutUsersInput | Prisma.filesCreateOrConnectWithoutUsersInput[]
@@ -824,34 +805,6 @@ export type filesUpdateOneWithoutDocumentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.filesUpdateToOneWithWhereWithoutDocumentsInput, Prisma.filesUpdateWithoutDocumentsInput>, Prisma.filesUncheckedUpdateWithoutDocumentsInput>
 }
 
-export type filesCreateNestedOneWithoutNewsletters_newsletters_pdf_idTofilesInput = {
-  create?: Prisma.XOR<Prisma.filesCreateWithoutNewsletters_newsletters_pdf_idTofilesInput, Prisma.filesUncheckedCreateWithoutNewsletters_newsletters_pdf_idTofilesInput>
-  connectOrCreate?: Prisma.filesCreateOrConnectWithoutNewsletters_newsletters_pdf_idTofilesInput
-  connect?: Prisma.filesWhereUniqueInput
-}
-
-export type filesCreateNestedOneWithoutNewsletters_newsletters_thumbnail_idTofilesInput = {
-  create?: Prisma.XOR<Prisma.filesCreateWithoutNewsletters_newsletters_thumbnail_idTofilesInput, Prisma.filesUncheckedCreateWithoutNewsletters_newsletters_thumbnail_idTofilesInput>
-  connectOrCreate?: Prisma.filesCreateOrConnectWithoutNewsletters_newsletters_thumbnail_idTofilesInput
-  connect?: Prisma.filesWhereUniqueInput
-}
-
-export type filesUpdateOneRequiredWithoutNewsletters_newsletters_pdf_idTofilesNestedInput = {
-  create?: Prisma.XOR<Prisma.filesCreateWithoutNewsletters_newsletters_pdf_idTofilesInput, Prisma.filesUncheckedCreateWithoutNewsletters_newsletters_pdf_idTofilesInput>
-  connectOrCreate?: Prisma.filesCreateOrConnectWithoutNewsletters_newsletters_pdf_idTofilesInput
-  upsert?: Prisma.filesUpsertWithoutNewsletters_newsletters_pdf_idTofilesInput
-  connect?: Prisma.filesWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.filesUpdateToOneWithWhereWithoutNewsletters_newsletters_pdf_idTofilesInput, Prisma.filesUpdateWithoutNewsletters_newsletters_pdf_idTofilesInput>, Prisma.filesUncheckedUpdateWithoutNewsletters_newsletters_pdf_idTofilesInput>
-}
-
-export type filesUpdateOneRequiredWithoutNewsletters_newsletters_thumbnail_idTofilesNestedInput = {
-  create?: Prisma.XOR<Prisma.filesCreateWithoutNewsletters_newsletters_thumbnail_idTofilesInput, Prisma.filesUncheckedCreateWithoutNewsletters_newsletters_thumbnail_idTofilesInput>
-  connectOrCreate?: Prisma.filesCreateOrConnectWithoutNewsletters_newsletters_thumbnail_idTofilesInput
-  upsert?: Prisma.filesUpsertWithoutNewsletters_newsletters_thumbnail_idTofilesInput
-  connect?: Prisma.filesWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.filesUpdateToOneWithWhereWithoutNewsletters_newsletters_thumbnail_idTofilesInput, Prisma.filesUpdateWithoutNewsletters_newsletters_thumbnail_idTofilesInput>, Prisma.filesUncheckedUpdateWithoutNewsletters_newsletters_thumbnail_idTofilesInput>
-}
-
 export type filesCreateWithoutUsersInput = {
   id?: string
   module: string
@@ -873,8 +826,6 @@ export type filesCreateWithoutUsersInput = {
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   documents?: Prisma.documentsCreateNestedManyWithoutFilesInput
   modules?: Prisma.modulesCreateNestedOneWithoutFilesInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersCreateNestedManyWithoutFiles_newsletters_pdf_idTofilesInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersCreateNestedManyWithoutFiles_newsletters_thumbnail_idTofilesInput
 }
 
 export type filesUncheckedCreateWithoutUsersInput = {
@@ -898,8 +849,6 @@ export type filesUncheckedCreateWithoutUsersInput = {
   is_publish?: boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   documents?: Prisma.documentsUncheckedCreateNestedManyWithoutFilesInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersUncheckedCreateNestedManyWithoutFiles_newsletters_pdf_idTofilesInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersUncheckedCreateNestedManyWithoutFiles_newsletters_thumbnail_idTofilesInput
 }
 
 export type filesCreateOrConnectWithoutUsersInput = {
@@ -975,8 +924,6 @@ export type filesCreateWithoutModulesInput = {
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   documents?: Prisma.documentsCreateNestedManyWithoutFilesInput
   users?: Prisma.usersCreateNestedOneWithoutFilesInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersCreateNestedManyWithoutFiles_newsletters_pdf_idTofilesInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersCreateNestedManyWithoutFiles_newsletters_thumbnail_idTofilesInput
 }
 
 export type filesUncheckedCreateWithoutModulesInput = {
@@ -1000,8 +947,6 @@ export type filesUncheckedCreateWithoutModulesInput = {
   is_publish?: boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   documents?: Prisma.documentsUncheckedCreateNestedManyWithoutFilesInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersUncheckedCreateNestedManyWithoutFiles_newsletters_pdf_idTofilesInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersUncheckedCreateNestedManyWithoutFiles_newsletters_thumbnail_idTofilesInput
 }
 
 export type filesCreateOrConnectWithoutModulesInput = {
@@ -1051,8 +996,6 @@ export type filesCreateWithoutDocumentsInput = {
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   modules?: Prisma.modulesCreateNestedOneWithoutFilesInput
   users?: Prisma.usersCreateNestedOneWithoutFilesInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersCreateNestedManyWithoutFiles_newsletters_pdf_idTofilesInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersCreateNestedManyWithoutFiles_newsletters_thumbnail_idTofilesInput
 }
 
 export type filesUncheckedCreateWithoutDocumentsInput = {
@@ -1076,8 +1019,6 @@ export type filesUncheckedCreateWithoutDocumentsInput = {
   download_count?: bigint | number
   is_publish?: boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersUncheckedCreateNestedManyWithoutFiles_newsletters_pdf_idTofilesInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersUncheckedCreateNestedManyWithoutFiles_newsletters_thumbnail_idTofilesInput
 }
 
 export type filesCreateOrConnectWithoutDocumentsInput = {
@@ -1117,8 +1058,6 @@ export type filesUpdateWithoutDocumentsInput = {
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   modules?: Prisma.modulesUpdateOneWithoutFilesNestedInput
   users?: Prisma.usersUpdateOneWithoutFilesNestedInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersUpdateManyWithoutFiles_newsletters_pdf_idTofilesNestedInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersUpdateManyWithoutFiles_newsletters_thumbnail_idTofilesNestedInput
 }
 
 export type filesUncheckedUpdateWithoutDocumentsInput = {
@@ -1142,240 +1081,6 @@ export type filesUncheckedUpdateWithoutDocumentsInput = {
   download_count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   is_publish?: Prisma.BoolFieldUpdateOperationsInput | boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersUncheckedUpdateManyWithoutFiles_newsletters_pdf_idTofilesNestedInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersUncheckedUpdateManyWithoutFiles_newsletters_thumbnail_idTofilesNestedInput
-}
-
-export type filesCreateWithoutNewsletters_newsletters_pdf_idTofilesInput = {
-  id?: string
-  module: string
-  target_id?: string | null
-  original_name: string
-  file_size: bigint | number
-  mime_type?: string | null
-  extension?: string | null
-  storage_type: string
-  local_path?: string | null
-  s3_bucket?: string | null
-  s3_key?: string | null
-  s3_region?: string | null
-  status?: string
-  created_at?: Date | string | null
-  uploaded_at?: Date | string | null
-  download_count?: bigint | number
-  is_publish?: boolean
-  variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  documents?: Prisma.documentsCreateNestedManyWithoutFilesInput
-  modules?: Prisma.modulesCreateNestedOneWithoutFilesInput
-  users?: Prisma.usersCreateNestedOneWithoutFilesInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersCreateNestedManyWithoutFiles_newsletters_thumbnail_idTofilesInput
-}
-
-export type filesUncheckedCreateWithoutNewsletters_newsletters_pdf_idTofilesInput = {
-  id?: string
-  module: string
-  module_id?: string | null
-  target_id?: string | null
-  original_name: string
-  file_size: bigint | number
-  mime_type?: string | null
-  extension?: string | null
-  storage_type: string
-  local_path?: string | null
-  s3_bucket?: string | null
-  s3_key?: string | null
-  s3_region?: string | null
-  status?: string
-  created_at?: Date | string | null
-  uploaded_at?: Date | string | null
-  uploaded_by?: string | null
-  download_count?: bigint | number
-  is_publish?: boolean
-  variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  documents?: Prisma.documentsUncheckedCreateNestedManyWithoutFilesInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersUncheckedCreateNestedManyWithoutFiles_newsletters_thumbnail_idTofilesInput
-}
-
-export type filesCreateOrConnectWithoutNewsletters_newsletters_pdf_idTofilesInput = {
-  where: Prisma.filesWhereUniqueInput
-  create: Prisma.XOR<Prisma.filesCreateWithoutNewsletters_newsletters_pdf_idTofilesInput, Prisma.filesUncheckedCreateWithoutNewsletters_newsletters_pdf_idTofilesInput>
-}
-
-export type filesCreateWithoutNewsletters_newsletters_thumbnail_idTofilesInput = {
-  id?: string
-  module: string
-  target_id?: string | null
-  original_name: string
-  file_size: bigint | number
-  mime_type?: string | null
-  extension?: string | null
-  storage_type: string
-  local_path?: string | null
-  s3_bucket?: string | null
-  s3_key?: string | null
-  s3_region?: string | null
-  status?: string
-  created_at?: Date | string | null
-  uploaded_at?: Date | string | null
-  download_count?: bigint | number
-  is_publish?: boolean
-  variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  documents?: Prisma.documentsCreateNestedManyWithoutFilesInput
-  modules?: Prisma.modulesCreateNestedOneWithoutFilesInput
-  users?: Prisma.usersCreateNestedOneWithoutFilesInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersCreateNestedManyWithoutFiles_newsletters_pdf_idTofilesInput
-}
-
-export type filesUncheckedCreateWithoutNewsletters_newsletters_thumbnail_idTofilesInput = {
-  id?: string
-  module: string
-  module_id?: string | null
-  target_id?: string | null
-  original_name: string
-  file_size: bigint | number
-  mime_type?: string | null
-  extension?: string | null
-  storage_type: string
-  local_path?: string | null
-  s3_bucket?: string | null
-  s3_key?: string | null
-  s3_region?: string | null
-  status?: string
-  created_at?: Date | string | null
-  uploaded_at?: Date | string | null
-  uploaded_by?: string | null
-  download_count?: bigint | number
-  is_publish?: boolean
-  variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  documents?: Prisma.documentsUncheckedCreateNestedManyWithoutFilesInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersUncheckedCreateNestedManyWithoutFiles_newsletters_pdf_idTofilesInput
-}
-
-export type filesCreateOrConnectWithoutNewsletters_newsletters_thumbnail_idTofilesInput = {
-  where: Prisma.filesWhereUniqueInput
-  create: Prisma.XOR<Prisma.filesCreateWithoutNewsletters_newsletters_thumbnail_idTofilesInput, Prisma.filesUncheckedCreateWithoutNewsletters_newsletters_thumbnail_idTofilesInput>
-}
-
-export type filesUpsertWithoutNewsletters_newsletters_pdf_idTofilesInput = {
-  update: Prisma.XOR<Prisma.filesUpdateWithoutNewsletters_newsletters_pdf_idTofilesInput, Prisma.filesUncheckedUpdateWithoutNewsletters_newsletters_pdf_idTofilesInput>
-  create: Prisma.XOR<Prisma.filesCreateWithoutNewsletters_newsletters_pdf_idTofilesInput, Prisma.filesUncheckedCreateWithoutNewsletters_newsletters_pdf_idTofilesInput>
-  where?: Prisma.filesWhereInput
-}
-
-export type filesUpdateToOneWithWhereWithoutNewsletters_newsletters_pdf_idTofilesInput = {
-  where?: Prisma.filesWhereInput
-  data: Prisma.XOR<Prisma.filesUpdateWithoutNewsletters_newsletters_pdf_idTofilesInput, Prisma.filesUncheckedUpdateWithoutNewsletters_newsletters_pdf_idTofilesInput>
-}
-
-export type filesUpdateWithoutNewsletters_newsletters_pdf_idTofilesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  module?: Prisma.StringFieldUpdateOperationsInput | string
-  target_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  original_name?: Prisma.StringFieldUpdateOperationsInput | string
-  file_size?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  mime_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storage_type?: Prisma.StringFieldUpdateOperationsInput | string
-  local_path?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  s3_bucket?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  s3_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  s3_region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  uploaded_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  download_count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  is_publish?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  documents?: Prisma.documentsUpdateManyWithoutFilesNestedInput
-  modules?: Prisma.modulesUpdateOneWithoutFilesNestedInput
-  users?: Prisma.usersUpdateOneWithoutFilesNestedInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersUpdateManyWithoutFiles_newsletters_thumbnail_idTofilesNestedInput
-}
-
-export type filesUncheckedUpdateWithoutNewsletters_newsletters_pdf_idTofilesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  module?: Prisma.StringFieldUpdateOperationsInput | string
-  module_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  target_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  original_name?: Prisma.StringFieldUpdateOperationsInput | string
-  file_size?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  mime_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storage_type?: Prisma.StringFieldUpdateOperationsInput | string
-  local_path?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  s3_bucket?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  s3_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  s3_region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  uploaded_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  download_count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  is_publish?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  documents?: Prisma.documentsUncheckedUpdateManyWithoutFilesNestedInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersUncheckedUpdateManyWithoutFiles_newsletters_thumbnail_idTofilesNestedInput
-}
-
-export type filesUpsertWithoutNewsletters_newsletters_thumbnail_idTofilesInput = {
-  update: Prisma.XOR<Prisma.filesUpdateWithoutNewsletters_newsletters_thumbnail_idTofilesInput, Prisma.filesUncheckedUpdateWithoutNewsletters_newsletters_thumbnail_idTofilesInput>
-  create: Prisma.XOR<Prisma.filesCreateWithoutNewsletters_newsletters_thumbnail_idTofilesInput, Prisma.filesUncheckedCreateWithoutNewsletters_newsletters_thumbnail_idTofilesInput>
-  where?: Prisma.filesWhereInput
-}
-
-export type filesUpdateToOneWithWhereWithoutNewsletters_newsletters_thumbnail_idTofilesInput = {
-  where?: Prisma.filesWhereInput
-  data: Prisma.XOR<Prisma.filesUpdateWithoutNewsletters_newsletters_thumbnail_idTofilesInput, Prisma.filesUncheckedUpdateWithoutNewsletters_newsletters_thumbnail_idTofilesInput>
-}
-
-export type filesUpdateWithoutNewsletters_newsletters_thumbnail_idTofilesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  module?: Prisma.StringFieldUpdateOperationsInput | string
-  target_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  original_name?: Prisma.StringFieldUpdateOperationsInput | string
-  file_size?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  mime_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storage_type?: Prisma.StringFieldUpdateOperationsInput | string
-  local_path?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  s3_bucket?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  s3_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  s3_region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  uploaded_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  download_count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  is_publish?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  documents?: Prisma.documentsUpdateManyWithoutFilesNestedInput
-  modules?: Prisma.modulesUpdateOneWithoutFilesNestedInput
-  users?: Prisma.usersUpdateOneWithoutFilesNestedInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersUpdateManyWithoutFiles_newsletters_pdf_idTofilesNestedInput
-}
-
-export type filesUncheckedUpdateWithoutNewsletters_newsletters_thumbnail_idTofilesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  module?: Prisma.StringFieldUpdateOperationsInput | string
-  module_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  target_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  original_name?: Prisma.StringFieldUpdateOperationsInput | string
-  file_size?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  mime_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storage_type?: Prisma.StringFieldUpdateOperationsInput | string
-  local_path?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  s3_bucket?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  s3_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  s3_region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  uploaded_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  download_count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  is_publish?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  documents?: Prisma.documentsUncheckedUpdateManyWithoutFilesNestedInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersUncheckedUpdateManyWithoutFiles_newsletters_pdf_idTofilesNestedInput
 }
 
 export type filesCreateManyUsersInput = {
@@ -1421,8 +1126,6 @@ export type filesUpdateWithoutUsersInput = {
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   documents?: Prisma.documentsUpdateManyWithoutFilesNestedInput
   modules?: Prisma.modulesUpdateOneWithoutFilesNestedInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersUpdateManyWithoutFiles_newsletters_pdf_idTofilesNestedInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersUpdateManyWithoutFiles_newsletters_thumbnail_idTofilesNestedInput
 }
 
 export type filesUncheckedUpdateWithoutUsersInput = {
@@ -1446,8 +1149,6 @@ export type filesUncheckedUpdateWithoutUsersInput = {
   is_publish?: Prisma.BoolFieldUpdateOperationsInput | boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   documents?: Prisma.documentsUncheckedUpdateManyWithoutFilesNestedInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersUncheckedUpdateManyWithoutFiles_newsletters_pdf_idTofilesNestedInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersUncheckedUpdateManyWithoutFiles_newsletters_thumbnail_idTofilesNestedInput
 }
 
 export type filesUncheckedUpdateManyWithoutUsersInput = {
@@ -1515,8 +1216,6 @@ export type filesUpdateWithoutModulesInput = {
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   documents?: Prisma.documentsUpdateManyWithoutFilesNestedInput
   users?: Prisma.usersUpdateOneWithoutFilesNestedInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersUpdateManyWithoutFiles_newsletters_pdf_idTofilesNestedInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersUpdateManyWithoutFiles_newsletters_thumbnail_idTofilesNestedInput
 }
 
 export type filesUncheckedUpdateWithoutModulesInput = {
@@ -1540,8 +1239,6 @@ export type filesUncheckedUpdateWithoutModulesInput = {
   is_publish?: Prisma.BoolFieldUpdateOperationsInput | boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   documents?: Prisma.documentsUncheckedUpdateManyWithoutFilesNestedInput
-  newsletters_newsletters_pdf_idTofiles?: Prisma.newslettersUncheckedUpdateManyWithoutFiles_newsletters_pdf_idTofilesNestedInput
-  newsletters_newsletters_thumbnail_idTofiles?: Prisma.newslettersUncheckedUpdateManyWithoutFiles_newsletters_thumbnail_idTofilesNestedInput
 }
 
 export type filesUncheckedUpdateManyWithoutModulesInput = {
@@ -1573,14 +1270,10 @@ export type filesUncheckedUpdateManyWithoutModulesInput = {
 
 export type FilesCountOutputType = {
   documents: number
-  newsletters_newsletters_pdf_idTofiles: number
-  newsletters_newsletters_thumbnail_idTofiles: number
 }
 
 export type FilesCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   documents?: boolean | FilesCountOutputTypeCountDocumentsArgs
-  newsletters_newsletters_pdf_idTofiles?: boolean | FilesCountOutputTypeCountNewsletters_newsletters_pdf_idTofilesArgs
-  newsletters_newsletters_thumbnail_idTofiles?: boolean | FilesCountOutputTypeCountNewsletters_newsletters_thumbnail_idTofilesArgs
 }
 
 /**
@@ -1598,20 +1291,6 @@ export type FilesCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
  */
 export type FilesCountOutputTypeCountDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.documentsWhereInput
-}
-
-/**
- * FilesCountOutputType without action
- */
-export type FilesCountOutputTypeCountNewsletters_newsletters_pdf_idTofilesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.newslettersWhereInput
-}
-
-/**
- * FilesCountOutputType without action
- */
-export type FilesCountOutputTypeCountNewsletters_newsletters_thumbnail_idTofilesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.newslettersWhereInput
 }
 
 
@@ -1639,8 +1318,6 @@ export type filesSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   documents?: boolean | Prisma.files$documentsArgs<ExtArgs>
   modules?: boolean | Prisma.files$modulesArgs<ExtArgs>
   users?: boolean | Prisma.files$usersArgs<ExtArgs>
-  newsletters_newsletters_pdf_idTofiles?: boolean | Prisma.files$newsletters_newsletters_pdf_idTofilesArgs<ExtArgs>
-  newsletters_newsletters_thumbnail_idTofiles?: boolean | Prisma.files$newsletters_newsletters_thumbnail_idTofilesArgs<ExtArgs>
   _count?: boolean | Prisma.FilesCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["files"]>
 
@@ -1722,8 +1399,6 @@ export type filesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   documents?: boolean | Prisma.files$documentsArgs<ExtArgs>
   modules?: boolean | Prisma.files$modulesArgs<ExtArgs>
   users?: boolean | Prisma.files$usersArgs<ExtArgs>
-  newsletters_newsletters_pdf_idTofiles?: boolean | Prisma.files$newsletters_newsletters_pdf_idTofilesArgs<ExtArgs>
-  newsletters_newsletters_thumbnail_idTofiles?: boolean | Prisma.files$newsletters_newsletters_thumbnail_idTofilesArgs<ExtArgs>
   _count?: boolean | Prisma.FilesCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type filesIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1741,8 +1416,6 @@ export type $filesPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     documents: Prisma.$documentsPayload<ExtArgs>[]
     modules: Prisma.$modulesPayload<ExtArgs> | null
     users: Prisma.$usersPayload<ExtArgs> | null
-    newsletters_newsletters_pdf_idTofiles: Prisma.$newslettersPayload<ExtArgs>[]
-    newsletters_newsletters_thumbnail_idTofiles: Prisma.$newslettersPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2162,8 +1835,6 @@ export interface Prisma__filesClient<T, Null = never, ExtArgs extends runtime.Ty
   documents<T extends Prisma.files$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.files$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$documentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   modules<T extends Prisma.files$modulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.files$modulesArgs<ExtArgs>>): Prisma.Prisma__modulesClient<runtime.Types.Result.GetResult<Prisma.$modulesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   users<T extends Prisma.files$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.files$usersArgs<ExtArgs>>): Prisma.Prisma__usersClient<runtime.Types.Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  newsletters_newsletters_pdf_idTofiles<T extends Prisma.files$newsletters_newsletters_pdf_idTofilesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.files$newsletters_newsletters_pdf_idTofilesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$newslettersPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  newsletters_newsletters_thumbnail_idTofiles<T extends Prisma.files$newsletters_newsletters_thumbnail_idTofilesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.files$newsletters_newsletters_thumbnail_idTofilesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$newslettersPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2668,54 +2339,6 @@ export type files$usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   include?: Prisma.usersInclude<ExtArgs> | null
   where?: Prisma.usersWhereInput
-}
-
-/**
- * files.newsletters_newsletters_pdf_idTofiles
- */
-export type files$newsletters_newsletters_pdf_idTofilesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the newsletters
-   */
-  select?: Prisma.newslettersSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the newsletters
-   */
-  omit?: Prisma.newslettersOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.newslettersInclude<ExtArgs> | null
-  where?: Prisma.newslettersWhereInput
-  orderBy?: Prisma.newslettersOrderByWithRelationInput | Prisma.newslettersOrderByWithRelationInput[]
-  cursor?: Prisma.newslettersWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.NewslettersScalarFieldEnum | Prisma.NewslettersScalarFieldEnum[]
-}
-
-/**
- * files.newsletters_newsletters_thumbnail_idTofiles
- */
-export type files$newsletters_newsletters_thumbnail_idTofilesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the newsletters
-   */
-  select?: Prisma.newslettersSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the newsletters
-   */
-  omit?: Prisma.newslettersOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.newslettersInclude<ExtArgs> | null
-  where?: Prisma.newslettersWhereInput
-  orderBy?: Prisma.newslettersOrderByWithRelationInput | Prisma.newslettersOrderByWithRelationInput[]
-  cursor?: Prisma.newslettersWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.NewslettersScalarFieldEnum | Prisma.NewslettersScalarFieldEnum[]
 }
 
 /**

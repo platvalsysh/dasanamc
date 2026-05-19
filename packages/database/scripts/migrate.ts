@@ -53,11 +53,14 @@ async function runMigrations() {
     console.log(`Searching for migrations in: ${pattern}`);
     const files = await glob(pattern);
 
-    // Sort files by filename (basename) to ensure chronological order
+    // Sort files by filename (basename) to ensure chronological order.
+    // On basename ties, fall back to full path so order is deterministic and
+    // package-stable (core/<file> runs before module-*/<file> alphabetically).
     files.sort((a, b) => {
       const nameA = path.basename(a);
       const nameB = path.basename(b);
-      return nameA.localeCompare(nameB);
+      const cmp = nameA.localeCompare(nameB);
+      return cmp !== 0 ? cmp : a.localeCompare(b);
     });
 
     console.log(`Found ${files.length} migration files.`);

@@ -23,7 +23,6 @@
     "@repo/module-board": "workspace:*",
     "@repo/module-editor": "workspace:*",
     "@repo/module-file": "workspace:*",
-    "@repo/module-newsletter": "workspace:*",
     "@repo/module-sms": "workspace:*",
     "@repo/ui": "workspace:*",
     "@repo/ui-admin": "workspace:*",

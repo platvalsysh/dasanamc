@@ -38,7 +38,6 @@
 | [@repo/module-board](module-board/) | 게시판 |
 | [@repo/module-editor](module-editor/) | 위지위그 에디터 (TipTap) |
 | [@repo/module-file](module-file/) | 파일 업로드/관리 |
-| [@repo/module-newsletter](module-newsletter/) | 뉴스레터 |
 | [@repo/module-sms](module-sms/) | SMS 발송 |
 | [@repo/module-example](module-example/) | **참고용 — 새 모듈 작성 시 복제 베이스** |
 

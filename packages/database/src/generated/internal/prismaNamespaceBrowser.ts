@@ -74,8 +74,6 @@ export const ModelName = {
   users: 'users',
   webauthn_challenges: 'webauthn_challenges',
   webauthn_credentials: 'webauthn_credentials',
-  custom_migrations: 'custom_migrations',
-  seeds: 'seeds',
   admin_permissions: 'admin_permissions',
   admin_role_permissions: 'admin_role_permissions',
   admin_roles: 'admin_roles',
@@ -86,11 +84,6 @@ export const ModelName = {
   modules: 'modules',
   profiles: 'profiles',
   board_templates: 'board_templates',
-  bxemeritus: 'bxemeritus',
-  bxmember: 'bxmember',
-  bxmember_group_members: 'bxmember_group_members',
-  bxmember_groups: 'bxmember_groups',
-  bxprofessor: 'bxprofessor',
   comment_vote_log: 'comment_vote_log',
   comments: 'comments',
   document_categories: 'document_categories',
@@ -98,13 +91,7 @@ export const ModelName = {
   document_read_history: 'document_read_history',
   document_vote_log: 'document_vote_log',
   documents: 'documents',
-  files: 'files',
-  newsletters: 'newsletters',
-  organization_groups: 'organization_groups',
-  organization_members: 'organization_members',
-  organization_positions: 'organization_positions',
-  schedules: 'schedules',
-  sponsors: 'sponsors'
+  files: 'files'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -500,24 +487,6 @@ export const Webauthn_credentialsScalarFieldEnum = {
 export type Webauthn_credentialsScalarFieldEnum = (typeof Webauthn_credentialsScalarFieldEnum)[keyof typeof Webauthn_credentialsScalarFieldEnum]
 
 
-export const Custom_migrationsScalarFieldEnum = {
-  id: 'id',
-  package_name: 'package_name',
-  task_name: 'task_name',
-  executed_at: 'executed_at'
-} as const
-
-export type Custom_migrationsScalarFieldEnum = (typeof Custom_migrationsScalarFieldEnum)[keyof typeof Custom_migrationsScalarFieldEnum]
-
-
-export const SeedsScalarFieldEnum = {
-  name: 'name',
-  executed_at: 'executed_at'
-} as const
-
-export type SeedsScalarFieldEnum = (typeof SeedsScalarFieldEnum)[keyof typeof SeedsScalarFieldEnum]
-
-
 export const Admin_permissionsScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -644,103 +613,6 @@ export const Board_templatesScalarFieldEnum = {
 } as const
 
 export type Board_templatesScalarFieldEnum = (typeof Board_templatesScalarFieldEnum)[keyof typeof Board_templatesScalarFieldEnum]
-
-
-export const BxemeritusScalarFieldEnum = {
-  seq: 'seq',
-  name_kor: 'name_kor',
-  email: 'email',
-  cellphone_number: 'cellphone_number',
-  remark: 'remark'
-} as const
-
-export type BxemeritusScalarFieldEnum = (typeof BxemeritusScalarFieldEnum)[keyof typeof BxemeritusScalarFieldEnum]
-
-
-export const BxmemberScalarFieldEnum = {
-  seq: 'seq',
-  name_kor: 'name_kor',
-  name_ch: 'name_ch',
-  sex: 'sex',
-  major: 'major',
-  graduate_number: 'graduate_number',
-  graduate_year: 'graduate_year',
-  graduate_month: 'graduate_month',
-  master_major: 'master_major',
-  master_graduate_number: 'master_graduate_number',
-  master_graduate_year: 'master_graduate_year',
-  master_graduate_month: 'master_graduate_month',
-  doctor_major: 'doctor_major',
-  doctor_graduate_number: 'doctor_graduate_number',
-  doctor_graduate_year: 'doctor_graduate_year',
-  doctor_graduate_month: 'doctor_graduate_month',
-  course: 'course',
-  finish_flag: 'finish_flag',
-  finish_year: 'finish_year',
-  decease: 'decease',
-  remark: 'remark',
-  job_class: 'job_class',
-  office_zipcode: 'office_zipcode',
-  office_address: 'office_address',
-  office_name: 'office_name',
-  office_position: 'office_position',
-  office_phone_number: 'office_phone_number',
-  office_fax_number: 'office_fax_number',
-  office_area: 'office_area',
-  email: 'email',
-  zipcode: 'zipcode',
-  address: 'address',
-  phone_number: 'phone_number',
-  fax_number: 'fax_number',
-  cellphone_number: 'cellphone_number',
-  member_srl: 'member_srl',
-  enter_year: 'enter_year',
-  search_agree: 'search_agree',
-  is_major: 'is_major',
-  user_id: 'user_id'
-} as const
-
-export type BxmemberScalarFieldEnum = (typeof BxmemberScalarFieldEnum)[keyof typeof BxmemberScalarFieldEnum]
-
-
-export const Bxmember_group_membersScalarFieldEnum = {
-  id: 'id',
-  group_id: 'group_id',
-  type: 'type',
-  name: 'name',
-  cellphone_number: 'cellphone_number',
-  email: 'email',
-  ref_data: 'ref_data',
-  extra_vars: 'extra_vars',
-  member_id: 'member_id',
-  professor_id: 'professor_id',
-  created_at: 'created_at',
-  executive_id: 'executive_id'
-} as const
-
-export type Bxmember_group_membersScalarFieldEnum = (typeof Bxmember_group_membersScalarFieldEnum)[keyof typeof Bxmember_group_membersScalarFieldEnum]
-
-
-export const Bxmember_groupsScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  extra_vars: 'extra_vars',
-  deleted_at: 'deleted_at',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
-} as const
-
-export type Bxmember_groupsScalarFieldEnum = (typeof Bxmember_groupsScalarFieldEnum)[keyof typeof Bxmember_groupsScalarFieldEnum]
-
-
-export const BxprofessorScalarFieldEnum = {
-  seq: 'seq',
-  name_kor: 'name_kor',
-  email: 'email',
-  cellphone_number: 'cellphone_number'
-} as const
-
-export type BxprofessorScalarFieldEnum = (typeof BxprofessorScalarFieldEnum)[keyof typeof BxprofessorScalarFieldEnum]
 
 
 export const Comment_vote_logScalarFieldEnum = {
@@ -876,91 +748,6 @@ export const FilesScalarFieldEnum = {
 } as const
 
 export type FilesScalarFieldEnum = (typeof FilesScalarFieldEnum)[keyof typeof FilesScalarFieldEnum]
-
-
-export const NewslettersScalarFieldEnum = {
-  id: 'id',
-  title: 'title',
-  issue_number: 'issue_number',
-  pdf_id: 'pdf_id',
-  thumbnail_id: 'thumbnail_id',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
-} as const
-
-export type NewslettersScalarFieldEnum = (typeof NewslettersScalarFieldEnum)[keyof typeof NewslettersScalarFieldEnum]
-
-
-export const Organization_groupsScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  order: 'order',
-  description: 'description',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
-} as const
-
-export type Organization_groupsScalarFieldEnum = (typeof Organization_groupsScalarFieldEnum)[keyof typeof Organization_groupsScalarFieldEnum]
-
-
-export const Organization_membersScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  major: 'major',
-  gisu: 'gisu',
-  group_id: 'group_id',
-  position_id: 'position_id',
-  member_id: 'member_id',
-  order: 'order',
-  is_active: 'is_active',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
-} as const
-
-export type Organization_membersScalarFieldEnum = (typeof Organization_membersScalarFieldEnum)[keyof typeof Organization_membersScalarFieldEnum]
-
-
-export const Organization_positionsScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  order: 'order',
-  group_id: 'group_id',
-  created_at: 'created_at',
-  updated_at: 'updated_at',
-  description: 'description'
-} as const
-
-export type Organization_positionsScalarFieldEnum = (typeof Organization_positionsScalarFieldEnum)[keyof typeof Organization_positionsScalarFieldEnum]
-
-
-export const SchedulesScalarFieldEnum = {
-  id: 'id',
-  title: 'title',
-  start_date: 'start_date',
-  end_date: 'end_date',
-  location: 'location',
-  content: 'content',
-  is_important: 'is_important',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
-} as const
-
-export type SchedulesScalarFieldEnum = (typeof SchedulesScalarFieldEnum)[keyof typeof SchedulesScalarFieldEnum]
-
-
-export const SponsorsScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  logo: 'logo',
-  url: 'url',
-  description: 'description',
-  list_order: 'list_order',
-  is_active: 'is_active',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
-} as const
-
-export type SponsorsScalarFieldEnum = (typeof SponsorsScalarFieldEnum)[keyof typeof SponsorsScalarFieldEnum]
 
 
 export const SortOrder = {

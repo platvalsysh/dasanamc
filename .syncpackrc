@@ -14,8 +14,7 @@
       "packages": [
         "@repo/module-*",
         "!@repo/module-board",
-        "!@repo/module-editor",
-        "!@repo/module-newsletter"
+        "!@repo/module-editor"
       ],
       "dependencies": ["@repo/module-*"],
       "isBanned": true
