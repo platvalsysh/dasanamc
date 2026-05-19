@@ -19,6 +19,28 @@ import {
 import { Checkbox } from "@repo/ui-admin";
 import { PermissionDeleteDialog } from "./PermissionDeleteDialog";
 
+/**
+ * 와일드카드(`*`, `core.*`, `auth.users.*`) 까지 평가해서 주어진 권한 이름이
+ * 역할의 권한 집합에 포함되는지 판정. `selectedRole.permissions.includes(...)`
+ * 단순 매칭으로는 super_admin (`["*"]`) 같은 와일드카드 역할이 모든
+ * 체크박스에서 꺼진 것처럼 보이므로 별도 헬퍼 필요.
+ *
+ * 동일 로직: packages/auth/src/utils/permission-check.ts
+ */
+function roleCoversPermission(
+  rolePermissions: readonly string[],
+  permissionName: string,
+): boolean {
+  if (rolePermissions.includes(permissionName)) return true;
+  if (rolePermissions.includes("*")) return true;
+  const parts = permissionName.split(".");
+  for (let i = parts.length - 1; i >= 1; i--) {
+    const wildcard = parts.slice(0, i).join(".") + ".*";
+    if (rolePermissions.includes(wildcard)) return true;
+  }
+  return false;
+}
+
 interface Permission {
   id: string;
   name: string;
@@ -289,22 +311,38 @@ export function PermissionMatrix({
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <label
-                    className={`relative inline-flex items-center cursor-pointer ${selectedRole.is_system ? "opacity-50 cursor-not-allowed" : ""}`}
-                  >
-                    <input
-                      type="checkbox"
-                      disabled={selectedRole.is_system}
-                      checked={selectedRole.permissions.includes(
-                        permission.name,
-                      )}
-                      onChange={() =>
-                        onTogglePermission(selectedRole.id, permission.name)
-                      }
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                  </label>
+                  {(() => {
+                    const isExact = selectedRole.permissions.includes(permission.name);
+                    const isCovered = roleCoversPermission(
+                      selectedRole.permissions,
+                      permission.name,
+                    );
+                    // 와일드카드로 묶여있어 개별 토글이 의미 없는 경우 비활성 + 표시
+                    const coveredByWildcard = isCovered && !isExact;
+                    const checked = isExact || isCovered;
+                    const disabled = selectedRole.is_system || coveredByWildcard;
+                    return (
+                      <label
+                        className={`relative inline-flex items-center ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                        title={
+                          coveredByWildcard
+                            ? "이 역할은 와일드카드 권한으로 이 권한을 자동 포함합니다"
+                            : undefined
+                        }
+                      >
+                        <input
+                          type="checkbox"
+                          disabled={disabled}
+                          checked={checked}
+                          onChange={() =>
+                            onTogglePermission(selectedRole.id, permission.name)
+                          }
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                      </label>
+                    );
+                  })()}
 
                   {!permission.is_system && (
                       <PermissionDeleteDialog permission={permission} />
