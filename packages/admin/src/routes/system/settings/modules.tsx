@@ -16,42 +16,17 @@ import type { LoaderFunctionArgs } from "react-router";
 import { Form, Link, useLoaderData, useSearchParams } from "react-router";
 
 
+/**
+ * 모듈 인스턴스 목록 (core.modules 테이블).
+ *
+ * 예: 게시판 모듈의 인스턴스 — `module="board"`, `mid="Notice"` / `mid="Freeboard"`.
+ * 모듈 정의(코드)와 무관하게 운영자가 만든 _인스턴스_ 가 여기 들어옴.
+ * 모듈 자체 관리는 `installed-modules` 페이지 참고.
+ */
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const page = Number(url.searchParams.get("page")) || 1;
   const search = url.searchParams.get("q") || undefined;
-  
-  // Use "module" or "mid" as the first argument? 
-  // ModulesService.getModules(moduleName, page, limit, searchKeyword)
-  // The first arg is 'moduleName' which seems to be a filter for 'module' column. 
-  // If we want all, we might need adjustments or pass undefined/empty string if allowed.
-  // Checking ModulesService source: 'where: { module: moduleName }'. 
-  // It seems strictly filters by module name?
-  // User wants "module list screen". Ideally all modules.
-  // If ModulesService requires a moduleName, we might be limited.
-  // Converting 'moduleName' to optional in logic or passing a wildcard if supported? 
-  // Wait, the ModulesService implementation shows:
-  /*
-    static async getModules(
-      moduleName: string,
-      page: number = 1,
-      limit: number = 20,
-      searchKeyword?: string,
-    ) {
-      const skip = (page - 1) * limit;
-      const where: Prisma.modulesWhereInput = {
-        module: moduleName,
-      };
-      ...
-  */
-  // It effectively filters by `module` column. 
-  // If the user wants ALL modules, this service method might need an update or we misuse it.
-  // However, for this task, I will try to pass a common module name or maybe upgrade the service?
-  // The user request says "packages/core/src/.server/ModulesService.ts mid 컬럼과 라우터와 연결시켜 새창으로 링크 열수있도록."
-  // It implies using existing service. But if existing service enforces `module` filter, I cannot get list of ALL different modules easily unless I know the name.
-  // Let's assume for now I should list all, so I might need to Modify ModulesService to make moduleName optional.
-  // I will Modify ModulesService first to allow getting all modules if moduleName is not provided.
-  
   return ModulesService.getModules({ searchKeyword: search }, page, 10);
 };
 

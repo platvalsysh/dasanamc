@@ -11,6 +11,7 @@ import {
   resetAdminMenu,
   moduleManager,
 } from "@repo/core/server";
+import { ClientOnly } from "../../../components/ClientOnly";
 import {
   Save,
   AlertCircle,
@@ -354,12 +355,15 @@ function MenuItemDialog({
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     ID
+                    <span className="ml-1 text-xs font-normal text-gray-400">
+                      (자동 생성, 수정 불가)
+                    </span>
                   </label>
                   <input
                     type="text"
                     value={formData.id}
-                    onChange={(e) => handleFieldChange("id", e.target.value)}
-                    className="mt-1 block w-full rounded-md border border-gray-300 p-2 font-mono shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    readOnly
+                    className="mt-1 block w-full rounded-md border border-gray-200 bg-gray-50 p-2 font-mono text-gray-500 shadow-sm sm:text-sm"
                   />
                 </div>
 
@@ -998,23 +1002,31 @@ export default function MenuSettings() {
           <div className="space-y-4">
             <div className="rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden">
              
-              <DndContext
-                sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragEnd={handleDragEnd}
+              <ClientOnly
+                fallback={
+                  <div className="p-6 text-center text-sm text-gray-400">
+                    메뉴 트리 로딩 중...
+                  </div>
+                }
               >
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleDragEnd}
+                >
                   <RecursiveSortableList
-                      items={menuConfig}
-                      parentId="root"
-                      onDelete={handleDelete}
-                      onAddChild={openAddChild}
-                      onMove={handleMove}
-                      onEdit={handleEdit}
-                      expandedItems={expandedItems}
-                      toggleExpand={toggleExpand}
-                      declaredPathsSet={declaredPathsSet}
+                    items={menuConfig}
+                    parentId="root"
+                    onDelete={handleDelete}
+                    onAddChild={openAddChild}
+                    onMove={handleMove}
+                    onEdit={handleEdit}
+                    expandedItems={expandedItems}
+                    toggleExpand={toggleExpand}
+                    declaredPathsSet={declaredPathsSet}
                   />
-              </DndContext>
+                </DndContext>
+              </ClientOnly>
             </div>
 
             <button

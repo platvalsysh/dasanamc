@@ -7,6 +7,7 @@ import {
 } from "react-router";
 import { configManager } from "@repo/core/server";
 import { Save } from "lucide-react";
+import { NotImplementedBanner } from "../../../components/NotImplementedBanner";
 
 interface EmailConfig {
   smtpHost: string;
@@ -22,8 +23,8 @@ const DEFAULT_CONFIG: EmailConfig = {
   smtpPort: 587,
   smtpUser: "",
   smtpSecure: true,
-  senderName: "VSTA Admin",
-  senderEmail: "noreply@vsta.com",
+  senderName: "",
+  senderEmail: "",
 };
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -68,6 +69,7 @@ export default function EmailSettings() {
 
   return (
     <Form method="post" className="space-y-6">
+      <NotImplementedBanner feature="이메일 발송 (SMTP)" />
       <div>
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
           발신자 정보

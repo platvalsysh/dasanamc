@@ -7,6 +7,7 @@ import {
 } from "react-router";
 import { configManager } from "@repo/core/server";
 import { Save } from "lucide-react";
+import { NotImplementedBanner } from "../../../components/NotImplementedBanner";
 
 interface ApiConfig {
   enablePublicApi: boolean;
@@ -66,6 +67,7 @@ export default function ApiSettings() {
 
   return (
     <Form method="post" className="space-y-6">
+      <NotImplementedBanner feature="공개 API / 외부 서비스 키 관리" />
       <div>
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
           공개 API 설정

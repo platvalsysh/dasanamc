@@ -160,7 +160,7 @@ function AdminLayoutContent({ menuItems = [] }: AdminLayoutContentProps) {
                   return (
                     <PermissionGate
                       key={item.id}
-                      permission={item.permission || "admins.view"}
+                      permission={item.permission || []}
                     >
                       {item.children && item.children.length > 0 ? (
                         <Popover
@@ -200,33 +200,43 @@ function AdminLayoutContent({ menuItems = [] }: AdminLayoutContentProps) {
                                 return (
                                   <PermissionGate
                                     key={child.id}
-                                    permission={
-                                      child.permission || "admins.view"
-                                    }
+                                    permission={child.permission || []}
                                   >
-                                    <Link
-                                      to={child.path!}
-                                      onClick={() => setOpenMenuId(null)}
-                                      className={`flex items-center gap-2 px-4 py-2 text-sm rounded-md transition-colors ${childClass}`}
-                                    >
-                                      {getIcon(child.icon)}
-                                      <span>{child.label}</span>
-                                    </Link>
+                                    {child.path ? (
+                                      <Link
+                                        to={child.path}
+                                        onClick={() => setOpenMenuId(null)}
+                                        className={`flex items-center gap-2 px-4 py-2 text-sm rounded-md transition-colors ${childClass}`}
+                                      >
+                                        {getIcon(child.icon)}
+                                        <span>{child.label}</span>
+                                      </Link>
+                                    ) : (
+                                      <div className="flex items-center gap-2 px-4 py-2 text-sm text-gray-500">
+                                        {getIcon(child.icon)}
+                                        <span>{child.label}</span>
+                                      </div>
+                                    )}
                                   </PermissionGate>
                                 );
                               })}
                             </div>
                           </PopoverContent>
                         </Popover>
-                      ) : (
+                      ) : item.path ? (
                         <Link
-                          to={item.path!}
+                          to={item.path}
                           data-active={status === "active"}
                           className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors shrink-0 select-none ${buttonClass}`}
                         >
                           {getIcon(item.icon)}
                           <span className="text-sm">{item.label}</span>
                         </Link>
+                      ) : (
+                        <div className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-500 shrink-0 select-none">
+                          {getIcon(item.icon)}
+                          <span className="text-sm">{item.label}</span>
+                        </div>
                       )}
                     </PermissionGate>
                   );
@@ -284,22 +294,27 @@ function AdminLayoutContent({ menuItems = [] }: AdminLayoutContentProps) {
               {menuItems.map((item) => (
                 <div key={item.id} className="space-y-1">
                   {/* Parent Item */}
-                  <PermissionGate permission={item.permission || "admins.view"}>
+                  <PermissionGate permission={item.permission || []}>
                     <div className="px-3 py-2">
                       {item.children && item.children.length > 0 ? (
                         <div className="font-semibold text-gray-900 flex items-center gap-2">
                           {getIcon(item.icon)}
                           <span>{item.label}</span>
                         </div>
-                      ) : (
+                      ) : item.path ? (
                         <Link
-                          to={item.path!}
+                          to={item.path}
                           onClick={() => setIsMobileOpen(false)}
                           className={`flex items-center gap-2 font-semibold text-gray-900 ${getMenuStatus(item, location.pathname) === "active" ? "text-blue-600" : ""}`}
                         >
                           {getIcon(item.icon)}
                           <span>{item.label}</span>
                         </Link>
+                      ) : (
+                        <div className="flex items-center gap-2 font-semibold text-gray-500">
+                          {getIcon(item.icon)}
+                          <span>{item.label}</span>
+                        </div>
                       )}
                     </div>
 
@@ -316,16 +331,23 @@ function AdminLayoutContent({ menuItems = [] }: AdminLayoutContentProps) {
                           return (
                             <PermissionGate
                               key={child.id}
-                              permission={child.permission || "admins.view"}
+                              permission={child.permission || []}
                             >
-                              <Link
-                                to={child.path!}
-                                onClick={() => setIsMobileOpen(false)}
-                                className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-sm ${isActive ? "bg-blue-100 text-blue-700 font-medium" : "text-gray-600 hover:bg-gray-50"}`}
-                              >
-                                {getIcon(child.icon)}
-                                <span>{child.label}</span>
-                              </Link>
+                              {child.path ? (
+                                <Link
+                                  to={child.path}
+                                  onClick={() => setIsMobileOpen(false)}
+                                  className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-sm ${isActive ? "bg-blue-100 text-blue-700 font-medium" : "text-gray-600 hover:bg-gray-50"}`}
+                                >
+                                  {getIcon(child.icon)}
+                                  <span>{child.label}</span>
+                                </Link>
+                              ) : (
+                                <div className="flex items-center gap-3 px-3 py-2 text-sm text-gray-500">
+                                  {getIcon(child.icon)}
+                                  <span>{child.label}</span>
+                                </div>
+                              )}
                             </PermissionGate>
                           );
                         })}
@@ -380,29 +402,39 @@ function AdminLayoutContent({ menuItems = [] }: AdminLayoutContentProps) {
                   {sideMenuItems.map((item) => (
                     <PermissionGate
                       key={item.id}
-                      permission={item.permission || "admins.view"}
+                      permission={item.permission || []}
                     >
-                      <Link
-                        to={item.path!}
-                        className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors group relative
-                          ${
-                            getMenuStatus(item, location.pathname) === "active"
-                              ? "bg-blue-50 text-blue-700 font-medium"
-                              : "text-gray-600 hover:bg-gray-100"
-                          }
-                          ${!isDesktopExpanded ? "justify-center" : ""}
-                        `}
-                        title={item.label}
-                      >
-                        {getIcon(item.icon)}
-                        {isDesktopExpanded && (
-                          <span
-                            className={`text-sm transition-opacity duration-200`}
-                          >
-                            {item.label}
-                          </span>
-                        )}
-                      </Link>
+                      {item.path ? (
+                        <Link
+                          to={item.path}
+                          className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors group relative
+                            ${
+                              getMenuStatus(item, location.pathname) === "active"
+                                ? "bg-blue-50 text-blue-700 font-medium"
+                                : "text-gray-600 hover:bg-gray-100"
+                            }
+                            ${!isDesktopExpanded ? "justify-center" : ""}
+                          `}
+                          title={item.label}
+                        >
+                          {getIcon(item.icon)}
+                          {isDesktopExpanded && (
+                            <span className="text-sm transition-opacity duration-200">
+                              {item.label}
+                            </span>
+                          )}
+                        </Link>
+                      ) : (
+                        <div
+                          className={`flex items-center gap-2 px-3 py-2 text-gray-500 ${!isDesktopExpanded ? "justify-center" : ""}`}
+                          title={item.label}
+                        >
+                          {getIcon(item.icon)}
+                          {isDesktopExpanded && (
+                            <span className="text-sm">{item.label}</span>
+                          )}
+                        </div>
+                      )}
                     </PermissionGate>
                   ))}
                 </nav>
@@ -440,7 +472,7 @@ export interface AdminLayoutProps {
 export default function AdminLayout({ menuItems }: AdminLayoutProps) {
   return (
     <PermissionGate
-      permission="admins.view"
+      permission="core.dashboard.view"
       fallback={<AdminAccessDenied />}
     >
       <AdminLayoutContent menuItems={menuItems} />

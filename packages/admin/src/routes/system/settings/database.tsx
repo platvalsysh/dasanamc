@@ -7,6 +7,7 @@ import {
 } from "react-router";
 import { configManager } from "@repo/core/server";
 import { Save } from "lucide-react";
+import { NotImplementedBanner } from "../../../components/NotImplementedBanner";
 
 interface DatabaseConfig {
   autoBackup: boolean;
@@ -65,6 +66,7 @@ export default function DatabaseSettings() {
 
   return (
     <Form method="post" className="space-y-6">
+      <NotImplementedBanner feature="자동 백업 / 유지보수 윈도우" />
       <div>
         <h3 className="text-lg font-semibold text-gray-900 mb-4">백업 설정</h3>
         <div className="space-y-4">

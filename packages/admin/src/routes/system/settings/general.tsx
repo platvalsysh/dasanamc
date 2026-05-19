@@ -7,6 +7,7 @@ import {
 } from "react-router";
 import { configManager } from "@repo/core/server";
 import { Save } from "lucide-react";
+import { NotImplementedBanner } from "../../../components/NotImplementedBanner";
 
 interface GeneralConfig {
   siteName: string;
@@ -19,9 +20,9 @@ interface GeneralConfig {
 }
 
 const DEFAULT_CONFIG: GeneralConfig = {
-  siteName: "VSTA Marketplace",
-  siteUrl: "https://vsta.com",
-  adminEmail: "admin@vsta.com",
+  siteName: "",
+  siteUrl: "",
+  adminEmail: "",
   timezone: "Asia/Seoul",
   language: "ko",
   maintenanceMode: false,
@@ -73,6 +74,7 @@ export default function GeneralSettings() {
 
   return (
     <Form method="post" className="space-y-6">
+      <NotImplementedBanner feature="일반 설정 (siteName, siteUrl 등)" />
       <div>
         <h3 className="text-lg font-semibold text-gray-900 mb-4">기본 정보</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

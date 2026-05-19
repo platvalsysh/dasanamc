@@ -7,6 +7,7 @@ import {
 } from "react-router";
 import { configManager } from "@repo/core/server";
 import { Save, AlertCircle } from "lucide-react";
+import { NotImplementedBanner } from "../../../components/NotImplementedBanner";
 
 interface SecurityConfig {
   emailVerification: boolean;
@@ -58,6 +59,7 @@ export default function SecuritySettings() {
 
   return (
     <Form method="post" className="space-y-6">
+      <NotImplementedBanner feature="보안 정책 (이메일 인증, 2FA, 세션 타임아웃)" />
       <div>
         <h3 className="text-lg font-semibold text-gray-900 mb-4">인증 설정</h3>
         <div className="space-y-4">

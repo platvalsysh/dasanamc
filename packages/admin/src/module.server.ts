@@ -42,6 +42,10 @@ export const module = createModule("admin")
       is_dangerous: true,
     },
   ])
+  // 메인 사이드바 진입점은 둘만 노출. 시스템 설정 내부의 세부 메뉴 (외관/이메일/
+  // 보안/DB/API/서버 등) 는 `packages/admin/src/routes/system/settings/_layout.tsx`
+  // 의 sub-nav 가 담당. 사이드바가 너무 길어지는 걸 막고, sub-nav 진입 시점에
+  // 한꺼번에 탐색하도록 분리.
   .adminMenuItemUnits([
     {
       id: "admin-menu-builder",
@@ -53,31 +57,13 @@ export const module = createModule("admin")
       order: 90,
     },
     {
-      id: "admin-settings-general",
-      label: "일반 설정",
+      id: "admin-system-settings",
+      label: "시스템 설정",
       icon: "Settings",
-      path: "/admin/system/settings/general",
+      path: "/admin/system/settings",
       permission: "admin.settings.view",
       group: "시스템",
       order: 91,
-    },
-    {
-      id: "admin-settings-menu",
-      label: "관리자 메뉴",
-      icon: "ListTree",
-      path: "/admin/system/settings/menu",
-      permission: "admin.menu.manage",
-      group: "시스템",
-      order: 92,
-    },
-    {
-      id: "admin-installed-modules",
-      label: "설치된 모듈",
-      icon: "Package",
-      path: "/admin/system/settings/installed-modules",
-      permission: "admin.modules.manage",
-      group: "시스템",
-      order: 93,
     },
   ])
   .build();

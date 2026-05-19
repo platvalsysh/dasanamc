@@ -7,6 +7,7 @@ import {
 } from "react-router";
 import { configManager } from "@repo/core/server";
 import { Save } from "lucide-react";
+import { NotImplementedBanner } from "../../../components/NotImplementedBanner";
 
 interface ServerConfig {
   logLevel: "debug" | "info" | "warn" | "error";
@@ -62,6 +63,7 @@ export default function ServerSettings() {
 
   return (
     <Form method="post" className="space-y-6">
+      <NotImplementedBanner feature="서버 설정 (로그 레벨, 업로드 크기)" />
       <div>
         <h3 className="text-lg font-semibold text-gray-900 mb-4">서버 설정</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

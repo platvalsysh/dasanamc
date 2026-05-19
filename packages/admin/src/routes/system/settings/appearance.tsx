@@ -7,6 +7,7 @@ import {
 } from "react-router";
 import { configManager } from "@repo/core/server";
 import { Save } from "lucide-react";
+import { NotImplementedBanner } from "../../../components/NotImplementedBanner";
 
 interface AppearanceConfig {
   theme: "light" | "dark" | "system";
@@ -61,6 +62,7 @@ export default function AppearanceSettings() {
 
   return (
     <Form method="post" className="space-y-6">
+      <NotImplementedBanner feature="외관 (theme, primaryColor)" />
       <div>
         <h3 className="text-lg font-semibold text-gray-900 mb-4">테마 설정</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
