@@ -48,14 +48,27 @@ cp .env.example .env
 ### 3단계 — DB 초기 세팅
 
 ```bash
-pnpm db:migrate                          # core + 활성 모듈의 SQL 마이그레이션 실행
-pnpm db:pull                             # 실제 DB 스키마 → schema.prisma 역인출
-pnpm db:gen                              # Prisma 클라이언트 타입 재생성
-pnpm --filter web db:init-permissions    # 권한 시드
+pnpm db:migrate                          # 스키마 + 베이스 테이블 + 액세스 토큰 hook 함수
+pnpm --filter web db:init-permissions    # 권한/역할/매핑 시드
+pnpm --filter web db:bootstrap-admin -- \
+  --email <admin@example.com> \
+  --password <비밀번호> \
+  --display-name "<표시이름>"             # 첫 super_admin 계정 (auth + profile + 역할)
 ```
 
 > ⚠️ `schema.prisma` 직접 수정 금지. SQL 마이그레이션 워크플로 사용.
 > 자세히는 [docs/guidelines/database-migration.md](docs/guidelines/database-migration.md).
+
+### 3-a 단계 — Supabase JWT Hook 활성화 (수동, 1회)
+
+`/admin` 진입 권한 체크가 JWT claims 의 `roles` 를 읽기 때문에, Supabase가
+JWT 발급 시 DB의 역할을 주입하도록 hook 을 켜야 합니다. Cloud 프로젝트 설정
+이라 SQL 로 자동화 불가.
+
+1. **Dashboard → Authentication → Hooks** (URL: `https://supabase.com/dashboard/project/<ref>/auth/hooks`)
+2. **Customize Access Token (JWT) Claims** 행 → Hook type: **Postgres**, Schema: `public`, Function: `custom_access_token_hook`
+3. **Enable hook** 체크 → Save
+4. 기존 세션은 구 JWT 사용 중이므로 **로그아웃 → 재로그인**
 
 ### 4단계 — 브랜딩 / 컨텐츠 교체
 
@@ -76,11 +89,11 @@ pnpm --filter web db:init-permissions    # 권한 시드
 pnpm dev
 ```
 
-브라우저:
+브라우저 — 3단계 의 super_admin 으로 로그인 후:
 - `/admin/system/settings/menu` — 메뉴 빌더로 노출 메뉴 선택
 - `/admin/system/settings/site-menu` — 공개 사이트 메뉴
 - `/admin/system/settings/general` — 사이트 메타
-- `/admin/users` — 초기 관리자 계정 생성 + 역할 / 권한 할당
+- `/admin/users` — 추가 관리자 초대 + 역할/권한 할당
 
 ### 6단계 — 검증
 
