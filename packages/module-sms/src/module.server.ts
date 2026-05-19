@@ -15,12 +15,16 @@ export const module = createModule("sms")
       description: "Manage SMS settings and profiles",
       is_dangerous: true,
     },
-  ]).adminMenuItemUnits([
+  ])
+  .adminMenuItemUnits([
     {
-      id: "sms.config",
+      id: "sms-config",
       label: "SMS 설정",
-      icon: "message-square",
+      icon: "MessageSquare",
       path: "/admin/sms",
-    }
+      permission: "sms.config",
+      group: "시스템",
+      order: 80,
+    },
   ])
   .build();

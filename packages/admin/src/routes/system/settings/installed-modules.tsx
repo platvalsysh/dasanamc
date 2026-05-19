@@ -80,8 +80,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export const loader = async () => {
   const modules = moduleManager.getModules();
   
-  // Fetch DB state
-  const dbPermissions = await prisma.admin_permissions.findMany();
+  // Fetch DB state — deactivated 권한은 제외 (모듈이 더 이상 선언하지 않는 것)
+  const dbPermissions = await prisma.admin_permissions.findMany({
+    where: { deactivated_at: null },
+  });
   const dbRoles = await prisma.admin_roles.findMany({
     include: {
       admin_role_permissions: {

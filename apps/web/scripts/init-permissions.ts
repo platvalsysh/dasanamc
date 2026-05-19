@@ -1,115 +1,47 @@
+/**
+ * 활성 모듈이 선언한 권한 / 역할 / 역할-권한 매핑을 DB 에 시드한다.
+ *
+ * 이 스크립트는 단일 진입점이다 — 옛 chemeng 시점에는 `packages/auth/src/types/
+ * permissions.ts` 의 하드코딩 478줄을 시드로 썼지만, 이제 모듈이 자기 권한을
+ * `createModule(...).permissions([...])` / `.roles([...])` 로 선언하고 그것을
+ * 그대로 DB 에 upsert. ENABLED_MODULES 로 비활성화된 모듈은 자동으로 시드 대상
+ * 밖이 된다.
+ *
+ * 사용:  pnpm --filter web db:init-permissions
+ */
+
+import { moduleManager } from "@repo/core/server";
 import { prisma } from "@repo/database";
-import {
-  admin_permissions,
-  admin_roles,
-  admin_role_permissions,
-} from "@repo/auth/types";
+import { modules } from "../app/modules.server";
 
 async function main() {
   console.log("🚀 Starting permissions initialization...\n");
 
-  try {
-    // 1. Insert permissions
-    console.log("📝 Inserting permissions...");
-    for (const permission of admin_permissions) {
-      await prisma.admin_permissions.upsert({
-        where: { id: permission.id },
-        update: {
-          name: permission.name,
-          display_name: permission.display_name,
-          description: permission.description,
-          category: permission.category,
-          is_dangerous: permission.is_dangerous,
-        },
-        create: {
-          id: permission.id,
-          name: permission.name,
-          display_name: permission.display_name,
-          description: permission.description ?? null,
-          category: permission.category,
-          is_dangerous: permission.is_dangerous,
-        },
-      });
-    }
-    console.log(`✅ Inserted ${admin_permissions.length} permissions\n`);
+  // 1. 활성 모듈을 ModuleManager 에 등록
+  moduleManager.register(modules);
+  console.log(
+    `📦 Registered modules: ${modules.map((m) => m.name).join(", ")}\n`,
+  );
 
-    // 2. Insert roles
-    console.log("👥 Inserting roles...");
-    for (const role of admin_roles) {
-      await prisma.admin_roles.upsert({
-        where: { id: role.id },
-        update: {
-          name: role.name,
-          display_name: role.display_name,
-          description: role.description,
-          level: role.level,
-          is_active: role.is_active,
-          updated_at: new Date(),
-        },
-        create: {
-          id: role.id,
-          name: role.name,
-          display_name: role.display_name,
-          description: role.description ?? null,
-          level: role.level,
-          is_active: role.is_active,
-          created_at: new Date(role.created_at),
-          updated_at: new Date(role.updated_at),
-        },
-      });
-    }
-    console.log(`✅ Inserted ${admin_roles.length} roles\n`);
+  // 2. 각 모듈의 권한 / 역할 / 역할-권한 매핑을 upsert
+  await moduleManager.syncWithDatabase();
 
-    // 3. Insert role-permission mappings
-    console.log("🔗 Inserting role-permission mappings...");
-    let mappingCount = 0;
-
-    for (const [roleName, permissionNames] of Object.entries(
-      admin_role_permissions,
-    )) {
-      const role = admin_roles.find((r) => r.name === roleName);
-      if (!role) {
-        console.warn(`⚠️  Role not found: ${roleName}`);
-        continue;
-      }
-
-      for (const permissionName of permissionNames) {
-        const permission = admin_permissions.find(
-          (p) => p.name === permissionName,
-        );
-        if (!permission) {
-          console.warn(`⚠️  Permission not found: ${permissionName}`);
-          continue;
-        }
-
-        await prisma.admin_role_permissions.upsert({
-          where: {
-            role_id_permission_id: {
-              role_id: role.id,
-              permission_id: permission.id,
-            },
-          },
-          update: {},
-          create: {
-            role_id: role.id,
-            permission_id: permission.id,
-          },
-        });
-        mappingCount++;
-      }
-    }
-    console.log(`✅ Inserted ${mappingCount} role-permission mappings\n`);
-
-    console.log("🎉 Permissions initialization completed successfully!");
-  } catch (error) {
-    console.error("❌ Error during initialization:", error);
-    throw error;
-  }
+  // 3. 결과 통계
+  const [permissions, roles, mappings] = await Promise.all([
+    prisma.admin_permissions.count(),
+    prisma.admin_roles.count(),
+    prisma.admin_role_permissions.count(),
+  ]);
+  console.log(`\n✅ DB 현재 상태:`);
+  console.log(`   - admin_permissions: ${permissions} 행`);
+  console.log(`   - admin_roles: ${roles} 행`);
+  console.log(`   - admin_role_permissions: ${mappings} 행`);
+  console.log("\n🎉 Permissions initialization completed.");
 }
 
 main()
   .catch((e) => {
-    console.error(e);
+    console.error("❌", e);
     process.exit(1);
   })
   .finally(async () => {

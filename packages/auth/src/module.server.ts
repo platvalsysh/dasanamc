@@ -40,20 +40,26 @@ export const module = createModule("auth")
       icon: "Users",
       path: "/admin/users",
       permission: "auth.users.view",
+      group: "사용자",
+      order: 10,
     },
     {
       id: "users-roles",
       label: "권한 관리",
-      icon: "Settings",
+      icon: "Shield",
       path: "/admin/users/roles",
       permission: "auth.users.view",
+      group: "사용자",
+      order: 20,
     },
     {
       id: "users-assign-roles",
       label: "역할 부여",
-      icon: "User",
+      icon: "UserPlus",
       path: "/admin/users/assign-roles",
       permission: ["auth.users.create", "auth.users.edit"],
+      group: "사용자",
+      order: 30,
     },
   ])
   .build();

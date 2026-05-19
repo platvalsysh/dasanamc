@@ -21,12 +21,26 @@ export interface Role<P = string, Name = string> {
   permission_names?: P[];
 }
 
+/**
+ * 모듈이 admin 사이드바에 노출하는 메뉴 항목 단위.
+ *
+ * 트리(`children`) 와 그룹 메타(`group`, `order`) 를 함께 가질 수 있다.
+ * `getAdminMenuTree()` 가 활성 모듈의 항목을 group 으로 묶고 order 로 정렬해
+ * `AdminMenuConfigItem` 트리로 합성한다.
+ *
+ * - `group` 미지정 시 모듈 이름이 그룹이 됨
+ * - `order` 미지정 시 100 (그룹 내 순서). 그룹 자체 순서는 group 항목 중 최소 order
+ * - `path` 를 비우고 `children` 만 두면 펼침 전용 부모 항목
+ */
 export interface AdminMenuItemUnit<P = string> {
   id: string;
   label: string;
-  icon: string;
-  path: string;
+  icon?: string;
+  path?: string;
   permission?: P | P[];
+  group?: string;
+  order?: number;
+  children?: ReadonlyArray<AdminMenuItemUnit<P>>;
 }
 
 export interface SiteMenuItemUnit<P = string> {

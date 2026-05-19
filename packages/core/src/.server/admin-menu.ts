@@ -1,131 +1,49 @@
 import { configManager } from "./ConfigManager";
+import { moduleManager } from "./ModuleManager";
 import type { AdminMenuConfigItem } from "../types";
 
-// Default configuration derived from static constants, but with icon names
-export const DEFAULT_MENU_CONFIG: AdminMenuConfigItem[] = [
-  {
-    id: "dashboard",
-    label: "대시보드",
-    icon: "LayoutDashboard",
-    path: "/admin",
-    permission: "dashboard.view",
-  },
-  {
-    id: "users",
-    label: "사용자 관리",
-    icon: "Users",
-    permission: "users.view",
-    children: [
-      {
-        id: "users-list",
-        label: "사용자 목록",
-        icon: "Users",
-        path: "/admin/users",
-        permission: "users.view",
-      },
-      {
-        id: "users-roles",
-        label: "권한 관리",
-        icon: "Settings",
-        path: "/admin/users/roles",
-        permission: "admins.view",
-      },
-      {
-        id: "users-assign-roles",
-        label: "역할 부여",
-        icon: "User",
-        path: "/admin/users/assign-roles",
-        permission: ["admins.create", "admins.edit"],
-      },
-    ],
-  },
-  {
-    id: "stores",
-    label: "상점 관리",
-    icon: "Store",
-    permission: "users.view",
-    children: [
-      {
-        id: "stores-list",
-        label: "상점 목록",
-        icon: "Store",
-        path: "/admin/stores",
-        permission: "users.view",
-      },
-      {
-        id: "display-categories",
-        label: "진열 카테고리",
-        icon: "FileText",
-        path: "/admin/stores/categories",
-        permission: "products.edit",
-      },
-      {
-        id: "product-display",
-        label: "상품 진열 관리",
-        icon: "Package",
-        path: "/admin/stores/product-display",
-        permission: "products.edit",
-      },
-    ],
-  },
-  {
-    id: "boards",
-    label: "게시판 관리",
-    icon: "MessageSquare",
-    path: "/admin/board",
-    permission: "settings.system",
-  },
-  {
-    id: "products",
-    label: "상품 관리",
-    icon: "Package",
-    permission: "products.view",
-    children: [
-      {
-        id: "products-list",
-        label: "상품 목록",
-        icon: "Package",
-        path: "/admin/products",
-        permission: "products.view",
-      },
-      {
-        id: "products-categories",
-        label: "카테고리",
-        icon: "FileText",
-        path: "/admin/products/categories",
-        permission: "products.categories",
-      },
-    ],
-  },
-  {
-    id: "orders",
-    label: "주문 관리",
-    icon: "ShoppingCart",
-    path: "/admin/orders",
-    permission: "orders.view",
-  },
-  // Note: Settings menu is now hardcoded in the layout header, so optional here.
-];
-
 /**
- * Get the current admin menu configuration
+ * 관리자 사이드바 메뉴를 반환한다.
+ *
+ * 우선순위:
+ *   1. DB 의 `site.adminMenu` config 가 있고 **비어있지 않으면** 그것
+ *      (관리자가 메뉴 빌더로 커스터마이즈한 상태)
+ *   2. 그 외에는 활성 모듈이 선언한 `adminMenuItemUnits` 를 합성한 선언적 트리
+ *
+ * 즉 신규 외주는 별도 설정 없이도 활성 모듈의 메뉴가 자동 노출되고, 관리자가
+ * 메뉴 빌더에서 손대면 그 결과가 영구 저장. 빈 배열 저장으로 "선언적 트리로
+ * 리셋" 효과를 낼 수 있다 ({@link resetAdminMenu} 참고).
+ *
+ * 이전의 `DEFAULT_MENU_CONFIG` (상점/상품/주문 등 chemeng 잔재) 는 폐기됨.
  */
 export async function getAdminMenu(): Promise<AdminMenuConfigItem[]> {
-  return configManager.get<AdminMenuConfigItem[]>(
+  const declarative = moduleManager.getAdminMenuTree();
+  const override = await configManager.get<AdminMenuConfigItem[] | null>(
     "site",
     "adminMenu",
-    DEFAULT_MENU_CONFIG,
+    null,
   );
+  if (override && override.length > 0) {
+    return override;
+  }
+  return declarative;
 }
 
 /**
- * Set the admin menu configuration
+ * 관리자가 메뉴 빌더에서 저장. DB 의 `site.adminMenu` 에 영구 보관.
  */
 export async function setAdminMenu(menu: AdminMenuConfigItem[]): Promise<void> {
   await configManager.set(
     "site",
     "adminMenu",
     menu,
-    "Admin menu configuration",
+    "Admin menu configuration (override of declarative module menu tree)",
   );
+}
+
+/**
+ * 오버라이드를 빈 배열로 저장 → `getAdminMenu` 가 선언적 트리로 fallback.
+ */
+export async function resetAdminMenu(): Promise<void> {
+  await setAdminMenu([]);
 }

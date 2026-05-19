@@ -32,6 +32,7 @@ export type Admin_permissionsMinAggregateOutputType = {
   category: string | null
   is_dangerous: boolean | null
   created_at: Date | null
+  deactivated_at: Date | null
 }
 
 export type Admin_permissionsMaxAggregateOutputType = {
@@ -42,6 +43,7 @@ export type Admin_permissionsMaxAggregateOutputType = {
   category: string | null
   is_dangerous: boolean | null
   created_at: Date | null
+  deactivated_at: Date | null
 }
 
 export type Admin_permissionsCountAggregateOutputType = {
@@ -52,6 +54,7 @@ export type Admin_permissionsCountAggregateOutputType = {
   category: number
   is_dangerous: number
   created_at: number
+  deactivated_at: number
   _all: number
 }
 
@@ -64,6 +67,7 @@ export type Admin_permissionsMinAggregateInputType = {
   category?: true
   is_dangerous?: true
   created_at?: true
+  deactivated_at?: true
 }
 
 export type Admin_permissionsMaxAggregateInputType = {
@@ -74,6 +78,7 @@ export type Admin_permissionsMaxAggregateInputType = {
   category?: true
   is_dangerous?: true
   created_at?: true
+  deactivated_at?: true
 }
 
 export type Admin_permissionsCountAggregateInputType = {
@@ -84,6 +89,7 @@ export type Admin_permissionsCountAggregateInputType = {
   category?: true
   is_dangerous?: true
   created_at?: true
+  deactivated_at?: true
   _all?: true
 }
 
@@ -167,6 +173,7 @@ export type Admin_permissionsGroupByOutputType = {
   category: string
   is_dangerous: boolean | null
   created_at: Date | null
+  deactivated_at: Date | null
   _count: Admin_permissionsCountAggregateOutputType | null
   _min: Admin_permissionsMinAggregateOutputType | null
   _max: Admin_permissionsMaxAggregateOutputType | null
@@ -198,6 +205,7 @@ export type admin_permissionsWhereInput = {
   category?: Prisma.StringFilter<"admin_permissions"> | string
   is_dangerous?: Prisma.BoolNullableFilter<"admin_permissions"> | boolean | null
   created_at?: Prisma.DateTimeNullableFilter<"admin_permissions"> | Date | string | null
+  deactivated_at?: Prisma.DateTimeNullableFilter<"admin_permissions"> | Date | string | null
   admin_role_permissions?: Prisma.Admin_role_permissionsListRelationFilter
 }
 
@@ -209,6 +217,7 @@ export type admin_permissionsOrderByWithRelationInput = {
   category?: Prisma.SortOrder
   is_dangerous?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  deactivated_at?: Prisma.SortOrderInput | Prisma.SortOrder
   admin_role_permissions?: Prisma.admin_role_permissionsOrderByRelationAggregateInput
 }
 
@@ -223,6 +232,7 @@ export type admin_permissionsWhereUniqueInput = Prisma.AtLeast<{
   category?: Prisma.StringFilter<"admin_permissions"> | string
   is_dangerous?: Prisma.BoolNullableFilter<"admin_permissions"> | boolean | null
   created_at?: Prisma.DateTimeNullableFilter<"admin_permissions"> | Date | string | null
+  deactivated_at?: Prisma.DateTimeNullableFilter<"admin_permissions"> | Date | string | null
   admin_role_permissions?: Prisma.Admin_role_permissionsListRelationFilter
 }, "id" | "name">
 
@@ -234,6 +244,7 @@ export type admin_permissionsOrderByWithAggregationInput = {
   category?: Prisma.SortOrder
   is_dangerous?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  deactivated_at?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.admin_permissionsCountOrderByAggregateInput
   _max?: Prisma.admin_permissionsMaxOrderByAggregateInput
   _min?: Prisma.admin_permissionsMinOrderByAggregateInput
@@ -250,6 +261,7 @@ export type admin_permissionsScalarWhereWithAggregatesInput = {
   category?: Prisma.StringWithAggregatesFilter<"admin_permissions"> | string
   is_dangerous?: Prisma.BoolNullableWithAggregatesFilter<"admin_permissions"> | boolean | null
   created_at?: Prisma.DateTimeNullableWithAggregatesFilter<"admin_permissions"> | Date | string | null
+  deactivated_at?: Prisma.DateTimeNullableWithAggregatesFilter<"admin_permissions"> | Date | string | null
 }
 
 export type admin_permissionsCreateInput = {
@@ -260,6 +272,7 @@ export type admin_permissionsCreateInput = {
   category: string
   is_dangerous?: boolean | null
   created_at?: Date | string | null
+  deactivated_at?: Date | string | null
   admin_role_permissions?: Prisma.admin_role_permissionsCreateNestedManyWithoutAdmin_permissionsInput
 }
 
@@ -271,6 +284,7 @@ export type admin_permissionsUncheckedCreateInput = {
   category: string
   is_dangerous?: boolean | null
   created_at?: Date | string | null
+  deactivated_at?: Date | string | null
   admin_role_permissions?: Prisma.admin_role_permissionsUncheckedCreateNestedManyWithoutAdmin_permissionsInput
 }
 
@@ -282,6 +296,7 @@ export type admin_permissionsUpdateInput = {
   category?: Prisma.StringFieldUpdateOperationsInput | string
   is_dangerous?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   admin_role_permissions?: Prisma.admin_role_permissionsUpdateManyWithoutAdmin_permissionsNestedInput
 }
 
@@ -293,6 +308,7 @@ export type admin_permissionsUncheckedUpdateInput = {
   category?: Prisma.StringFieldUpdateOperationsInput | string
   is_dangerous?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   admin_role_permissions?: Prisma.admin_role_permissionsUncheckedUpdateManyWithoutAdmin_permissionsNestedInput
 }
 
@@ -304,6 +320,7 @@ export type admin_permissionsCreateManyInput = {
   category: string
   is_dangerous?: boolean | null
   created_at?: Date | string | null
+  deactivated_at?: Date | string | null
 }
 
 export type admin_permissionsUpdateManyMutationInput = {
@@ -314,6 +331,7 @@ export type admin_permissionsUpdateManyMutationInput = {
   category?: Prisma.StringFieldUpdateOperationsInput | string
   is_dangerous?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type admin_permissionsUncheckedUpdateManyInput = {
@@ -324,6 +342,7 @@ export type admin_permissionsUncheckedUpdateManyInput = {
   category?: Prisma.StringFieldUpdateOperationsInput | string
   is_dangerous?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type admin_permissionsCountOrderByAggregateInput = {
@@ -334,6 +353,7 @@ export type admin_permissionsCountOrderByAggregateInput = {
   category?: Prisma.SortOrder
   is_dangerous?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  deactivated_at?: Prisma.SortOrder
 }
 
 export type admin_permissionsMaxOrderByAggregateInput = {
@@ -344,6 +364,7 @@ export type admin_permissionsMaxOrderByAggregateInput = {
   category?: Prisma.SortOrder
   is_dangerous?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  deactivated_at?: Prisma.SortOrder
 }
 
 export type admin_permissionsMinOrderByAggregateInput = {
@@ -354,6 +375,7 @@ export type admin_permissionsMinOrderByAggregateInput = {
   category?: Prisma.SortOrder
   is_dangerous?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  deactivated_at?: Prisma.SortOrder
 }
 
 export type Admin_permissionsScalarRelationFilter = {
@@ -383,6 +405,7 @@ export type admin_permissionsCreateWithoutAdmin_role_permissionsInput = {
   category: string
   is_dangerous?: boolean | null
   created_at?: Date | string | null
+  deactivated_at?: Date | string | null
 }
 
 export type admin_permissionsUncheckedCreateWithoutAdmin_role_permissionsInput = {
@@ -393,6 +416,7 @@ export type admin_permissionsUncheckedCreateWithoutAdmin_role_permissionsInput =
   category: string
   is_dangerous?: boolean | null
   created_at?: Date | string | null
+  deactivated_at?: Date | string | null
 }
 
 export type admin_permissionsCreateOrConnectWithoutAdmin_role_permissionsInput = {
@@ -419,6 +443,7 @@ export type admin_permissionsUpdateWithoutAdmin_role_permissionsInput = {
   category?: Prisma.StringFieldUpdateOperationsInput | string
   is_dangerous?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type admin_permissionsUncheckedUpdateWithoutAdmin_role_permissionsInput = {
@@ -429,6 +454,7 @@ export type admin_permissionsUncheckedUpdateWithoutAdmin_role_permissionsInput =
   category?: Prisma.StringFieldUpdateOperationsInput | string
   is_dangerous?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deactivated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -470,6 +496,7 @@ export type admin_permissionsSelect<ExtArgs extends runtime.Types.Extensions.Int
   category?: boolean
   is_dangerous?: boolean
   created_at?: boolean
+  deactivated_at?: boolean
   admin_role_permissions?: boolean | Prisma.admin_permissions$admin_role_permissionsArgs<ExtArgs>
   _count?: boolean | Prisma.Admin_permissionsCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["admin_permissions"]>
@@ -482,6 +509,7 @@ export type admin_permissionsSelectCreateManyAndReturn<ExtArgs extends runtime.T
   category?: boolean
   is_dangerous?: boolean
   created_at?: boolean
+  deactivated_at?: boolean
 }, ExtArgs["result"]["admin_permissions"]>
 
 export type admin_permissionsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -492,6 +520,7 @@ export type admin_permissionsSelectUpdateManyAndReturn<ExtArgs extends runtime.T
   category?: boolean
   is_dangerous?: boolean
   created_at?: boolean
+  deactivated_at?: boolean
 }, ExtArgs["result"]["admin_permissions"]>
 
 export type admin_permissionsSelectScalar = {
@@ -502,9 +531,10 @@ export type admin_permissionsSelectScalar = {
   category?: boolean
   is_dangerous?: boolean
   created_at?: boolean
+  deactivated_at?: boolean
 }
 
-export type admin_permissionsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "display_name" | "description" | "category" | "is_dangerous" | "created_at", ExtArgs["result"]["admin_permissions"]>
+export type admin_permissionsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "display_name" | "description" | "category" | "is_dangerous" | "created_at" | "deactivated_at", ExtArgs["result"]["admin_permissions"]>
 export type admin_permissionsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   admin_role_permissions?: boolean | Prisma.admin_permissions$admin_role_permissionsArgs<ExtArgs>
   _count?: boolean | Prisma.Admin_permissionsCountOutputTypeDefaultArgs<ExtArgs>
@@ -525,6 +555,7 @@ export type $admin_permissionsPayload<ExtArgs extends runtime.Types.Extensions.I
     category: string
     is_dangerous: boolean | null
     created_at: Date | null
+    deactivated_at: Date | null
   }, ExtArgs["result"]["admin_permissions"]>
   composites: {}
 }
@@ -956,6 +987,7 @@ export interface admin_permissionsFieldRefs {
   readonly category: Prisma.FieldRef<"admin_permissions", 'String'>
   readonly is_dangerous: Prisma.FieldRef<"admin_permissions", 'Boolean'>
   readonly created_at: Prisma.FieldRef<"admin_permissions", 'DateTime'>
+  readonly deactivated_at: Prisma.FieldRef<"admin_permissions", 'DateTime'>
 }
     
 

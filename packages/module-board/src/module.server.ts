@@ -50,6 +50,17 @@ export const module = createModule("board")
       is_dangerous: true,
     },
   ])
+  .adminMenuItemUnits([
+    {
+      id: "board-admin",
+      label: "게시판 관리",
+      icon: "MessageSquare",
+      path: "/admin/board",
+      permission: "board.admin.manage",
+      group: "콘텐츠",
+      order: 10,
+    },
+  ])
   .siteMenuItemUnits([
     {
       label: "게시판",

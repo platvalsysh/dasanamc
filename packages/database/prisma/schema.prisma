@@ -509,6 +509,7 @@ model admin_permissions {
   category               String
   is_dangerous           Boolean?                 @default(false)
   created_at             DateTime?                @default(now()) @db.Timestamptz(6)
+  deactivated_at         DateTime?                @db.Timestamptz(6)
   admin_role_permissions admin_role_permissions[]
 
   @@schema("core")

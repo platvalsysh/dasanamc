@@ -3901,7 +3901,8 @@ export const Admin_permissionsScalarFieldEnum = {
   description: 'description',
   category: 'category',
   is_dangerous: 'is_dangerous',
-  created_at: 'created_at'
+  created_at: 'created_at',
+  deactivated_at: 'deactivated_at'
 } as const
 
 export type Admin_permissionsScalarFieldEnum = (typeof Admin_permissionsScalarFieldEnum)[keyof typeof Admin_permissionsScalarFieldEnum]

@@ -39,10 +39,12 @@ export const module = createModule("file")
   .adminMenuItemUnits([
     {
       id: "files-admin-list",
-      label: "File Management",
+      label: "파일 관리",
       icon: "FolderOpen",
       path: "/admin/files",
       permission: "file.admin.read",
+      group: "콘텐츠",
+      order: 20,
     },
   ])
   .build();

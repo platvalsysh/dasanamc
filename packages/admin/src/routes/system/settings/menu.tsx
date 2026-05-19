@@ -5,7 +5,12 @@ import {
   useNavigation,
   useSubmit,
 } from "react-router";
-import { getAdminMenu, setAdminMenu, moduleManager } from "@repo/core/server";
+import {
+  getAdminMenu,
+  setAdminMenu,
+  resetAdminMenu,
+  moduleManager,
+} from "@repo/core/server";
 import {
   Save,
   AlertCircle,
@@ -65,11 +70,31 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       items: m.adminMenuItemUnits!,
     }));
 
-  return { config, groupedPermissions, groupedAvailableMenus };
+  // 모듈 선언 path 집합 — 메뉴 빌더에서 "라우트 없음" 배지로 활용
+  const declaredPaths = new Set<string>();
+  for (const m of Object.values(modules)) {
+    for (const unit of m.adminMenuItemUnits ?? []) {
+      if (unit.path) declaredPaths.add(unit.path);
+    }
+  }
+
+  return {
+    config,
+    groupedPermissions,
+    groupedAvailableMenus,
+    declaredPaths: Array.from(declaredPaths),
+  };
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
+  const intent = formData.get("intent");
+
+  if (intent === "reset") {
+    await resetAdminMenu();
+    return { success: true, reset: true };
+  }
+
   const configJson = formData.get("configJson") as string;
 
   let newConfig: AdminMenuConfigItem[];
@@ -145,7 +170,7 @@ function MenuItemDialog({
     setFormData({
       id: unit.id,
       label: unit.label,
-      icon: unit.icon,
+      icon: unit.icon ?? "",
       path: unit.path,
       permission: unit.permission,
       children: [],
@@ -176,9 +201,9 @@ function MenuItemDialog({
           }
           return {
               ...group,
-              items: group.items.filter(item => 
-                  item.label.toLowerCase().includes(lowerSearch) || 
-                  item.path.toLowerCase().includes(lowerSearch)
+              items: group.items.filter(item =>
+                  item.label.toLowerCase().includes(lowerSearch) ||
+                  (item.path?.toLowerCase().includes(lowerSearch) ?? false)
               )
           };
       })
@@ -251,15 +276,17 @@ function MenuItemDialog({
                                 className="flex w-full items-center gap-3 rounded-lg border border-gray-200 bg-white p-2 text-left transition-all hover:border-blue-500 hover:bg-blue-50 hover:shadow-sm"
                             >
                                 <div className="shrink-0 rounded-md bg-blue-50 p-2 text-blue-600">
-                                {getIcon(unit.icon, "w-4 h-4")}
+                                {unit.icon ? getIcon(unit.icon, "w-4 h-4") : null}
                                 </div>
                                 <div className="min-w-0">
                                 <div className="truncate text-sm font-medium text-gray-900">
                                     {unit.label}
                                 </div>
+                                {unit.path && (
                                 <div className="truncate font-mono text-xs text-gray-500">
                                     {unit.path}
                                 </div>
+                                )}
                                 </div>
                             </button>
                           ))}
@@ -415,6 +442,7 @@ interface MenuItemRowProps {
   isLast: boolean;
   isExpanded: boolean;
   onToggleExpand: () => void;
+  isDeadLink: boolean;
   dragHandleProps?: any; // DndKit attributes
 }
 
@@ -430,6 +458,7 @@ function MenuItemRow({
   isLast,
   isExpanded,
   onToggleExpand,
+  isDeadLink,
   dragHandleProps,
 }: MenuItemRowProps) {
   const hasChildren = item.children && item.children.length > 0;
@@ -467,8 +496,13 @@ function MenuItemRow({
       {/* Label & Info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-            <span className="font-medium text-gray-900">{item.label}</span>
+            <span className={`font-medium ${isDeadLink ? "text-gray-400 line-through" : "text-gray-900"}`}>{item.label}</span>
             <span className="text-xs text-gray-400 font-mono truncate max-w-[200px]">{item.path}</span>
+            {isDeadLink && (
+              <span className="text-[10px] bg-red-50 text-red-600 px-1.5 py-0.5 rounded border border-red-200">
+                활성 모듈에 없음
+              </span>
+            )}
         </div>
         {item.permission && (
             <div className="text-[10px] text-blue-500 flex gap-1 items-center">
@@ -575,21 +609,18 @@ function RecursiveSortableList({
     onEdit,
     expandedItems,
     toggleExpand,
+    declaredPathsSet,
 }: {
     items: AdminMenuConfigItem[];
     depth?: number;
-    // parentId is not needed for internal logic unless we pass it back, 
-    // but we can just use item.children for recursion.
-    // However, for actions like "onDelete", we need to know the parent.
-    // So let's pass parentId down.
-    parentId: string; // Current list's parent ID
-    
+    parentId: string;
     onDelete: (index: number, parentId: string) => void;
-    onAddChild: (targetParentId: string) => void; // Changed: Pass ID of item to add child to
+    onAddChild: (targetParentId: string) => void;
     onMove: (index: number, direction: "up" | "down", parentId: string) => void;
     onEdit: (item: AdminMenuConfigItem, parentId: string, index: number) => void;
     expandedItems: Set<string>;
     toggleExpand: (id: string) => void;
+    declaredPathsSet: Set<string>;
 }) {
 
     return (
@@ -600,8 +631,11 @@ function RecursiveSortableList({
             <div className={`flex flex-col ${depth > 0 ? "relative" : ""}`}>
                 {/* Visual Guide line for children */}
                 {depth > 0 && <div className="absolute left-0 top-0 bottom-0 border-l border-gray-200" style={{ left: (depth * 24) - 12 }} />}
-                
-                {items.map((item, i) => (
+
+                {items.map((item, i) => {
+                    // dead-link 판정: path 가 있고 활성 모듈 어디에서도 선언 안 됨
+                    const isDeadLink = !!item.path && !declaredPathsSet.has(item.path);
+                    return (
                     <React.Fragment key={item.id}>
                         <SortableMenuItem
                             id={item.id}
@@ -610,13 +644,14 @@ function RecursiveSortableList({
                             depth={depth}
                             isFirst={i === 0}
                             isLast={i === items.length - 1}
-                            onEdit={() => onEdit(item, parentId, i)} // Correct: parentId is from scope
+                            onEdit={() => onEdit(item, parentId, i)}
                             onDelete={() => onDelete(i, parentId)}
-                            onAddChild={() => onAddChild(item.id)} // Add child TO this item
+                            onAddChild={() => onAddChild(item.id)}
                             onMoveUp={() => onMove(i, "up", parentId)}
                             onMoveDown={() => onMove(i, "down", parentId)}
                             isExpanded={expandedItems.has(item.id)}
                             onToggleExpand={() => toggleExpand(item.id)}
+                            isDeadLink={isDeadLink}
                         />
                         {item.children && item.children.length > 0 && expandedItems.has(item.id) && (
                            <RecursiveSortableList
@@ -629,10 +664,12 @@ function RecursiveSortableList({
                               onEdit={onEdit}
                               expandedItems={expandedItems}
                               toggleExpand={toggleExpand}
+                              declaredPathsSet={declaredPathsSet}
                            />
                         )}
                     </React.Fragment>
-                ))}
+                    );
+                })}
             </div>
         </SortableContext>
     );
@@ -640,11 +677,25 @@ function RecursiveSortableList({
 
 
 export default function MenuSettings() {
-  const { config, groupedPermissions, groupedAvailableMenus } = useLoaderData<typeof loader>();
+  const { config, groupedPermissions, groupedAvailableMenus, declaredPaths } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const submit = useSubmit();
   const isSubmitting = navigation.state === "submitting";
+
+  const declaredPathsSet = new Set(declaredPaths);
+
+  // 메뉴 안에 dead-link (활성 모듈에 없는 path) 가 하나라도 있나
+  const hasDeadLink = (() => {
+    const traverse = (items: AdminMenuConfigItem[]): boolean => {
+      for (const it of items) {
+        if (it.path && !declaredPathsSet.has(it.path)) return true;
+        if (it.children && traverse(it.children)) return true;
+      }
+      return false;
+    };
+    return traverse(config || []);
+  })();
 
   const [menuConfig, setMenuConfig] = useState<AdminMenuConfigItem[]>(
     config || [],
@@ -857,6 +908,13 @@ export default function MenuSettings() {
 
 
 
+  const handleReset = () => {
+    if (!confirm("저장된 메뉴 설정을 비우고 활성 모듈이 선언한 기본 메뉴 트리로 되돌립니다. 계속할까요?")) return;
+    const formData = new FormData();
+    formData.append("intent", "reset");
+    submit(formData, { method: "post" });
+  };
+
   return (
     <div className="flex h-full flex-col">
       <div className="mb-6 flex items-center justify-between">
@@ -865,7 +923,7 @@ export default function MenuSettings() {
             메뉴 구성 설정
           </h3>
           <p className="text-sm text-gray-600">
-            관리자 페이지의 사이드바 메뉴 구조를 설정합니다.
+            관리자 페이지의 사이드바 메뉴 구조를 설정합니다. 저장 안 하면 활성 모듈 선언이 자동 반영.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -890,6 +948,14 @@ export default function MenuSettings() {
           )}
           <button
             type="button"
+            onClick={handleReset}
+            className="rounded border border-orange-200 bg-orange-50 px-3 py-1.5 text-sm text-orange-700 hover:bg-orange-100"
+            title="저장된 메뉴 설정을 비우고 활성 모듈 선언 기본값으로 되돌림"
+          >
+            기본값으로 리셋
+          </button>
+          <button
+            type="button"
             onClick={() => setJsonMode(!jsonMode)}
             className="rounded border border-gray-200 bg-gray-100 px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-200"
           >
@@ -897,6 +963,19 @@ export default function MenuSettings() {
           </button>
         </div>
       </div>
+
+      {hasDeadLink && (
+        <div className="mb-4 flex items-start gap-2 rounded-lg bg-orange-50 p-3 text-sm text-orange-800 border border-orange-200">
+          <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+          <div>
+            <p className="font-medium">활성 모듈에 없는 메뉴 항목이 있습니다</p>
+            <p className="mt-1 text-xs">
+              빨간 배지가 붙은 항목은 모듈이 더 이상 선언하지 않는 라우트입니다.
+              삭제하거나 <span className="font-medium">기본값으로 리셋</span> 으로 일괄 정리하세요.
+            </p>
+          </div>
+        </div>
+      )}
 
       {actionData?.error && (
         <div className="mb-4 flex items-center gap-2 rounded-lg bg-red-50 p-4 text-red-700">
@@ -924,7 +1003,7 @@ export default function MenuSettings() {
                 collisionDetection={closestCenter}
                 onDragEnd={handleDragEnd}
               >
-                  <RecursiveSortableList 
+                  <RecursiveSortableList
                       items={menuConfig}
                       parentId="root"
                       onDelete={handleDelete}
@@ -933,6 +1012,7 @@ export default function MenuSettings() {
                       onEdit={handleEdit}
                       expandedItems={expandedItems}
                       toggleExpand={toggleExpand}
+                      declaredPathsSet={declaredPathsSet}
                   />
               </DndContext>
             </div>

@@ -40,6 +40,7 @@ interface Role {
 export async function loader() {
   const [permissionsData, rolesData] = await Promise.all([
     prisma.admin_permissions.findMany({
+      where: { deactivated_at: null },
       orderBy: { category: "asc" },
     }),
     prisma.admin_roles.findMany({

@@ -1,5 +1,10 @@
 import { type RouteConfigEntry } from "@react-router/dev/routes";
-import { type BaseModule, type ModuleRoutes } from "../types";
+import {
+  type AdminMenuConfigItem,
+  type AdminMenuItemUnit,
+  type BaseModule,
+  type ModuleRoutes,
+} from "../types";
 import { prisma } from "@repo/database";
 
 /**
@@ -89,11 +94,106 @@ export class ModuleManager {
   /**
    * 모든 모듈이 선언한 관리자 메뉴 항목 유닛을 평탄화하여 반환.
    * 관리자가 메뉴 빌더에서 골라 끼울 수 있는 _후보_ 목록.
+   * (트리 형태가 아닌 단순 유닛 목록)
    */
   public getAdminMenuItemUnits() {
     return Array.from(this.modules.values()).flatMap(
       (m) => m.adminMenuItemUnits ?? [],
     );
+  }
+
+  /**
+   * 활성 모듈의 `adminMenuItemUnits` 를 group 으로 묶고 order 로 정렬해서
+   * admin 사이드바에 그대로 렌더링할 수 있는 `AdminMenuConfigItem[]` 트리를 만든다.
+   *
+   * 규칙:
+   * - 단위(`AdminMenuItemUnit`)에 `group` 미지정 → 모듈 이름이 그룹
+   * - 단위에 `order` 미지정 → 100 (그룹 내 순서)
+   * - 그룹 자체 순서 → 그 그룹 멤버의 최소 order
+   * - 같은 group 이름을 가진 단위는 같은 부모 메뉴에 children 으로 묶임
+   * - 단위가 `children` 을 갖고 있으면 그 children 도 재귀적으로 포함
+   *
+   * 비활성 모듈(ENABLED_MODULES 화이트리스트 밖)은 register 되지 않으므로
+   * 자동으로 트리에서 빠짐.
+   */
+  public getAdminMenuTree(): AdminMenuConfigItem[] {
+    interface GroupBucket {
+      label: string;
+      order: number;
+      items: AdminMenuItemUnit[];
+    }
+    const buckets = new Map<string, GroupBucket>();
+
+    for (const module of this.modules.values()) {
+      const units = module.adminMenuItemUnits;
+      if (!units || units.length === 0) continue;
+
+      for (const unit of units) {
+        const groupName = unit.group ?? module.name;
+        const order = unit.order ?? 100;
+        const bucket = buckets.get(groupName) ?? {
+          label: groupName,
+          order,
+          items: [],
+        };
+        bucket.order = Math.min(bucket.order, order);
+        bucket.items.push(unit);
+        buckets.set(groupName, bucket);
+      }
+    }
+
+    const toConfigItem = (
+      unit: AdminMenuItemUnit,
+      idPrefix: string,
+    ): AdminMenuConfigItem => {
+      const id = unit.id || `${idPrefix}-${unit.label}`;
+      const item: AdminMenuConfigItem = {
+        id,
+        label: unit.label,
+        icon: unit.icon ?? "Square",
+        path: unit.path,
+        permission: unit.permission,
+      };
+      if (unit.children && unit.children.length > 0) {
+        item.children = [...unit.children]
+          .sort((a, b) => (a.order ?? 100) - (b.order ?? 100))
+          .map((c) => toConfigItem(c, id));
+      }
+      return item;
+    };
+
+    const result: AdminMenuConfigItem[] = [];
+    const sortedBuckets = Array.from(buckets.entries()).sort(
+      (a, b) => a[1].order - b[1].order,
+    );
+
+    for (const [groupName, bucket] of sortedBuckets) {
+      const items = [...bucket.items].sort(
+        (a, b) => (a.order ?? 100) - (b.order ?? 100),
+      );
+
+      // 그룹 멤버가 1개이고 그룹 이름이 모듈 이름(즉 명시적 group 미설정)이면
+      // 평면화: 부모 카드 없이 단일 항목으로 노출
+      if (
+        items.length === 1 &&
+        items[0].group === undefined &&
+        !items[0].children
+      ) {
+        result.push(toConfigItem(items[0], groupName));
+        continue;
+      }
+
+      // 그룹 부모 항목 + 자식들
+      const groupItem: AdminMenuConfigItem = {
+        id: `group-${groupName}`,
+        label: bucket.label,
+        icon: "FolderOpen",
+        children: items.map((u) => toConfigItem(u, groupName)),
+      };
+      result.push(groupItem);
+    }
+
+    return result;
   }
 
   /**
@@ -181,16 +281,55 @@ export class ModuleManager {
   }
 
   /**
-   * 등록된 모든 모듈에 대해 `syncModule` 을 순차 실행.
-   * 앱 부팅 시 권한/역할 코드 정의를 DB 와 일치시키는 진입점.
+   * 등록된 모든 모듈에 대해 `syncModule` 을 순차 실행 + 코드에 더 이상 없는 권한을
+   * `deactivated_at = now()` 로 마킹. 활성 모듈이 다시 선언하는 권한은
+   * `deactivated_at = NULL` 로 복구.
+   *
+   * 앱 부팅 + `pnpm --filter web db:init-permissions` 의 단일 진입점.
+   * 역할 매핑 (`admin_user_roles`) 은 권한 행을 보존하므로 끊기지 않음.
    */
   public async syncWithDatabase() {
     console.log("Syncing modules with database...");
     const modules = Array.from(this.modules.values());
 
+    // 1. 활성 모듈 권한 upsert + 역할 매핑
     for (const module of modules) {
       await this.syncModule(module.name);
     }
+
+    // 2. 코드 정의 권한 set
+    const activeNames = new Set<string>();
+    for (const module of modules) {
+      for (const permission of module.permissions ?? []) {
+        activeNames.add(permission.name);
+      }
+    }
+
+    // 3. 활성 set 에 포함되면 deactivated_at = NULL 로 복구 (cold restart 안전망)
+    if (activeNames.size > 0) {
+      await prisma.admin_permissions.updateMany({
+        where: {
+          name: { in: Array.from(activeNames) },
+          deactivated_at: { not: null },
+        },
+        data: { deactivated_at: null },
+      });
+    }
+
+    // 4. 활성 set 밖이고 아직 deactivated 되지 않은 권한은 deactivate
+    const deactivated = await prisma.admin_permissions.updateMany({
+      where: {
+        name: { notIn: Array.from(activeNames) },
+        deactivated_at: null,
+      },
+      data: { deactivated_at: new Date() },
+    });
+    if (deactivated.count > 0) {
+      console.log(
+        `Deactivated ${deactivated.count} permission(s) no longer declared by any active module.`,
+      );
+    }
+
     console.log("Modules synced with database.");
   }
   /**
