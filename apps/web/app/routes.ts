@@ -11,7 +11,7 @@ if (!moduleManager.isRegistered()) {
 const routes: RouteConfigEntry[] = [
   layout("./layouts/default.tsx", [
     route("/", "./routes/home.tsx"),
-    route("/membership", "./membership/index.tsx"),
+    route("/membership", "./routes/membership.tsx"),
 
     route("/about/greeting", "./routes/about/greeting.tsx"),
     route("/about/bylaws", "./routes/about/bylaws.tsx"),
