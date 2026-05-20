@@ -1,46 +1,18 @@
 import { type ActionFunctionArgs, type LoaderFunctionArgs } from "react-router";
-import {
-  useLoaderData,
-} from "react-router";
+import { useFetcher, useLoaderData } from "react-router";
 import { getSiteMenus, setSiteMenu, moduleManager } from "@repo/core/server";
-import { ClientOnly } from "../components/ClientOnly";
-import {
-  Plus,
-  Trash2,
-  ChevronRight,
-  ChevronDown,
-  GripVertical,
-  ArrowUp,
-  ArrowDown,
-  X,
-  FileText,
-  Edit,
-  ExternalLink,
-  Info
-} from "lucide-react";
-import type {
-  SiteMenuConfigItem,
-  SiteMenuItemUnit,
-} from "@repo/core/types";
+import { Plus, X, FileText, ExternalLink, Info } from "lucide-react";
+import type { SiteMenuConfigItem, SiteMenuItemUnit } from "@repo/core/types";
 import { useState, useEffect } from "react";
-import React from "react";
 import {
-  DndContext,
-  closestCenter,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
-  type DragEndEvent,
+  type SensorDescriptor,
+  type SensorOptions,
 } from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  useSortable,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
 // Import prisma to query dynamic tables
 import { prisma } from "@repo/database";
@@ -501,536 +473,267 @@ function DeleteConfirmDialog({ isOpen, onClose, onConfirm }: DeleteConfirmDialog
   );
 }
 
-interface MenuItemRowProps {
-  item: SiteMenuConfigItem;
-  depth: number;
-  onEdit: () => void;
-  onDelete: () => void;
-  onAddChild: () => void;
-  onMoveUp: () => void;
-  onMoveDown: () => void;
-  isFirst: boolean;
-  isLast: boolean;
-  isExpanded: boolean;
-  onToggleExpand: () => void;
-  dragHandleProps?: any;
+
+// ---------------------------------------------------------------------------
+// 각 menu 위치 (header / footer 등) 한 트리. useMenuTree + MenuTree 호출.
+// 부모 페이지는 dict 관리만, 각 위치별 트리/다이얼로그는 이 컴포넌트가 격리.
+// ---------------------------------------------------------------------------
+
+import { useMenuTree } from "../components/menu-builder/useMenuTree";
+import { MenuTree } from "../components/menu-builder/MenuTree";
+
+interface MenuPositionEditorProps {
+  menuId: string;
+  initialItems: SiteMenuConfigItem[];
+  groupedAvailableMenus: { module: string; items: readonly SiteMenuItemUnit[] }[];
+  sensors: SensorDescriptor<SensorOptions>[];
 }
 
-function MenuItemRow({
-  item,
-  depth,
-  onEdit,
-  onDelete,
-  onAddChild,
-  onMoveUp,
-  onMoveDown,
-  isFirst,
-  isLast,
-  isExpanded,
-  onToggleExpand,
-  dragHandleProps,
-}: MenuItemRowProps) {
-  const hasChildren = item.children && item.children.length > 0;
+function MenuPositionEditor({
+  menuId,
+  initialItems,
+  groupedAvailableMenus,
+  sensors,
+}: MenuPositionEditorProps) {
+  const fetcher = useFetcher<{ success?: boolean; error?: string }>();
+  const isSaving = fetcher.state !== "idle";
 
-  return (
-    <div className="group flex items-center border-b border-gray-100 bg-white py-2 transition-colors hover:bg-gray-50">
-      <div style={{ width: depth * 24 + 12 }} className="shrink-0" />
-
-      <div
-        {...dragHandleProps}
-        className="mr-2 cursor-grab text-gray-300 hover:text-gray-500 active:cursor-grabbing"
-      >
-        <GripVertical className="h-4 w-4" />
-      </div>
-
-      <button
-        onClick={onToggleExpand}
-        className={`mr-2 flex h-6 w-6 items-center justify-center rounded text-gray-400 hover:bg-gray-200 hover:text-gray-600 ${!hasChildren ? "invisible" : ""}`}
-      >
-        {isExpanded ? (
-          <ChevronDown className="h-4 w-4" />
-        ) : (
-          <ChevronRight className="h-4 w-4" />
-        )}
-      </button>
-
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
-            <span className="font-medium text-gray-900">{item.label}</span>
-            <span className="text-xs text-gray-400 font-mono truncate max-w-[200px]">{item.to}</span>
-            {item.target === "_blank" && <ExternalLink className="w-3 h-3 text-gray-400"/>}
-            {item.permission && <span className="text-[10px] bg-yellow-100 text-yellow-800 px-1 rounded">Locked</span>}
-        </div>
-      </div>
-
-      <div className="flex items-center gap-1 pr-4 opacity-0 transition-opacity group-hover:opacity-100">
-        <button
-          onClick={onMoveUp}
-          disabled={isFirst}
-          className="rounded p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:invisible"
-          title="Move Up"
-        >
-          <ArrowUp className="h-3.5 w-3.5" />
-        </button>
-        <button
-          onClick={onMoveDown}
-          disabled={isLast}
-          className="rounded p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:invisible"
-          title="Move Down"
-        >
-          <ArrowDown className="h-3.5 w-3.5" />
-        </button>
-        
-        <div className="mx-1 h-4 w-px bg-gray-200" />
-
-        <button
-          onClick={onAddChild}
-          className="rounded p-1.5 text-gray-400 hover:bg-blue-50 hover:text-blue-600"
-          title="Add Sub Item"
-        >
-          <Plus className="h-3.5 w-3.5" />
-        </button>
-        <button
-          onClick={onEdit}
-          className="rounded p-1.5 text-gray-400 hover:bg-blue-50 hover:text-blue-600"
-          title="Edit"
-        >
-          <Edit className="h-3.5 w-3.5" />
-        </button>
-        <button
-          onClick={onDelete}
-          className="rounded p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-600"
-          title="Delete"
-        >
-          <Trash2 className="h-3.5 w-3.5" />
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function SortableMenuItem({
-    item,
-    depth,
-    index,
-    isExpanded,
-    onToggleExpand,
-    ...props
-}: MenuItemRowProps & { id: string, index: number }) {
-    const {
-        attributes,
-        listeners,
-        setNodeRef,
-        transform,
-        transition,
-        isDragging,
-    } = useSortable({ id: item.id });
-
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        transition,
-        opacity: isDragging ? 0.4 : 1,
-        zIndex: isDragging ? 1000 : "auto",
-        position: "relative" as const,
-    };
-
-    return (
-        <div ref={setNodeRef} style={style}>
-            <MenuItemRow
-                item={item}
-                depth={depth}
-                isExpanded={isExpanded}
-                onToggleExpand={onToggleExpand}
-                dragHandleProps={{...attributes, ...listeners}}
-                {...props}
-            />
-        </div>
-    );
-}
-
-function RecursiveSortableList({
+  const {
     items,
-    depth = 0,
-    parentId, // Corresponds to menu section ID if root, or item ID if nested
-    contextId, // "header", "footer"
-    onDelete,
-    onAddChild,
-    onMove,
-    onEdit,
     expandedItems,
     toggleExpand,
-}: {
-    items: SiteMenuConfigItem[];
-    depth?: number;
-    parentId: string;
-    contextId: string;
-    onDelete: (index: number, parentId: string, contextId: string) => void;
-    onAddChild: (targetParentId: string, contextId: string) => void;
-    onMove: (index: number, direction: "up" | "down", parentId: string, contextId: string) => void;
-    onEdit: (item: SiteMenuConfigItem, parentId: string, index: number, contextId: string) => void;
-    expandedItems: Set<string>;
-    toggleExpand: (id: string) => void;
-}) {
-
-    return (
-        <SortableContext
-            items={items.map((it) => it.id)}
-            strategy={verticalListSortingStrategy}
-        >
-            <div className={`flex flex-col ${depth > 0 ? "relative" : ""}`}>
-                {depth > 0 && <div className="absolute left-0 top-0 bottom-0 border-l border-gray-200" style={{ left: (depth * 24) - 12 }} />}
-                
-                {items.map((item, i) => (
-                    <React.Fragment key={item.id}>
-                        <SortableMenuItem
-                            id={item.id}
-                            item={item}
-                            index={i}
-                            depth={depth}
-                            isFirst={i === 0}
-                            isLast={i === items.length - 1}
-                            onEdit={() => onEdit(item, parentId, i, contextId)}
-                            onDelete={() => onDelete(i, parentId, contextId)}
-                            onAddChild={() => onAddChild(item.id, contextId)}
-                            onMoveUp={() => onMove(i, "up", parentId, contextId)}
-                            onMoveDown={() => onMove(i, "down", parentId, contextId)}
-                            isExpanded={expandedItems.has(item.id)}
-                            onToggleExpand={() => toggleExpand(item.id)}
-                        />
-                        {item.children && item.children.length > 0 && expandedItems.has(item.id) && (
-                           <RecursiveSortableList
-                              items={item.children}
-                              depth={depth + 1}
-                              parentId={item.id}
-                              contextId={contextId}
-                              onDelete={onDelete}
-                              onAddChild={onAddChild}
-                              onMove={onMove}
-                              onEdit={onEdit}
-                              expandedItems={expandedItems}
-                              toggleExpand={toggleExpand}
-                           />
-                        )}
-                    </React.Fragment>
-                ))}
-            </div>
-        </SortableContext>
-    );
-}
-
-
-export default function SiteMenuSettings() {
-
-  const { menus, groupedAvailableMenus } = useLoaderData<typeof loader>();
-  const [localMenus, setLocalMenus] = useState(menus);
-
-  // Sync local state when loader data changes (initial load or navigation)
-  useEffect(() => {
-      setLocalMenus(menus);
-  }, [menus]);
-
-  // For saving changes, we'll use a fetcher or form submission per section?
-  // User probably expects global save or per-section. "Save Changes" on dialog is local.
-  // Let's implement auto-save or explicit save button per section?
-  // Explicit save is safer.
-  
-  // Actually, we can just update localMenus and have a global "Save All" or individual "Save" buttons.
-  // Individual "Save" per section is clearer.
-  
-  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
-  
-  // Expand all by default
-  useEffect(() => {
-    const allIds = new Set<string>();
-    Object.values(localMenus).forEach(items => {
-        const traverse = (list: SiteMenuConfigItem[]) => {
-            list.forEach(item => {
-                if (item.children && item.children.length > 0) {
-                    allIds.add(item.id);
-                    traverse(item.children);
-                }
-            });
-        };
-        traverse(items);
-    });
-    setExpandedItems(allIds);
-  }, []); // Only on mount? Or when menus change? If menus change heavily, maybe re-expand.
+    handleMove,
+    handleAddChild,
+    handleEdit,
+    handleDragEnd,
+    setItems,
+  } = useMenuTree<SiteMenuConfigItem>(initialItems);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingContext, setEditingContext] = useState<{
-      contextId: string, // menuId (header, footer)
-      parentId: string | null, // parent ID (root node or item id)
-      index: number | null,
-      item: SiteMenuConfigItem | null
+  const [editing, setEditing] = useState<{
+    item: SiteMenuConfigItem | null;
+    parentId: string;
+    index: number | null;
   } | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{ index: number; parentId: string } | null>(null);
 
-  const [deleteTarget, setDeleteTarget] = useState<{ index: number, parentId: string, contextId: string } | null>(null);
-
-  // Helper to modify config deep
-  const modifyConfig = (
-      config: SiteMenuConfigItem[],
-      parentId: string, // "root" or item ID
-      callback: (siblings: SiteMenuConfigItem[]) => SiteMenuConfigItem[]
-  ): SiteMenuConfigItem[] => {
-      if (parentId === "root") {
-          return callback(config);
+  // 저장 결과 알림 (useFetcher 가 응답 직렬화 자동 처리)
+  useEffect(() => {
+    if (fetcher.state === "idle" && fetcher.data) {
+      if (fetcher.data.success) {
+        // 저장 성공 — 조용히. 필요하면 toast 로 교체
+      } else if (fetcher.data.error) {
+        alert("저장 실패: " + fetcher.data.error);
       }
-      return config.map(item => {
-          if (item.id === parentId) {
-             return { ...item, children: callback(item.children || []) };
-          }
-          if (item.children) {
-             return { ...item, children: modifyConfig(item.children, parentId, callback) };
-          }
-          return item;
-      });
-  };
-
-  const updateMenu = (menuId: string, updater: (prev: SiteMenuConfigItem[]) => SiteMenuConfigItem[]) => {
-      setLocalMenus(prev => ({
-          ...prev,
-          [menuId]: updater(prev[menuId] || [])
-      }));
-  };
-
-  const handleCreateMenuLocation = () => {
-      const id = prompt("추가할 메뉴 위치 ID를 입력하세요 (예: sidebar)");
-      if (!id) return;
-      if (localMenus[id]) {
-          alert("이미 존재하는 ID입니다.");
-          return;
-      }
-      setLocalMenus(prev => ({ ...prev, [id]: [] }));
-      // Trigger create in backend?
-      // For now we just add it to local state. User needs to adding items then save to persist? 
-      // Or we can save empty list immediately.
-      const formData = new FormData();
-      formData.append("intent", "create_location");
-      formData.append("menuId", id);
-      fetch(window.location.href, { method: "POST", body: formData }); 
-  };
-
-  const toggleExpand = (id: string) => {
-      const newSet = new Set(expandedItems);
-      if (newSet.has(id)) {
-          newSet.delete(id);
-      } else {
-          newSet.add(id);
-      }
-      setExpandedItems(newSet);
-  };
-  
-  const handleDragEnd = (event: DragEndEvent, menuId: string) => {
-    const { active, over } = event;
-    if (!over || active.id === over.id) return;
-
-    const items = localMenus[menuId];
-    
-    const findParentId = (list: SiteMenuConfigItem[], id: string): string | null => {
-      for (const item of list) {
-         if (item.children) {
-             if (item.children.some(child => child.id === id)) return item.id;
-             const found = findParentId(item.children, id);
-             if (found) return found;
-         }
-      }
-      if (list.some(i => i.id === id)) return "root";
-      return null;
-    };
-
-    const parentId = findParentId(items, active.id as string);
-    
-    if (parentId) {
-        updateMenu(menuId, prev => modifyConfig(prev, parentId, (siblings) => {
-            const oldIndex = siblings.findIndex(x => x.id === active.id);
-            const newIndex = siblings.findIndex(x => x.id === over.id);
-            if (oldIndex === -1 || newIndex === -1) return siblings;
-            return arrayMove(siblings, oldIndex, newIndex);
-        }));
     }
+  }, [fetcher.state, fetcher.data]);
+
+  const onSave = () => {
+    const formData = new FormData();
+    formData.append("intent", "save");
+    formData.append("menuId", menuId);
+    formData.append("configJson", JSON.stringify(items));
+    fetcher.submit(formData, { method: "post" });
   };
 
-
-  // --- Actions ---
-
-  const handleEdit = (item: SiteMenuConfigItem, parentId: string, index: number, contextId: string) => {
-    setEditingContext({ item, parentId, index, contextId });
+  const onOpenAddRoot = () => {
+    setEditing({ item: null, parentId: "root", index: null });
     setIsDialogOpen(true);
   };
-
-  const handleAddChild = (targetParentId: string, contextId: string) => {
-    setEditingContext({ item: null, parentId: targetParentId, index: null, contextId });
+  const onOpenAddChild = (targetParentId: string) => {
+    setEditing({ item: null, parentId: targetParentId, index: null });
     setIsDialogOpen(true);
   };
-
-  const handleAddRoot = (contextId: string) => {
-    setEditingContext({ item: null, parentId: "root", index: null, contextId });
+  const onOpenEdit = (item: SiteMenuConfigItem, parentId: string, index: number) => {
+    setEditing({ item, parentId, index });
     setIsDialogOpen(true);
   };
-  
-  const confirmDelete = (index: number, parentId: string, contextId: string) => {
-      setDeleteTarget({ index, parentId, contextId });
+  const onRequestDelete = (index: number, parentId: string) => {
+    setDeleteTarget({ index, parentId });
+  };
+
+  const onSaveDialog = (newItem: SiteMenuConfigItem) => {
+    if (!editing) return;
+    if (editing.index !== null && editing.item) {
+      handleEdit(editing.parentId, editing.index, newItem);
+    } else {
+      handleAddChild(editing.parentId, newItem);
+    }
+    setIsDialogOpen(false);
+    setEditing(null);
   };
 
   const executeDelete = () => {
-      if (!deleteTarget) return;
-      const { index, parentId, contextId } = deleteTarget;
-      
-      updateMenu(contextId, prev => modifyConfig(prev, parentId, (siblings) => {
-          const newSiblings = [...siblings];
-          newSiblings.splice(index, 1);
-          return newSiblings;
-      }));
-      setDeleteTarget(null);
+    if (!deleteTarget) return;
+    setItems((prev) => {
+      const dfs = (list: SiteMenuConfigItem[], parentId: string): SiteMenuConfigItem[] => {
+        if (parentId === "root") {
+          const next = [...list];
+          next.splice(deleteTarget.index, 1);
+          return next;
+        }
+        return list.map((it) => {
+          if (it.id === parentId) {
+            const next = [...(it.children ?? [])];
+            next.splice(deleteTarget.index, 1);
+            return { ...it, children: next };
+          }
+          if (it.children) {
+            return { ...it, children: dfs(it.children, parentId) };
+          }
+          return it;
+        });
+      };
+      return dfs(prev, deleteTarget.parentId);
+    });
+    setDeleteTarget(null);
   };
-  
-  const handleMove = (index: number, direction: "up" | "down", parentId: string, contextId: string) => {
-       updateMenu(contextId, prev => modifyConfig(prev, parentId, (siblings) => {
-           const newList = [...siblings];
-           if (direction === "up" && index > 0) {
-              [newList[index], newList[index - 1]] = [newList[index - 1], newList[index]];
-           } else if (direction === "down" && index < newList.length - 1) {
-              [newList[index], newList[index + 1]] = [newList[index + 1], newList[index]];
-           }
-           return newList;
-       }));
-  };
-
-  const handleSaveDialog = (item: SiteMenuConfigItem) => {
-      if (!editingContext) return;
-      const { parentId, index, contextId } = editingContext;
-      
-      if (parentId) {
-          updateMenu(contextId, prev => modifyConfig(prev, parentId, (siblings) => {
-              const newSiblings = [...siblings];
-              if (index !== null) {
-                  newSiblings[index] = { ...newSiblings[index], ...item };
-              } else {
-                  newSiblings.push(item);
-              }
-              return newSiblings;
-          }));
-      }
-      setIsDialogOpen(false);
-      setEditingContext(null);
-  };
-  
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
-
-  // --- Render ---
 
   return (
-    <div className="flex h-full flex-col">
-       <div className="flex items-center justify-between border-b border-gray-100 bg-white px-8 py-4">
-        <div>
-           <h1 className="text-2xl font-bold text-gray-900">사이트 메뉴 설정</h1>
-           <p className="mt-1 text-sm text-gray-500">
-             사용자 화면에 표시되는 메뉴를 구성합니다. (Header, Footer 등)
-           </p>
-        </div>
-        <div>
-             <button
-                onClick={handleCreateMenuLocation}
-                className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
-              >
-                <Plus className="h-4 w-4" />
-                메뉴 위치 추가
-              </button>
+    <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+      <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-6 py-4">
+        <h2 className="text-lg font-bold text-gray-800 uppercase tracking-wider">{menuId}</h2>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={onSave}
+            disabled={isSaving}
+            className="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+          >
+            {isSaving ? "저장 중..." : "저장"}
+          </button>
+          {fetcher.state === "idle" && fetcher.data?.success && (
+            <span className="text-xs text-green-600 self-center">저장됨 ✓</span>
+          )}
+          <button
+            type="button"
+            onClick={onOpenAddRoot}
+            className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 flex items-center gap-1"
+          >
+            <Plus className="w-3 h-3" /> 최상위 추가
+          </button>
         </div>
       </div>
-      
-      <div className="flex-1 overflow-y-auto bg-gray-50 p-8">
-          <div className="grid gap-8">
-              {Object.keys(localMenus).map(menuId => (
-                  <div key={menuId} className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
-                      <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-6 py-4">
-                          <h2 className="text-lg font-bold text-gray-800 uppercase tracking-wider">{menuId}</h2>
-                          
-                          <div className="flex gap-2">
-                              <form method="post" onSubmit={(e) => {
-                                  // Manual submit to persist
-                                  e.preventDefault();
-                                  const formData = new FormData();
-                                  formData.append("intent", "save");
-                                  formData.append("menuId", menuId);
-                                  formData.append("configJson", JSON.stringify(localMenus[menuId]));
-                                  fetch(window.location.href, { method: "POST", body: formData })
-                                    .then(res => res.json())
-                                    .then(data => {
-                                        if(data.success) alert("저장되었습니다.");
-                                        else alert("저장 실패: " + data.error);
-                                    });
-                              }}>
-                                  <button type="submit" className="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700">
-                                      저장
-                                  </button>
-                              </form>
-                              <button 
-                                  onClick={() => handleAddRoot(menuId)}
-                                  className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 flex items-center gap-1"
-                              >
-                                  <Plus className="w-3 h-3"/> 최상위 추가
-                              </button>
-                          </div>
-                      </div>
-                      
-                      <div className="p-4">
-                          <ClientOnly
-                            fallback={
-                              <div className="p-6 text-center text-sm text-gray-400">
-                                메뉴 트리 로딩 중...
-                              </div>
-                            }
-                          >
-                            <DndContext
-                              sensors={sensors}
-                              collisionDetection={closestCenter}
-                              onDragEnd={(e) => handleDragEnd(e, menuId)}
-                            >
-                              <RecursiveSortableList
-                                items={localMenus[menuId]}
-                                parentId="root"
-                                contextId={menuId}
-                                onDelete={confirmDelete}
-                                onAddChild={handleAddChild}
-                                onEdit={handleEdit}
-                                onMove={handleMove}
-                                expandedItems={expandedItems}
-                                toggleExpand={toggleExpand}
-                              />
-                            </DndContext>
-                          </ClientOnly>
-                          
-                          {localMenus[menuId].length === 0 && (
-                              <div className="py-8 text-center text-gray-400 text-sm">
-                                  메뉴 항목이 없습니다. '최상위 추가' 버튼을 눌러 항목을 추가하세요.
-                              </div>
-                          )}
-                      </div>
-                  </div>
-              ))}
+
+      <div className="p-4">
+        <MenuTree<SiteMenuConfigItem>
+          items={items}
+          expandedItems={expandedItems}
+          toggleExpand={toggleExpand}
+          onEdit={onOpenEdit}
+          onDelete={onRequestDelete}
+          onAddChild={onOpenAddChild}
+          onMove={handleMove}
+          onDragEnd={handleDragEnd}
+          sensors={sensors}
+          renderLabel={(item) => (
+            <div className="flex items-center gap-2">
+              <span className="font-medium text-gray-900">{item.label}</span>
+              <span className="text-xs text-gray-400 font-mono truncate max-w-[200px]">
+                {item.to}
+              </span>
+              {item.target === "_blank" && (
+                <ExternalLink className="w-3 h-3 text-gray-400" />
+              )}
+              {item.permission && (
+                <span className="text-[10px] bg-yellow-100 text-yellow-800 px-1 rounded">
+                  Locked
+                </span>
+              )}
+            </div>
+          )}
+        />
+
+        {items.length === 0 && (
+          <div className="py-8 text-center text-gray-400 text-sm">
+            메뉴 항목이 없습니다. '최상위 추가' 버튼을 눌러 항목을 추가하세요.
           </div>
+        )}
       </div>
 
       <MenuItemDialog
         isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-        onSave={handleSaveDialog}
-        initialItem={editingContext?.item}
+        onClose={() => {
+          setIsDialogOpen(false);
+          setEditing(null);
+        }}
+        onSave={onSaveDialog}
+        initialItem={editing?.item}
         groupedAvailableMenus={groupedAvailableMenus}
       />
 
-      <DeleteConfirmDialog 
+      <DeleteConfirmDialog
         isOpen={!!deleteTarget}
         onClose={() => setDeleteTarget(null)}
         onConfirm={executeDelete}
       />
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// 페이지: 메뉴 위치 dict 관리 + 각 위치별 <MenuPositionEditor>
+// ---------------------------------------------------------------------------
+
+export default function SiteMenuSettings() {
+  const { menus, groupedAvailableMenus } = useLoaderData<typeof loader>();
+  const [localMenus, setLocalMenus] = useState(menus);
+  const createLocationFetcher = useFetcher();
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
+
+  // loader 재실행 결과 동기화
+  useEffect(() => {
+    setLocalMenus(menus);
+  }, [menus]);
+
+  const handleCreateMenuLocation = () => {
+    const id = prompt("추가할 메뉴 위치 ID를 입력하세요 (예: sidebar)");
+    if (!id) return;
+    if (localMenus[id]) {
+      alert("이미 존재하는 ID입니다.");
+      return;
+    }
+    setLocalMenus((prev) => ({ ...prev, [id]: [] }));
+    // backend 에 빈 위치 생성 (저장 안 해도 다음 reload 시 보이도록)
+    const formData = new FormData();
+    formData.append("intent", "create_location");
+    formData.append("menuId", id);
+    createLocationFetcher.submit(formData, { method: "post" });
+  };
+
+  return (
+    <div className="flex h-full flex-col">
+      <div className="flex items-center justify-between border-b border-gray-100 bg-white px-8 py-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">사이트 메뉴 설정</h1>
+          <p className="mt-1 text-sm text-gray-500">
+            사용자 화면에 표시되는 메뉴를 구성합니다. (Header, Footer 등)
+          </p>
+        </div>
+        <button
+          onClick={handleCreateMenuLocation}
+          className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
+        >
+          <Plus className="h-4 w-4" /> 메뉴 위치 추가
+        </button>
+      </div>
+
+      <div className="flex-1 overflow-y-auto bg-gray-50 p-8">
+        <div className="grid gap-8">
+          {Object.keys(localMenus).map((menuId) => (
+            <MenuPositionEditor
+              key={menuId}
+              menuId={menuId}
+              initialItems={localMenus[menuId] || []}
+              groupedAvailableMenus={groupedAvailableMenus}
+              sensors={sensors}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
