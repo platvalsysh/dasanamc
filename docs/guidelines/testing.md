@@ -11,6 +11,10 @@ pnpm test:watch    # watch 모드
 
 설정은 루트 [vitest.config.ts](../../vitest.config.ts) 에서 관리. 테스트 파일은 `packages/*/test/**/*.test.ts` 패턴으로 자동 수집.
 
+`AUTH_SECRET` 환경변수는 `phone-verify` 가 모듈 로드 시점에 검증하므로,
+미설정 환경에서 테스트가 깨지지 않도록 `vitest.config.ts` 가 fallback 값을 주입.
+실제 `.env` 의 `AUTH_SECRET` 가 있으면 그대로 사용.
+
 ## 권장 스택
 
 - **유닛/통합**: [Vitest](https://vitest.dev) ✅ 설치 완료

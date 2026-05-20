@@ -39,6 +39,8 @@ cp .env.example .env
 
 - **Supabase**: 클라이언트별로 새 Supabase 프로젝트 생성 후 URL / ANON_KEY / SERVICE_ROLE_KEY
 - **DATABASE_URL / DIRECT_URL**: Supabase 의 Connection Pooler / Direct
+- **`AUTH_SECRET`**: 휴대폰 인증 토큰 HMAC 키. 최소 16자. 미설정 시 startup throw.
+  생성: `openssl rand -hex 32` (외주마다 새로)
 - **`ENABLED_MODULES`**: 클라이언트가 쓸 모듈만 (예: `board,file,sms`). 비우면 전체 활성
 
 활성 가능한 기능 모듈: `board`, `editor`, `file`, `sms`

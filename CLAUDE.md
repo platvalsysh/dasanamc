@@ -82,9 +82,10 @@ pnpm new:module <이름>                    # 신규 모듈 스캐폴드
 
 1. **저장소** — 이 리포 복제 → 새 리모트 연결
 2. **환경 변수** — `.env.example` → `.env` 복사 후 채움. 클라이언트별 Supabase
-   프로젝트의 URL/anon/service_role/DB URL/pooler 호스트 입력. `ENABLED_MODULES`
-   로 사용할 모듈만 활성화 (예: `ENABLED_MODULES=board,file`). `core`/`auth`/`admin`
-   은 화이트리스트 무관 항상 활성. 자세히는 [README.md](README.md) §2
+   프로젝트의 URL/anon/service_role/DB URL/pooler 호스트 입력. `AUTH_SECRET`
+   은 휴대폰 인증 HMAC 키로 **반드시 16자 이상** (`openssl rand -hex 32`).
+   `ENABLED_MODULES` 로 사용할 모듈만 활성화 (예: `ENABLED_MODULES=board,file`).
+   `core`/`auth`/`admin` 은 화이트리스트 무관 항상 활성. 자세히는 [README.md](README.md) §2
 3. **DB 스키마 + 시드 + 초기 관리자**
    ```bash
    pnpm db:migrate
