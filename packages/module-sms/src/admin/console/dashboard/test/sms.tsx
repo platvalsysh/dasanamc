@@ -5,6 +5,7 @@ import { Form, useActionData, useNavigation } from "react-router";
 import { ConsoleSmsProvider } from "../../../../.server/providers/ConsoleSmsProvider";
 
 import { getErrorMessage } from "@repo/core/utils";
+// 권한 가드는 admin-layout backstop 에서 처리 (순환의존 회피)
 export async function action({ request, params }: ActionFunctionArgs) {
   const { profile } = params;
   if (!profile) throw new Error("Profile is required");

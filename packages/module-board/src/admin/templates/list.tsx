@@ -6,13 +6,18 @@ import { LucidePlus, LucideTrash, LucideEdit } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, Button } from "@repo/ui-admin";
 import { useState } from "react";
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
+import { useAuthServerContext } from "@repo/auth/server";
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function loader({ params, context }: LoaderFunctionArgs) {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["board.admin.manage", "board.*"]);
   const templates = await BoardService.getTemplates(params.id!);
   return { templates, moduleId: params.id! };
 }
 
-export async function action({ request, params }: ActionFunctionArgs) {
+export async function action({ request, params, context }: ActionFunctionArgs) {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["board.admin.manage", "board.*"]);
   const formData = await request.formData();
   const intent = formData.get("intent");
   const id = formData.get("id") as string;

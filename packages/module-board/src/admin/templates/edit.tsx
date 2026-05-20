@@ -3,10 +3,13 @@ import { Link, useLoaderData, useNavigation, Form, redirect } from "react-router
 import { BoardAdminTabs } from "../components/BoardAdminTabs";
 import { BoardService } from "../../BoardService";
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
+import { useAuthServerContext } from "@repo/auth/server";
 import { Editor } from "@repo/module-editor/ui";
 import { Button, Input } from "@repo/ui-admin";
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function loader({ params, context }: LoaderFunctionArgs) {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["board.admin.manage", "board.*"]);
   const { id, templateId } = params;
   
   // Checking if new or edit
@@ -19,7 +22,9 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { moduleId: id!, template };
 }
 
-export async function action({ request, params }: ActionFunctionArgs) {
+export async function action({ request, params, context }: ActionFunctionArgs) {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["board.admin.manage", "board.*"]);
   const formData = await request.formData();
   const name = formData.get("name") as string;
   const content = formData.get("content") as string;

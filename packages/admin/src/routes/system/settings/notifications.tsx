@@ -8,6 +8,7 @@ import {
 import { configManager } from "@repo/core/server";
 import { Save } from "lucide-react";
 import { NotImplementedBanner } from "../../../components/NotImplementedBanner";
+import { requireSettingsView, requireSettingsEdit } from "../../../utils/admin-guard";
 
 interface NotificationConfig {
   emailAlerts: boolean;
@@ -23,7 +24,8 @@ const DEFAULT_CONFIG: NotificationConfig = {
   slackWebhookUrl: "",
 };
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ context }: LoaderFunctionArgs) => {
+  requireSettingsView(context);
   const config = await configManager.get<NotificationConfig>(
     "site",
     "notifications",
@@ -32,7 +34,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return { config };
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, context }: ActionFunctionArgs) => {
+  requireSettingsEdit(context);
   const formData = await request.formData();
 
   const newConfig: NotificationConfig = {

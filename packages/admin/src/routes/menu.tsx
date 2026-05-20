@@ -1,6 +1,7 @@
 import { type ActionFunctionArgs, type LoaderFunctionArgs } from "react-router";
 import { useFetcher, useLoaderData } from "react-router";
 import { getSiteMenus, setSiteMenu, moduleManager } from "@repo/core/server";
+import { useAuthServerContext } from "@repo/auth/server";
 import { Plus, X, FileText, ExternalLink, Info } from "lucide-react";
 import type { SiteMenuConfigItem, SiteMenuItemUnit } from "@repo/core/types";
 import { useState, useEffect } from "react";
@@ -14,88 +15,65 @@ import {
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
-// Import prisma to query dynamic tables
-import { prisma } from "@repo/database";
+export const loader = async ({ context }: LoaderFunctionArgs) => {
+  const auth = useAuthServerContext(context);
+  if (!auth.checkPermissions(["admin.menu.manage", "admin.*"])) {
+    throw new Response("권한이 없습니다.", { status: 403 });
+  }
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
   const menus = await getSiteMenus();
   const modules = moduleManager.getModules();
-  
-  // Use Promise.all to fetch dynamic items in parallel
+
+  // 동적 메뉴는 모듈이 자체 resolver 로 노출. $queryRawUnsafe 제거 (audit C3).
   const groupedAvailableMenus = await Promise.all(
     Object.values(modules).map(async (m) => {
-        let items: SiteMenuItemUnit[] = [];
-        
-        // 1. Static items logic provided by module definition
-        if (m.siteMenuItemUnits) {
-            for (const unit of m.siteMenuItemUnits) {
-                const unitId = unit.id || crypto.randomUUID();
-                
-                if (unit.dynamic) {
-                    try {
-                        const { query, labelColumn, params } = unit.dynamic;
-                        let results: any[] = [];
+      const items: SiteMenuItemUnit[] = [];
+      if (!m.siteMenuItemUnits) return { module: m.name, items };
 
-                        if (query) {
-                             // Execute Raw Query
-                             results = await prisma.$queryRawUnsafe(query);
-                        }
+      for (const unit of m.siteMenuItemUnits) {
+        const unitId = unit.id || crypto.randomUUID();
 
-                        if (results.length > 0) {
-                            // Map results to menu items
-                            const dynamicItems: SiteMenuItemUnit[] = results.map((row: any, index: number) => {
-                                let path = unit.path || "";
-                                
-                                // Handle Parameter Replacement
-                                if (params) {
-                                    // Multiple params support: { "boardName": "mid" }
-                                    Object.entries(params).forEach(([paramName, colName]) => {
-                                        const val = row[colName];
-                                        if (val !== undefined) {
-                                            path = path.replace(`:${paramName}`, String(val));
-                                        }
-                                    });
-                                }
-
-                                // Use implicit ID or index
-                                // We don't have idColumn anymore, so we use index or try to find an id-like field if we wanted to be smart,
-                                // but index is stable enough for this list context usually.
-                                // Actually, let's allow 'id' or 'mid' in row to be part of key if present for better stability?
-                                // User said "idColumn unnecessary", implying we shouldn't care.
-                                // index is fine.
-                                
-                                return {
-                                    id: `${unitId}-${index}`, 
-                                    label: row[labelColumn] || `Item ${index}`,
-                                    path: path,
-                                    permission: unit.permission
-                                };
-                            });
-                            items.push(...dynamicItems);
-                        }
-                    } catch (e) {
-                         console.error(`Failed to resolve dynamic menu for module ${m.name}:`, e);
-                    }
-                } else {
-                    items.push({ ...unit, id: unitId });
+        if (unit.dynamic) {
+          try {
+            const resolved = await unit.dynamic.resolver();
+            for (const row of resolved) {
+              let path = unit.path || "";
+              if (row.params) {
+                for (const [paramName, value] of Object.entries(row.params)) {
+                  path = path.replace(`:${paramName}`, value);
                 }
+              }
+              items.push({
+                id: `${unitId}-${row.id}`,
+                label: row.label,
+                path,
+                permission: unit.permission,
+              });
             }
+          } catch (e) {
+            console.error(
+              `Failed to resolve dynamic menu for module ${m.name}:`,
+              e,
+            );
+          }
+        } else {
+          items.push({ ...unit, id: unitId });
         }
-        
-        return {
-            module: m.name,
-            items
-        };
-    })
+      }
+
+      return { module: m.name, items };
+    }),
   );
 
-  // Filter out modules with no items
-  const filteredGroups = groupedAvailableMenus.filter(g => g.items.length > 0);
-
+  const filteredGroups = groupedAvailableMenus.filter((g) => g.items.length > 0);
   return { menus, groupedAvailableMenus: filteredGroups };
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, context }: ActionFunctionArgs) => {
+  const auth = useAuthServerContext(context);
+  if (!auth.checkPermissions(["admin.menu.manage", "admin.*"])) {
+    return new Response("권한이 없습니다.", { status: 403 });
+  }
   const formData = await request.formData();
   const intent = formData.get("intent");
 

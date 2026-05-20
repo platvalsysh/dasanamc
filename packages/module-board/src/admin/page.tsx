@@ -14,16 +14,18 @@ import {
   LucideChevronRight,
 } from "lucide-react";
 import { ModulesService } from "@repo/core/server";
+import { useAuthServerContext } from "@repo/auth/server";
 import { Button, Input } from "@repo/ui-admin";
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["board.admin.manage", "board.*"]);
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get("page") || "1");
   const searchKeyword = url.searchParams.get("search_keyword") || undefined;
 
   const modules = await ModulesService.getModules({ moduleName: "board", searchKeyword }, page, 20);
 
-  console.log("modules", modules);
   return { modules };
 }
 

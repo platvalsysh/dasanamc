@@ -6,14 +6,15 @@ import { ConsoleSmsProvider } from "../../.server/providers/ConsoleSmsProvider";
 import { ArrowLeft, Save, Trash2 } from "lucide-react";
 import { useState } from "react";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+// 권한 가드는 admin-layout backstop 에서 처리 (순환의존 회피)
+export async function loader({ params }: LoaderFunctionArgs) {
   const { profile } = params;
   if (!profile) throw new Error("Profile is required");
 
   // Validate profile exists and is a console provider
   const provider = new ConsoleSmsProvider(profile);
   const profileConfig = await provider.getProfile();
-  
+
   return { profileName: profileConfig.name, config: profileConfig.config };
 }
 

@@ -416,6 +416,7 @@ export const ModelName = {
   identifiers: 'identifiers',
   modules: 'modules',
   profiles: 'profiles',
+  rate_limit_events: 'rate_limit_events',
   board_templates: 'board_templates',
   comment_vote_log: 'comment_vote_log',
   comments: 'comments',
@@ -440,7 +441,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "audit_log_entries" | "custom_oauth_providers" | "flow_state" | "identities" | "instances" | "mfa_amr_claims" | "mfa_challenges" | "mfa_factors" | "oauth_authorizations" | "oauth_client_states" | "oauth_clients" | "oauth_consents" | "one_time_tokens" | "refresh_tokens" | "saml_providers" | "saml_relay_states" | "schema_migrations" | "sessions" | "sso_domains" | "sso_providers" | "users" | "webauthn_challenges" | "webauthn_credentials" | "admin_permissions" | "admin_role_permissions" | "admin_roles" | "admin_user_roles" | "configs" | "deleted_modules" | "identifiers" | "modules" | "profiles" | "board_templates" | "comment_vote_log" | "comments" | "document_categories" | "document_ip_view_log" | "document_read_history" | "document_vote_log" | "documents" | "files"
+    modelProps: "audit_log_entries" | "custom_oauth_providers" | "flow_state" | "identities" | "instances" | "mfa_amr_claims" | "mfa_challenges" | "mfa_factors" | "oauth_authorizations" | "oauth_client_states" | "oauth_clients" | "oauth_consents" | "one_time_tokens" | "refresh_tokens" | "saml_providers" | "saml_relay_states" | "schema_migrations" | "sessions" | "sso_domains" | "sso_providers" | "users" | "webauthn_challenges" | "webauthn_credentials" | "admin_permissions" | "admin_role_permissions" | "admin_roles" | "admin_user_roles" | "configs" | "deleted_modules" | "identifiers" | "modules" | "profiles" | "rate_limit_events" | "board_templates" | "comment_vote_log" | "comments" | "document_categories" | "document_ip_view_log" | "document_read_history" | "document_vote_log" | "documents" | "files"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2812,6 +2813,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    rate_limit_events: {
+      payload: Prisma.$rate_limit_eventsPayload<ExtArgs>
+      fields: Prisma.rate_limit_eventsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.rate_limit_eventsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$rate_limit_eventsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.rate_limit_eventsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$rate_limit_eventsPayload>
+        }
+        findFirst: {
+          args: Prisma.rate_limit_eventsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$rate_limit_eventsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.rate_limit_eventsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$rate_limit_eventsPayload>
+        }
+        findMany: {
+          args: Prisma.rate_limit_eventsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$rate_limit_eventsPayload>[]
+        }
+        create: {
+          args: Prisma.rate_limit_eventsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$rate_limit_eventsPayload>
+        }
+        createMany: {
+          args: Prisma.rate_limit_eventsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.rate_limit_eventsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$rate_limit_eventsPayload>[]
+        }
+        delete: {
+          args: Prisma.rate_limit_eventsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$rate_limit_eventsPayload>
+        }
+        update: {
+          args: Prisma.rate_limit_eventsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$rate_limit_eventsPayload>
+        }
+        deleteMany: {
+          args: Prisma.rate_limit_eventsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.rate_limit_eventsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.rate_limit_eventsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$rate_limit_eventsPayload>[]
+        }
+        upsert: {
+          args: Prisma.rate_limit_eventsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$rate_limit_eventsPayload>
+        }
+        aggregate: {
+          args: Prisma.Rate_limit_eventsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRate_limit_events>
+        }
+        groupBy: {
+          args: Prisma.rate_limit_eventsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Rate_limit_eventsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.rate_limit_eventsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Rate_limit_eventsCountAggregateOutputType> | number
+        }
+      }
+    }
     board_templates: {
       payload: Prisma.$board_templatesPayload<ExtArgs>
       fields: Prisma.board_templatesFieldRefs
@@ -4010,6 +4085,15 @@ export const ProfilesScalarFieldEnum = {
 export type ProfilesScalarFieldEnum = (typeof ProfilesScalarFieldEnum)[keyof typeof ProfilesScalarFieldEnum]
 
 
+export const Rate_limit_eventsScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  occurred_at: 'occurred_at'
+} as const
+
+export type Rate_limit_eventsScalarFieldEnum = (typeof Rate_limit_eventsScalarFieldEnum)[keyof typeof Rate_limit_eventsScalarFieldEnum]
+
+
 export const Board_templatesScalarFieldEnum = {
   id: 'id',
   module_id: 'module_id',
@@ -4569,6 +4653,7 @@ export type GlobalOmitConfig = {
   identifiers?: Prisma.identifiersOmit
   modules?: Prisma.modulesOmit
   profiles?: Prisma.profilesOmit
+  rate_limit_events?: Prisma.rate_limit_eventsOmit
   board_templates?: Prisma.board_templatesOmit
   comment_vote_log?: Prisma.comment_vote_logOmit
   comments?: Prisma.commentsOmit

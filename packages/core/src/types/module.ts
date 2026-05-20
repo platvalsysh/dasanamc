@@ -61,19 +61,27 @@ export interface ModuleFunctions {
   delete?: (deletedModule: deleted_modules) => Promise<void>;
 }
 
+/**
+ * 동적 사이트 메뉴 항목을 모듈이 직접 resolver 함수로 노출.
+ *
+ * 과거 `query: string` + `$queryRawUnsafe` 방식은 모듈 선언이 임의 SQL
+ * 문자열을 들고 있어 보안 audit 에서 critical 로 잡혔다. 이제 모듈은 자체
+ * 서비스/Prisma 호출을 통해 parameterized query 로 결과를 만들어 반환한다.
+ *
+ * 반환 형식은 라벨 + 경로 파라미터 매핑. admin 메뉴 빌더는 이를 받아 unit
+ * `path` 의 `:param` 자리를 채워 메뉴 항목을 생성한다.
+ */
 export interface SiteMenuDynamicConfig {
-    // Raw SQL Query is now the standard
-    query: string;
+  resolver: () => Promise<ReadonlyArray<SiteMenuDynamicItem>>;
+}
 
-    // Common
-    labelColumn: string;
-    
-    // Param Mapping (Path Param -> DB Column)
-    // e.g. { "boardName": "mid" }
-    params?: Record<string, string>; 
-    
-    // Legacy support can be removed or kept as optional if needed, 
-    // but user asked for raw defaults. I'll remove the prisma specific ones to be clean.
+export interface SiteMenuDynamicItem {
+  /** 동적 항목의 안정적 식별자. 페이지 키로 사용. */
+  id: string;
+  /** 표시 라벨. */
+  label: string;
+  /** unit.path 의 `:paramName` 자리에 채워질 값 dict. */
+  params?: Record<string, string>;
 }
 
 export interface Module<Name = string, P = string, R = string> {

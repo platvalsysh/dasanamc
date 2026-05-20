@@ -20,14 +20,16 @@ import { Label } from "@repo/ui-admin/components/ui/label";
 import { useState, useEffect } from "react";
 
 import { getErrorMessage } from "@repo/core/utils";
+
+// 권한 가드는 admin-layout backstop 에서 처리 (순환의존 회피)
 export async function loader({ params }: LoaderFunctionArgs) {
   const { profile, templateId } = params;
   if (!profile || !templateId) throw new Error("Profile and Template ID are required");
-  
+
   const provider = new SolapiSmsProvider(profile);
   const service = await provider.getService();
   const template = await service.getKakaoAlimtalkTemplate(templateId);
-  
+
   return { template };
 }
 

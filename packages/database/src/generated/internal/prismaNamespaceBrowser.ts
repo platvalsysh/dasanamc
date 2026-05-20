@@ -83,6 +83,7 @@ export const ModelName = {
   identifiers: 'identifiers',
   modules: 'modules',
   profiles: 'profiles',
+  rate_limit_events: 'rate_limit_events',
   board_templates: 'board_templates',
   comment_vote_log: 'comment_vote_log',
   comments: 'comments',
@@ -601,6 +602,15 @@ export const ProfilesScalarFieldEnum = {
 } as const
 
 export type ProfilesScalarFieldEnum = (typeof ProfilesScalarFieldEnum)[keyof typeof ProfilesScalarFieldEnum]
+
+
+export const Rate_limit_eventsScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  occurred_at: 'occurred_at'
+} as const
+
+export type Rate_limit_eventsScalarFieldEnum = (typeof Rate_limit_eventsScalarFieldEnum)[keyof typeof Rate_limit_eventsScalarFieldEnum]
 
 
 export const Board_templatesScalarFieldEnum = {

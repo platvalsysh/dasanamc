@@ -9,6 +9,7 @@ import {
   type LoaderFunctionArgs,
 } from "react-router";
 import { ModulesService } from "@repo/core/server";
+import { useAuthServerContext } from "@repo/auth/server";
 import { BoardExtraVars, type BoardPermissionConfig } from "../BoardExtraVars";
 import { prisma } from "@repo/database";
 import { BoardPermissionSelector } from "./components/BoardPermissionSelector";
@@ -43,7 +44,9 @@ const READ_DISPLAY_OPTIONS = [
   { value: "file_list", label: "첨부파일 목록" },
 ];
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["board.admin.manage", "board.*"]);
   const roles = await prisma.admin_roles.findMany({
       orderBy: { created_at: "asc" }
   });
@@ -53,7 +56,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 import { BoardAdminModuleSchema } from "../BoardSchemas";
 import { data } from "react-router";
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request, context }: ActionFunctionArgs) {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["board.admin.manage", "board.*"]);
   const formData = await request.formData();
   const values = Object.fromEntries(formData);
   const result = BoardAdminModuleSchema.safeParse(values);

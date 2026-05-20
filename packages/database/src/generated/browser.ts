@@ -203,6 +203,11 @@ export type modules = Prisma.modulesModel
  */
 export type profiles = Prisma.profilesModel
 /**
+ * Model rate_limit_events
+ * This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+ */
+export type rate_limit_events = Prisma.rate_limit_eventsModel
+/**
  * Model board_templates
  * 
  */

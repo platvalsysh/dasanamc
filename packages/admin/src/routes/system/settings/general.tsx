@@ -8,6 +8,7 @@ import {
 import { configManager } from "@repo/core/server";
 import { Save } from "lucide-react";
 import { NotImplementedBanner } from "../../../components/NotImplementedBanner";
+import { requireSettingsView, requireSettingsEdit } from "../../../utils/admin-guard";
 
 interface GeneralConfig {
   siteName: string;
@@ -29,7 +30,8 @@ const DEFAULT_CONFIG: GeneralConfig = {
   registrationEnabled: true,
 };
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ context }: LoaderFunctionArgs) => {
+  requireSettingsView(context);
   const config = await configManager.get<GeneralConfig>(
     "site",
     "general",
@@ -38,7 +40,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return { config };
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, context }: ActionFunctionArgs) => {
+  requireSettingsEdit(context);
   const formData = await request.formData();
   const maintenanceMode = formData.get("maintenanceMode") === "true";
   const registrationEnabled = formData.get("registrationEnabled") === "true";

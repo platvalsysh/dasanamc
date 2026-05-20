@@ -10,6 +10,7 @@ import {
 } from "react-router";
 import { Link } from "react-router";
 import { ModulesService } from "@repo/core/server";
+import { useAuthServerContext } from "@repo/auth/server";
 import { BoardAdminTabs } from "./components/BoardAdminTabs";
 import { BoardDisplayOptionsSelector } from "./components/BoardDisplayOptionsSelector";
 import { 
@@ -47,7 +48,9 @@ import { prisma, type Prisma } from "@repo/database";
 import { useState } from "react";
 import { BoardPermissionSelector } from "./components/BoardPermissionSelector";
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function loader({ params, context }: LoaderFunctionArgs) {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["board.admin.manage", "board.*"]);
   const moduleData = await ModulesService.getModule(params.id!);
 
   if (!moduleData) {
@@ -68,7 +71,9 @@ export async function loader({ params }: LoaderFunctionArgs) {
 import { BoardAdminModuleSchema } from "../BoardSchemas";
 import { data } from "react-router";
 
-export async function action({ request, params }: ActionFunctionArgs) {
+export async function action({ request, params, context }: ActionFunctionArgs) {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["board.admin.manage", "board.*"]);
   const formData = await request.formData();
   const values = Object.fromEntries(formData);
   const result = BoardAdminModuleSchema.safeParse(values);

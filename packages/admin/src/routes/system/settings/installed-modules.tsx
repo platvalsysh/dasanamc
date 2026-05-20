@@ -17,7 +17,8 @@ import {
   TableRow,
 } from "@repo/ui-admin";
 import { AlertTriangle, Check, RefreshCw, X } from "lucide-react";
-import { type ActionFunctionArgs, useFetcher, useLoaderData } from "react-router";
+import { type ActionFunctionArgs, type LoaderFunctionArgs, useFetcher, useLoaderData } from "react-router";
+import { requireSettingsView, requireModulesManage } from "../../../utils/admin-guard";
 
 // Helper to analyze file content for exports
 const analyzeFile = async (filePath: string): Promise<string[]> => {
@@ -59,7 +60,8 @@ const flattenRoutes = async (
   return results;
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, context }: ActionFunctionArgs) => {
+  requireModulesManage(context);
   const formData = await request.formData();
   const intent = formData.get("intent");
   const moduleName = formData.get("module") as string;
@@ -77,7 +79,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   return { success: false };
 };
 
-export const loader = async () => {
+export const loader = async ({ context }: LoaderFunctionArgs) => {
+  requireSettingsView(context);
   const modules = moduleManager.getModules();
   
   // Fetch DB state — deactivated 권한은 제외 (모듈이 더 이상 선언하지 않는 것)

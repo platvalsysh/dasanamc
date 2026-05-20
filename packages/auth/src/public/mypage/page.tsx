@@ -38,6 +38,7 @@ import {
   useLoaderData,
 } from "react-router";
 import { prisma } from "@repo/database";
+import { enforceRateLimit, getRequestIp } from "@repo/core/server";
 import { z } from "zod";
 import {
   displayNameSchema,
@@ -132,6 +133,23 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
       return { error: "SMS 인증이 비활성화되어 있습니다.", intent };
     const phone = formData.get("cellphone_number") as string;
     if (!phone) return { error: "휴대폰 번호를 입력해 주세요.", intent };
+
+    // audit C7 — SMS 발송 abuse 방지
+    const cleanPhone = phone.replace(/-/g, "");
+    const ip = getRequestIp(request);
+    await enforceRateLimit(
+      `sms-send:phone:${cleanPhone}`,
+      3,
+      5 * 60,
+      "인증번호 발송이 너무 잦습니다. 5분 후 다시 시도해 주세요.",
+    );
+    await enforceRateLimit(
+      `sms-send:ip:${ip}`,
+      10,
+      5 * 60,
+      "SMS 발송 요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.",
+    );
+
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     try {
       await smsService.sendKakao({
@@ -163,6 +181,15 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
   if (intent === "verify-code") {
     const phone = formData.get("cellphone_number") as string;
     const code = formData.get("verify_code") as string;
+
+    // audit C7 — 인증 코드 brute force 방지
+    await enforceRateLimit(
+      `verify-code:phone:${phone.replace(/-/g, "")}`,
+      5,
+      5 * 60,
+      "인증번호 확인 시도가 너무 잦습니다. 5분 후 다시 시도해 주세요.",
+    );
+
     const token = readCookie(request, VERIFICATION_COOKIE);
     if (verifyVerificationToken(phone, token, code)) {
       const verifiedToken = signVerifiedToken(phone);

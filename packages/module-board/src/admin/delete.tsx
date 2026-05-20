@@ -10,9 +10,12 @@ import {
 } from "react-router";
 import { useState } from "react";
 import { ModulesService } from "@repo/core/server";
+import { useAuthServerContext } from "@repo/auth/server";
 import { Button, Input } from "@repo/ui-admin";
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function loader({ params, context }: LoaderFunctionArgs) {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["board.admin.manage", "board.*"]);
   const moduleData = await ModulesService.getModule(params.id!);
 
   if (!moduleData) {
@@ -22,7 +25,9 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { module: moduleData };
 }
 
-export async function action({ request, params }: ActionFunctionArgs) {
+export async function action({ request, params, context }: ActionFunctionArgs) {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["board.admin.manage", "board.*"]);
   const formData = await request.formData();
   const mid = formData.get("mid") as string;
   const confirm_mid = formData.get("confirm_mid") as string;

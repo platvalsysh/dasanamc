@@ -53,18 +53,26 @@ export function DefaultLayoutErrorBoundary({ menuItems, error }: DefaultLayoutEr
 
   if (isRouteErrorResponse(error)) {
     status = error.status;
+    // `throw new Response("본문", {status})` 의 본문은 `error.data` 로 들어옴.
+    // 라우트가 던진 친절한 한국어 메시지(429 rate limit / 403 권한 등)를 우선 표시.
+    const dataMessage =
+      typeof error.data === "string" && error.data.trim() ? error.data : null;
+
     if (error.status === 404) {
       title = "페이지를 찾을 수 없습니다.";
       message = "주소가 잘못되었거나 페이지가 이동되었습니다.";
     } else if (error.status === 403) {
       title = "접근할 수 없습니다.";
-      message = "이 페이지를 볼 수 있는 권한이 없습니다.";
+      message = dataMessage ?? "이 페이지를 볼 수 있는 권한이 없습니다.";
     } else if (error.status === 401) {
       title = "로그인이 필요합니다.";
       message = "로그인 후 이용해주세요.";
+    } else if (error.status === 429) {
+      title = "요청이 너무 많습니다";
+      message = dataMessage ?? "잠시 후 다시 시도해 주세요.";
     } else {
       title = `${error.status} 오류`;
-      message = error.statusText || message;
+      message = dataMessage ?? error.statusText ?? message;
     }
   } else if (import.meta.env.DEV) {
     if (error instanceof Error) {

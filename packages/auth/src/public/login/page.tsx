@@ -18,10 +18,10 @@ import {
 } from "react-router";
 import { useAuthServerContext, useSupabaseServerContext } from "../../.server";
 import { prisma } from "@repo/database";
-import crypto from "crypto";
 import bcrypt from "bcrypt";
 import type { SignInWithPasswordCredentials } from "@supabase/supabase-js";
 import { getAuthLoginConfig } from "../../.server/server-config";
+import { enforceRateLimit, getRequestIp } from "@repo/core/server";
 
 export async function loader({ request, context }: LoaderFunctionArgs) {
   const auth = useAuthServerContext(context);
@@ -34,26 +34,13 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   return {};
 }
 
-function isOldPassword(password: string, encrypted_password: string) {
-  const passwordMd5 = crypto
-    .createHash("md5")
-    .update(password, "utf8")
-    .digest("hex");
-  return passwordMd5.toLowerCase() === encrypted_password.toLowerCase();
-}
-
-async function updateUserPassword(id: string, password: string) {
-  const encrypted_password = await bcrypt.hash(password, 10);
-  await prisma.users.update({
-    where: {
-      id,
-    },
-    data: {
-      encrypted_password,
-    },
-  });
-}
-
+/**
+ * 입력된 identifier (이메일 / 휴대폰 / 로그인 ID) 로 사용자 레코드를 찾아
+ * Supabase signInWithPassword 에 넘길 credentials 형태로 변환.
+ *
+ * 비밀번호 검증은 bcrypt 만 사용. (chemeng 레거시 MD5 fallback 은 dasanamc
+ * 에 무관하므로 제거 — audit C4)
+ */
 async function resolveCredentialFromIdentifier(
   identifier: string,
   password: string,
@@ -62,6 +49,16 @@ async function resolveCredentialFromIdentifier(
   const notFoundCredential = {
     credentials: { email: identifier, password },
     error: "아이디 또는 비밀번호가 올바르지 않습니다.",
+  };
+
+  const passwordMatches = (encrypted: string | null) => {
+    if (!encrypted) return false;
+    if (!encrypted.startsWith("$2")) return false; // bcrypt prefix
+    try {
+      return bcrypt.compareSync(password, encrypted);
+    } catch {
+      return false;
+    }
   };
 
   if (config.email || config.phone) {
@@ -80,12 +77,7 @@ async function resolveCredentialFromIdentifier(
         encrypted_password: true,
       },
     });
-    if (user && user.encrypted_password) {
-      if (isOldPassword(password, user.encrypted_password)) {
-        await updateUserPassword(user.id, password);
-      } else if (!bcrypt.compareSync(password, user.encrypted_password)) {
-        return notFoundCredential;
-      }
+    if (user && passwordMatches(user.encrypted_password)) {
       if (config.email && user.email === identifier) {
         return { credentials: { email: user.email, password } };
       }
@@ -96,19 +88,12 @@ async function resolveCredentialFromIdentifier(
   }
   if (config.login_id) {
     const userInfo = await prisma.identifiers.findFirst({
-      where: {
-        identifier: identifier,
-      },
-      select: {
-        user_id: true,
-      },
+      where: { identifier },
+      select: { user_id: true },
     });
     if (userInfo) {
       const user = await prisma.users.findFirst({
-        where: {
-          id: userInfo.user_id,
-          deleted_at: null,
-        },
+        where: { id: userInfo.user_id, deleted_at: null },
         select: {
           id: true,
           email: true,
@@ -116,13 +101,7 @@ async function resolveCredentialFromIdentifier(
           encrypted_password: true,
         },
       });
-      if (user && user.encrypted_password) {
-        if (isOldPassword(password, user.encrypted_password)) {
-          await updateUserPassword(user.id, password);
-        } else if (!bcrypt.compareSync(password, user.encrypted_password)) {
-          return notFoundCredential;
-        }
-
+      if (user && passwordMatches(user.encrypted_password)) {
         if (user.email) {
           return { credentials: { email: user.email, password } };
         }
@@ -136,6 +115,10 @@ async function resolveCredentialFromIdentifier(
 }
 
 export const action = async ({ request, context }: ActionFunctionArgs) => {
+  // audit C7 — IP 당 5분 / 10회 + identifier 당 5분 / 10회 동시 제한.
+  // brute force 대응이며 정상 로그인 흐름은 영향 없음.
+  // 폼 사용자는 fetcher.Form 으로 호출하므로 throw Response 가 inline 에러로
+  // 매끄럽게 표시되지 않음. try/catch 로 받아 `{ error }` 객체로 변환.
   const supabase = useSupabaseServerContext(context);
   const formData = await request.formData();
   const url = new URL(request.url);
@@ -146,6 +129,30 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
 
   const identifier = formData.get("identifier") as string; // Can be email or login_id
   const password = formData.get("password") as string;
+
+  try {
+    const ip = getRequestIp(request);
+    await enforceRateLimit(
+      `login:ip:${ip}`,
+      10,
+      5 * 60,
+      "로그인 시도가 너무 잦습니다. 5분 후 다시 시도해 주세요.",
+    );
+    if (identifier) {
+      await enforceRateLimit(
+        `login:id:${identifier.toLowerCase().slice(0, 100)}`,
+        10,
+        5 * 60,
+        "이 계정에 대한 로그인 시도가 너무 잦습니다. 5분 후 다시 시도해 주세요.",
+      );
+    }
+  } catch (e) {
+    if (e instanceof Response && e.status === 429) {
+      const msg = await e.text();
+      return { error: msg };
+    }
+    throw e;
+  }
 
   // Step 1: Resolve email from identifier
   const { credentials, error } = await resolveCredentialFromIdentifier(

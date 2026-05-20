@@ -128,8 +128,28 @@ export class Auth {
     );
   }
 
+  /**
+   * 권한 가드. action / loader 첫 줄에서 호출. 미충족 시 즉시 Response 던져
+   * React Router 가 그대로 응답으로 사용. 로그인 필요 시 401, 권한 부족 시 403.
+   *
+   * - 로그인 안 한 사용자에게는 401 + WWW-Authenticate (action) 또는 redirect (loader)
+   *   가 더 적절할 수 있으나, admin 영역은 이미 layout 에서 redirect 처리하므로
+   *   여기 도달했다는 건 로그인은 한 상태. 권한만 부족하므로 403 으로 통일.
+   */
+  requirePermissions(permission: string[], requireAll: boolean = false): void {
+    if (!this.checkPermissions(permission, requireAll)) {
+      throw new Response("권한이 없습니다.", { status: 403 });
+    }
+  }
+
   isSuperAdmin() {
     return this.roles.includes("super_admin");
+  }
+
+  requireSuperAdmin(): void {
+    if (!this.isSuperAdmin()) {
+      throw new Response("최고관리자 권한이 필요합니다.", { status: 403 });
+    }
   }
 }
 

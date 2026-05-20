@@ -14,6 +14,11 @@ export default function Layout() {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  const { menuItems } = useLoaderData<typeof loader>();
-  return <DefaultLayoutErrorBoundary menuItems={menuItems} error={error} />;
+  // 자식 라우트의 action 이 Response 를 throw 한 경우 (예: rate limit 429),
+  // 이 부모 layout 의 loader 는 실행되지 않아 loaderData 가 undefined.
+  // 안전하게 빈 메뉴로 fallback.
+  const data = useLoaderData<typeof loader>() as { menuItems?: any } | undefined;
+  return (
+    <DefaultLayoutErrorBoundary menuItems={data?.menuItems ?? []} error={error} />
+  );
 }

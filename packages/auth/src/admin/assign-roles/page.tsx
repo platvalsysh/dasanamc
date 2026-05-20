@@ -6,6 +6,7 @@ import {
   useNavigation,
 } from "react-router";
 import { prisma } from "@repo/database";
+import { useAuthServerContext } from "../../.server";
 import { PermissionGate } from "@repo/auth/ui";
 import {
   Search,
@@ -167,7 +168,9 @@ async function getUserRoles(selectedRoleId?: string | null) {
 }
 
 // Loader
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["auth.users.edit", "auth.users.create", "auth.*"]);
   const url = new URL(request.url);
   const searchTerm = url.searchParams.get("search") || "";
   const selectedRoleId = url.searchParams.get("roleId");
@@ -232,7 +235,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 // Action
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request, context }: ActionFunctionArgs) {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["auth.users.edit", "auth.users.create", "auth.*"]);
   const formData = await request.formData();
   const intent = formData.get("intent");
 

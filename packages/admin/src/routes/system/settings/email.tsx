@@ -8,6 +8,7 @@ import {
 import { configManager } from "@repo/core/server";
 import { Save } from "lucide-react";
 import { NotImplementedBanner } from "../../../components/NotImplementedBanner";
+import { requireSettingsView, requireSettingsEdit } from "../../../utils/admin-guard";
 
 interface EmailConfig {
   smtpHost: string;
@@ -27,7 +28,8 @@ const DEFAULT_CONFIG: EmailConfig = {
   senderEmail: "",
 };
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ context }: LoaderFunctionArgs) => {
+  requireSettingsView(context);
   const config = await configManager.get<EmailConfig>(
     "site",
     "email",
@@ -37,7 +39,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return { config };
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, context }: ActionFunctionArgs) => {
+  requireSettingsEdit(context);
   const formData = await request.formData();
 
   const newConfig: EmailConfig = {

@@ -14,6 +14,7 @@ import {
 import { ExternalLink, Search } from "lucide-react";
 import type { LoaderFunctionArgs } from "react-router";
 import { Form, Link, useLoaderData, useSearchParams } from "react-router";
+import { requireSettingsView } from "../../../utils/admin-guard";
 
 
 /**
@@ -23,7 +24,8 @@ import { Form, Link, useLoaderData, useSearchParams } from "react-router";
  * 모듈 정의(코드)와 무관하게 운영자가 만든 _인스턴스_ 가 여기 들어옴.
  * 모듈 자체 관리는 `installed-modules` 페이지 참고.
  */
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request, context }: LoaderFunctionArgs) => {
+  requireSettingsView(context);
   const url = new URL(request.url);
   const page = Number(url.searchParams.get("page")) || 1;
   const search = url.searchParams.get("q") || undefined;

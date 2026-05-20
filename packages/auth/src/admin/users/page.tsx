@@ -8,6 +8,7 @@ import {
   useLoaderData 
 } from "react-router";
 import { type Prisma, prisma } from "@repo/database";
+import { useAuthServerContext } from "../../.server";
 import { UserTable } from "./UserTable";
 import { Search, Plus, ChevronDown, XCircle } from "lucide-react";
 import { 
@@ -29,7 +30,6 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@repo/ui-admin";
-import bcrypt from "bcrypt";
 import { createClient } from "@supabase/supabase-js";
 import { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } from "@repo/env/server";
 
@@ -41,7 +41,9 @@ const serverSupabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!, {
   },
 });
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["auth.users.view", "auth.*"]);
   const url = new URL(request.url);
   const searchTerm = url.searchParams.get("search") || "";
   const searchField = url.searchParams.get("searchField") || "all";
@@ -284,37 +286,55 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return { users: formattedUsers, totalCount, page, itemsPerPage, allRoles };
 }
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request, context }: ActionFunctionArgs) {
+  const auth = useAuthServerContext(context);
   const formData = await request.formData();
   const intent = formData.get("intent");
   const userId = formData.get("userId") as string;
 
   if (intent === "change-password") {
+    auth.requirePermissions(["auth.users.edit", "auth.*"]);
     const newPassword = formData.get("password") as string;
     if (!newPassword || newPassword.length < 4) {
       return { error: "비밀번호는 최소 4자 이상이어야 합니다." };
     }
-    const encrypted_password = await bcrypt.hash(newPassword, 10);
-    await prisma.users.update({
-      where: { id: userId },
-      data: { encrypted_password },
+    // Supabase Auth Admin API 사용 (audit M3). Prisma 로 auth.users.encrypted_password
+    // 를 직접 쓰면 Supabase 가 기대하는 해시 포맷/메타 갱신을 우회해 다음 로그인
+    // 부터 인증 실패할 수 있음.
+    const { error } = await serverSupabase.auth.admin.updateUserById(userId, {
+      password: newPassword,
     });
+    if (error) {
+      return { error: "비밀번호 변경 실패: " + error.message };
+    }
     return { success: true, message: "비밀번호가 성공적으로 변경되었습니다." };
   }
 
   if (intent === "change-email") {
+    auth.requirePermissions(["auth.users.edit", "auth.*"]);
     const newEmail = formData.get("email") as string;
     if (!newEmail || !newEmail.includes("@")) {
       return { error: "유효한 이메일 주소를 입력해주세요." };
     }
-    await prisma.users.update({
-      where: { id: userId },
-      data: { email: newEmail },
+    // Supabase Auth Admin API 사용 (audit M3). Prisma 로 auth.users.email 만
+    // 바꾸면 Supabase 의 email_change/confirmation 컬럼이 어긋나 로그인이
+    // 막힐 수 있음. email_confirm:true 로 즉시 확정 (관리자 변경이므로).
+    const { error } = await serverSupabase.auth.admin.updateUserById(userId, {
+      email: newEmail,
+      email_confirm: true,
     });
+    if (error) {
+      // 흔한 케이스: 이미 다른 계정이 쓰는 이메일
+      if (error.message.toLowerCase().includes("already")) {
+        return { error: "이미 사용 중인 이메일입니다." };
+      }
+      return { error: "이메일 변경 실패: " + error.message };
+    }
     return { success: true, message: "이메일이 성공적으로 변경되었습니다." };
   }
 
   if (intent === "create-user") {
+    auth.requirePermissions(["auth.users.create", "auth.*"]);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const nickname = formData.get("nickname") as string;
@@ -367,6 +387,7 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   if (intent === "update-user-profile") {
+    auth.requirePermissions(["auth.users.edit", "auth.*"]);
     const profileData = JSON.parse(formData.get("profileData") as string);
     const extraVars = JSON.parse(formData.get("extraVars") as string);
     const roles = formData.get("roles") ? JSON.parse(formData.get("roles") as string) : null;
@@ -426,6 +447,7 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   if (intent === "delete-user") {
+    auth.requirePermissions(["auth.users.delete", "auth.*"]);
     try {
       await prisma.users.update({
         where: { id: userId },
@@ -440,6 +462,8 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   if (intent === "hard-delete-user") {
+    // 영구 삭제는 최고관리자만 가능 (audit 위험도 가장 높음)
+    auth.requireSuperAdmin();
     try {
       // 1. Delete from Supabase Auth first to be safe
       const { error: deleteAuthError } = await serverSupabase.auth.admin.deleteUser(userId as string);

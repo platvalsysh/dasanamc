@@ -178,13 +178,13 @@ export type identifiersOrderByWithRelationInput = {
 
 export type identifiersWhereUniqueInput = Prisma.AtLeast<{
   user_id?: string
+  identifier?: string
   AND?: Prisma.identifiersWhereInput | Prisma.identifiersWhereInput[]
   OR?: Prisma.identifiersWhereInput[]
   NOT?: Prisma.identifiersWhereInput | Prisma.identifiersWhereInput[]
-  identifier?: Prisma.StringFilter<"identifiers"> | string
   updated_at?: Prisma.DateTimeNullableFilter<"identifiers"> | Date | string | null
   users?: Prisma.XOR<Prisma.UsersScalarRelationFilter, Prisma.usersWhereInput>
-}, "user_id">
+}, "user_id" | "identifier">
 
 export type identifiersOrderByWithAggregationInput = {
   user_id?: Prisma.SortOrder

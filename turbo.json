@@ -1,11 +1,34 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalEnv": ["NODE_ENV", "DATABASE_URL", "DIRECT_URL", "SUPABASE_SERVICE_ROLE_KEY"],
+  "globalEnv": [
+    "NODE_ENV",
+    "DATABASE_URL",
+    "DIRECT_URL",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "VITE_SUPABASE_URL",
+    "VITE_SUPABASE_ANON_KEY",
+    "AUTH_SECRET",
+    "ENABLED_MODULES",
+    "SMS_TEST_MODE",
+    "SMS_TEST_NUMBER",
+    "DATABASE_DEBUG"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**", "build/**", ".react-router/**"],
-      "env": ["NODE_ENV", "DATABASE_URL", "DIRECT_URL", "SUPABASE_SERVICE_ROLE_KEY"]
+      "env": [
+        "NODE_ENV",
+        "DATABASE_URL",
+        "DIRECT_URL",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "VITE_SUPABASE_URL",
+        "VITE_SUPABASE_ANON_KEY",
+        "AUTH_SECRET",
+        "ENABLED_MODULES",
+        "SMS_TEST_MODE",
+        "SMS_TEST_NUMBER"
+      ]
     },
     "dev": {
       "cache": false,

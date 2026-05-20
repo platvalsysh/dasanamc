@@ -8,6 +8,7 @@ import {
 import { configManager } from "@repo/core/server";
 import { Save } from "lucide-react";
 import { NotImplementedBanner } from "../../../components/NotImplementedBanner";
+import { requireSettingsView, requireSettingsEdit } from "../../../utils/admin-guard";
 
 interface ApiConfig {
   enablePublicApi: boolean;
@@ -25,7 +26,8 @@ const DEFAULT_CONFIG: ApiConfig = {
   openaiApiKey: "",
 };
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ context }: LoaderFunctionArgs) => {
+  requireSettingsView(context);
   const config = await configManager.get<ApiConfig>(
     "site",
     "api",
@@ -34,7 +36,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return { config };
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, context }: ActionFunctionArgs) => {
+  requireSettingsEdit(context);
   const formData = await request.formData();
 
   const newConfig: ApiConfig = {

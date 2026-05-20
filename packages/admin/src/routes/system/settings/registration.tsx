@@ -11,13 +11,16 @@ import {
   type AuthRegistrationConfig,
 } from "@repo/auth/server";
 import { Save } from "lucide-react";
+import { requireSettingsView, requireSettingsEdit } from "../../../utils/admin-guard";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ context }: LoaderFunctionArgs) => {
+  requireSettingsView(context);
   const config = await getAuthRegistrationConfig();
   return { config };
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, context }: ActionFunctionArgs) => {
+  requireSettingsEdit(context);
   const formData = await request.formData();
   const newConfig: AuthRegistrationConfig = {
     smsVerification: formData.get("smsVerification") === "true",

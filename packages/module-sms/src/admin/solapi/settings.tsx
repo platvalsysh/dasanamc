@@ -6,14 +6,15 @@ import { ArrowLeft, Save, Trash2, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { SolapiSmsProvider } from "../../.server/providers/SolapiSmsProvider";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+// 권한 가드는 admin-layout backstop 에서 처리 (순환의존 회피)
+export async function loader({ params }: LoaderFunctionArgs) {
   const { profile } = params;
   if (!profile) throw new Error("Profile is required");
 
   // Validate profile exists and is a solapi provider
   const provider = new SolapiSmsProvider(profile);
   const profileConfig = await provider.getProfile();
-  
+
   return { profileName: profileConfig.name, config: profileConfig.config };
 }
 

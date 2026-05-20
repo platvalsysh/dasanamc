@@ -11,6 +11,7 @@ import {
   resetAdminMenu,
   moduleManager,
 } from "@repo/core/server";
+import { useAuthServerContext } from "@repo/auth/server";
 import { Save, AlertCircle, Plus, X, FileText } from "lucide-react";
 import type {
   AdminMenuConfigItem,
@@ -30,7 +31,9 @@ import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { useMenuTree } from "../../../components/menu-builder/useMenuTree";
 import { MenuTree } from "../../../components/menu-builder/MenuTree";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ context }: LoaderFunctionArgs) => {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["admin.menu.manage", "admin.*"]);
   const config = await getAdminMenu();
   const modules = moduleManager.getModules();
 
@@ -58,7 +61,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   };
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, context }: ActionFunctionArgs) => {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["admin.menu.manage", "admin.*"]);
   const formData = await request.formData();
   const intent = formData.get("intent");
 

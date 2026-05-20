@@ -7,3 +7,4 @@ export * from "./ModulesService";
 export * from "./module-builder";
 export * from "./site-menu";
 export * from "./middleware";
+export * from "./rate-limit";

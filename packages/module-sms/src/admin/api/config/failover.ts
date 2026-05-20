@@ -2,8 +2,9 @@ import { type ActionFunctionArgs } from "react-router";
 import { getSmsFailoverConfig, setSmsFailoverConfig } from "../../../.server/config";
 
 import { getErrorMessage } from "@repo/core/utils";
-export async function action({ request, context }: ActionFunctionArgs) {
 
+// 권한 가드는 admin-layout backstop 에서 처리 (순환의존 회피)
+export async function action({ request, context }: ActionFunctionArgs) {
   if (request.method === "GET") {
     const config = await getSmsFailoverConfig();
     return Response.json({ success: true, config });

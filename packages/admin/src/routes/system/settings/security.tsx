@@ -8,6 +8,7 @@ import {
 import { configManager } from "@repo/core/server";
 import { Save, AlertCircle } from "lucide-react";
 import { NotImplementedBanner } from "../../../components/NotImplementedBanner";
+import { requireSettingsView, requireSettingsEdit } from "../../../utils/admin-guard";
 
 interface SecurityConfig {
   emailVerification: boolean;
@@ -23,7 +24,8 @@ const DEFAULT_CONFIG: SecurityConfig = {
   maxUploadSize: "100",
 };
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ context }: LoaderFunctionArgs) => {
+  requireSettingsView(context);
   const config = await configManager.get<SecurityConfig>(
     "site",
     "security",
@@ -32,7 +34,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return { config };
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, context }: ActionFunctionArgs) => {
+  requireSettingsEdit(context);
   const formData = await request.formData();
   const emailVerification = formData.get("emailVerification") === "true";
   const twoFactorAuth = formData.get("twoFactorAuth") === "true";

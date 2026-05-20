@@ -10,10 +10,12 @@ import { Textarea } from "@repo/ui-admin/components/ui/textarea";
 import { AlertCircle } from "lucide-react";
 
 import { getErrorMessage } from "@repo/core/utils";
+
+// 권한 가드는 admin-layout backstop 에서 처리 (순환의존 회피)
 export async function loader({ params, request }: LoaderFunctionArgs) {
   const { profile, channelId } = params;
   if (!profile || !channelId) throw new Error("Profile and Channel ID are required");
-  
+
   const provider = new SolapiSmsProvider(profile);
   
   // Fetch channels to select from

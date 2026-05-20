@@ -67,32 +67,19 @@ export const module = createModule("board")
       path: "/board/:boardName",
       permission: "board.view",
       dynamic: {
-          query: "SELECT mid, browser_title FROM core.modules WHERE module = 'board'",
-          labelColumn: "browser_title",
-          params: {
-              "boardName": "mid"
-          }
-      }
+        resolver: async () => {
+          const boards = await prisma.modules.findMany({
+            where: { module: "board" },
+            select: { mid: true, browser_title: true },
+          });
+          return boards.map((b) => ({
+            id: `board-${b.mid}`,
+            label: b.browser_title ?? b.mid,
+            params: { boardName: b.mid },
+          }));
+        },
+      },
     },
-    // {
-    //   label: "게시판카테고리",
-    //   path: "/board/:boardId/category/:categoryId",
-    //   dynamic: {
-    //     // 게시판(modules)과 카테고리(categories)를 조인하여 유효한 조합만 가져옴
-    //     query: `
-    //       SELECT m.mid, c.id as category_id, CONCAT(m.browser_title, ' - ', c.name) as browser_title 
-    //       FROM core.modules m
-    //       JOIN modules.document_categories c ON c.module_id = m.id
-    //       WHERE m.module = 'board'
-    //     `,
-    //     // 라벨을 "게시판이름 - 카테고리이름" 처럼 만들고 싶다면 SQL에서 CONCAT 사용 추천
-    //     labelColumn: "browser_title", 
-    //     params: {
-    //       "boardId": "mid",          // :boardId -> m.mid 값이 들어감
-    //       "categoryId": "category_id" // :categoryId -> c.category_id 값이 들어감
-    //     }
-    //   }
-    // }
   ])
   .functions({
     delete: async (deletedModule) => {

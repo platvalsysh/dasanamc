@@ -11,7 +11,19 @@ import crypto from "node:crypto";
  * - 검증완료 토큰(verified): 코드 검증 성공 직후 1시간 유효. 폼 최종 제출 시 검증.
  */
 
-const VERIFY_SECRET = process.env.AUTH_SECRET || "default-secret-for-phone-verify";
+// AUTH_SECRET 미설정 시 startup 에 즉시 실패. fallback 두면 누구나 verified 쿠키
+// 위조 가능 → 휴대폰 인증 우회. .env 또는 호스팅 환경변수에 반드시 설정.
+function readAuthSecret(): string {
+  const v = process.env.AUTH_SECRET;
+  if (!v || v.length < 16) {
+    throw new Error(
+      "AUTH_SECRET 환경변수 누락 또는 길이 부족 (최소 16자). " +
+        "운영/개발 모두 반드시 설정해야 휴대폰 인증 토큰을 안전하게 서명할 수 있습니다.",
+    );
+  }
+  return v;
+}
+const VERIFY_SECRET = readAuthSecret();
 
 const VERIFICATION_MAX_AGE = 5 * 60; // 5 min
 const VERIFIED_MAX_AGE = 60 * 60; // 1 hour

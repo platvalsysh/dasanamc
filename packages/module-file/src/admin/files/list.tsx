@@ -19,9 +19,7 @@ import { FileThumbnail } from "../../FileThumbnail";
 import { getErrorMessage } from "@repo/core/utils";
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const auth = useAuthServerContext(context);
-  if (!auth.checkPermissions(["file.admin.read"])) {
-      throw redirect("/admin"); 
-  }
+  auth.requirePermissions(["file.admin.read", "file.*"]);
 
   const url = new URL(request.url);
   const page = Number(url.searchParams.get("page") || "1");
@@ -62,9 +60,7 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
 
 export const action = async ({ request, context }: ActionFunctionArgs) => {
   const auth = useAuthServerContext(context);
-  if (!auth.checkPermissions(["file.admin.delete"])) {
-     return { error: "Unauthorized" }; 
-  }
+  auth.requirePermissions(["file.admin.delete", "file.*"]);
   const formData = await request.formData();
   const intent = formData.get("intent");
 

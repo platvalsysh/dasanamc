@@ -29,6 +29,11 @@ import { useState } from "react";
 import { getSmsModuleConfig, addSmsProfile, deleteSmsProfile, setDefaultSmsProfile } from "../.server/config";
 
 import { getErrorMessage } from "@repo/core/utils";
+
+// 권한 가드는 apps/web/app/layouts/admin.tsx 의 admin-layout backstop 이
+// 담당 (sms.config 권한 보유자만 /admin/sms 도달). 본 모듈은 @repo/auth 와
+// 순환의존을 피하기 위해 직접 useAuthServerContext 호출 안 함.
+
 export async function loader({ request }: LoaderFunctionArgs) {
   const config = await getSmsModuleConfig();
   const supportedProviders = smsService.getSupportedProviders();

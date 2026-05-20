@@ -1,11 +1,14 @@
 import React from "react";
 import { useLoaderData, type LoaderFunctionArgs, type ActionFunctionArgs } from "react-router";
 import { ModulesService } from "@repo/core/server";
+import { useAuthServerContext } from "@repo/auth/server";
 import { BoardService } from "../BoardService";
 import { CategoryManager } from "./components/CategoryManager";
 import { BoardAdminTabs } from "./components/BoardAdminTabs";
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function loader({ params, context }: LoaderFunctionArgs) {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["board.admin.manage", "board.*"]);
   const moduleData = await ModulesService.getModule(params.id!);
   if (!moduleData) {
     throw new Response("Not Found", { status: 404 });
@@ -16,7 +19,9 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { module: moduleData, categories };
 }
 
-export async function action({ request, params }: ActionFunctionArgs) {
+export async function action({ request, params, context }: ActionFunctionArgs) {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["board.admin.manage", "board.*"]);
   const formData = await request.formData();
   const intent = formData.get("intent");
 

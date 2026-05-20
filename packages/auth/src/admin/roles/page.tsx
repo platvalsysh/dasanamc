@@ -8,7 +8,8 @@ import {
   useSubmit,
 } from "react-router";
 
-import type { ActionFunctionArgs } from "react-router";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
+import { useAuthServerContext } from "../../.server";
 
 import { PermissionMatrix } from "./components/PermissionMatrix";
 import { RoleList } from "./components/RoleList";
@@ -37,7 +38,9 @@ interface Role {
 }
 
 // Loader
-export async function loader() {
+export async function loader({ context }: LoaderFunctionArgs) {
+  const auth = useAuthServerContext(context);
+  auth.requirePermissions(["auth.users.view", "auth.*"]);
   const [permissionsData, rolesData] = await Promise.all([
     prisma.admin_permissions.findMany({
       where: { deactivated_at: null },
@@ -87,7 +90,11 @@ export async function loader() {
 }
 
 // Action
-export async function action({ request }: ActionFunctionArgs) {
+// 역할/권한 CRUD 는 모두 최고관리자(super_admin) 전용. UI 가 system 역할은
+// 차단하지만 임의 POST 로 우회 가능하므로 action 첫 줄에서 강제.
+export async function action({ request, context }: ActionFunctionArgs) {
+  const auth = useAuthServerContext(context);
+  auth.requireSuperAdmin();
   const formData = await request.formData();
   const intent = formData.get("intent");
 
