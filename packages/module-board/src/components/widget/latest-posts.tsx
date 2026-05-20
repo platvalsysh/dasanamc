@@ -22,6 +22,11 @@ interface LatestPostsWidgetProps {
   title?: string;
   description?: string;
   viewAllLink?: string;
+  /**
+   * SSR 시점에 부모 라우트 loader 가 미리 해석해 넘긴 데이터.
+   * 있으면 클라이언트 fetch 생략 → FCP 단축 + SEO 확보.
+   */
+  initialItems?: BoardWidgetItem[];
 }
 
 export function LatestPostsWidget({
@@ -30,20 +35,25 @@ export function LatestPostsWidget({
   title = "최신 소식",
   description = "동창회의 새로운 소식을 전해드립니다.",
   viewAllLink,
+  initialItems,
 }: LatestPostsWidgetProps) {
-  /* React Router Fetcher for Data Loading */
+  /* React Router Fetcher for Data Loading (SSR fallback). */
   const fetcher = useFetcher<{ items: BoardWidgetItem[] }>();
 
+  // initialItems 가 주어지면 클라이언트 fetch 자체를 안 함.
+  // 라우트가 위젯을 단독으로 띄울 때만 fetcher 가 데이터 가져옴.
   useEffect(() => {
+    if (initialItems) return;
     if (fetcher.state === "idle" && !fetcher.data) {
       const params = new URLSearchParams();
       params.append("mids", mids.join(","));
       fetcher.load(`/api/board/widget/latest?${params.toString()}`);
     }
-  }, [mids, fetcher]);
+  }, [mids, fetcher, initialItems]);
 
-  const loading = fetcher.state !== "idle" && !fetcher.data;
-  const items = fetcher.data?.items || [];
+  const loading =
+    !initialItems && fetcher.state !== "idle" && !fetcher.data;
+  const items = initialItems ?? fetcher.data?.items ?? [];
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 

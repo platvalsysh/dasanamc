@@ -1,10 +1,12 @@
+import { useLoaderData } from "react-router";
 import type { Route } from "./+types/home";
 import { HeroCarousel } from "~/components/hero-carousel";
-import { NewsSection } from "~/components/news-section";
+import { NewsSection, NEWS_SECTION_MIDS } from "~/components/news-section";
 import { FeatureSection } from "~/components/feature-section";
 import { SiteFooter } from "~/components/site-footer";
+import { resolveBoardWidgetItems } from "@repo/module-board/server";
 
-export function meta({ }: Route.MetaArgs) {
+export function meta({}: Route.MetaArgs) {
   return [
     { title: "서울대학교 화학생물공학부 동창회" },
     {
@@ -14,7 +16,16 @@ export function meta({ }: Route.MetaArgs) {
   ];
 }
 
+// 홈페이지 최신 소식을 SSR 단계에서 한 번에 해석. 이전엔 클라이언트 마운트
+// 후 useEffect → fetcher 라 빈 스켈레톤 → 데이터 도착 두 단계로 보였음.
+// 추가로 widget-service 는 N+1 제거된 DISTINCT ON 단일 쿼리.
+export async function loader() {
+  const newsItems = await resolveBoardWidgetItems(NEWS_SECTION_MIDS);
+  return { newsItems };
+}
+
 export default function Home() {
+  const { newsItems } = useLoaderData<typeof loader>();
   return (
     <div className="min-h-screen">
       <div className="lg:grid lg:grid-cols-[40%_60%]">
@@ -27,7 +38,7 @@ export default function Home() {
 
         {/* Right Column - Scrollable Content */}
         <div className="flex flex-col bg-white">
-          <NewsSection />
+          <NewsSection initialItems={newsItems} />
           <FeatureSection />
           <SiteFooter />
         </div>
