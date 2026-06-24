@@ -35,3 +35,9 @@ logs/
 
 # Playwright MCP 임시 산출물 (console 로그, accessibility snapshot, 스크린샷)
 .playwright-mcp/
+# design-sync (skill /design-sync) artifacts
+.ds-sync/
+ds-bundle/
+.design-sync/.cache/
+.design-sync/learnings/
+.design-sync/node_modules

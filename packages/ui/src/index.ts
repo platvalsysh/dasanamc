@@ -14,4 +14,6 @@ export * from "./components/ui/tabs";
 export * from "./components/ui/select";
 export * from "./components/ui/textarea";
 export * from "./components/ui/accordion";
+export * from "./components/ui/carousel";
+export * from "./components/ui/slider";
 export * from "./components/page-header";

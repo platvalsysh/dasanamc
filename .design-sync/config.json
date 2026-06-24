@@ -1,0 +1,30 @@
+{
+  "projectId": "80858ba2-205c-4d00-ab8f-218935b00620",
+  "shape": "package",
+  "pkg": "@repo/ui",
+  "globalName": "RepoUi",
+  "srcDir": "src",
+  "readmeHeader": ".design-sync/conventions.md",
+  "tsconfig": "tsconfig.json",
+  "componentSrcMap": {
+    "Accordion": "src/components/ui/accordion.tsx",
+    "Badge": "src/components/ui/badge.tsx",
+    "Button": "src/components/ui/button.tsx",
+    "Card": "src/components/ui/card.tsx",
+    "Carousel": "src/components/ui/carousel.tsx",
+    "Checkbox": "src/components/ui/checkbox.tsx",
+    "Dialog": "src/components/ui/dialog.tsx",
+    "Input": "src/components/ui/input.tsx",
+    "Label": "src/components/ui/label.tsx",
+    "Popover": "src/components/ui/popover.tsx",
+    "Select": "src/components/ui/select.tsx",
+    "Slider": "src/components/ui/slider.tsx",
+    "Table": "src/components/ui/table.tsx",
+    "Tabs": "src/components/ui/tabs.tsx",
+    "Textarea": "src/components/ui/textarea.tsx",
+    "PageHeader": "src/components/page-header.tsx",
+    "PdfViewer": null,
+    "PdfViewerInternal": null,
+    "FullPageLoader": null
+  }
+}
