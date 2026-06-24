@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
 import type { Route } from "./+types/home";
 import {
@@ -26,25 +26,17 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  // hero 회전 문구 (스크롤 대신 인터벌)
-  const [heroPhraseIdx, setHeroPhraseIdx] = useState(0);
-  useEffect(() => {
-    const id = setInterval(
-      () => setHeroPhraseIdx((i) => (i + 1) % HERO_ROTATING_PHRASES.length),
-      3500,
-    );
-    return () => clearInterval(id);
-  }, []);
-
   // ONE STOP CARE 탭
   const [solTab, setSolTab] = useState(0);
   const activeSol = SOLUTION_TABS[solTab];
 
   return (
     <>
-      {/* ============ HERO (다크) ============ */}
+      {/* ============ HERO (다크, pin) ============ */}
       <section className="relative bg-[color:var(--color-ds-dark)] text-white overflow-hidden">
-        <div className="relative min-h-[100vh] flex flex-col justify-center">
+        {/* pin 영역: ScrollEffects 가 --pinH 를 220vh 로 설정 (모션 허용 시) */}
+        <div id="heropin" className="relative" style={{ height: "var(--pinH, 100vh)" }}>
+        <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
           {/* radial glow */}
           <div
             aria-hidden
@@ -143,7 +135,7 @@ export default function Home() {
             </div>
 
             {/* hero content (bottom left): chip + rotating title + CTAs */}
-            <div className="absolute left-11 bottom-[11%] z-[3] max-w-[540px]">
+            <div id="herocontent" className="absolute left-11 bottom-[11%] z-[3] max-w-[540px]">
               <div className="inline-flex items-center gap-2 px-3.5 py-[7px] rounded-full text-[12.5px] font-bold border bg-[rgba(86,200,184,0.08)] text-[color:var(--color-ds-teal-3)] mb-4 border-[rgba(86,200,184,0.4)]">
                 <span className="w-[7px] h-[7px] rounded-full bg-[color:var(--color-ds-teal-2)] animate-pulse-dot" />
                 365일 24시간 연중무휴 응급진료
@@ -156,12 +148,9 @@ export default function Home() {
                   letterSpacing: "-0.02em",
                 }}
               >
-                <span
-                  key={heroPhraseIdx}
-                  className="inline-block animate-[fadeUp_.55s_cubic-bezier(.2,.75,.2,1)]"
-                  style={{ animationName: "fadeUp" }}
-                >
-                  {HERO_ROTATING_PHRASES[heroPhraseIdx]}
+                {/* ScrollEffects 가 스크롤 진행도에 따라 textContent 를 swap */}
+                <span id="heroswap" className="inline-block">
+                  {HERO_ROTATING_PHRASES[0]}
                 </span>
               </h1>
               <p
@@ -203,6 +192,8 @@ export default function Home() {
             </div>
           </div>
         </div>
+        </div>
+        {/* pin 종료 */}
 
         {/* hero stats row */}
         <div className="relative border-t border-white/[0.08]">
@@ -255,6 +246,7 @@ export default function Home() {
           OUR PROMISE
         </div>
         <p
+          data-reveal
           className="font-extrabold text-[color:var(--color-ds-dark-2)]"
           style={{
             fontSize: "clamp(23px, 3.3vw, 38px)",
@@ -282,7 +274,7 @@ export default function Home() {
             세 가지 'ONE', 다산원이 지키겠습니다
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div data-stagger className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {THREE_ONE.map((t, i) => (
             <div key={i} className="border-t-2 border-[color:var(--color-ds-dark-2)] pt-[34px] px-1">
               <div className="font-mono font-extrabold text-[16px] text-[color:var(--color-ds-teal)] mb-2 leading-none">
@@ -315,7 +307,7 @@ export default function Home() {
               대학병원급 진단 인프라와 분과별 전공의 협진으로 한 곳에서 완결되는 진료를 제공합니다.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div data-stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {STRENGTHS_4.map((s, i) => (
               <div key={i} className="border-t border-[#d7ddd5] pt-[26px] px-1">
                 <div className="font-mono font-extrabold text-[14px] mb-[22px] leading-none" style={{ color: "#bcc7c2" }}>
@@ -408,7 +400,7 @@ export default function Home() {
             분과별 전공의가 함께 진단부터 수술, 회복까지 책임지는 원스톱 시스템
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div data-stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {CENTERS.map((c) => (
             <Link
               key={c.id}
@@ -466,6 +458,7 @@ export default function Home() {
             </p>
           </div>
           <div
+            data-stagger
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px overflow-hidden rounded-[18px] border"
             style={{
               background: "rgba(255,255,255,0.08)",

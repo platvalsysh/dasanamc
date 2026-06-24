@@ -77,11 +77,12 @@ export function Header({ menuItems = [] }: HeaderProps) {
 
   return (
     <header
+      id="siteheader"
       className={
-        "sticky top-0 z-50 w-full transition-[background,box-shadow,border-color] duration-300 " +
+        "sticky top-0 z-50 w-full " +
         (isTransparent
           ? "bg-transparent border-b border-transparent"
-          : "bg-white border-b border-[color:var(--color-ds-border)] shadow-[0_1px_0_rgba(20,42,38,.05),0_10px_28px_rgba(20,42,38,.05)]")
+          : "bg-white border-b border-[color:var(--color-ds-border)]")
       }
     >
       <div className="max-w-[1280px] mx-auto px-8 h-[78px] flex items-center justify-between gap-5">

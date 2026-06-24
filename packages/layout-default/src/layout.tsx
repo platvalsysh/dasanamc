@@ -2,6 +2,7 @@ import { isRouteErrorResponse, Link, Outlet, useLocation, useNavigate } from "re
 import { useEffect } from "react";
 import { Header } from "./components/header";
 import { QuickBar } from "./components/quick-bar";
+import { ScrollEffects } from "./components/scroll-effects";
 import { SiteFooter } from "./components/site-footer";
 import type { SiteMenuConfigItem } from "@repo/core/types";
 import { SiteMenuProvider } from "@repo/core/ui";
@@ -19,6 +20,7 @@ function Layout({ menuItems, children }: PropsWithChildren<DefaultLayoutProps>) 
   return (
     <SiteMenuProvider menuItems={menuItems || []}>
         <div className="flex min-h-screen flex-col bg-[color:var(--color-ds-bg)]">
+          <ScrollEffects />
           {/* 홈은 다크 히어로 위에 헤더가 떠야 하므로 헤더가 콘텐츠를 -78px 끌어올려 덮는다 */}
           <div className={isHomePage ? "relative -mb-[78px] z-50" : ""}>
             <Header menuItems={menuItems} />
