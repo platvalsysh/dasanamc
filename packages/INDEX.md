@@ -25,7 +25,7 @@
 |---|---|
 | [@repo/ui](ui/) | 공개 페이지용 컴포넌트 (Button, Card, PDF Viewer, Carousel) |
 | [@repo/ui-admin](ui-admin/) | 관리자 대시보드용 (Table, Chart, dark theme — Radix 기반) |
-| [@repo/layout-default](layout-default/) | 공개 사이트 레이아웃 (Header/Footer/Outlet) |
+| ~~@repo/layout-default~~ | **2026-06-24 폐기** — 외주별 레이아웃은 `apps/web/app/layouts/default.tsx` 와 `apps/web/app/components/site/` 에 직접 작성. 참고가 필요하면 [@repo/layout-example](layout-example/) |
 | [@repo/layout-admin](layout-admin/) | 관리자 레이아웃 (Sidebar/권한 체크) |
 | [@repo/layout-example](layout-example/) | 레이아웃 작성 참고용. 프로덕션 미사용 |
 

@@ -7,42 +7,17 @@ export interface SiteMenuConfig {
 
 const MENU_CONFIG_KEY_PREFIX = "siteMenu_";
 
-export const DEFAULT_HEADER_MENU: SiteMenuConfigItem[] = [
-  {
-    id: "about",
-    label: "병원소개",
-    to: "/about/greeting",
-    children: [
-      { id: "about-greeting", label: "대표원장 인사말", to: "/about/greeting" },
-      { id: "about-info", label: "진료안내", to: "/about/info" },
-      { id: "about-contact", label: "오시는 길", to: "/about/contact" },
-    ],
-  },
-  {
-    id: "centers",
-    label: "특화진료센터",
-    to: "/centers",
-  },
-  {
-    id: "checkup",
-    label: "건강검진",
-    to: "/checkup",
-  },
-  {
-    id: "support",
-    label: "고객센터",
-    to: "/board/Notice",
-    children: [
-      { id: "support-notice", label: "공지사항", to: "/board/Notice" },
-      { id: "support-info", label: "진료안내", to: "/about/info" },
-      { id: "support-contact", label: "오시는 길", to: "/about/contact" },
-    ],
-  },
-];
+/**
+ * 외주별 메뉴 기본값은 packages/core 가 아니라 각 외주 앱(`apps/web/app/...`)
+ * 의 헤더 컴포넌트가 자체 fallback 으로 들고 있어야 한다. core 는 빈 배열만
+ * 반환 — DB 에 저장된 메뉴(`core.configs.siteMenu_*`) 가 source of truth.
+ *
+ * 이전엔 동창회/다산원 메뉴 IA 가 여기 박혀 있어 외주마다 코드를 수정해야
+ * 했음 (audit H4 안티패턴).
+ */
+export const DEFAULT_HEADER_MENU: SiteMenuConfigItem[] = [];
 
-const DEFAULT_SITE_MENU_CONFIG: SiteMenuConfig = {
-  header: DEFAULT_HEADER_MENU,
-};
+const DEFAULT_SITE_MENU_CONFIG: SiteMenuConfig = {};
 
 // Helper to get key
 const getKey = (menuId: string) => `${MENU_CONFIG_KEY_PREFIX}${menuId}`;

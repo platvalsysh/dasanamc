@@ -99,9 +99,16 @@ pnpm new:module <이름>                    # 신규 모듈 스캐폴드
 5. **모듈 정리** (선택) — 영원히 안 쓸 모듈은 `packages/module-*/` 디렉토리째
    삭제 가능. 그 전에 `apps/web/app/modules.server.ts` 와 `apps/web/package.json`
    의 의존 제거. 이전 사례: `module-newsletter` 제거 커밋 참고
-6. **브랜딩** — `apps/web/app/components/` 홈페이지 섹션 + `apps/web/app/routes/about/`
-   + `packages/core/src/.server/site-menu.ts` (헤더 메뉴 기본값) + `app.css` / UI
-   디자인 토큰
+6. **브랜딩** — **모두 `apps/web` 안에서만**:
+   - `apps/web/app/components/site/` — 헤더/푸터/QuickBar/ScrollEffects (외주 전용 콘텐츠)
+   - `apps/web/app/components/` — 그 외 홈페이지 섹션 컴포넌트
+   - `apps/web/app/routes/home.tsx`, `routes/about/`, `routes/centers.tsx` 등 — 외주별 페이지
+   - `apps/web/app/data/` — 외주 콘텐츠 데이터
+   - `apps/web/app/app.css` — 디자인 토큰
+   - 헤더 메뉴 기본값은 **헤더 컴포넌트의 `MENU_ITEMS_FALLBACK`** 안에서만 정의
+     (`packages/core/src/.server/site-menu.ts` 의 `DEFAULT_HEADER_MENU` 는 빈 배열)
+   - DB `core.configs.siteMenu_header` 가 source of truth — 운영 중에는 admin
+     메뉴 빌더(`/admin/menu`)로 관리
 7. **검증** — `pnpm typecheck` / `pnpm test` / `pnpm syncpack:check` / `pnpm build`
 8. **배포** — Vercel 권장. `turbo.json` 의 `globalEnv` 에 새 환경변수 등록
 

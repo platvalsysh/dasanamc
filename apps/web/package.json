@@ -20,7 +20,6 @@
     "@repo/database": "workspace:*",
     "@repo/env": "workspace:*",
     "@repo/layout-admin": "workspace:*",
-    "@repo/layout-default": "workspace:*",
     "@repo/module-board": "workspace:*",
     "@repo/module-editor": "workspace:*",
     "@repo/module-file": "workspace:*",
