@@ -4,36 +4,37 @@ import { cn } from "@repo/ui/utils";
 import { Button } from "@repo/ui";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+// TODO(template): 슬라이드 이미지를 다산원 실제 사진으로 교체. 현재는 임시 unsplash.
 const SLIDES = [
   {
     id: 1,
     image:
-      "https://pcqrknclbcgrllqoyvzq.supabase.co/storage/v1/object/public/public-images/hero/hero1.webp",
-    title: "서울대학교 화학생물공학부 동창회",
+      "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?q=80&w=2070&auto=format&fit=crop",
+    title: "365일 24시간, 다산원동물의료센터",
     subtitle:
-      "동문 여러분의 소중한 인연을 이어갑니다. 함께 성장하고 나누는 동창회에 오신 것을 환영합니다.",
-    primaryAction: { label: "회원가입", href: "/auth/sign-up" },
-    secondaryAction: { label: "동창회 소개", href: "/about/greeting" },
+      "말 못 하는 아이의 작은 신호 하나도 놓치지 않겠습니다. 연중무휴 24시간 응급진료.",
+    primaryAction: { label: "전화 예약·문의", href: "tel:0507-1330-5958" },
+    secondaryAction: { label: "병원 소개", href: "/about/greeting" },
   },
   {
     id: 2,
     image:
-      "/images/greeting.jpg", // Graduation/Alumni vibe
-    title: "자랑스러운 동문 네트워크",
+      "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?q=80&w=2070&auto=format&fit=crop",
+    title: "11개 특화진료센터, 한 곳에서",
     subtitle:
-      "세계 각지에서 활약하는 동문들의 소식을 전하고 서로의 성장을 응원합니다.",
-    primaryAction: { label: "동문 소식 보기", href: "/board/AlumniNews" },
-    secondaryAction: { label: "동문 검색", href: "/search/alumni" },
+      "분과별 전공의 협진과 대학병원급 CT로 진단부터 수술·회복까지 원스톱.",
+    primaryAction: { label: "특화진료센터", href: "/centers" },
+    secondaryAction: { label: "건강검진", href: "/checkup" },
   },
   {
     id: 3,
     image:
-      "https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=2070&auto=format&fit=crop", // Lab/Science vibe
-    title: "미래를 선도하는 화학생물공학",
+      "https://images.unsplash.com/photo-1612531385446-f7e6d131e1d0?q=80&w=2070&auto=format&fit=crop",
+    title: "수준 높은 의료 서비스",
     subtitle:
-      "학문적 성취와 산업 발전을 이끄는 모교의 발전을 함께 후원해주세요.",
-    primaryAction: { label: "후원하기", href: "/membership" },
-    secondaryAction: { label: "멘토링", href: "/activities/mentoring" },
+      "외과 전공 대표원장 직접 집도, 6명의 석사 이상 전문 의료진.",
+    primaryAction: { label: "의료진 소개", href: "/about/greeting" },
+    secondaryAction: { label: "네이버 블로그", href: "https://blog.naver.com/dasanoneamc" },
   },
 ];
 

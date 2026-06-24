@@ -8,10 +8,11 @@ import { resolveBoardWidgetItems } from "@repo/module-board/server";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "서울대학교 화학생물공학부 동창회" },
+    { title: "24시 다산 원동물의료센터" },
     {
       name: "description",
-      content: "서울대학교 화학생물공학부 동창회 공식 홈페이지입니다.",
+      content:
+        "경기 남양주 24시 동물병원. 11개 특화진료센터, 대학병원급 CT, 365일 24시간 연중무휴 응급진료.",
     },
   ];
 }

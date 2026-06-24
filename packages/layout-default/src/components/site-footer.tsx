@@ -13,14 +13,17 @@ export function SiteFooter({ className }: SiteFooterProps) {
           <div className="space-y-4 col-span-2">
             <img
               src="/images/logo.png"
-              alt="서울대학교 화학생물공학부 동창회"
+              alt="24시 다산 원동물의료센터"
               className="h-12 w-auto brightness-0 invert"
             />
             <p className="text-sm text-gray-300">
-              (08826) 서울특별시 관악구 관악로 1 서울대학교 302동
+              경기 남양주시 다산중앙로 15, 3층
             </p>
             <p className="text-sm text-gray-300">
-              Tel: 02-880-1234 | Email: alumni@snu.ac.kr
+              Tel: 0507-1330-5958 / 031-522-5956 | Email: dasanoneamc@gmail.com
+            </p>
+            <p className="text-sm text-gray-300">
+              365일 24시간 연중무휴 · 야간 응급 21:00~09:30
             </p>
           </div>
           <div className="space-y-4">
@@ -28,7 +31,12 @@ export function SiteFooter({ className }: SiteFooterProps) {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link to="/about/greeting" className="hover:underline">
-                  동창회 소개
+                  병원소개
+                </Link>
+              </li>
+              <li>
+                <Link to="/centers" className="hover:underline">
+                  특화진료센터
                 </Link>
               </li>
               <li>
@@ -37,13 +45,8 @@ export function SiteFooter({ className }: SiteFooterProps) {
                 </Link>
               </li>
               <li>
-                <Link to="/events" className="hover:underline">
-                  행사 일정
-                </Link>
-              </li>
-              <li>
-                <Link to="/membership" className="hover:underline">
-                  동창회비/발전기금
+                <Link to="/about/contact" className="hover:underline">
+                  오시는 길
                 </Link>
               </li>
             </ul>
@@ -53,33 +56,28 @@ export function SiteFooter({ className }: SiteFooterProps) {
             <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  href="https://cbe.snu.ac.kr"
+                  href="https://blog.naver.com/dasanoneamc"
                   target="_blank"
                   rel="noreferrer"
                   className="hover:underline"
                 >
-                  화학생물공학부
+                  네이버 블로그
                 </a>
               </li>
               <li>
                 <a
-                  href="https://www.snu.ac.kr"
+                  href="https://map.naver.com/p/search/남양주 다산원동물의료센터"
                   target="_blank"
                   rel="noreferrer"
                   className="hover:underline"
                 >
-                  서울대학교
+                  오시는 길 (네이버 지도)
                 </a>
               </li>
               <li>
-                <a
-                  href="https://eng.snu.ac.kr"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:underline"
-                >
-                  공과대학
-                </a>
+                <span className="text-gray-400">
+                  카카오톡 채널: "24시 다산 원동물의료센터"
+                </span>
               </li>
             </ul>
           </div>
@@ -94,7 +92,7 @@ export function SiteFooter({ className }: SiteFooterProps) {
             <Link to="/email-reject" className="hover:text-white transition-colors">이메일 무단 수집거부</Link>
           </div>
           <div className="text-center text-sm text-gray-400">
-            © 2024 SNU Chemical & Biological Engineering Alumni Association. All rights reserved.
+            © 2026 DASANONE Animal Medical Center. All rights reserved.
           </div>
         </div>
       </div>

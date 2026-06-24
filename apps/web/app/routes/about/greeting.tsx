@@ -1,35 +1,34 @@
 import type { Route } from "./+types/greeting";
+import { PageHeader } from "@repo/ui";
 
-export function meta({ }: Route.MetaArgs) {
+export function meta({}: Route.MetaArgs) {
   return [
-    { title: "인사말 - 서울대학교 화학생물공학부 동창회" },
+    { title: "대표원장 인사말 - 24시 다산 원동물의료센터" },
     {
       name: "description",
-      content: "서울대학교 화학생물공학부 동창회장 인사말입니다.",
+      content: "24시 다산 원동물의료센터 대표원장 인사말입니다.",
     },
   ];
 }
-
-import { PageHeader } from "@repo/ui";
 
 export default function Greeting() {
   return (
     <div className="w-full">
       <PageHeader
-        title="동창회장 인사말"
-        description="서울대학교 화학생물공학부 동창회장 인사말입니다."
+        title="대표원장 인사말"
+        description="아픈 아이를 안고 병원 문을 들어서는 보호자님께 드리는 약속입니다."
       />
       <div className="container mx-auto px-4 py-12 md:py-20 max-w-4xl">
         <div className="space-y-12">
 
           {/* Content */}
           <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
-            {/* Image Placeholder */}
+            {/* TODO(template): 대표원장 실제 사진으로 교체 */}
             <div className="w-full md:w-1/3 shrink-0">
               <div className="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden relative">
                 <img
                   src="/images/greeting.jpg"
-                  alt="제25대 동창회장 이준혁"
+                  alt="대표원장 이현우"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -37,52 +36,53 @@ export default function Greeting() {
 
             {/* Text Content */}
             <div className="flex-1 space-y-6 leading-relaxed text-lg">
-              <p>안녕하십니까. 제25대 동창회장으로 취임하게 된 이준혁입니다.</p>
               <p>
-                먼저, 지난 임기 동안 동창회를 위해 애써주신 홍창식 회장님과
-                임원진, 그리고 여러 교수님들께 깊이 감사의 말씀 올립니다. 서울대
-                화생공 동창회는 우리가 걸어온 길을 되새기고 함께 미래를 만들어가는
-                공동체입니다. 선배님들의 헌신과 노력 덕분에 오늘 우리가 더욱
-                끈끈한 유대 속에서 하나로 뭉칠 수 있었습니다. 이 자리를 빌려 다시
-                한번 깊은 존경과 감사를 표합니다.
+                안녕하세요. 24시 다산 원동물의료센터 대표원장 이현우입니다.
               </p>
               <p>
-                서울대학교 화학생물공학부는 학계와 산업계를 넘나들며 수많은 혁신을
-                만들어왔습니다. 화학, 소재, 에너지, 바이오 등 다양한 분야에서 우리
-                동문들은 핵심적인 역할을 수행하고 있으며, 이제는 그 영역을 더욱
-                확장하여 여러 방면에서 새로운 지평을 열어가고 있습니다.
+                아픈 아이를 안고 병원 문을 들어서는 보호자님의 무거운 마음을
+                저희는 매일 마주합니다. 짧게 끝나는 진료가 아니라, 진단부터
+                수술과 회복까지 한 곳에서 끝까지 책임지는 동물병원이 되겠다는
+                마음으로 다산원을 열었습니다.
+              </p>
+
+              <div className="space-y-4 bg-[color:var(--color-snubeige)]/40 dark:bg-gray-800/40 p-6 rounded-lg">
+                <h2 className="text-xl font-bold text-[color:var(--color-snublue)]">
+                  세 가지 ONE 약속
+                </h2>
+                <ul className="space-y-3">
+                  <li>
+                    <strong>ONE-STOP.</strong> 11개 특화진료센터의 분과별 협진,
+                    대학병원급 CT 당일 판독으로 진단·치료·회복을 한 곳에서.
+                  </li>
+                  <li>
+                    <strong>ONE-DAY.</strong> 365일 24시간 연중무휴 진료.
+                    낮에도 새벽에도, 응급은 늘 가능합니다.
+                  </li>
+                  <li>
+                    <strong>ONE-FAMILY.</strong> 우리 아이를 가족처럼.
+                    외과 전공 대표원장이 직접 집도하고, 6명의 석사 이상 의료진이
+                    한 케이스를 함께 봅니다.
+                  </li>
+                </ul>
+              </div>
+
+              <p>
+                특히 고양이는 예민한 동물입니다. 강아지와 분리된 전용 대기·
+                처치·입원 공간을 운영하며, 고양이전문클리닉이 별도로 가동됩니다.
               </p>
               <p>
-                이러한 변화 속에서 동창회의 역할도 한층 더 강화되어야 합니다.
-                동문들의 연결을 더욱 공고히 하고, 서로의 경험과 지식을 공유하며,
-                우리 공동체가 더욱 강력한 네트워크를 형성할 수 있도록 하는
-                것이야말로 동창회의 핵심 과제입니다.
-              </p>
-              <p>
-                이를 위해 저는 세대와 분야를 아우르는 네트워크를 활성화하여,
-                선후배 간의 연결을 강화시킬 수 있도록 동창회를 운영하고자 합니다.
-                공식 행사뿐만 아니라, 보다 다양한 방식의 모임을 지원하여, 화학산업
-                외로도 다양한 산업계로 진출하는 후배들이 보다 탄탄한 기반을 다질
-                수 있도록 돕겠습니다. 또한, 선배 동문들도 후배들과의 교류를 통해
-                새로운 시너지를 얻을 수 있도록 하겠습니다. 이를 통해 동문들이
-                즐거우면서도 함께 참여할 수 있는 동창회 문화를 만들겠습니다.
-              </p>
-              <p>
-                지금 우리에게 필요한 것은 단순한 유대를 넘어, 함께 성장할 수 있는
-                강력한 연결입니다. 서울대 화생공 동창회는 이미 탄탄한 기반을
-                가지고 있습니다. 이제 우리는 그 기반 위에 더욱 크고 단단한 미래를
-                쌓아 올려야 합니다. 여러분과 함께 새로운 도약을 준비하겠습니다.
-              </p>
-              <p>
-                앞으로도 동문회에 대한 많은 관심과 적극적인 참여를 부탁드리며,
-                동문 여러분의 건강과 건승을 기원합니다.
+                의료의 본질은 결과만이 아니라 과정에 대한 신뢰라고 생각합니다.
+                저희가 환자의 상태를 어떻게 판단했는지, 왜 이 치료를 선택했는지
+                보호자님께 가능한 한 명확하게 설명드리는 것을 원칙으로 합니다.
+                작은 신호도 놓치지 않겠다는 약속, 저희 팀이 매일 지키겠습니다.
               </p>
 
               <div className="pt-8 text-right">
                 <p className="font-bold text-xl text-gray-900">
-                  제25대 서울대학교 화학생물공학부 동창회장
+                  24시 다산 원동물의료센터 대표원장
                 </p>
-                <p className="text-2xl font-serif mt-2">이 준 혁</p>
+                <p className="text-2xl font-serif mt-2">이 현 우</p>
               </div>
             </div>
           </div>

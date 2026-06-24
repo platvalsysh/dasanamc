@@ -188,7 +188,7 @@ export default function Login() {
         <div className="flex flex-col gap-8">
           <div className="text-center space-y-2 mb-4">
             <h1 className="text-4xl font-bold tracking-tight text-snublue">로그인</h1>
-            <p className="text-muted-foreground">동문 네트워크에 로그인하세요.</p>
+            <p className="text-muted-foreground">회원 로그인</p>
           </div>
 
           <Card className="border-none shadow-none bg-transparent p-0">

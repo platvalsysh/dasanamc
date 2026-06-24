@@ -1,34 +1,34 @@
 import { cn } from "@repo/ui/utils";
 import {
-  Users,
-  GraduationCap,
-  Calendar,
-  BookOpen,
+  Stethoscope,
+  Activity,
+  ScanLine,
+  Cat,
 } from "lucide-react";
 
 const features = [
   {
-    icon: Users,
-    title: "동문 네트워크",
+    icon: Stethoscope,
+    title: "분과별 협진 진료",
     description:
-      "전 세계 각지에서 활동하는 동문들과의 강력한 네트워크를 제공합니다.",
+      "내과·외과·영상의학과 협진으로 최상의 의료 서비스를 제공합니다.",
   },
   {
-    icon: GraduationCap,
-    title: "멘토링 프로그램",
+    icon: Activity,
+    title: "외과 대표원장 집도",
     description:
-      "선배가 후배를 이끌어주는 멘토링 프로그램을 통해 성장을 지원합니다.",
+      "정형외과부터 신경외과까지 외과 전공 대표원장이 직접 집도합니다.",
   },
   {
-    icon: Calendar,
-    title: "다양한 행사",
+    icon: ScanLine,
+    title: "대학병원급 CT",
     description:
-      "신년회, 등반대회, 학술 세미나 등 다양한 온/오프라인 행사를 개최합니다.",
+      "대학병원급 CT·영상장비로 촬영 당일 정밀 판독이 가능합니다.",
   },
   {
-    icon: BookOpen,
-    title: "학술 지원",
-    description: "최신 학술 정보 공유 및 연구 지원 프로그램을 운영합니다.",
+    icon: Cat,
+    title: "고양이 전용 공간",
+    description: "예민한 고양이를 위한 분리된 전용 대기·처치·입원 공간.",
   },
 ];
 
@@ -42,10 +42,10 @@ export function FeatureSection({ className }: FeatureSectionProps) {
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-            동창회 활동
+            왜 다산원동물의료센터일까요?
           </h2>
           <p className="mt-4 text-gray-500 dark:text-gray-400 md:text-xl">
-            화학생물공학부 동창회는 동문 여러분을 위해 다양한 활동을 지원합니다.
+            대학병원급 진단 인프라와 분과별 전공의 협진으로 한 곳에서 완결되는 진료.
           </p>
         </div>
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">

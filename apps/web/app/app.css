@@ -8,12 +8,12 @@
   --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   --font-serif: "Noto Serif KR", serif;
 
-  /* SNU Brand Colors */
-  --color-snublue: #30325a;
-  --color-snubeige: #dcdab2;
-  --color-snugray: #888888;
-  --color-snugold: #c5a86f;
-  --color-snusilver: #b5b6b6;
+  /* DASANONE Brand Colors (teal tone) */
+  --color-snublue: #0f3b36;   /* deep teal-charcoal: header bg, primary, headings */
+  --color-snubeige: #d6efe9;  /* light teal: secondary */
+  --color-snugray: #6f7d79;
+  --color-snugold: #12a594;   /* teal accent (was gold) */
+  --color-snusilver: #c4d3ce; /* teal-gray border */
 }
 
 html,
@@ -81,7 +81,7 @@ body {
   --secondary: var(--color-snubeige);
   --secondary-foreground: var(--color-snublue);
   --muted: var(--color-snugray);
-  --muted-foreground: #665c52;
+  --muted-foreground: #4d5b57;
   --accent: var(--color-snugold);
   --accent-foreground: #ffffff;
   --destructive: #ef4444;
@@ -259,7 +259,7 @@ body {
 /* Global custom scrollbar styles */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #CFC6BC transparent;
+  scrollbar-color: #bcd0cb transparent;
 }
 
 *::-webkit-scrollbar {
@@ -272,18 +272,18 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #CFC6BC;
+  background-color: #bcd0cb;
   border-radius: 4px;
   transition: background-color 0.2s;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background-color: #2E2A26;
+  background-color: #0f3b36;
 }
 
 ::selection {
-  background-color: #2E2A26;
-  color: #F6F4F1;
+  background-color: #0f3b36;
+  color: #ffffff;
 }
 
 .writing-vertical-rl {

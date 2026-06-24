@@ -43,8 +43,8 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export const meta: Route.MetaFunction = () => [
-  { title: "서울대학교 공과대학 화학생물공학부 동창회" },
-  { name: "description", content: "서울대학교 공과대학 화학생물공학부 동창회" },
+  { title: "24시 다산 원동물의료센터" },
+  { name: "description", content: "24시 다산 원동물의료센터 — 365일 24시간 연중무휴, 11개 특화진료센터." },
   { name: "viewport", content: "width=device-width, initial-scale=1" },
   { charset: "utf-8" },
 ];

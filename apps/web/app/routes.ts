@@ -11,10 +11,9 @@ if (!moduleManager.isRegistered()) {
 const routes: RouteConfigEntry[] = [
   layout("./layouts/default.tsx", [
     route("/", "./routes/home.tsx"),
-    route("/membership", "./routes/membership.tsx"),
 
     route("/about/greeting", "./routes/about/greeting.tsx"),
-    route("/about/bylaws", "./routes/about/bylaws.tsx"),
+    route("/about/info", "./routes/about/info.tsx"),
     route("/about/contact", "./routes/about/contact.tsx"),
     // Chrome DevTools Noise Filter
     route("/.well-known/appspecific/com.chrome.devtools.json", "./routes/splinter.tsx"),
@@ -23,10 +22,6 @@ const routes: RouteConfigEntry[] = [
     route("/privacy", "./routes/privacy.tsx"),
     route("/email-reject", "./routes/email-reject.tsx"),
 
-    route("/familysites", "./routes/familysites.tsx"),
-
-    route("/events", "./routes/events.tsx"),
-    route("/activities/mentoring", "./routes/activities/mentoring.tsx"),
     ...moduleManager.getRoutes("public"),
   ]),
 

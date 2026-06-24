@@ -14,17 +14,34 @@ import {
 
 import type { SiteMenuConfigItem } from "@repo/core/types";
 
-// Default fallback
+// Default fallback (실제 메뉴는 DB/admin 메뉴 빌더가 주입. 미설정 시 표시)
 const MENU_ITEMS_FALLBACK: SiteMenuConfigItem[] = [
   {
     id: "about",
-    label: "동창회소개",
+    label: "병원소개",
     to: "/about/greeting",
     children: [
-      { id: "greeting", label: "동창회장 인사말", to: "/about/greeting" },
-      { id: "organization", label: "동창회 조직", to: "/about/organization" },
-      { id: "bylaws", label: "동창회 정관", to: "/about/bylaws" },
-      { id: "contact", label: "CONTACT US", to: "/about/contact" },
+      { id: "greeting", label: "대표원장 인사말", to: "/about/greeting" },
+      { id: "contact", label: "오시는 길", to: "/about/contact" },
+    ],
+  },
+  {
+    id: "centers",
+    label: "특화진료센터",
+    to: "/centers",
+  },
+  {
+    id: "checkup",
+    label: "건강검진",
+    to: "/checkup",
+  },
+  {
+    id: "support",
+    label: "고객센터",
+    to: "/board/Notice",
+    children: [
+      { id: "notice", label: "공지사항", to: "/board/Notice" },
+      { id: "directions", label: "오시는 길", to: "/about/contact" },
     ],
   },
 ];
@@ -80,7 +97,7 @@ export function Header({ menuItems = [] }: HeaderProps) {
               to="/"
               className="flex items-center gap-2 font-bold text-2xl text-white"
             >
-              <img src="/images/logo.png" alt="서울대학교 화학생물공학부 동창회" className="h-12 w-auto block" />
+              <img src="/images/logo.png" alt="24시 다산 원동물의료센터" className="h-12 w-auto block" />
             </Link>
           </div>
 

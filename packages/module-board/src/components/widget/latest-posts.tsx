@@ -33,7 +33,7 @@ export function LatestPostsWidget({
   className,
   mids,
   title = "최신 소식",
-  description = "동창회의 새로운 소식을 전해드립니다.",
+  description = "새로운 소식과 진료 케이스를 전해드립니다.",
   viewAllLink,
   initialItems,
 }: LatestPostsWidgetProps) {

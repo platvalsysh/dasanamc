@@ -9,12 +9,13 @@
   --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   --font-serif: "Noto Serif KR", serif;
 
-  /* SNU Brand Colors */
-  --color-snublue: #30325a;
-  --color-snubeige: #dcdab2;
-  --color-snugray: #888888;
-  --color-snugold: #c5a86f;
-  --color-snusilver: #b5b6b6;
+  /* DASANONE Brand Colors (deep teal palette) */
+  /* 동창회 템플릿의 토큰명을 호환을 위해 유지 (코드 곳곳에서 var(--color-snublue) 참조 중) */
+  --color-snublue: #0f3b36;
+  --color-snubeige: #d6efe9;
+  --color-snugray: #6f7d79;
+  --color-snugold: #12a594;
+  --color-snusilver: #c4d3ce;
 }
 
 @theme inline {

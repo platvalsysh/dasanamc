@@ -1,9 +1,9 @@
 import { Link } from "react-router";
 import {
   ArrowUp,
-  Calendar,
-  CreditCard,
-  Search,
+  Phone,
+  MapPin,
+  MessageCircle,
   UserPlus,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -36,28 +36,28 @@ export function QuickBar() {
 
   const quickLinks = [
     {
+      icon: Phone,
+      label: "전화예약",
+      href: "tel:0507-1330-5958",
+      isVisible: true,
+    },
+    {
+      icon: MapPin,
+      label: "오시는길",
+      href: "/about/contact",
+      isVisible: true,
+    },
+    {
+      icon: MessageCircle,
+      label: "블로그",
+      href: "https://blog.naver.com/dasanoneamc",
+      isVisible: true,
+    },
+    {
       icon: UserPlus,
       label: "회원가입",
       href: "/auth/sign-up",
       isVisible: !user,
-    },
-    {
-      icon: CreditCard,
-      label: "회비납부",
-      href: "/membership",
-      isVisible: true,
-    }, // Assuming contact or specific page
-    {
-      icon: Search,
-      label: "동문검색",
-      href: "/search/alumni",
-      isVisible: true,
-    },
-    {
-      icon: Calendar,
-      label: "일정",
-      href: "/schedules",
-      isVisible: true,
     },
   ];
 
@@ -83,7 +83,7 @@ export function QuickBar() {
 
       {/* Vertical Text */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 writing-vertical-rl text-gray-300/60 font-bold text-sm tracking-widest uppercase select-none whitespace-nowrap pointer-events-none z-0">
-        Chemical & Biological Engineering Alumni Association
+        DASANONE Animal Medical Center · 24h
       </div>
 
       {/* Top Button */}

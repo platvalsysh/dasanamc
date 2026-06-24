@@ -25,7 +25,6 @@ import {
   CheckCircle,
   XCircle,
   User as UserIcon,
-  GraduationCap,
   Briefcase,
   Settings,
   Info,
@@ -739,10 +738,9 @@ function UserDetailForm({
   return (
     <div className="space-y-6 py-4">
       <Tabs defaultValue="account" className="w-full">
-        <TabsList className="grid grid-cols-5 w-full">
+        <TabsList className="grid grid-cols-4 w-full">
           <TabsTrigger value="account" className="flex items-center gap-1.5"><Info className="w-4 h-4" />계정</TabsTrigger>
           <TabsTrigger value="personal" className="flex items-center gap-1.5"><UserIcon className="w-4 h-4" />개인</TabsTrigger>
-          <TabsTrigger value="education" className="flex items-center gap-1.5"><GraduationCap className="w-4 h-4" />학력</TabsTrigger>
           <TabsTrigger value="office" className="flex items-center gap-1.5"><Briefcase className="w-4 h-4" />직장</TabsTrigger>
           <TabsTrigger value="settings" className="flex items-center gap-1.5"><Settings className="w-4 h-4" />설정</TabsTrigger>
         </TabsList>
@@ -807,67 +805,6 @@ function UserDetailForm({
               {renderField("자택 전화번호", "phone_number")}
               <div className="col-span-2">
                 {renderField("자택 주소", "address")}
-              </div>
-            </div>
-          </TabsContent>
-
-          {/* Education Tab */}
-          <TabsContent value="education" className="space-y-6">
-            <div className="space-y-4 pb-4 border-b">
-              <h4 className="font-semibold text-gray-900">학사</h4>
-              <div className="grid grid-cols-3 gap-4">
-                {renderField("입학 년도", "enter_year")}
-                <div className="col-span-2">
-                  {renderField("졸업 학과", "major", "", "select", [
-                    { label: "경성공업전문학교(전기)", value: "경성공업전문학교(전기)" },
-                    { label: "경성공업전문학교(후기)", value: "경성공업전문학교(후기)" },
-                    { label: "경성고등공업학교", value: "경성고등공업학교" },
-                    { label: "경성대학이공학부", value: "경성대학이공학부" },
-                    { label: "공과대학전문부", value: "공과대학전문부" },
-                    { label: "화학공학과", value: "화학공학과" },
-                    { label: "응용화학과", value: "응용화학과" },
-                    { label: "공업화학과", value: "공업화학과" },
-                    { label: "응용화학부", value: "응용화학부" },
-                    { label: "화학생물공학부", value: "화학생물공학부" },
-                  ])}
-                </div>
-                {renderField("졸업 년도", "graduate_year")}
-                {renderField("졸업 월", "graduate_month", "", "select", [{ label: "2월", value: "2" }, { label: "8월", value: "8" }])}
-                {renderField("졸업 기수", "graduate_number")}
-              </div>
-            </div>
-            <div className="space-y-4 pb-4 border-b">
-              <h4 className="font-semibold text-gray-900">석사</h4>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="col-span-3">
-                  {renderField("전공", "master_major", "", "select", [
-                    { label: "화학공학과", value: "화학공학과" },
-                    { label: "공업화학과", value: "공업화학과" },
-                    { label: "응용화학부", value: "응용화학부" },
-                    { label: "화학생물공학부", value: "화학생물공학부" },
-                  ])}
-                </div>
-                {renderField("졸업 년도", "master_graduate_year")}
-                {renderField("졸업 월", "master_graduate_month", "", "select", [{ label: "2월", value: "2" }, { label: "8월", value: "8" }])}
-                {renderField("졸업 기수", "master_graduate_number")}
-              </div>
-            </div>
-            <div className="space-y-4">
-              <h4 className="font-semibold text-gray-900">박사</h4>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="col-span-3">
-                  {renderField("전공", "doctor_major", "", "select", [
-                    { label: "화학공학과(구)", value: "화학공학과(구)" },
-                    { label: "화학공학과", value: "화학공학과" },
-                    { label: "공업화학과", value: "공업화학과" },
-                    { label: "응용화학부", value: "응용화학부" },
-                    { label: "응용화학과", value: "응용화학과" },
-                    { label: "화학생물공학부", value: "화학생물공학부" },
-                  ])}
-                </div>
-                {renderField("졸업 년도", "doctor_graduate_year")}
-                {renderField("졸업 월", "doctor_graduate_month", "", "select", [{ label: "2월", value: "2" }, { label: "8월", value: "8" }])}
-                {renderField("졸업 기수", "doctor_graduate_number")}
               </div>
             </div>
           </TabsContent>
