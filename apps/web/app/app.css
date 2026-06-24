@@ -2,24 +2,47 @@
 @import "tw-animate-css";
 @source "../../../packages/**/*.{ts,tsx}";
 
+/* DASANONE design reference 의 한글 본문 폰트 */
+@import url("https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css");
+
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  --font-sans: "Spoqa Han Sans Neo", "Spoqa Han Sans", "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
   --font-serif: "Noto Serif KR", serif;
 
-  /* DASANONE Brand Colors (teal tone) */
-  --color-snublue: #0f3b36;   /* deep teal-charcoal: header bg, primary, headings */
-  --color-snubeige: #d6efe9;  /* light teal: secondary */
+  /* ----- DASANONE design tokens (from reference HTML) ----- */
+  --color-ds-bg: #fbfaf7;        /* body background */
+  --color-ds-dark: #062b28;       /* hero / dark sections */
+  --color-ds-dark-2: #0d3a35;     /* primary text / footer secondary */
+  --color-ds-dark-3: #04201d;     /* footer base */
+  --color-ds-teal: #0e9d8c;       /* primary accent */
+  --color-ds-teal-2: #56c8b8;     /* on-dark accent */
+  --color-ds-teal-3: #6ed4c5;     /* lightest accent */
+  --color-ds-text: #0d3a35;
+  --color-ds-text-sub: #5c6b68;
+  --color-ds-text-mute: #9aa9a4;
+  --color-ds-border: #e6e9e4;
+  --color-ds-border-2: #d8ded8;
+  --color-ds-card-bg: #ffffff;
+
+  /* Legacy snu* tokens — 동창회 템플릿 시점의 토큰명. 값은 새 팔레트.
+     기존 코드 참조 (var(--color-snublue) 등) 호환 위해 유지. */
+  --color-snublue: #0d3a35;
+  --color-snubeige: #d6efe9;
   --color-snugray: #6f7d79;
-  --color-snugold: #12a594;   /* teal accent (was gold) */
-  --color-snusilver: #c4d3ce; /* teal-gray border */
+  --color-snugold: #0e9d8c;
+  --color-snusilver: #c4d3ce;
 }
 
 html,
 body {
   font-family: var(--font-sans);
-  @apply bg-white dark:bg-gray-950;
+  color: var(--color-ds-text);
+  background: var(--color-ds-bg);
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
+  line-height: 1.6;
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
@@ -62,46 +85,42 @@ body {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --color-brand-1: #F6F4F1;
-  --color-brand-2: #E7E1D9;
-  --color-brand-3: #CFC6BC;
-  --color-brand-4: #2E2A26;
 }
 
 :root {
   --radius: 0.625rem;
-  --background: #ffffff;
-  --foreground: var(--color-snublue);
-  --card: #ffffff;
-  --card-foreground: var(--color-snublue);
+  --background: var(--color-ds-bg);
+  --foreground: var(--color-ds-text);
+  --card: var(--color-ds-card-bg);
+  --card-foreground: var(--color-ds-text);
   --popover: #ffffff;
-  --popover-foreground: var(--color-snublue);
-  --primary: var(--color-snublue);
+  --popover-foreground: var(--color-ds-text);
+  --primary: var(--color-ds-teal);
   --primary-foreground: #ffffff;
-  --secondary: var(--color-snubeige);
-  --secondary-foreground: var(--color-snublue);
-  --muted: var(--color-snugray);
-  --muted-foreground: #4d5b57;
-  --accent: var(--color-snugold);
-  --accent-foreground: #ffffff;
+  --secondary: var(--color-ds-border);
+  --secondary-foreground: var(--color-ds-text);
+  --muted: var(--color-ds-border);
+  --muted-foreground: var(--color-ds-text-sub);
+  --accent: var(--color-ds-teal-3);
+  --accent-foreground: var(--color-ds-text);
   --destructive: #ef4444;
-  --border: var(--color-snusilver);
-  --input: var(--color-snusilver);
-  --ring: var(--color-snublue);
-  --chart-1: var(--color-snublue);
-  --chart-2: var(--color-snusilver);
-  --chart-3: var(--color-snubeige);
-  --chart-4: var(--color-snugray);
+  --border: var(--color-ds-border);
+  --input: var(--color-ds-border-2);
+  --ring: var(--color-ds-teal);
+  --chart-1: var(--color-ds-teal);
+  --chart-2: var(--color-ds-teal-2);
+  --chart-3: var(--color-ds-teal-3);
+  --chart-4: var(--color-ds-text-sub);
   --chart-5: #ffffff;
 
   --sidebar: #ffffff;
-  --sidebar-foreground: var(--color-snublue);
-  --sidebar-primary: var(--color-snublue);
+  --sidebar-foreground: var(--color-ds-text);
+  --sidebar-primary: var(--color-ds-dark-2);
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: var(--color-snubeige);
-  --sidebar-accent-foreground: var(--color-snublue);
-  --sidebar-border: var(--color-snusilver);
-  --sidebar-ring: var(--color-snublue);
+  --sidebar-accent: var(--color-ds-border);
+  --sidebar-accent-foreground: var(--color-ds-text);
+  --sidebar-border: var(--color-ds-border);
+  --sidebar-ring: var(--color-ds-teal);
 }
 
 .dark {
@@ -123,19 +142,6 @@ body {
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
 }
 
 @layer base {
@@ -146,20 +152,35 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
 
-  h2 {
-    @apply text-3xl sm:text-4xl font-bold;
-  }
+/* ------------ reference 의 keyframes / utility ------------ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .35; }
+}
+
+@keyframes marqueeX {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marqueeX 26s linear infinite;
+}
+
+.animate-pulse-dot {
+  animation: pulseDot 1.6s infinite;
 }
 
 @keyframes slideInLeft {
-  from {
-    transform: translateX(-100%);
-  }
-
-  to {
-    transform: translateX(0);
-  }
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
 }
 
 .animate-slideInLeft {
@@ -167,124 +188,29 @@ body {
 }
 
 @keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-in-up {
   animation: fade-in-up 1.5s ease-out forwards;
 }
 
-@keyframes fade-in-down {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-down {
-  animation: fade-in-down 1.5s ease-out forwards;
-}
-
-@keyframes fade-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.animate-fade-in-left {
-  animation: fade-in-left 1.5s ease-out forwards;
-}
-
-@keyframes fade-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.animate-fade-in-right {
-  animation: fade-in-right 1.5s ease-out forwards;
-}
-
-@keyframes zoom-in {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.animate-zoom-in {
-  animation: zoom-in 1.5s ease-out forwards;
-}
-
 /* For hiding scrollbars */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; }
 
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  /* IE and Edge */
-}
-
-/* Global custom scrollbar styles */
+/* Global custom scrollbar */
 * {
   scrollbar-width: thin;
   scrollbar-color: #bcd0cb transparent;
 }
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background-color: #bcd0cb; border-radius: 4px; transition: background-color 0.2s; }
+*::-webkit-scrollbar-thumb:hover { background-color: #0d3a35; }
 
-*::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-*::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-*::-webkit-scrollbar-thumb {
-  background-color: #bcd0cb;
-  border-radius: 4px;
-  transition: background-color 0.2s;
-}
-
-*::-webkit-scrollbar-thumb:hover {
-  background-color: #0f3b36;
-}
-
-::selection {
-  background-color: #0f3b36;
-  color: #ffffff;
-}
+::selection { background-color: #0e9d8c; color: #ffffff; }
 
 .writing-vertical-rl {
   writing-mode: vertical-rl;

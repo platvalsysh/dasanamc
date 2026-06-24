@@ -1,4 +1,3 @@
-import { PageHeader } from "@repo/ui";
 import { Clock, Wallet, Car, AlertCircle } from "lucide-react";
 import type { Route } from "./+types/info";
 
@@ -16,12 +15,22 @@ export function meta({}: Route.MetaArgs) {
 export default function Info() {
   return (
     <div className="w-full">
-      <PageHeader
-        title="진료안내"
-        description="진료시간, 진료비, 주차, 야간 응급 정보를 안내해 드립니다."
-      />
+      {/* HERO (다크) */}
+      <div className="text-white px-8 pt-20 pb-[70px]" style={{ background: "var(--color-ds-dark)" }}>
+        <div className="max-w-[1280px] mx-auto">
+          <div className="font-mono font-bold text-[13px] mb-4.5 text-[color:var(--color-ds-teal-2)] tracking-[0.22em] leading-none">
+            VISIT GUIDE
+          </div>
+          <h1 className="text-[42px] font-extrabold leading-[1.3]" style={{ letterSpacing: "-0.03em" }}>
+            진료안내
+          </h1>
+          <p className="text-[17px] mt-4 max-w-[620px]" style={{ color: "#aebdb8" }}>
+            진료시간, 진료비, 주차, 야간 응급 정보를 안내해 드립니다.
+          </p>
+        </div>
+      </div>
 
-      <div className="container mx-auto px-4 py-12 md:py-20 max-w-4xl space-y-12">
+      <div className="container mx-auto px-4 py-16 max-w-4xl space-y-12">
         {/* 진료시간 */}
         <section className="space-y-6">
           <div className="flex items-center gap-3">

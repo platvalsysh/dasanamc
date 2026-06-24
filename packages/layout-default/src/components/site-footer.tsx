@@ -7,92 +7,66 @@ interface SiteFooterProps {
 
 export function SiteFooter({ className }: SiteFooterProps) {
   return (
-    <footer className={cn("w-full border-t border-gray-700 bg-gray-800 py-12 text-white", className)}>
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4">
-          <div className="space-y-4 col-span-2">
+    <footer
+      className={cn(
+        "w-full bg-[color:var(--color-ds-dark-3)] text-white pt-16 pb-10 px-8",
+        className,
+      )}
+    >
+      <div className="max-w-[1280px] mx-auto">
+        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr] pb-10 border-b border-white/10">
+          <div>
             <img
               src="/images/logo.png"
-              alt="24시 다산 원동물의료센터"
-              className="h-12 w-auto brightness-0 invert"
+              alt="24시 다산 원동물의료센터 DASANONE ANIMAL MEDICAL CENTER"
+              className="h-11 w-auto block mb-[18px] brightness-0 invert opacity-90"
             />
-            <p className="text-sm text-gray-300">
-              경기 남양주시 다산중앙로 15, 3층
-            </p>
-            <p className="text-sm text-gray-300">
-              Tel: 0507-1330-5958 / 031-522-5956 | Email: dasanoneamc@gmail.com
-            </p>
-            <p className="text-sm text-gray-300">
-              365일 24시간 연중무휴 · 야간 응급 21:00~09:30
+            <p className="text-sm text-[color:var(--color-ds-text-mute)] leading-[1.7] max-w-[380px]">
+              말 못 하는 아이들의 작은 신호, 그 하나도 놓치지 않겠습니다. 365일 24시간 연중무휴 진료.
             </p>
           </div>
-          <div className="space-y-4">
-            <h3 className="text-lg font-bold">바로가기</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link to="/about/greeting" className="hover:underline">
-                  병원소개
-                </Link>
-              </li>
-              <li>
-                <Link to="/centers" className="hover:underline">
-                  특화진료센터
-                </Link>
-              </li>
-              <li>
-                <Link to="/board/Notice" className="hover:underline">
-                  공지사항
-                </Link>
-              </li>
-              <li>
-                <Link to="/about/contact" className="hover:underline">
-                  오시는 길
-                </Link>
-              </li>
-            </ul>
+          <div>
+            <div className="text-[13px] font-extrabold text-[color:var(--color-ds-teal-3)] mb-3.5">진료 안내</div>
+            <div className="flex flex-col gap-2 text-[13.5px] text-[color:var(--color-ds-text-mute)]">
+              <div>주간 일반진료 09:30 ~ 21:00</div>
+              <div>야간 응급진료 21:00 ~ 09:30</div>
+              <div>회진 12:30 ~ 13:00 · 연중무휴</div>
+            </div>
           </div>
-          <div className="space-y-4">
-            <h3 className="text-lg font-bold">관련 사이트</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a
-                  href="https://blog.naver.com/dasanoneamc"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:underline"
-                >
-                  네이버 블로그
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://map.naver.com/p/search/남양주 다산원동물의료센터"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:underline"
-                >
-                  오시는 길 (네이버 지도)
-                </a>
-              </li>
-              <li>
-                <span className="text-gray-400">
-                  카카오톡 채널: "24시 다산 원동물의료센터"
-                </span>
-              </li>
-            </ul>
+          <div>
+            <div className="text-[13px] font-extrabold text-[color:var(--color-ds-teal-3)] mb-3.5">연락처</div>
+            <div className="flex flex-col gap-2 text-[13.5px] text-[color:var(--color-ds-text-mute)]">
+              <div>
+                <a href="tel:0507-1330-5958" className="hover:underline">0507-1330-5958</a>
+                {" / "}
+                <a href="tel:031-522-5956" className="hover:underline">031-522-5956</a>
+              </div>
+              <div>
+                <a href="mailto:dasanoneamc@gmail.com" className="hover:underline">dasanoneamc@gmail.com</a>
+              </div>
+              <div>경기 남양주시 다산중앙로 15, 3층</div>
+              <a
+                href="https://blog.naver.com/dasanoneamc"
+                target="_blank"
+                rel="noreferrer"
+                className="text-[color:var(--color-ds-teal-3)] font-semibold hover:underline"
+              >
+                네이버 블로그 →
+              </a>
+            </div>
           </div>
-
         </div>
-        <div className="mt-8 border-t border-gray-700 pt-4">
-          <div className="flex flex-wrap gap-x-4 gap-y-2 text-[12px] text-gray-400 justify-center mb-4">
+        <div className="pt-6 flex justify-between gap-4 flex-wrap text-[12.5px] text-[color:var(--color-ds-text-mute)]">
+          <span>
+            24시 다산 원동물의료센터 · 대표 이현우 · 사업자등록번호 692-07-03028
+          </span>
+          <div className="flex gap-3 items-center">
             <Link to="/rules" className="hover:text-white transition-colors">이용약관</Link>
             <span>|</span>
             <Link to="/privacy" className="hover:text-white transition-colors">개인정보 처리방침</Link>
             <span>|</span>
             <Link to="/email-reject" className="hover:text-white transition-colors">이메일 무단 수집거부</Link>
-          </div>
-          <div className="text-center text-sm text-gray-400">
-            © 2026 DASANONE Animal Medical Center. All rights reserved.
+            <span className="ml-2">© 2026 DASANONE Animal Medical Center.</span>
           </div>
         </div>
       </div>

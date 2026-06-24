@@ -1,47 +1,39 @@
-import { useState, useMemo } from "react";
-import { Link } from "react-router";
+import { useEffect, useState, useMemo } from "react";
+import { Link, useLocation } from "react-router";
 import { useAuth, checkUserPermissions, useIsAdmin } from "@repo/auth/ui";
-
-import {
-  Menu,
-  X,
-  ChevronDown,
-  User,
-  Settings,
-  LogIn,
-  LogOut,
-} from "lucide-react";
-
+import { Menu, X, Settings, User, LogIn, LogOut } from "lucide-react";
 import type { SiteMenuConfigItem } from "@repo/core/types";
 
-// Default fallback (실제 메뉴는 DB/admin 메뉴 빌더가 주입. 미설정 시 표시)
+/**
+ * 다산원동물의료센터 헤더.
+ *
+ * Reference 디자인 (design_handoff_dasanone/reference) 매핑:
+ * - 홈 페이지 상단: 다크 히어로 위에 떠있는 "투명" 헤더 (흰 로고/흰 메뉴)
+ * - 스크롤 다운 또는 home 외 라우트: 흰 배경 / 어두운 로고 / 어두운 메뉴
+ * - 좌측: 로고 (홈 링크) / 가운데: 홈 아이콘 + 메뉴 / 우측: 24시 전화 CTA pill
+ */
+
 const MENU_ITEMS_FALLBACK: SiteMenuConfigItem[] = [
   {
     id: "about",
     label: "병원소개",
     to: "/about/greeting",
     children: [
-      { id: "greeting", label: "대표원장 인사말", to: "/about/greeting" },
-      { id: "contact", label: "오시는 길", to: "/about/contact" },
+      { id: "about-greeting", label: "대표원장 인사말", to: "/about/greeting" },
+      { id: "about-info", label: "진료안내", to: "/about/info" },
+      { id: "about-contact", label: "오시는 길", to: "/about/contact" },
     ],
   },
-  {
-    id: "centers",
-    label: "특화진료센터",
-    to: "/centers",
-  },
-  {
-    id: "checkup",
-    label: "건강검진",
-    to: "/checkup",
-  },
+  { id: "centers", label: "특화진료센터", to: "/centers" },
+  { id: "checkup", label: "건강검진", to: "/checkup" },
   {
     id: "support",
     label: "고객센터",
     to: "/board/Notice",
     children: [
-      { id: "notice", label: "공지사항", to: "/board/Notice" },
-      { id: "directions", label: "오시는 길", to: "/about/contact" },
+      { id: "support-notice", label: "공지사항", to: "/board/Notice" },
+      { id: "support-info", label: "진료안내", to: "/about/info" },
+      { id: "support-contact", label: "오시는 길", to: "/about/contact" },
     ],
   },
 ];
@@ -53,31 +45,30 @@ interface HeaderProps {
 export function Header({ menuItems = [] }: HeaderProps) {
   const isAdmin = useIsAdmin();
   const { user, permissions, roles } = useAuth();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
-  
-  const filterItems = (items: SiteMenuConfigItem[]): SiteMenuConfigItem[] => {
-    return items.filter(item => {
-      // Visibility check logic
-      // If no permission set -> visible
-      if (!item.permission || item.permission.length === 0) return true;
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+  const isHome = location.pathname === "/";
 
-      // If permission is set, check if user has it
-      if (!user) return false; // Not logged in -> hidden (or maybe we add visibility flag later)
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-      const required = Array.isArray(item.permission) ? item.permission : [item.permission];
-      return checkUserPermissions(required, permissions, roles, false);
-    }).map(item => {
-      if (item.children) {
-        return { ...item, children: filterItems(item.children) };
-      }
-      return item;
-    }).filter(item => {
-      // Optional: Hide parents with no children if they are just grouping folders?
-      // Default: Show all that passed permission check.
-      return true;
-    });
-  };
+  // 홈 다크 히어로 위 = 투명 / 그 외 = 흰 배경
+  const isTransparent = isHome && !scrolled;
+
+  const filterItems = (items: SiteMenuConfigItem[]): SiteMenuConfigItem[] =>
+    items
+      .filter((item) => {
+        if (!item.permission || (Array.isArray(item.permission) && item.permission.length === 0)) return true;
+        if (!user) return false;
+        const required = Array.isArray(item.permission) ? item.permission : [item.permission];
+        return checkUserPermissions(required, permissions, roles, false);
+      })
+      .map((item) => (item.children ? { ...item, children: filterItems(item.children) } : item));
 
   const visibleItems = useMemo(() => {
     const source = menuItems.length > 0 ? menuItems : MENU_ITEMS_FALLBACK;
@@ -85,204 +76,203 @@ export function Header({ menuItems = [] }: HeaderProps) {
   }, [menuItems, permissions, roles, user]);
 
   return (
-    <>
-      <header className="sticky top-0 z-50 w-full bg-[var(--color-snublue)]">
-        {/* Gradient Bar */}
-        <div className="h-2 bg-gradient-to-r from-[var(--color-snublue)] via-[var(--color-snublue)] to-[var(--color-snugold)]" />
+    <header
+      className={
+        "sticky top-0 z-50 w-full transition-[background,box-shadow,border-color] duration-300 " +
+        (isTransparent
+          ? "bg-transparent border-b border-transparent"
+          : "bg-white border-b border-[color:var(--color-ds-border)] shadow-[0_1px_0_rgba(20,42,38,.05),0_10px_28px_rgba(20,42,38,.05)]")
+      }
+    >
+      <div className="max-w-[1280px] mx-auto px-8 h-[78px] flex items-center justify-between gap-5">
+        {/* Logo */}
+        <Link to="/" className="flex items-center">
+          <img
+            src="/images/logo.png"
+            alt="24시 다산 원동물의료센터"
+            className={
+              "h-10 w-auto block transition-[filter] " +
+              (isTransparent ? "brightness-0 invert" : "")
+            }
+          />
+        </Link>
 
-        <div className="w-full px-4 md:px-8 h-20 flex justify-between lg:grid lg:grid-cols-[1fr_auto_1fr] items-center">
-          {/* Logo */}
-          <div className="flex justify-start">
-            <Link
-              to="/"
-              className="flex items-center gap-2 font-bold text-2xl text-white"
-            >
-              <img src="/images/logo.png" alt="24시 다산 원동물의료센터" className="h-12 w-auto block" />
-            </Link>
+        {/* Center nav */}
+        <nav className="hidden lg:flex items-center gap-9">
+          {/* 홈 아이콘 */}
+          <Link
+            to="/"
+            aria-label="메인페이지"
+            title="메인페이지"
+            className={
+              "transition-colors " +
+              (isTransparent ? "text-white hover:text-[color:var(--color-ds-teal-3)]" : "text-[color:var(--color-ds-text)] hover:text-[color:var(--color-ds-teal)]")
+            }
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 10.5 12 3l9 7.5" />
+              <path d="M5 9.5V20h14V9.5" />
+            </svg>
+          </Link>
+          {visibleItems.map((menu) => (
+            <div key={menu.id} className="relative group">
+              <Link
+                to={menu.to || "#"}
+                className={
+                  "flex items-center text-[15px] font-bold transition-colors py-2 " +
+                  (isTransparent ? "text-white hover:text-[color:var(--color-ds-teal-3)]" : "text-[color:var(--color-ds-text)] hover:text-[color:var(--color-ds-teal)]")
+                }
+              >
+                {menu.label}
+              </Link>
+              {menu.children && menu.children.length > 0 && (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                  <div className="w-52 p-2 bg-white rounded-xl shadow-lg border border-[color:var(--color-ds-border)]">
+                    {menu.children.map((sub) => (
+                      <Link
+                        key={sub.id}
+                        to={sub.to || "#"}
+                        className="block px-4 py-2 text-sm text-[color:var(--color-ds-text-sub)] rounded-md hover:bg-[color:var(--color-ds-bg)] hover:text-[color:var(--color-ds-teal)] transition-colors"
+                      >
+                        {sub.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </nav>
+
+        {/* Right side */}
+        <div className="flex items-center gap-3">
+          {/* 24h 전화 CTA pill */}
+          <a
+            href="tel:0507-1330-5958"
+            className={
+              "hidden sm:flex items-center gap-2 px-5 py-[11px] rounded-full text-sm font-bold transition-colors " +
+              (isTransparent
+                ? "bg-white/10 border border-white/40 text-white hover:bg-white/20"
+                : "bg-[color:var(--color-ds-dark-2)] text-white hover:bg-[color:var(--color-ds-dark)]")
+            }
+          >
+            <span className="w-[7px] h-[7px] rounded-full bg-[color:var(--color-ds-teal-2)] animate-pulse-dot" />
+            24시 0507-1330-5958
+          </a>
+
+          {/* auth links (compact) */}
+          <div className={"hidden md:flex items-center gap-1 " + (isTransparent ? "text-white/85" : "text-[color:var(--color-ds-text-sub)]")}>
+            {user ? (
+              <>
+                {isAdmin && (
+                  <Link to="/admin" title="관리자페이지" className="p-2 hover:opacity-80">
+                    <Settings className="w-4 h-4" />
+                  </Link>
+                )}
+                <Link to="/auth/mypage" title="마이페이지" className="p-2 hover:opacity-80">
+                  <User className="w-4 h-4" />
+                </Link>
+                <Link to="/auth/logout" title="로그아웃" className="p-2 hover:opacity-80">
+                  <LogOut className="w-4 h-4" />
+                </Link>
+              </>
+            ) : (
+              <Link to="/auth/login" title="로그인" className="p-2 hover:opacity-80">
+                <LogIn className="w-4 h-4" />
+              </Link>
+            )}
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8 justify-center">
+          {/* mobile menu toggle */}
+          <button
+            className={"lg:hidden p-2 " + (isTransparent ? "text-white" : "text-[color:var(--color-ds-text)]")}
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-label="메뉴 열기"
+          >
+            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile drawer */}
+      {mobileOpen && (
+        <div className="lg:hidden border-t border-[color:var(--color-ds-border)] bg-white text-[color:var(--color-ds-text)]">
+          <div className="container mx-auto px-4 py-4 space-y-3">
             {visibleItems.map((menu) => (
-              <div
-                key={menu.id}
-                className="relative group"
-                onMouseEnter={() => setActiveSubmenu(menu.label)}
-                onMouseLeave={() => setActiveSubmenu(null)}
-              >
+              <div key={menu.id} className="space-y-1">
                 <Link
                   to={menu.to || "#"}
-                  target={menu.target || "_self"}
-                  className="flex items-center gap-1 py-2 text-lg font-bold text-gray-200 hover:text-white transition-colors"
+                  className="block font-bold px-2 py-1"
+                  onClick={() => setMobileOpen(false)}
                 >
                   {menu.label}
-                  {menu.children && menu.children.length > 0 && (
-                    <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180 text-gray-300 group-hover:text-white" />
-                  )}
                 </Link>
-
-                {/* Dropdown */}
                 {menu.children && menu.children.length > 0 && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-in-out">
-                    <div className="w-48 p-2 bg-white rounded-lg shadow-lg border border-gray-100">
-                      {menu.children.map((subItem) => (
-                        <Link
-                          key={subItem.id}
-                          to={subItem.to || "#"}
-                          target={subItem.target || "_self"}
-                          className="block px-4 py-2 text-sm text-gray-600 rounded-md hover:bg-gray-50 hover:text-primary transition-colors"
-                        >
-                          {subItem.label}
-                        </Link>
-                      ))}
-                    </div>
+                  <div className="grid grid-cols-2 gap-2 pl-4">
+                    {menu.children.map((sub) => (
+                      <Link
+                        key={sub.id}
+                        to={sub.to || "#"}
+                        className="text-sm text-[color:var(--color-ds-text-sub)] hover:text-[color:var(--color-ds-teal)] py-1"
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        {sub.label}
+                      </Link>
+                    ))}
                   </div>
                 )}
               </div>
             ))}
-          </nav>
-
-          {/* Right Side Actions */}
-          <div className="flex items-center justify-end gap-4">
-            <div className="hidden sm:flex items-center gap-2">
+            <div className="pt-3 border-t border-[color:var(--color-ds-border)] flex flex-col gap-2">
+              <a
+                href="tel:0507-1330-5958"
+                className="flex items-center justify-center gap-2 w-full py-2 text-sm font-bold text-white bg-[color:var(--color-ds-dark-2)] rounded-md"
+              >
+                24시 0507-1330-5958
+              </a>
               {user ? (
                 <>
                   {isAdmin && (
                     <Link
                       to="/admin"
-                      className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-200 hover:text-white transition-colors"
+                      className="flex items-center justify-center gap-2 w-full py-2 text-sm font-medium text-[color:var(--color-ds-text)] border border-[color:var(--color-ds-border)] rounded-md"
+                      onClick={() => setMobileOpen(false)}
                     >
                       <Settings className="w-4 h-4" />
-                      관리자페이지
+                      관리자
                     </Link>
                   )}
                   <Link
                     to="/auth/mypage"
-                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-200 hover:text-white transition-colors"
+                    className="flex items-center justify-center gap-2 w-full py-2 text-sm font-medium text-[color:var(--color-ds-text)] border border-[color:var(--color-ds-border)] rounded-md"
+                    onClick={() => setMobileOpen(false)}
                   >
                     <User className="w-4 h-4" />
                     마이페이지
                   </Link>
                   <Link
                     to="/auth/logout"
-                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-200 hover:text-white transition-colors"
+                    className="flex items-center justify-center gap-2 w-full py-2 text-sm font-medium text-[color:var(--color-ds-text)] border border-[color:var(--color-ds-border)] rounded-md"
+                    onClick={() => setMobileOpen(false)}
                   >
                     <LogOut className="w-4 h-4" />
                     로그아웃
                   </Link>
                 </>
               ) : (
-                <>
-                  <Link
-                    to="/auth/login"
-                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-200 hover:text-white transition-colors"
-                  >
-                    <LogIn className="w-4 h-4" />
-                    로그인
-                  </Link>
-                  <Link
-                    to="/auth/sign-up"
-                    className="px-4 py-2 text-sm font-medium text-primary bg-white rounded-md hover:bg-gray-100 transition-colors shadow-sm"
-                  >
-                    회원가입
-                  </Link>
-                </>
+                <Link
+                  to="/auth/login"
+                  className="flex items-center justify-center gap-2 w-full py-2 text-sm font-medium text-[color:var(--color-ds-text)] border border-[color:var(--color-ds-border)] rounded-md"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <LogIn className="w-4 h-4" />
+                  로그인
+                </Link>
               )}
             </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              className="lg:hidden p-2 text-white hover:text-gray-200"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </button>
           </div>
         </div>
-
-        {/* Mobile Navigation Drawer */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden border-t border-gray-200 bg-white">
-            <div className="container mx-auto px-4 py-4 space-y-4">
-              {visibleItems.map((menu) => (
-                <div key={menu.id} className="space-y-2">
-                  <div className="font-medium text-gray-900 px-2">
-                    {menu.label}
-                  </div>
-                  {menu.children && (
-                    <div className="grid grid-cols-2 gap-2 pl-4">
-                      {menu.children.map((subItem) => (
-                        <Link
-                          key={subItem.id}
-                          to={subItem.to || "#"}
-                          target={subItem.target || "_self"}
-                          className="text-sm text-gray-600 hover:text-primary py-1"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                          {subItem.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-              <div className="pt-4 border-t border-gray-100 flex flex-col gap-2">
-                {user ? (
-                  <>
-                    {isAdmin && (
-                      <Link
-                        to="/admin"
-                        className="flex items-center justify-center gap-2 w-full py-2 text-sm font-medium text-gray-700 border border-gray-200 rounded-md hover:bg-gray-50"
-                      >
-                        <Settings className="w-4 h-4" />
-                        관리자페이지
-                      </Link>
-                    )}
-                    <Link
-                      to="#"
-                      className="flex items-center justify-center gap-2 w-full py-2 text-sm font-medium text-gray-700 border border-gray-200 rounded-md hover:bg-gray-50"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      <User className="w-4 h-4" />
-                      마이페이지
-                    </Link>
-                    <Link
-                      to="/auth/logout"
-                      className="flex items-center justify-center gap-2 w-full py-2 text-sm font-medium text-gray-700 border border-gray-200 rounded-md hover:bg-gray-50"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      <LogOut className="w-4 h-4" />
-                      로그아웃
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    <Link
-                      to="/auth/login"
-                      className="flex items-center justify-center gap-2 w-full py-2 text-sm font-medium text-gray-700 border border-gray-200 rounded-md hover:bg-gray-50"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      <LogIn className="w-4 h-4" />
-                      로그인
-                    </Link>
-                    <Link
-                      to="/auth/sign-up"
-                      className="flex items-center justify-center gap-2 w-full py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      회원가입
-                    </Link>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-      </header>
-    </>
+      )}
+    </header>
   );
 }

@@ -1,5 +1,4 @@
 import { MapPin, Phone, Mail, Clock, Car } from "lucide-react";
-import { PageHeader } from "@repo/ui";
 import type { Route } from "./+types/contact";
 
 export function meta({}: Route.MetaArgs) {
@@ -15,11 +14,21 @@ export function meta({}: Route.MetaArgs) {
 export default function Contact() {
   return (
     <div className="w-full">
-      <PageHeader
-        title="오시는 길"
-        description="24시 다산 원동물의료센터 위치와 연락처, 진료시간을 안내해 드립니다."
-      />
-      <div className="container mx-auto px-4 py-12 md:py-20 max-w-5xl">
+      {/* HERO (다크) */}
+      <div className="text-white px-8 pt-20 pb-[70px]" style={{ background: "var(--color-ds-dark)" }}>
+        <div className="max-w-[1280px] mx-auto">
+          <div className="font-mono font-bold text-[13px] mb-4.5 text-[color:var(--color-ds-teal-2)] tracking-[0.22em] leading-none">
+            CONTACT
+          </div>
+          <h1 className="text-[42px] font-extrabold leading-[1.3]" style={{ letterSpacing: "-0.03em" }}>
+            오시는 길
+          </h1>
+          <p className="text-[17px] mt-4 max-w-[620px]" style={{ color: "#aebdb8" }}>
+            24시 다산 원동물의료센터 위치와 연락처, 진료시간을 안내해 드립니다.
+          </p>
+        </div>
+      </div>
+      <div className="container mx-auto px-4 py-16 max-w-5xl">
         <div className="space-y-16">
 
           {/* Contact Info & Map Grid */}

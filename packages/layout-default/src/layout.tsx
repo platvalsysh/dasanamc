@@ -18,13 +18,16 @@ function Layout({ menuItems, children }: PropsWithChildren<DefaultLayoutProps>) 
 
   return (
     <SiteMenuProvider menuItems={menuItems || []}>
-        <div className="flex min-h-screen flex-col">
-          <Header menuItems={menuItems} />
-          <div className="flex-1 flex flex-col md:pr-16">
+        <div className="flex min-h-screen flex-col bg-[color:var(--color-ds-bg)]">
+          {/* 홈은 다크 히어로 위에 헤더가 떠야 하므로 헤더가 콘텐츠를 -78px 끌어올려 덮는다 */}
+          <div className={isHomePage ? "relative -mb-[78px] z-50" : ""}>
+            <Header menuItems={menuItems} />
+          </div>
+          <div className="flex-1 flex flex-col">
             <main className="flex-1 flex flex-col">
               {children}
             </main>
-            {!isHomePage && <SiteFooter />}
+            <SiteFooter />
           </div>
           <QuickBar />
         </div>
