@@ -54,3 +54,20 @@
 - 빌드 script 추가 권장: `tsup` 또는 `vite build` 로 `dist/` 를 만들면 d.ts 가
   자동 emit 되고 컨버터의 default 경로(`exportedNames`)가 동작 → `componentSrcMap`
   유지 불필요.
+
+## 2차 sync (2026-06-25)
+
+PdfViewer 정리(c1e76b) 후 driver re-sync 실행:
+- 16/16 unchanged (변경 0)
+- `upload.any: true` 단 `aux: true` 만 — README 헤더(conventions.md 갱신 흔적)
+  와 anchor 메타만 변경. 컴포넌트/스타일링/번들은 그대로
+- atomic re-upload 로 정상 마무리
+
+design agent 가 프로젝트에 추가한 사용자 디자인 파일들이 보존됨
+(우리 plan 의 deletes 글로브 밖):
+- `hero.jsx`, `tweaks-panel.jsx`, `다산원 Hero 인터랙션.html`
+- `screenshots/*.png`
+- `_adherence.oxlintrc.json`, `_ds_manifest.json` (app self-check 결과)
+
+→ 이 파일들을 로컬로 가져오려면 `DesignSync(get_file)` 로 받아서
+`apps/web/app/routes/` 또는 `components/` 에 붙여넣고 import 만 조정.
