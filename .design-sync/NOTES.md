@@ -5,8 +5,9 @@
 - 패키지: `@repo/ui` — shadcn/ui 패턴, 16 컴포넌트 (Accordion/Badge/Button/Card/
   Carousel/Checkbox/Dialog/Input/Label/Popover/Select/Slider/Table/Tabs/Textarea/
   PageHeader)
-- 제외: `PdfViewer`, `PdfViewerInternal` (react-pdf 의존이 무거움), `FullPageLoader`
-  (간단 유틸)
+- 제외: `FullPageLoader` (간단 유틸)
+- ~~`PdfViewer`, `PdfViewerInternal`~~ — 사용처 0건 확인 후 패키지째 삭제
+  (`react-pdf`, `pdfjs-dist` 의존성도 정리됨, 2026-06-25)
 - 모든 컴포넌트를 **floor card** 로 업로드 (typographic placeholder).
   컴포넌트 자체는 bundle 에 fully functional 로 들어가 있어 design agent 가
   코드로 사용 가능. preview rich card 는 후속 sync 시 점진 추가 가능.

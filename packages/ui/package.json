@@ -15,8 +15,6 @@
   "dependencies": {
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
-    "pdfjs-dist": "catalog:",
-    "react-pdf": "catalog:",
     "@repo/config-typescript": "workspace:*"
   },
   "peerDependencies": {

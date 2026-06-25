@@ -32,8 +32,6 @@ catalog:
   bcrypt: ^6.0.0
   "@types/bcrypt": "^5.0.2"
   "@supabase/supabase-js": "^2.99.2"
-  pdfjs-dist: ^5.4.296
-  react-pdf: ^10.3.0
   "@uppy/core": ^5.2.0
   "@uppy/dashboard": ^5.1.0
   "@uppy/react": ^5.1.1

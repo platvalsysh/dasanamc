@@ -23,8 +23,6 @@
     "Tabs": "src/components/ui/tabs.tsx",
     "Textarea": "src/components/ui/textarea.tsx",
     "PageHeader": "src/components/page-header.tsx",
-    "PdfViewer": null,
-    "PdfViewerInternal": null,
     "FullPageLoader": null
   }
 }

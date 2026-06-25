@@ -85,5 +85,4 @@ standard HTML attribute (`onClick`, `disabled`, `value` 등) 도 기본적으로
 
 ## 안 쓰는 컴포넌트
 
-`PdfViewer`, `PdfViewerInternal`, `FullPageLoader` 는 이 sync 범위에서 제외됨.
-필요하면 호스트 앱에서 직접 import.
+`FullPageLoader` 는 이 sync 범위에서 제외됨. 필요하면 호스트 앱에서 직접 import.
