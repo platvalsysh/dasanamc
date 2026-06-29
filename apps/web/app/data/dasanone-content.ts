@@ -366,6 +366,65 @@ export const INFO_ROWS = [
   { k: "주차", v: `${HOSPITAL.parking.underground} · ${HOSPITAL.parking.public}` },
 ] as const;
 
+export interface CheckRow {
+  item: string;
+  head?: boolean;
+  sep?: boolean;
+  b: string;
+  s: string;
+  p: string;
+}
+
+export const DOG_ROWS: readonly CheckRow[] = [
+  { item: "기본 신체검사·문진", head: true, b: "●", s: "●", p: "●" },
+  { item: "혈액 일반·생화학 검사", b: "●", s: "●", p: "●" },
+  { item: "심장사상충·전염성 질환 검사", b: "●", s: "●", p: "●" },
+  { item: "소변·분변 검사", b: "●", s: "●", p: "●" },
+  { item: "복부·흉부 방사선", b: "—", s: "●", p: "●" },
+  { item: "복부 초음파", b: "—", s: "●", p: "●" },
+  { item: "심장 초음파", b: "—", s: "—", p: "●" },
+  { item: "갑상선·코티솔 등 호르몬", b: "—", s: "—", p: "●" },
+  { item: "CT 정밀 영상 검사", b: "—", s: "—", p: "●" },
+  { item: "안과 검사·안압 측정", b: "—", s: "선택", p: "●" },
+  { item: "치아 검진", b: "선택", s: "●", p: "●" },
+  { item: "결과 상담·관리 계획", sep: true, b: "●", s: "●", p: "●" },
+  { item: "특화센터 즉시 연계", b: "●", s: "●", p: "●" },
+  { item: "검진 보고서 제공", b: "PDF", s: "PDF", p: "PDF+상세" },
+];
+
+export const CAT_ROWS: readonly CheckRow[] = [
+  { item: "기본 신체검사·문진", head: true, b: "●", s: "●", p: "●" },
+  { item: "혈액 일반·생화학 검사", b: "●", s: "●", p: "●" },
+  { item: "신장 마커(SDMA) 검사", b: "●", s: "●", p: "●" },
+  { item: "소변·분변 검사", b: "●", s: "●", p: "●" },
+  { item: "복부·흉부 방사선", b: "—", s: "●", p: "●" },
+  { item: "복부 초음파", b: "—", s: "●", p: "●" },
+  { item: "심장 초음파 (HCM 검진)", b: "—", s: "선택", p: "●" },
+  { item: "갑상선(T4) · 혈압", b: "—", s: "●", p: "●" },
+  { item: "CT 정밀 영상 검사", b: "—", s: "—", p: "●" },
+  { item: "FIV·FeLV 검사", b: "선택", s: "●", p: "●" },
+  { item: "결과 상담·관리 계획", sep: true, b: "●", s: "●", p: "●" },
+  { item: "검진 보고서 제공", b: "PDF", s: "PDF", p: "PDF+상세" },
+];
+
+export const NOTICES_FALLBACK = [
+  {
+    tag: "공지",
+    t: "추석 연휴 진료 안내 — 365일 24시간 연중무휴 운영합니다",
+    date: "2026.09.20",
+  },
+  {
+    tag: "케이스",
+    t: "고양이 비대성심근증(HCM) 조기 발견 — 심장 초음파 사례",
+    date: "2026.08.14",
+  },
+  {
+    tag: "장비",
+    t: "동물용 HFNC 도입 — 폐수종 응급 환자의 골든타임을 지킵니다",
+    date: "2026.07.02",
+  },
+] as const;
+
 export const FAQS = [
   {
     q: "예약 없이 바로 진료가 가능한가요?",

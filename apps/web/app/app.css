@@ -11,8 +11,8 @@
   --font-serif: "Noto Serif KR", serif;
 
   /* ----- DASANONE design tokens (from reference HTML) ----- */
-  --color-ds-bg: #fbfaf7;        /* body background */
-  --color-ds-dark: #062b28;       /* hero / dark sections */
+  --color-ds-bg: #ffffff;        /* body background */
+  --color-ds-dark: #0d3a35;       /* primary text / dark CTA */
   --color-ds-dark-2: #0d3a35;     /* primary text / footer secondary */
   --color-ds-dark-3: #04201d;     /* footer base */
   --color-ds-teal: #0e9d8c;       /* primary accent */

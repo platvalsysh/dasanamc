@@ -12,11 +12,14 @@ const routes: RouteConfigEntry[] = [
   layout("./layouts/default.tsx", [
     route("/", "./routes/home.tsx"),
 
+    route("/about", "./routes/about.tsx"),
+    route("/centers", "./routes/centers.tsx"),
+    route("/support", "./routes/support.tsx"),
+
+    // legacy paths → redirects (북마크/외부 링크 보호)
     route("/about/greeting", "./routes/about/greeting.tsx"),
     route("/about/info", "./routes/about/info.tsx"),
     route("/about/contact", "./routes/about/contact.tsx"),
-
-    route("/centers", "./routes/centers.tsx"),
     route("/checkup", "./routes/checkup.tsx"),
     // Chrome DevTools Noise Filter
     route("/.well-known/appspecific/com.chrome.devtools.json", "./routes/splinter.tsx"),

@@ -1,4 +1,4 @@
-import { isRouteErrorResponse, Link, Outlet, useLoaderData, useLocation, useNavigate } from "react-router";
+import { isRouteErrorResponse, Link, Outlet, useLoaderData, useLocation, useNavigate } from "react-router"; // useLocation 은 ErrorInfo 가 사용
 import { useEffect, type PropsWithChildren } from "react";
 import { getSiteMenu } from "@repo/core/server";
 import { SiteMenuProvider } from "@repo/core/ui";
@@ -8,6 +8,7 @@ import type { Route } from "./+types/default";
 import { Header } from "~/components/site/Header";
 import { SiteFooter } from "~/components/site/SiteFooter";
 import { QuickBar } from "~/components/site/QuickBar";
+import { MobileBar } from "~/components/site/MobileBar";
 import { ScrollEffects } from "~/components/site/ScrollEffects";
 
 export async function loader() {
@@ -20,30 +21,20 @@ interface ShellProps {
 }
 
 /**
- * 다산원 공개 사이트 레이아웃.
- *
- * `packages/layout-default` 를 폐기하고 다산원 전용 컴포넌트와 함께 apps 내부
- * 로 흡수. 외주마다 이 파일과 `~/components/site/*` 를 직접 손대면 됨.
- *
- * 홈 (`/`) 진입 시에는 다크 히어로 위에 헤더가 떠야 하므로 `-mb-[78px]` 트릭
- * 으로 헤더가 다음 섹션을 78px 만큼 덮도록 한다.
+ * 다산원 공개 사이트 레이아웃. 라이트 헤더가 항상 sticky.
  */
 function Shell({ menuItems, children }: PropsWithChildren<ShellProps>) {
-  const location = useLocation();
-  const isHomePage = location.pathname === "/";
-
   return (
     <SiteMenuProvider menuItems={menuItems || []}>
       <div className="flex min-h-screen flex-col bg-[color:var(--color-ds-bg)]">
         <ScrollEffects />
-        <div className={isHomePage ? "relative -mb-[78px] z-50" : ""}>
-          <Header menuItems={menuItems} />
-        </div>
+        <Header menuItems={menuItems} />
         <div className="flex-1 flex flex-col">
           <main className="flex-1 flex flex-col">{children}</main>
           <SiteFooter />
         </div>
         <QuickBar />
+        <MobileBar />
       </div>
     </SiteMenuProvider>
   );

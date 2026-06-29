@@ -1,41 +1,19 @@
-import { useEffect, useState, useMemo } from "react";
-import { Link, useLocation } from "react-router";
+import { useState, useMemo } from "react";
+import { Link } from "react-router";
 import { useAuth, checkUserPermissions, useIsAdmin } from "@repo/auth/ui";
 import { Menu, X, Settings, User, LogIn, LogOut } from "lucide-react";
 import type { SiteMenuConfigItem } from "@repo/core/types";
 
 /**
- * 다산원동물의료센터 헤더.
- *
- * Reference 디자인 (design_handoff_dasanone/reference) 매핑:
- * - 홈 페이지 상단: 다크 히어로 위에 떠있는 "투명" 헤더 (흰 로고/흰 메뉴)
- * - 스크롤 다운 또는 home 외 라우트: 흰 배경 / 어두운 로고 / 어두운 메뉴
- * - 좌측: 로고 (홈 링크) / 가운데: 홈 아이콘 + 메뉴 / 우측: 24시 전화 CTA pill
+ * 다산원동물의료센터 헤더. 항상 라이트(`#ffffff`) sticky.
+ * 좌측 로고 / 가운데 홈아이콘+메뉴 / 우측 24시 전화 CTA pill.
  */
 
 const MENU_ITEMS_FALLBACK: SiteMenuConfigItem[] = [
-  {
-    id: "about",
-    label: "병원소개",
-    to: "/about/greeting",
-    children: [
-      { id: "about-greeting", label: "대표원장 인사말", to: "/about/greeting" },
-      { id: "about-info", label: "진료안내", to: "/about/info" },
-      { id: "about-contact", label: "오시는 길", to: "/about/contact" },
-    ],
-  },
+  { id: "about", label: "병원소개", to: "/about" },
   { id: "centers", label: "특화진료센터", to: "/centers" },
-  { id: "checkup", label: "건강검진", to: "/checkup" },
-  {
-    id: "support",
-    label: "고객센터",
-    to: "/board/Notice",
-    children: [
-      { id: "support-notice", label: "공지사항", to: "/board/Notice" },
-      { id: "support-info", label: "진료안내", to: "/about/info" },
-      { id: "support-contact", label: "오시는 길", to: "/about/contact" },
-    ],
-  },
+  { id: "checkup", label: "건강검진", to: "/centers#checkup" },
+  { id: "support", label: "고객센터", to: "/support" },
 ];
 
 interface HeaderProps {
@@ -46,19 +24,6 @@ export function Header({ menuItems = [] }: HeaderProps) {
   const isAdmin = useIsAdmin();
   const { user, permissions, roles } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const location = useLocation();
-  const isHome = location.pathname === "/";
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // 홈 다크 히어로 위 = 투명 / 그 외 = 흰 배경
-  const isTransparent = isHome && !scrolled;
 
   const filterItems = (items: SiteMenuConfigItem[]): SiteMenuConfigItem[] =>
     items
@@ -78,12 +43,7 @@ export function Header({ menuItems = [] }: HeaderProps) {
   return (
     <header
       id="siteheader"
-      className={
-        "sticky top-0 z-50 w-full " +
-        (isTransparent
-          ? "bg-transparent border-b border-transparent"
-          : "bg-white border-b border-[color:var(--color-ds-border)]")
-      }
+      className="sticky top-0 z-50 w-full bg-white border-b border-[color:var(--color-ds-border)]"
     >
       <div className="max-w-[1280px] mx-auto px-8 h-[78px] flex items-center justify-between gap-5">
         {/* Logo */}
@@ -91,10 +51,7 @@ export function Header({ menuItems = [] }: HeaderProps) {
           <img
             src="/images/logo.png"
             alt="24시 다산 원동물의료센터"
-            className={
-              "h-10 w-auto block transition-[filter] " +
-              (isTransparent ? "brightness-0 invert" : "")
-            }
+            className="h-10 w-auto block"
           />
         </Link>
 
@@ -105,10 +62,7 @@ export function Header({ menuItems = [] }: HeaderProps) {
             to="/"
             aria-label="메인페이지"
             title="메인페이지"
-            className={
-              "transition-colors " +
-              (isTransparent ? "text-white hover:text-[color:var(--color-ds-teal-3)]" : "text-[color:var(--color-ds-text)] hover:text-[color:var(--color-ds-teal)]")
-            }
+            className="text-[color:var(--color-ds-text)] hover:text-[color:var(--color-ds-teal)] transition-colors"
           >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 10.5 12 3l9 7.5" />
@@ -119,10 +73,7 @@ export function Header({ menuItems = [] }: HeaderProps) {
             <div key={menu.id} className="relative group">
               <Link
                 to={menu.to || "#"}
-                className={
-                  "flex items-center text-[15px] font-bold transition-colors py-2 " +
-                  (isTransparent ? "text-white hover:text-[color:var(--color-ds-teal-3)]" : "text-[color:var(--color-ds-text)] hover:text-[color:var(--color-ds-teal)]")
-                }
+                className="flex items-center text-[15px] font-bold py-2 text-[color:var(--color-ds-text)] hover:text-[color:var(--color-ds-teal)] transition-colors"
               >
                 {menu.label}
               </Link>
@@ -133,7 +84,7 @@ export function Header({ menuItems = [] }: HeaderProps) {
                       <Link
                         key={sub.id}
                         to={sub.to || "#"}
-                        className="block px-4 py-2 text-sm text-[color:var(--color-ds-text-sub)] rounded-md hover:bg-[color:var(--color-ds-bg)] hover:text-[color:var(--color-ds-teal)] transition-colors"
+                        className="block px-4 py-2 text-sm text-[color:var(--color-ds-text-sub)] rounded-md hover:bg-[color:var(--color-ds-border)] hover:text-[color:var(--color-ds-teal)] transition-colors"
                       >
                         {sub.label}
                       </Link>
@@ -150,19 +101,14 @@ export function Header({ menuItems = [] }: HeaderProps) {
           {/* 24h 전화 CTA pill */}
           <a
             href="tel:0507-1330-5958"
-            className={
-              "hidden sm:flex items-center gap-2 px-5 py-[11px] rounded-full text-sm font-bold transition-colors " +
-              (isTransparent
-                ? "bg-white/10 border border-white/40 text-white hover:bg-white/20"
-                : "bg-[color:var(--color-ds-dark-2)] text-white hover:bg-[color:var(--color-ds-dark)]")
-            }
+            className="hidden sm:flex items-center gap-2 px-5 py-[11px] rounded-full text-sm font-bold transition-colors bg-[color:var(--color-ds-dark-2)] text-white hover:bg-[color:var(--color-ds-dark-3)]"
           >
             <span className="w-[7px] h-[7px] rounded-full bg-[color:var(--color-ds-teal-2)] animate-pulse-dot" />
             24시 0507-1330-5958
           </a>
 
           {/* auth links (compact) */}
-          <div className={"hidden md:flex items-center gap-1 " + (isTransparent ? "text-white/85" : "text-[color:var(--color-ds-text-sub)]")}>
+          <div className="hidden md:flex items-center gap-1 text-[color:var(--color-ds-text-sub)]">
             {user ? (
               <>
                 {isAdmin && (
@@ -186,7 +132,7 @@ export function Header({ menuItems = [] }: HeaderProps) {
 
           {/* mobile menu toggle */}
           <button
-            className={"lg:hidden p-2 " + (isTransparent ? "text-white" : "text-[color:var(--color-ds-text)]")}
+            className="lg:hidden p-2 text-[color:var(--color-ds-text)]"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="메뉴 열기"
           >

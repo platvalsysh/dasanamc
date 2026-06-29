@@ -60,10 +60,10 @@ class 와 host 앱이 제공하는 CSS 변수를 참조. host 앱(`apps/web/app/
 
 | 토큰 | 용도 | 값 (다산원 브랜드) |
 |---|---|---|
-| `--color-ds-bg` | body 배경 | `#fbfaf7` |
-| `--color-ds-dark` | hero / 다크 섹션 | `#062b28` |
+| `--color-ds-bg` | body 배경 | `#ffffff` |
+| `--color-ds-dark` | primary 텍스트 / 다크 CTA | `#0d3a35` |
 | `--color-ds-dark-2` | primary 텍스트 / footer | `#0d3a35` |
-| `--color-ds-dark-3` | footer 베이스 | `#04201d` |
+| `--color-ds-dark-3` | hover-dark (darker CTA) | `#04201d` |
 | `--color-ds-teal` | accent primary | `#0e9d8c` |
 | `--color-ds-teal-2` | 어두운 배경 위 accent | `#56c8b8` |
 | `--color-ds-teal-3` | 가장 밝은 accent | `#6ed4c5` |
