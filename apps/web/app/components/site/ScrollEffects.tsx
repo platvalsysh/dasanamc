@@ -158,7 +158,7 @@ export function ScrollEffects() {
         }
       }
 
-      // 헤더 theme(dark/light) + hide/show + scrolled
+      // 헤더 theme(dark/light) + scrolled
       const header = document.getElementById("siteheader");
       if (header) {
         // 다크 hero 영역이 헤더(78px) 아래로 사라지면 light, 아니면 dark
@@ -168,11 +168,8 @@ export function ScrollEffects() {
           : false;
         header.setAttribute("data-theme", overHero ? "dark" : "light");
         header.setAttribute("data-scrolled", y > 8 ? "1" : "0");
-        if (motionOn && y > 80 && y > lastY + 2) {
-          header.setAttribute("data-hidden", "1");
-        } else if (y < lastY - 2 || y <= 80) {
-          header.setAttribute("data-hidden", "0");
-        }
+        // hide-on-scroll-down 비활성: 헤더는 항상 sticky 유지
+        header.setAttribute("data-hidden", "0");
       }
       lastY = y;
     };

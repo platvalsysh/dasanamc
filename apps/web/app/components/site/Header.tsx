@@ -1,16 +1,16 @@
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo } from "react";
 import { Link, useLocation } from "react-router";
 import { useAuth, checkUserPermissions, useIsAdmin } from "@repo/auth/ui";
 import { Menu, X, Settings, User, LogIn, LogOut } from "lucide-react";
 import type { SiteMenuConfigItem } from "@repo/core/types";
-import { ABOUT_MENU, CENTER_MENU } from "~/data/dasanone-content";
+import { ABOUT_MENU, CENTER_MENU, SUPPORT_MENU } from "~/data/dasanone-content";
 
 /**
- * 다산원동물의료센터 헤더 — dual-theme + mega menu.
+ * 다산원동물의료센터 헤더 — dual-theme + per-item dropdown.
  *
- * - 평소: `data-theme="dark"` (다크 hero 위 투명 + 흰 메뉴) or `data-theme="light"`.
- * - 어떤 메뉴라도 hover → `data-mega-open="1"`: 헤더 자체가 흰 배경으로 변하고
- *   하단에 풀너비 mega panel 이 모든 카테고리의 sub-menu 를 컬럼으로 표시.
+ * - 다크 hero 위: `data-theme="dark"` (투명 + 흰 메뉴)
+ * - 스크롤 다운 후: `data-theme="light"` (흰 배경 + 진한 글자)
+ * - 각 메뉴 항목 hover → 해당 항목의 children dropdown 만 작은 카드로 표시
  */
 
 const MENU_ITEMS_FALLBACK: SiteMenuConfigItem[] = [
@@ -26,7 +26,12 @@ const MENU_ITEMS_FALLBACK: SiteMenuConfigItem[] = [
     to: "/centers",
     children: CENTER_MENU.map((m, i) => ({ id: `c-${i}`, label: m.label, to: m.to })),
   },
-  { id: "support", label: "고객센터", to: "/support" },
+  {
+    id: "support",
+    label: "고객센터",
+    to: "/support",
+    children: SUPPORT_MENU.map((m, i) => ({ id: `sup-${i}`, label: m.label, to: m.to })),
+  },
 ];
 
 interface HeaderProps {
@@ -37,9 +42,7 @@ export function Header({ menuItems = [] }: HeaderProps) {
   const isAdmin = useIsAdmin();
   const { user, permissions, roles } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [megaOpen, setMegaOpen] = useState(false);
   const location = useLocation();
-  const closeTimer = useRef<number | null>(null);
 
   const filterItems = (items: SiteMenuConfigItem[]): SiteMenuConfigItem[] =>
     items
@@ -57,23 +60,6 @@ export function Header({ menuItems = [] }: HeaderProps) {
     return filterItems(source);
   }, [menuItems, permissions, roles, user]);
 
-  // 라우트 변경 시 mega 자동 닫기
-  useEffect(() => {
-    setMegaOpen(false);
-  }, [location.pathname, location.hash]);
-
-  const openMega = () => {
-    if (closeTimer.current) {
-      window.clearTimeout(closeTimer.current);
-      closeTimer.current = null;
-    }
-    setMegaOpen(true);
-  };
-  const scheduleClose = () => {
-    if (closeTimer.current) window.clearTimeout(closeTimer.current);
-    closeTimer.current = window.setTimeout(() => setMegaOpen(false), 140);
-  };
-
   const isPathActive = (to?: string) => {
     if (!to) return false;
     const path = to.split("#")[0];
@@ -85,9 +71,7 @@ export function Header({ menuItems = [] }: HeaderProps) {
     <header
       id="siteheader"
       data-theme="dark"
-      data-mega-open={megaOpen ? "1" : "0"}
-      className="sticky top-0 z-50 w-full"
-      onMouseLeave={scheduleClose}
+      className="fixed top-0 left-0 right-0 z-50 w-full"
     >
       <div
         className="mx-auto h-[78px] grid items-center gap-5"
@@ -114,10 +98,7 @@ export function Header({ menuItems = [] }: HeaderProps) {
         </Link>
 
         {/* Center nav */}
-        <nav
-          className="hidden lg:flex items-center gap-8 topnav"
-          onMouseEnter={openMega}
-        >
+        <nav className="hidden lg:flex items-center gap-8 topnav">
           <Link
             to="/"
             aria-label="메인페이지"
@@ -131,20 +112,38 @@ export function Header({ menuItems = [] }: HeaderProps) {
               <path d="M5 9.5V20h14V9.5" />
             </svg>
           </Link>
-          {visibleItems.map((menu) => (
-            <Link
-              key={menu.id}
-              to={menu.to || "#"}
-              data-active={isPathActive(menu.to) ? "1" : ""}
-              className="flex items-center transition-colors"
-              style={{ height: 78, padding: "0 2px", fontSize: "15.5px", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}
-            >
-              {menu.label}
-              {menu.children && menu.children.length > 0 && (
-                <span className="ddcaret">⌄</span>
-              )}
-            </Link>
-          ))}
+          {visibleItems.map((menu) => {
+            const hasChildren = menu.children && menu.children.length > 0;
+            const wide = hasChildren && menu.children!.length > 6;
+            return (
+              <div key={menu.id} className="navitem">
+                <Link
+                  to={menu.to || "#"}
+                  data-active={isPathActive(menu.to) ? "1" : ""}
+                  className="flex items-center transition-colors"
+                  style={{ padding: "0 2px", fontSize: "15.5px", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}
+                >
+                  {menu.label}
+                  {hasChildren && <span className="ddcaret">⌄</span>}
+                </Link>
+                {hasChildren && (
+                  <div className={"dropdown" + (wide ? " wide" : "")}>
+                    {menu.children!.map((sub) => {
+                      const centerEntry = CENTER_MENU.find((c) => c.to === sub.to);
+                      return (
+                        <Link key={sub.id} to={sub.to || "#"}>
+                          {menu.id === "centers" && centerEntry && (
+                            <span className="ddnum">{centerEntry.num}</span>
+                          )}
+                          <span>{sub.label}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </nav>
 
         {/* Right side */}
@@ -188,54 +187,6 @@ export function Header({ menuItems = [] }: HeaderProps) {
           >
             {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
-        </div>
-      </div>
-
-      {/* ===== Mega menu (desktop) — 풀너비 panel ===== */}
-      <div
-        className="megamenu hidden lg:block"
-        onMouseEnter={openMega}
-        onMouseLeave={scheduleClose}
-      >
-        <div className="megamenu-inner">
-          {visibleItems.map((menu) => {
-            const wide = menu.children && menu.children.length > 6;
-            return (
-              <div key={menu.id} className={"megamenu-col" + (wide ? " col-wide" : "")}>
-                <Link
-                  to={menu.to || "#"}
-                  className="megamenu-col-title block hover:text-[color:var(--color-ds-teal)] transition-colors"
-                >
-                  {menu.label}
-                </Link>
-                {menu.children && menu.children.length > 0 ? (
-                  <ul>
-                    {menu.children.map((sub) => {
-                      const centerEntry = CENTER_MENU.find((c) => c.to === sub.to);
-                      return (
-                        <li key={sub.id}>
-                          <Link to={sub.to || "#"}>
-                            {menu.id === "centers" && centerEntry && (
-                              <span className="ddnum">{centerEntry.num}</span>
-                            )}
-                            <span>{sub.label}</span>
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                ) : (
-                  <ul>
-                    <li>
-                      <Link to={menu.to || "#"}>
-                        <span>{menu.label} 바로가기</span>
-                      </Link>
-                    </li>
-                  </ul>
-                )}
-              </div>
-            );
-          })}
         </div>
       </div>
 

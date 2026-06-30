@@ -457,32 +457,41 @@ const CAT_GROUPS: readonly CheckGroup[] = [
 export const DOG_ROWS: readonly CheckRow[] = buildRows(DOG_GROUPS);
 export const CAT_ROWS: readonly CheckRow[] = buildRows(CAT_GROUPS);
 
-/** 헤더 dropdown 메뉴에 사용. 11개 센터 + 건강검진 */
+/** 헤더 dropdown 메뉴 — 11개 센터 + 건강검진. 각 센터는 별도 라우트. */
 export interface CenterMenuItem {
   num: string;
   label: string;
   to: string;
 }
 export const CENTER_MENU: readonly CenterMenuItem[] = [
-  { num: "01", label: "간담낭췌장특화센터", to: "/centers#hepato" },
-  { num: "02", label: "종양항암센터", to: "/centers#onco" },
-  { num: "03", label: "심장센터", to: "/centers#heart" },
-  { num: "04", label: "내시경센터", to: "/centers#endo" },
-  { num: "05", label: "CT영상센터", to: "/centers#ct" },
-  { num: "06", label: "골관절센터", to: "/centers#ortho" },
-  { num: "07", label: "신경외과센터", to: "/centers#neuro" },
-  { num: "08", label: "일반외과센터", to: "/centers#surgery" },
-  { num: "09", label: "고양이전문클리닉", to: "/centers#feline" },
-  { num: "10", label: "응급중환자센터", to: "/centers#er" },
-  { num: "11", label: "건강검진센터", to: "/centers#checkup-c" },
-  { num: "＋", label: "건강검진 프로그램", to: "/centers#checkup" },
+  { num: "01", label: "간담낭췌장특화센터", to: "/centers/hepato" },
+  { num: "02", label: "종양항암센터", to: "/centers/onco" },
+  { num: "03", label: "심장센터", to: "/centers/heart" },
+  { num: "04", label: "내시경센터", to: "/centers/endo" },
+  { num: "05", label: "CT영상센터", to: "/centers/ct" },
+  { num: "06", label: "골관절센터", to: "/centers/ortho" },
+  { num: "07", label: "신경외과센터", to: "/centers/neuro" },
+  { num: "08", label: "일반외과센터", to: "/centers/surgery" },
+  { num: "09", label: "고양이전문클리닉", to: "/centers/feline" },
+  { num: "10", label: "응급중환자센터", to: "/centers/er" },
+  { num: "11", label: "건강검진센터", to: "/centers/checkup-c" },
+  { num: "＋", label: "건강검진 프로그램", to: "/centers/checkup" },
 ];
 
-/** 헤더 dropdown — 병원소개 */
+/** 헤더 dropdown — 병원소개 (4개 서브) */
 export const ABOUT_MENU = [
   { label: "병원소개", to: "/about" },
-  { label: "의료진소개", to: "/about#doctors" },
-  { label: "병원둘러보기", to: "/about#facilities" },
+  { label: "의료진소개", to: "/about/doctors" },
+  { label: "병원둘러보기", to: "/about/facilities" },
+  { label: "장비소개", to: "/about/equipment" },
+] as const;
+
+/** 헤더 dropdown — 고객센터 (3개 서브) */
+export const SUPPORT_MENU = [
+  { label: "고객센터", to: "/support" },
+  { label: "공지사항", to: "/support/notice" },
+  { label: "자주 묻는 질문", to: "/support/faq" },
+  { label: "온라인 문의", to: "/support/contact" },
 ] as const;
 
 export const LEAD_DOCTORS = DOCTORS.slice(0, 2);

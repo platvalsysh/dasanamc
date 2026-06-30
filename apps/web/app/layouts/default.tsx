@@ -32,9 +32,7 @@ function Shell({ menuItems, children }: PropsWithChildren<ShellProps>) {
     <SiteMenuProvider menuItems={menuItems || []}>
       <div className="flex min-h-screen flex-col bg-[color:var(--color-ds-bg)]">
         <ScrollEffects />
-        <div className="relative z-50 -mb-[79px]">
-          <Header menuItems={menuItems} />
-        </div>
+        <Header menuItems={menuItems} />
         <div className="flex-1 flex flex-col">
           <main className="flex-1 flex flex-col">{children}</main>
           <SiteFooter />

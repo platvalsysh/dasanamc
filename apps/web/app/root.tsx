@@ -32,6 +32,11 @@ import { removeTrailingSlashMiddleware, clientIPAddressMiddleware } from "@repo/
 
 
 export const links: Route.LinksFunction = () => [
+  // 파비콘 — dasanico.png 원본을 사이즈별로 리사이즈만 한 것 (변조 없음)
+  { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32.png" },
+  { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16.png" },
+  { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
+  { rel: "alternate icon", type: "image/x-icon", href: "/favicon.ico" },
   {
     rel: "stylesheet",
     href: "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css",
@@ -46,6 +51,7 @@ export const meta: Route.MetaFunction = () => [
   { title: "24시 다산 원동물의료센터" },
   { name: "description", content: "24시 다산 원동물의료센터 — 365일 24시간 연중무휴, 11개 특화진료센터." },
   { name: "viewport", content: "width=device-width, initial-scale=1" },
+  { name: "theme-color", content: "#0e9d8c" },
   { charset: "utf-8" },
 ];
 

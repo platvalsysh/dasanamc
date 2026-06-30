@@ -309,7 +309,7 @@ export default function Home() {
           {CENTERS.map((c) => (
             <Link
               key={c.id}
-              to={`/centers#${c.id}`}
+              to={`/centers/${c.id}`}
               className="ctrcard text-left bg-white rounded-[20px] p-[40px_34px] cursor-pointer flex flex-col gap-3.5 transition-transform"
               style={{ flex: "0 0 360px", minHeight: 460, color: "#0d3a35" }}
             >
