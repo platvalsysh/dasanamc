@@ -61,15 +61,22 @@ class 와 host 앱이 제공하는 CSS 변수를 참조. host 앱(`apps/web/app/
 | 토큰 | 용도 | 값 (다산원 브랜드) |
 |---|---|---|
 | `--color-ds-bg` | body 배경 | `#ffffff` |
-| `--color-ds-dark` | primary 텍스트 / 다크 CTA | `#0d3a35` |
-| `--color-ds-dark-2` | primary 텍스트 / footer | `#0d3a35` |
-| `--color-ds-dark-3` | hover-dark (darker CTA) | `#04201d` |
+| `--color-ds-dark` | 다크 hero base | `#06201c` |
+| `--color-ds-dark-2` | 다크 stats / footer | `#062b28` |
+| `--color-ds-dark-3` | 다크 hero deepest | `#041815` |
+| `--color-ds-dark-warm` | primary text on light | `#0d3a35` |
 | `--color-ds-teal` | accent primary | `#0e9d8c` |
 | `--color-ds-teal-2` | 어두운 배경 위 accent | `#56c8b8` |
-| `--color-ds-teal-3` | 가장 밝은 accent | `#6ed4c5` |
+| `--color-ds-teal-3` | 가장 밝은 accent (on dark) | `#6ed4c5` |
 | `--color-ds-text` | 본문 텍스트 | `#0d3a35` |
+| `--color-ds-text-warm` | warm off-white on dark | `#f4efe6` |
 | `--color-ds-text-sub` | 부 텍스트 | `#5c6b68` |
-| `--color-ds-border` | 일반 보더 | `#e6e9e4` |
+| `--color-ds-text-mute-warm` | sub text on dark | `#b3c2bc` |
+| `--color-ds-border` | 일반 보더 (라이트) | `#e7ece8` |
+| `--color-ds-border-warm` | 베이지 보더 | `#e9dfca` |
+| `--color-ds-border-2` | input border | `#ddd0b8` |
+| `--color-ds-beige-1` / `2` | placeholder stripe | `#ebe1ce` / `#f3ebd9` |
+| `--color-ds-beige-mute` | beige muted text | `#a59a82` |
 
 agent 가 디자인할 때 색상은 위 토큰 변수명을 사용 (`bg-[color:var(--color-ds-dark)]`
 또는 `style={{ background: 'var(--color-ds-dark)' }}`).

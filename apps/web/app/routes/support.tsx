@@ -55,23 +55,33 @@ export default function Support() {
 
   return (
     <>
-      {/* hero */}
-      <div className="bg-white text-[color:var(--color-ds-text)] px-8 pt-20 pb-[70px] border-b border-[color:var(--color-ds-border)]">
-        <div className="max-w-[1280px] mx-auto">
-          <div
-            className="mb-[18px]"
-            style={{
-              font: "700 13px/1 ui-monospace, monospace",
-              letterSpacing: "0.22em",
-              color: "var(--color-ds-teal)",
-            }}
-          >
+      {/* dark hero */}
+      <div className="darkhero relative overflow-hidden" style={{ background: "#06201c", color: "#f4efe6" }}>
+        <div className="absolute inset-0" style={{ background: "linear-gradient(150deg,#0a2620 0%,#06201c 55%,#041815 100%)" }} />
+        <div className="absolute inset-0" style={{ background: "radial-gradient(70% 80% at 86% 6%,rgba(176,128,82,0.20),transparent 60%)" }} />
+        <div className="absolute inset-0" style={{ background: "radial-gradient(58% 72% at 8% 94%,rgba(14,157,140,0.16),transparent 62%)" }} />
+        <div
+          className="absolute right-0 top-0 bottom-0 herobg flex items-center justify-center"
+          style={{
+            width: "46%",
+            background: "repeating-linear-gradient(45deg,rgba(176,128,82,0.10),rgba(176,128,82,0.10) 12px,transparent 12px,transparent 24px)",
+          }}
+        >
+          <span style={{ font: "600 12px ui-monospace, monospace", letterSpacing: "0.14em", color: "#b9a78c" }}>
+            배경 이미지 영역
+          </span>
+        </div>
+        <div className="relative max-w-[1280px] mx-auto" style={{ padding: "130px clamp(24px,4vw,64px) 104px" }}>
+          <div className="mb-5" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "#6ed4c5" }}>
             CUSTOMER CENTER
           </div>
-          <h1 className="text-[42px] font-extrabold tracking-[-0.03em] leading-[1.3]">
+          <h1
+            className="font-extrabold"
+            style={{ fontSize: "clamp(44px, 6.5vw, 80px)", letterSpacing: "-0.035em", lineHeight: 1.02, color: "#f4efe6" }}
+          >
             고객센터
           </h1>
-          <p className="text-[17px] text-[color:var(--color-ds-text-sub)] mt-4 max-w-[620px]">
+          <p className="text-[17px] mt-[22px] max-w-[540px]" style={{ color: "#c2d0ca", lineHeight: 1.7 }}>
             진료 예약·문의는 전화 또는 온라인으로, 진료 케이스와 건강 정보는
             블로그에서 만나보세요.
           </p>
@@ -98,7 +108,8 @@ export default function Support() {
           </a>
           <a
             href="#contactform"
-            className="text-left bg-transparent border border-[color:var(--color-ds-border)] rounded-xl px-[26px] py-[30px] flex flex-col gap-2"
+            className="text-left bg-transparent rounded-xl px-[26px] py-[30px] flex flex-col gap-2"
+            style={{ border: "1px solid #e9dfca" }}
           >
             <span className="text-[13px] font-bold text-[color:var(--color-ds-teal)]">
               온라인 문의·예약
@@ -114,7 +125,8 @@ export default function Support() {
             href={HOSPITAL.blog}
             target="_blank"
             rel="noreferrer"
-            className="bg-transparent border border-[color:var(--color-ds-border)] rounded-xl px-[26px] py-[30px] flex flex-col gap-2"
+            className="bg-transparent rounded-xl px-[26px] py-[30px] flex flex-col gap-2"
+            style={{ border: "1px solid #e9dfca" }}
           >
             <span className="text-[13px] font-bold text-[color:var(--color-ds-teal)]">
               진료 케이스 · 블로그
@@ -141,21 +153,17 @@ export default function Support() {
         >
           NOTICE
         </div>
-        <div className="flex flex-col gap-px bg-[#e9ece6] border border-[#e9ece6] rounded-2xl overflow-hidden">
+        <div className="flex flex-col gap-px rounded-2xl overflow-hidden" style={{ background: "#e8ddc6", border: "1px solid #e8ddc6" }}>
           {NOTICES_FALLBACK.map((n, i) => (
-            <div
-              key={i}
-              className="bg-white px-6 py-[18px] flex items-center gap-[18px]"
-            >
-              <span className="text-[11.5px] font-extrabold text-[color:var(--color-ds-teal)] bg-[#e2f4f1] px-2.5 py-[5px] rounded-md shrink-0">
+            <div key={i} className="bg-white px-6 py-[18px] flex items-center gap-[18px]">
+              <span
+                className="text-[11.5px] font-extrabold shrink-0"
+                style={{ color: "var(--color-ds-teal)", background: "#e2f4f1", padding: "5px 11px", borderRadius: 6 }}
+              >
                 {n.tag}
               </span>
-              <span className="text-[15px] text-[#2a3b37] font-semibold flex-1">
-                {n.t}
-              </span>
-              <span className="text-[13px] text-[color:var(--color-ds-text-mute)] shrink-0">
-                {n.date}
-              </span>
+              <span className="text-[15px] font-semibold flex-1" style={{ color: "#2a3b37" }}>{n.t}</span>
+              <span className="text-[13px] shrink-0" style={{ color: "#a59a82" }}>{n.date}</span>
             </div>
           ))}
         </div>
@@ -175,10 +183,7 @@ export default function Support() {
         </div>
         <div className="flex flex-col gap-3">
           {FAQS.map((f, i) => (
-            <div
-              key={i}
-              className="border-t border-[color:var(--color-ds-border)] px-1 py-6"
-            >
+            <div key={i} className="px-1 py-6" style={{ borderTop: "1px solid #e9dfca" }}>
               <div className="flex gap-3 items-start mb-2.5">
                 <span className="text-[17px] font-extrabold text-[color:var(--color-ds-teal)] shrink-0">
                   Q
@@ -188,9 +193,7 @@ export default function Support() {
                 </span>
               </div>
               <div className="flex gap-3 items-start pl-px">
-                <span className="text-[17px] font-extrabold text-[#bcc7c2] shrink-0">
-                  A
-                </span>
+                <span className="text-[17px] font-extrabold shrink-0" style={{ color: "#c9bda3" }}>A</span>
                 <p className="text-[15px] text-[color:var(--color-ds-text-sub)] leading-[1.7]">
                   {f.a}
                 </p>
@@ -204,7 +207,7 @@ export default function Support() {
       <section className="max-w-[1280px] mx-auto px-8 pt-12 pb-[100px]">
         <div
           id="contactform"
-          className="border-t border-[color:var(--color-ds-border)] pt-11 pb-2"
+          className="pt-11 pb-2"
           style={{ scrollMarginTop: "100px" }}
         >
           <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-12 formgrid">
@@ -299,7 +302,8 @@ export default function Support() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="bg-[color:var(--color-ds-text)] text-white border-none py-4 rounded-[11px] text-base font-bold cursor-pointer disabled:opacity-60"
+                className="text-white border-none py-4 rounded-[11px] text-base font-bold cursor-pointer disabled:opacity-60"
+                style={{ background: "#0d3a35" }}
               >
                 {submitting ? "보내는 중…" : "문의 보내기"}
               </button>

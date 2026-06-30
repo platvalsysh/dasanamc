@@ -10,19 +10,26 @@
   --font-sans: "Spoqa Han Sans Neo", "Spoqa Han Sans", "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
   --font-serif: "Noto Serif KR", serif;
 
-  /* ----- DASANONE design tokens (from reference HTML) ----- */
-  --color-ds-bg: #ffffff;        /* body background */
-  --color-ds-dark: #0d3a35;       /* primary text / dark CTA */
-  --color-ds-dark-2: #0d3a35;     /* primary text / footer secondary */
-  --color-ds-dark-3: #04201d;     /* footer base */
+  /* ----- DASANONE design tokens (from DasanoneSite.dc.html) ----- */
+  --color-ds-bg: #ffffff;
+  --color-ds-dark: #06201c;       /* dark hero base */
+  --color-ds-dark-2: #062b28;     /* dark stats / footer */
+  --color-ds-dark-3: #041815;     /* dark hero deepest */
+  --color-ds-dark-warm: #0d3a35;  /* primary text on light bg */
   --color-ds-teal: #0e9d8c;       /* primary accent */
   --color-ds-teal-2: #56c8b8;     /* on-dark accent */
-  --color-ds-teal-3: #6ed4c5;     /* lightest accent */
+  --color-ds-teal-3: #6ed4c5;     /* lightest accent (on dark) */
   --color-ds-text: #0d3a35;
+  --color-ds-text-warm: #f4efe6;  /* warm off-white on dark */
   --color-ds-text-sub: #5c6b68;
   --color-ds-text-mute: #9aa9a4;
-  --color-ds-border: #e6e9e4;
-  --color-ds-border-2: #d8ded8;
+  --color-ds-text-mute-warm: #b3c2bc; /* on dark */
+  --color-ds-border: #e7ece8;
+  --color-ds-border-warm: #e9dfca; /* warm beige border */
+  --color-ds-border-2: #ddd0b8;    /* input border */
+  --color-ds-beige-1: #ebe1ce;    /* placeholder stripe a */
+  --color-ds-beige-2: #f3ebd9;    /* placeholder stripe b */
+  --color-ds-beige-mute: #a59a82;
   --color-ds-card-bg: #ffffff;
 
   /* Legacy snu* tokens — 동창회 템플릿 시점의 토큰명. 값은 새 팔레트.
@@ -171,14 +178,163 @@ body {
 }
 
 #siteheader {
-  transition: transform .42s cubic-bezier(.4, 0, .2, 1), box-shadow .3s ease, background .3s ease, border-color .3s ease;
+  transition: transform .42s cubic-bezier(.4, 0, .2, 1), box-shadow .35s ease, background .35s ease, border-color .35s ease;
   will-change: transform;
 }
 #siteheader[data-hidden="1"] {
   transform: translateY(-100%);
 }
+/* dark theme — over dark hero (default) */
+#siteheader[data-theme="dark"] {
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+}
+#siteheader[data-theme="dark"] .logo-light { display: block !important; }
+#siteheader[data-theme="dark"] .logo-dark { display: none !important; }
+#siteheader[data-theme="dark"] .topnav a,
+#siteheader[data-theme="dark"] .topnav button { color: #ffffff; }
+#siteheader[data-theme="dark"] .topnav a[data-active="1"],
+#siteheader[data-theme="dark"] .topnav button[data-active="1"] { color: #fff; border-bottom-color: #6ed4c5; }
+#siteheader[data-theme="dark"] .cta-call {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  backdrop-filter: blur(6px);
+}
+/* light theme — over light body (다크 헤더로 통일) */
+#siteheader[data-theme="light"] {
+  background: rgba(13, 58, 53, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 1px 0 rgba(20, 42, 38, 0.06);
+}
+#siteheader[data-theme="light"] .logo-light { display: block !important; }
+#siteheader[data-theme="light"] .logo-dark { display: none !important; }
+#siteheader[data-theme="light"] .topnav a,
+#siteheader[data-theme="light"] .topnav button { color: #ffffff; }
+#siteheader[data-theme="light"] .topnav a[data-active="1"],
+#siteheader[data-theme="light"] .topnav button[data-active="1"] { color: #fff; border-bottom-color: #6ed4c5; }
+#siteheader[data-theme="light"] .cta-call {
+  background: #0e9d8c !important;
+  border: 1px solid #0e9d8c !important;
+  color: #fff !important;
+  backdrop-filter: none !important;
+}
 #siteheader[data-scrolled="1"] {
   box-shadow: 0 1px 0 rgba(20, 42, 38, .05), 0 10px 28px rgba(20, 42, 38, .05);
+}
+/* mega-menu open — 항상 흰 배경 + 검은 텍스트로 */
+#siteheader[data-mega-open="1"] {
+  background: #ffffff !important;
+  border-bottom: 1px solid var(--color-ds-border) !important;
+  box-shadow: 0 1px 0 rgba(20, 42, 38, .03);
+  backdrop-filter: none !important;
+}
+#siteheader[data-mega-open="1"] .logo-light { display: none !important; }
+#siteheader[data-mega-open="1"] .logo-dark { display: block !important; }
+#siteheader[data-mega-open="1"] .topnav a,
+#siteheader[data-mega-open="1"] .topnav button { color: #1b2627 !important; }
+#siteheader[data-mega-open="1"] .topnav a[data-active="1"],
+#siteheader[data-mega-open="1"] .topnav button[data-active="1"] { color: #0a7468 !important; border-bottom-color: #0e9d8c !important; }
+#siteheader[data-mega-open="1"] .cta-call {
+  background: var(--color-ds-dark-warm) !important;
+  border: 1px solid var(--color-ds-dark-warm) !important;
+  color: #fff !important;
+  backdrop-filter: none !important;
+}
+
+.topnav a, .topnav button { font-weight: 600; color: #ffffff; border: none; border-bottom: 2.5px solid transparent; transition: color .2s ease; }
+.topnav a[data-active="1"], .topnav button[data-active="1"] { font-weight: 800; }
+.topnav .ddcaret { font-size: 11px; margin-left: 5px; opacity: .55; transition: transform .2s; display: inline-block; }
+
+/* mega menu panel — 풀너비 흰 panel */
+.megamenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: #ffffff;
+  border-bottom: 1px solid var(--color-ds-border);
+  box-shadow: 0 22px 44px rgba(18, 38, 32, 0.10);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition: opacity .25s ease, transform .25s ease, visibility 0s linear .25s;
+  z-index: 89;
+}
+#siteheader[data-mega-open="1"] .megamenu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition: opacity .25s ease, transform .25s ease, visibility 0s linear 0s;
+}
+.megamenu-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 28px clamp(24px, 4vw, 64px) 36px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+.megamenu-col-title {
+  font-size: 15.5px;
+  font-weight: 800;
+  color: #1b2627;
+  letter-spacing: -0.01em;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--color-ds-border);
+}
+.megamenu-col ul { list-style: none; display: flex; flex-direction: column; gap: 4px; padding: 0; margin: 0; }
+.megamenu-col li a {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 14px; font-weight: 600; color: #2a3b37;
+  padding: 9px 4px; border-radius: 8px;
+  transition: background .15s, color .15s;
+}
+.megamenu-col li a:hover { background: #f1f5f1; color: #0a7468; }
+.megamenu-col .ddnum {
+  font: 800 12px/1 ui-monospace, monospace;
+  color: #0e9d8c;
+  min-width: 22px;
+  text-align: center;
+}
+.megamenu-col.col-wide ul { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
+
+.soltabs button {
+  padding: 0 4px 16px; cursor: pointer;
+  font-size: 17px; font-weight: 600; white-space: nowrap;
+  border: none; border-bottom: 2px solid transparent; margin-bottom: -1px;
+  background: none; color: #92a39d; transition: color .18s; font-family: inherit;
+}
+.soltabs button[data-active="1"] { font-weight: 800; color: #0e9d8c; border-bottom-color: #0e9d8c; }
+.hcheck tbody td:first-child { font-weight: 500; }
+.hcheck tbody td[data-head="1"] { font-weight: 700; }
+.hcheck tbody td[data-sep="1"] { border-top: 1px solid #e8ddc6; }
+
+.centertrack { scrollbar-width: none; -ms-overflow-style: none; }
+.centertrack::-webkit-scrollbar { display: none; }
+
+@media (max-width: 1080px) {
+  .topnav { gap: 22px !important; }
+  .three { grid-template-columns: 1fr !important; }
+  .four, .facgrid, .docgrid, .centergrid { grid-template-columns: repeat(2, 1fr) !important; }
+  .loc, .solpanel, .leadgrid, .formgrid, .ctrbody, .tablewrap { grid-template-columns: 1fr !important; }
+  .proc { grid-template-columns: repeat(2, 1fr) !important; }
+  .footgrid { grid-template-columns: 1fr !important; }
+  .ctrwrap { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 720px) {
+  .topnav { display: none !important; }
+  .ctrcard { flex: 0 0 82% !important; min-height: 380px !important; }
+  .leadcard { grid-template-columns: 1fr !important; }
+  .docgrid { grid-template-columns: repeat(2, 1fr) !important; }
+  .centergrid, .four, .facgrid { grid-template-columns: 1fr !important; }
+  .herobg { display: none !important; }
+  .statgrid { grid-template-columns: repeat(2, 1fr) !important; }
 }
 
 @keyframes fadeUp {

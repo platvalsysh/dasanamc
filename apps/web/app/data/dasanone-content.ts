@@ -375,54 +375,123 @@ export interface CheckRow {
   p: string;
 }
 
-export const DOG_ROWS: readonly CheckRow[] = [
-  { item: "기본 신체검사·문진", head: true, b: "●", s: "●", p: "●" },
-  { item: "혈액 일반·생화학 검사", b: "●", s: "●", p: "●" },
-  { item: "심장사상충·전염성 질환 검사", b: "●", s: "●", p: "●" },
-  { item: "소변·분변 검사", b: "●", s: "●", p: "●" },
-  { item: "복부·흉부 방사선", b: "—", s: "●", p: "●" },
-  { item: "복부 초음파", b: "—", s: "●", p: "●" },
-  { item: "심장 초음파", b: "—", s: "—", p: "●" },
-  { item: "갑상선·코티솔 등 호르몬", b: "—", s: "—", p: "●" },
-  { item: "CT 정밀 영상 검사", b: "—", s: "—", p: "●" },
-  { item: "안과 검사·안압 측정", b: "—", s: "선택", p: "●" },
-  { item: "치아 검진", b: "선택", s: "●", p: "●" },
-  { item: "결과 상담·관리 계획", sep: true, b: "●", s: "●", p: "●" },
-  { item: "특화센터 즉시 연계", b: "●", s: "●", p: "●" },
-  { item: "검진 보고서 제공", b: "PDF", s: "PDF", p: "PDF+상세" },
+interface CheckGroup {
+  rows: { item: string; b: string; s: string; p: string }[];
+}
+
+function buildRows(groups: readonly CheckGroup[]): CheckRow[] {
+  const mark = (v: string) => (v === "✓" ? "✓" : v ? v : "·");
+  const out: CheckRow[] = [];
+  groups.forEach((g, gi) => {
+    g.rows.forEach((r, ri) => {
+      out.push({
+        item: r.item,
+        b: mark(r.b),
+        s: mark(r.s),
+        p: mark(r.p),
+        head: ri === 0,
+        sep: ri === 0 && gi > 0,
+      });
+    });
+  });
+  return out;
+}
+
+const DOG_GROUPS: readonly CheckGroup[] = [
+  { rows: [
+    { item: "신체검사", b: "✓", s: "✓", p: "✓" },
+    { item: "혈압측정", b: "✓", s: "✓", p: "✓" },
+    { item: "검이경 검사", b: "✓", s: "✓", p: "✓" },
+    { item: "피부검사", b: "✓", s: "✓", p: "✓" },
+  ] },
+  { rows: [ { item: "치과 직접검안", b: "✓", s: "✓", p: "✓" } ] },
+  { rows: [ { item: "안압(토노펜) 검사", b: "", s: "", p: "✓" } ] },
+  { rows: [
+    { item: "심장초음파 검사", b: "", s: "✓", p: "✓" },
+    { item: "심전도 검사", b: "", s: "", p: "✓" },
+  ] },
+  { rows: [
+    { item: "혈구검사(CBC)", b: "✓", s: "✓", p: "✓" },
+    { item: "간·신장·혈당·전해질", b: "화학 10종", s: "화학 17종", p: "화학 17종" },
+    { item: "혈액가스(정맥혈)", b: "", s: "✓", p: "✓" },
+    { item: "조기신장기능(SDMA)", b: "", s: "✓", p: "✓" },
+    { item: "갑상선 호르몬(T4)", b: "", s: "", p: "✓" },
+  ] },
+  { rows: [ { item: "요검사(노스틱)", b: "", s: "", p: "✓" } ] },
+  { rows: [
+    { item: "흉·복부 방사선", b: "✓", s: "✓", p: "✓" },
+    { item: "복부 초음파", b: "", s: "✓", p: "✓" },
+  ] },
+  { rows: [
+    { item: "정형외과 검사", b: "✓", s: "✓", p: "✓" },
+    { item: "전지·후지 방사선", b: "", s: "", p: "✓" },
+  ] },
+  { rows: [ { item: "검진 비용 (예시)", b: "15만원", s: "29만원", p: "45만원" } ] },
 ];
 
-export const CAT_ROWS: readonly CheckRow[] = [
-  { item: "기본 신체검사·문진", head: true, b: "●", s: "●", p: "●" },
-  { item: "혈액 일반·생화학 검사", b: "●", s: "●", p: "●" },
-  { item: "신장 마커(SDMA) 검사", b: "●", s: "●", p: "●" },
-  { item: "소변·분변 검사", b: "●", s: "●", p: "●" },
-  { item: "복부·흉부 방사선", b: "—", s: "●", p: "●" },
-  { item: "복부 초음파", b: "—", s: "●", p: "●" },
-  { item: "심장 초음파 (HCM 검진)", b: "—", s: "선택", p: "●" },
-  { item: "갑상선(T4) · 혈압", b: "—", s: "●", p: "●" },
-  { item: "CT 정밀 영상 검사", b: "—", s: "—", p: "●" },
-  { item: "FIV·FeLV 검사", b: "선택", s: "●", p: "●" },
-  { item: "결과 상담·관리 계획", sep: true, b: "●", s: "●", p: "●" },
-  { item: "검진 보고서 제공", b: "PDF", s: "PDF", p: "PDF+상세" },
+const CAT_GROUPS: readonly CheckGroup[] = [
+  { rows: [
+    { item: "신체검사", b: "✓", s: "✓", p: "✓" },
+    { item: "혈압측정", b: "✓", s: "✓", p: "✓" },
+    { item: "검이경 검사", b: "✓", s: "✓", p: "✓" },
+    { item: "피부검사", b: "✓", s: "✓", p: "✓" },
+  ] },
+  { rows: [ { item: "치과 직접검안", b: "✓", s: "✓", p: "✓" } ] },
+  { rows: [ { item: "심장초음파 검사", b: "", s: "✓", p: "✓" } ] },
+  { rows: [
+    { item: "혈구검사(CBC)", b: "✓", s: "✓", p: "✓" },
+    { item: "일반 화학 검사", b: "혈액 6종", s: "화학 17종", p: "화학 17종" },
+    { item: "혈액가스(정맥혈)", b: "", s: "✓", p: "✓" },
+    { item: "심장바이오마커(BNP)", b: "", s: "✓", p: "✓" },
+    { item: "조기신장기능(SDMA)", b: "", s: "✓", p: "✓" },
+    { item: "갑상선 호르몬(T4)", b: "", s: "", p: "✓" },
+  ] },
+  { rows: [ { item: "요검사(노스틱)", b: "", s: "", p: "✓" } ] },
+  { rows: [
+    { item: "흉·복부 방사선", b: "✓", s: "✓", p: "✓" },
+    { item: "복부 초음파", b: "", s: "✓", p: "✓" },
+  ] },
+  { rows: [ { item: "검진 비용 (예시)", b: "14만원", s: "27만원", p: "42만원" } ] },
 ];
+
+export const DOG_ROWS: readonly CheckRow[] = buildRows(DOG_GROUPS);
+export const CAT_ROWS: readonly CheckRow[] = buildRows(CAT_GROUPS);
+
+/** 헤더 dropdown 메뉴에 사용. 11개 센터 + 건강검진 */
+export interface CenterMenuItem {
+  num: string;
+  label: string;
+  to: string;
+}
+export const CENTER_MENU: readonly CenterMenuItem[] = [
+  { num: "01", label: "간담낭췌장특화센터", to: "/centers#hepato" },
+  { num: "02", label: "종양항암센터", to: "/centers#onco" },
+  { num: "03", label: "심장센터", to: "/centers#heart" },
+  { num: "04", label: "내시경센터", to: "/centers#endo" },
+  { num: "05", label: "CT영상센터", to: "/centers#ct" },
+  { num: "06", label: "골관절센터", to: "/centers#ortho" },
+  { num: "07", label: "신경외과센터", to: "/centers#neuro" },
+  { num: "08", label: "일반외과센터", to: "/centers#surgery" },
+  { num: "09", label: "고양이전문클리닉", to: "/centers#feline" },
+  { num: "10", label: "응급중환자센터", to: "/centers#er" },
+  { num: "11", label: "건강검진센터", to: "/centers#checkup-c" },
+  { num: "＋", label: "건강검진 프로그램", to: "/centers#checkup" },
+];
+
+/** 헤더 dropdown — 병원소개 */
+export const ABOUT_MENU = [
+  { label: "병원소개", to: "/about" },
+  { label: "의료진소개", to: "/about#doctors" },
+  { label: "병원둘러보기", to: "/about#facilities" },
+] as const;
+
+export const LEAD_DOCTORS = DOCTORS.slice(0, 2);
+export const REST_DOCTORS = DOCTORS.slice(2);
 
 export const NOTICES_FALLBACK = [
-  {
-    tag: "공지",
-    t: "추석 연휴 진료 안내 — 365일 24시간 연중무휴 운영합니다",
-    date: "2026.09.20",
-  },
-  {
-    tag: "케이스",
-    t: "고양이 비대성심근증(HCM) 조기 발견 — 심장 초음파 사례",
-    date: "2026.08.14",
-  },
-  {
-    tag: "장비",
-    t: "동물용 HFNC 도입 — 폐수종 응급 환자의 골든타임을 지킵니다",
-    date: "2026.07.02",
-  },
+  { tag: "안내", date: "2025.08", t: "24시 다산 원동물의료센터가 개원하였습니다." },
+  { tag: "운영", date: "상시", t: "365일 24시간 연중무휴 응급 진료를 운영합니다." },
+  { tag: "블로그", date: "업데이트", t: "진료 케이스와 건강 정보를 네이버 블로그에서 확인하세요." },
 ] as const;
 
 export const FAQS = [

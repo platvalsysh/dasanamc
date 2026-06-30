@@ -31,24 +31,19 @@ function CheckTable({
   rows: readonly CheckRow[];
 }) {
   return (
-    <div className="border border-[color:var(--color-ds-border)] rounded-xl px-6 py-[26px] overflow-x-auto bg-transparent">
-      <div className="text-[19px] font-extrabold text-[color:var(--color-ds-text)] mb-1">
+    <div className="rounded-xl px-6 py-[26px] overflow-x-auto" style={{ border: "1px solid #e9dfca", background: "transparent" }}>
+      <div className="text-[19px] font-extrabold mb-1" style={{ color: "var(--color-ds-text)" }}>
         {emoji} {title}
       </div>
-      <div className="text-[12.5px] text-[color:var(--color-ds-text-mute)] mb-[18px]">
-        {subtitle}
-      </div>
+      <div className="text-[12.5px] mb-[18px]" style={{ color: "#a59a82" }}>{subtitle}</div>
       <table className="hcheck w-full border-collapse text-[12.5px]">
         <thead>
           <tr>
-            <th className="text-left px-1.5 py-2 border-b-2 border-[color:var(--color-ds-text)] text-[#445] font-bold">
+            <th className="text-left px-1.5 py-2 font-bold" style={{ borderBottom: "2px solid #0d3a35", color: "#445" }}>
               검진 항목
             </th>
             {["Basic", "Standard", "Premium"].map((p) => (
-              <th
-                key={p}
-                className="px-1 py-2 border-b-2 border-[color:var(--color-ds-text)] text-[#445] font-bold"
-              >
+              <th key={p} className="px-1 py-2 font-bold" style={{ borderBottom: "2px solid #0d3a35", color: "#445" }}>
                 {p}
               </th>
             ))}
@@ -56,25 +51,18 @@ function CheckTable({
         </thead>
         <tbody>
           {rows.map((r, i) => (
-            <tr
-              key={i}
-              className={
-                "border-b border-[#f0f2ee] " +
-                (r.head ? "bg-[#f6f9f7]" : r.sep ? "border-t border-t-[#0d3a35]" : "")
-              }
-            >
-              <td className="text-left px-1.5 py-1.5 text-[#3a4744]">
+            <tr key={i} style={{ borderBottom: "1px solid #f0f2ee" }}>
+              <td
+                data-head={r.head ? "1" : undefined}
+                data-sep={r.sep ? "1" : undefined}
+                className="text-left px-1.5 py-1.5"
+                style={{ color: "#3a4744" }}
+              >
                 {r.item}
               </td>
-              <td className="text-center px-1 py-1.5 text-[color:var(--color-ds-teal)] font-bold">
-                {r.b}
-              </td>
-              <td className="text-center px-1 py-1.5 text-[color:var(--color-ds-teal)] font-bold">
-                {r.s}
-              </td>
-              <td className="text-center px-1 py-1.5 text-[color:var(--color-ds-teal)] font-bold">
-                {r.p}
-              </td>
+              <td className="text-center px-1 py-1.5 font-bold" style={{ color: "var(--color-ds-teal)" }}>{r.b}</td>
+              <td className="text-center px-1 py-1.5 font-bold" style={{ color: "var(--color-ds-teal)" }}>{r.s}</td>
+              <td className="text-center px-1 py-1.5 font-bold" style={{ color: "var(--color-ds-teal)" }}>{r.p}</td>
             </tr>
           ))}
         </tbody>
@@ -86,23 +74,33 @@ function CheckTable({
 export default function Centers() {
   return (
     <>
-      {/* hero */}
-      <div className="bg-white text-[color:var(--color-ds-text)] px-8 pt-20 pb-[70px] border-b border-[color:var(--color-ds-border)]">
-        <div className="max-w-[1280px] mx-auto">
-          <div
-            className="mb-[18px]"
-            style={{
-              font: "700 13px/1 ui-monospace, monospace",
-              letterSpacing: "0.22em",
-              color: "var(--color-ds-teal)",
-            }}
-          >
+      {/* dark hero */}
+      <div className="darkhero relative overflow-hidden" style={{ background: "#06201c", color: "#f4efe6" }}>
+        <div className="absolute inset-0" style={{ background: "linear-gradient(150deg,#0a2620 0%,#06201c 55%,#041815 100%)" }} />
+        <div className="absolute inset-0" style={{ background: "radial-gradient(70% 80% at 86% 6%,rgba(176,128,82,0.20),transparent 60%)" }} />
+        <div className="absolute inset-0" style={{ background: "radial-gradient(58% 72% at 8% 94%,rgba(14,157,140,0.16),transparent 62%)" }} />
+        <div
+          className="absolute right-0 top-0 bottom-0 herobg flex items-center justify-center"
+          style={{
+            width: "46%",
+            background: "repeating-linear-gradient(45deg,rgba(176,128,82,0.10),rgba(176,128,82,0.10) 12px,transparent 12px,transparent 24px)",
+          }}
+        >
+          <span style={{ font: "600 12px ui-monospace, monospace", letterSpacing: "0.14em", color: "#b9a78c" }}>
+            배경 이미지 영역
+          </span>
+        </div>
+        <div className="relative max-w-[1280px] mx-auto" style={{ padding: "130px clamp(24px,4vw,64px) 104px" }}>
+          <div className="mb-5" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "#6ed4c5" }}>
             SPECIALTY CENTERS
           </div>
-          <h1 className="text-[42px] font-extrabold tracking-[-0.03em] leading-[1.3]">
+          <h1
+            className="font-extrabold"
+            style={{ fontSize: "clamp(44px, 6.5vw, 80px)", letterSpacing: "-0.035em", lineHeight: 1.02, color: "#f4efe6" }}
+          >
             특화진료센터
           </h1>
-          <p className="text-[17px] text-[color:var(--color-ds-text-sub)] mt-4 max-w-[640px]">
+          <p className="text-[17px] mt-[22px] max-w-[560px]" style={{ color: "#c2d0ca", lineHeight: 1.7 }}>
             분과별 전공의들의 세밀한 협진 체계와 대학병원급 의료 장비로
             진단부터 수술, 회복까지 한 곳에서.
           </p>
@@ -115,8 +113,8 @@ export default function Centers() {
             <section
               key={c.id}
               id={c.id}
-              className="bg-transparent border-t border-[color:var(--color-ds-border)] pt-[38px] pb-2.5"
-              style={{ scrollMarginTop: "100px" }}
+              className="pt-[38px] pb-2.5"
+              style={{ scrollMarginTop: "100px", background: "transparent", borderTop: "1px solid #e9dfca" }}
             >
               <div className="flex items-center gap-3.5 mb-[18px]">
                 <span
@@ -178,8 +176,13 @@ export default function Centers() {
           {/* 건강검진 패키지 */}
           <section
             id="checkup"
-            className="bg-[#f6f9f7] text-[color:var(--color-ds-text)] rounded-[20px] p-11 border border-[color:var(--color-ds-border)]"
-            style={{ scrollMarginTop: "100px" }}
+            className="rounded-[20px] p-11"
+            style={{
+              scrollMarginTop: "100px",
+              background: "#f4f7f5",
+              color: "var(--color-ds-text)",
+              border: "1px solid #e7ece8",
+            }}
           >
             <div
               className="mb-3"
@@ -206,7 +209,8 @@ export default function Centers() {
               {PROCESS_STEPS.map((p) => (
                 <div
                   key={p.n}
-                  className="bg-white border border-[color:var(--color-ds-border)] rounded-[13px] px-[18px] py-5"
+                  className="bg-white rounded-[13px] px-[18px] py-5"
+                  style={{ border: "1px solid #e7ece8" }}
                 >
                   <div
                     className="mb-3"
@@ -240,7 +244,7 @@ export default function Centers() {
               rows={CAT_ROWS}
             />
           </div>
-          <p className="text-[13px] text-[color:var(--color-ds-text-mute)] pl-1">
+          <p className="text-[13px] pl-1" style={{ color: "#a59a82" }}>
             ※ 표시된 검진 비용은 예시값이며 확정 후 업데이트됩니다. 검진 항목은
             연령·품종·증상에 따라 조정될 수 있어요.
           </p>

@@ -32,206 +32,117 @@ export default function Home() {
 
   return (
     <>
-      {/* ============ HERO (라이트, pin 220vh) ============ */}
-      <section className="relative bg-white text-[color:var(--color-ds-text)]">
+      {/* ============ HERO (다크, pin 220vh) ============ */}
+      <section className="darkhero relative" style={{ background: "#06201c", color: "#f4efe6" }}>
         <div id="heropin" className="relative" style={{ height: "var(--pinH, 100vh)" }}>
-          <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
-            {/* radial glow */}
-            <div
-              aria-hidden
-              className="absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(120% 90% at 80% 0%, rgba(14,157,140,0.10), transparent 60%)",
-              }}
+          <div
+            className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center"
+            style={{ background: "linear-gradient(165deg,#0a2620 0%,#06201c 46%,#041815 100%)" }}
+          >
+            <img
+              src="/images/hero-reception.jpg"
+              alt="다산원동물의료센터 리셉션"
+              className="absolute inset-0 w-full h-full"
+              style={{ objectFit: "cover", objectPosition: "center 38%" }}
             />
-            {/* diagonal hairlines */}
-            <div
-              aria-hidden
-              className="absolute inset-0"
-              style={{
-                background:
-                  "repeating-linear-gradient(125deg, rgba(13,58,53,0.03) 0 1px, transparent 1px 64px)",
-              }}
-            />
-            <div className="relative w-full h-full max-w-[1360px] mx-auto px-11">
-              {/* center hero asset (영상/이미지) */}
-              <div
-                className="absolute left-1/2 top-[48%] -translate-x-1/2 -translate-y-1/2 z-[1]"
-                style={{ width: "min(44vw, 520px)", aspectRatio: "1" }}
-              >
-                <div
-                  className="w-full h-full rounded-full overflow-hidden flex flex-col items-center justify-center gap-3.5"
-                  style={{
-                    background:
-                      "radial-gradient(circle at 50% 36%, rgba(86,200,184,0.16), rgba(14,157,140,0.05) 52%, transparent 72%)",
-                    border: "1px solid rgba(14,157,140,0.16)",
-                  }}
-                >
-                  <span
-                    className="w-16 h-16 rounded-full border-2 flex items-center justify-center text-[22px]"
-                    style={{
-                      borderColor: "rgba(14,157,140,0.45)",
-                      color: "var(--color-ds-teal)",
-                    }}
-                  >
-                    ▶
-                  </span>
-                  <span
-                    className="text-center"
-                    style={{
-                      font: "600 11px ui-monospace, monospace",
-                      letterSpacing: "0.12em",
-                      color: "#9aa9a4",
-                    }}
-                  >
-                    HERO 영상 / 대표 이미지
-                  </span>
-                </div>
-              </div>
+            {/* overlays */}
+            <div className="absolute inset-0" style={{ background: "linear-gradient(160deg,rgba(8,34,29,0.22) 0%,rgba(6,30,26,0.30) 45%,rgba(4,22,19,0.42) 100%)" }} />
+            <div className="absolute inset-0" style={{ background: "radial-gradient(70% 60% at 78% 12%,rgba(176,128,82,0.22),transparent 62%)" }} />
+            <div className="absolute inset-0" style={{ background: "radial-gradient(60% 70% at 16% 86%,rgba(14,157,140,0.20),transparent 64%)" }} />
+            <div className="absolute inset-0" style={{ background: "repeating-linear-gradient(125deg,rgba(255,255,255,0.02) 0 1px,transparent 1px 66px)" }} />
 
-              {/* big split type — Animal */}
-              <div
-                aria-hidden
-                className="absolute left-11 top-[13%] z-[2] pointer-events-none"
-              >
-                <div className="text-sm font-bold text-[color:var(--color-ds-teal)] mb-2 pl-2">
-                  모두를 위한 동물 주치의
-                </div>
+            <div className="relative w-full h-full max-w-[1360px] mx-auto px-11 flex items-center">
+              {/* main hero content */}
+              <div id="herocontent" className="relative z-[3] max-w-[820px]">
                 <div
-                  className="font-extrabold leading-[0.84]"
+                  className="inline-flex items-center gap-2.5 mb-6"
                   style={{
-                    fontSize: "clamp(68px, 12.5vw, 206px)",
-                    letterSpacing: "-0.045em",
-                    background:
-                      "linear-gradient(178deg, #0d3a35 35%, rgba(13,58,53,0.55))",
-                    WebkitBackgroundClip: "text",
-                    backgroundClip: "text",
-                    color: "transparent",
+                    border: "1px solid rgba(110,212,197,0.35)",
+                    background: "rgba(110,212,197,0.10)",
+                    padding: "7px 15px",
+                    borderRadius: 999,
+                    fontSize: "12.5px",
+                    fontWeight: 700,
+                    color: "#8fe0d2",
                   }}
                 >
-                  Animal
-                </div>
-              </div>
-              {/* big split type — Care. */}
-              <div
-                aria-hidden
-                className="absolute right-11 bottom-[15%] z-[2] text-right pointer-events-none"
-              >
-                <div
-                  className="font-extrabold leading-[0.84]"
-                  style={{
-                    fontSize: "clamp(68px, 12.5vw, 206px)",
-                    letterSpacing: "-0.045em",
-                    background:
-                      "linear-gradient(178deg, #0d3a35 35%, rgba(13,58,53,0.55))",
-                    WebkitBackgroundClip: "text",
-                    backgroundClip: "text",
-                    color: "transparent",
-                  }}
-                >
-                  Care
-                  <span
-                    style={{
-                      color: "var(--color-ds-teal)",
-                      WebkitTextFillColor: "var(--color-ds-teal)",
-                    }}
-                  >
-                    .
-                  </span>
-                </div>
-                <div className="text-sm font-bold text-[color:var(--color-ds-teal)] mt-2 pr-2">
-                  다산원동물의료센터
-                </div>
-              </div>
-
-              {/* rotating subtitle + CTAs */}
-              <div
-                id="herocontent"
-                className="absolute left-11 bottom-[11%] z-[3] max-w-[540px]"
-              >
-                <div
-                  className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full text-[12.5px] font-bold mb-4"
-                  style={{
-                    border: "1px solid rgba(14,157,140,0.3)",
-                    background: "rgba(14,157,140,0.06)",
-                    color: "#0a7468",
-                  }}
-                >
-                  <span className="w-[7px] h-[7px] rounded-full bg-[color:var(--color-ds-teal-2)] animate-pulse-dot" />
+                  <span className="w-[7px] h-[7px] rounded-full animate-pulse-dot" style={{ background: "#6ed4c5" }} />
                   365일 24시간 연중무휴 응급진료
                 </div>
                 <h1
-                  className="font-extrabold leading-[1.3]"
+                  className="font-extrabold"
                   style={{
-                    fontSize: "clamp(20px, 2.4vw, 32px)",
-                    letterSpacing: "-0.02em",
-                    color: "var(--color-ds-text)",
+                    fontSize: "clamp(36px, 5.6vw, 76px)",
+                    lineHeight: 1.15,
+                    letterSpacing: "-0.035em",
+                    background: "linear-gradient(178deg,#fbf7ee 30%,rgba(232,219,199,0.78))",
+                    WebkitBackgroundClip: "text",
+                    backgroundClip: "text",
+                    color: "transparent",
                   }}
                 >
-                  <span id="heroswap" className="inline-block">
-                    수준 높은 의료 서비스
-                  </span>
+                  모두를 위한 동물 주치의,
+                  <br />
+                  <span style={{ color: "#6ed4c5", WebkitTextFillColor: "#6ed4c5" }}>다산원동물의료센터</span>
                 </h1>
-                <p className="text-[14.5px] text-[color:var(--color-ds-text-sub)] mt-2">
+                <div
+                  className="mt-7"
+                  style={{
+                    fontSize: "clamp(18px, 2vw, 24px)",
+                    lineHeight: 1.4,
+                    letterSpacing: "-0.015em",
+                    fontWeight: 700,
+                    color: "#f4efe6",
+                  }}
+                >
+                  <span id="heroswap" className="inline-block">수준 높은 의료 서비스</span>
+                </div>
+                <p className="text-[14.5px] mt-2" style={{ color: "#b3c2bc", letterSpacing: "0.01em" }}>
                   Comprehensive Care for Every Companion
                 </p>
-                <div className="flex gap-2.5 flex-wrap mt-5">
+                <div className="flex gap-2.5 flex-wrap mt-7">
                   <a
                     href={`tel:${HOSPITAL.phone}`}
-                    className="flex items-center gap-2 bg-[color:var(--color-ds-teal)] text-white px-6 py-3.5 rounded-[11px] text-[15px] font-bold"
+                    className="flex items-center gap-2 text-[15px] font-bold"
+                    style={{ background: "#0e9d8c", color: "#fff", padding: "14px 24px", borderRadius: 11 }}
                   >
                     전화 예약·문의
                   </a>
                   <Link
                     to="/support#contactform"
-                    className="flex items-center gap-2 bg-white border border-[color:var(--color-ds-border-2)] text-[color:var(--color-ds-text)] px-6 py-3.5 rounded-[11px] text-[15px] font-bold"
+                    className="flex items-center gap-2 text-[15px] font-bold"
+                    style={{
+                      background: "rgba(255,255,255,0.06)",
+                      border: "1px solid rgba(244,238,228,0.28)",
+                      color: "#f4efe6",
+                      padding: "14px 24px",
+                      borderRadius: 11,
+                    }}
                   >
                     온라인 문의
                   </Link>
                 </div>
               </div>
 
-              {/* scroll indicator */}
-              <div
-                id="heroscroll"
-                className="absolute bottom-5 left-1/2 -translate-x-1/2 z-[3] flex flex-col items-center gap-2"
-              >
-                <span
-                  style={{
-                    font: "600 10px/1 ui-monospace, monospace",
-                    letterSpacing: "0.25em",
-                    color: "#9aa9a4",
-                  }}
-                >
-                  SCROLL
-                </span>
-                <span
-                  className="w-px h-[34px]"
-                  style={{
-                    background:
-                      "linear-gradient(var(--color-ds-teal-2), transparent)",
-                  }}
-                />
+              <div id="heroscroll" className="absolute bottom-5 left-1/2 -translate-x-1/2 z-[3] flex flex-col items-center gap-2">
+                <span style={{ font: "600 10px/1 ui-monospace, monospace", letterSpacing: "0.25em", color: "#b9a78c" }}>SCROLL</span>
+                <span className="w-px" style={{ height: 34, background: "linear-gradient(#6ed4c5,transparent)" }} />
               </div>
             </div>
           </div>
         </div>
 
-        {/* hero stats — hero 바로 아래 4분할 */}
-        <div className="relative border-t border-[color:var(--color-ds-border)]">
+        {/* hero stats strip — 다크 */}
+        <div className="relative" style={{ background: "#041815" }}>
           <div className="max-w-[1280px] mx-auto px-8 grid grid-cols-4 statgrid">
             {HERO_STATS.map((s, i) => (
               <div
                 key={i}
-                className="py-6 px-2 border-l border-[color:var(--color-ds-border)] first:border-l-0"
+                className="py-7 px-2"
+                style={{ borderLeft: i === 0 ? "none" : "1px solid rgba(244,238,228,0.12)" }}
               >
-                <div className="text-[28px] font-extrabold text-[color:var(--color-ds-teal)] tracking-[-0.02em]">
-                  {s.v}
-                </div>
-                <div className="text-[13.5px] text-[color:var(--color-ds-text-sub)] mt-1">
-                  {s.l}
-                </div>
+                <div className="text-[28px] font-extrabold" style={{ color: "#6ed4c5", letterSpacing: "-0.02em" }}>{s.v}</div>
+                <div className="text-[13.5px] mt-1" style={{ color: "#a7bcb5" }}>{s.l}</div>
               </div>
             ))}
           </div>
@@ -239,45 +150,35 @@ export default function Home() {
       </section>
 
       {/* ============ MARQUEE ============ */}
-      <section className="bg-white overflow-hidden py-[18px] border-t border-b border-[color:var(--color-ds-border)]">
+      <section className="bg-white overflow-hidden py-[18px]">
         <div className="flex w-max gap-0 animate-marquee">
           {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((m, i) => (
             <span
               key={i}
-              className="inline-flex items-center gap-4 px-7 text-[15px] font-semibold text-[color:var(--color-ds-text-sub)] whitespace-nowrap"
+              className="inline-flex items-center gap-4 px-7 text-[15px] font-semibold whitespace-nowrap"
+              style={{ color: "#5c6b68" }}
             >
               {m}
-              <span className="text-[#cfd8d3]">/</span>
+              <span style={{ color: "#d8c9a8" }}>/</span>
             </span>
           ))}
         </div>
       </section>
 
-      {/* ============ OUR PROMISE (manifesto) ============ */}
+      {/* ============ OUR PROMISE ============ */}
       <section className="max-w-[1060px] mx-auto px-8 pt-[120px] text-center">
-        <div
-          className="mb-7"
-          style={{
-            font: "700 13px/1 ui-monospace, monospace",
-            letterSpacing: "0.24em",
-            color: "var(--color-ds-teal)",
-          }}
-        >
+        <div className="mb-7" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.24em", color: "var(--color-ds-teal)" }}>
           OUR PROMISE
         </div>
         <p
           data-reveal=""
-          className="font-extrabold leading-[1.5] text-[color:var(--color-ds-text)] text-balance"
-          style={{
-            fontSize: "clamp(23px, 3.3vw, 38px)",
-            letterSpacing: "-0.03em",
-          }}
+          className="font-extrabold text-balance"
+          style={{ fontSize: "clamp(23px, 3.3vw, 38px)", lineHeight: 1.5, letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}
         >
           아픈 아이를 안고 병원 문을 들어서는 보호자님의<br />
           무거운 마음을 누구보다 잘 알기에,{" "}
-          <span className="text-[color:var(--color-ds-teal)]">
-            다산원동물의료센터는
-            <br />세 가지 ‘ONE’
+          <span style={{ color: "var(--color-ds-teal)" }}>
+            다산원동물의료센터는<br />세 가지 ‘ONE’
           </span>
           을 약속합니다.
         </p>
@@ -286,97 +187,46 @@ export default function Home() {
       {/* ============ 3 ONE SYSTEM ============ */}
       <section className="max-w-[1280px] mx-auto px-8 pt-16 pb-[104px]">
         <div className="text-center max-w-[760px] mx-auto mb-[52px]">
-          <div
-            style={{
-              font: "700 13px/1 ui-monospace, monospace",
-              letterSpacing: "0.22em",
-              color: "var(--color-ds-teal)",
-            }}
-            className="mb-4"
-          >
+          <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal)" }}>
             3 ONE SYSTEM
           </div>
-          <h2 className="text-[34px] font-extrabold tracking-[-0.03em] leading-[1.35] text-[color:var(--color-ds-text)]">
+          <h2 className="text-[34px] font-extrabold" style={{ letterSpacing: "-0.03em", lineHeight: 1.35, color: "var(--color-ds-text)" }}>
             세 가지 ‘ONE’, 다산원이 지키겠습니다
           </h2>
         </div>
-        <div
-          data-stagger=""
-          className="grid gap-6 grid-cols-1 md:grid-cols-3 three"
-        >
+        <div data-stagger="" className="grid gap-6 grid-cols-1 md:grid-cols-3 three">
           {THREE_ONE.map((t, i) => (
-            <div
-              key={i}
-              className="border-t-2 border-[color:var(--color-ds-text)] pt-[34px] px-1"
-            >
-              <div
-                className="mb-2"
-                style={{
-                  font: "800 16px/1 ui-monospace, monospace",
-                  color: "var(--color-ds-teal)",
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                {t.tag}
-              </div>
-              <div className="text-[22px] font-extrabold text-[color:var(--color-ds-text)] mb-4">
-                {t.ko}
-              </div>
-              <p className="text-[15.5px] text-[color:var(--color-ds-text-sub)] leading-[1.7]">
-                {t.d}
-              </p>
+            <div key={i} className="border-t-2 pt-[34px] px-1" style={{ borderColor: "#0d3a35" }}>
+              <div className="mb-2" style={{ font: "800 16px/1 ui-monospace, monospace", color: "var(--color-ds-teal)", letterSpacing: "-0.01em" }}>{t.tag}</div>
+              <div className="text-[22px] font-extrabold mb-4" style={{ color: "var(--color-ds-text)" }}>{t.ko}</div>
+              <p className="text-[15.5px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.7 }}>{t.d}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ============ WHY DASANONE — 4 strengths ============ */}
-      <section className="border-t border-[color:var(--color-ds-border)]">
+      <section>
         <div className="max-w-[1280px] mx-auto px-8 py-24">
           <div className="flex items-end justify-between gap-6 mb-[52px] flex-wrap">
             <div>
-              <div
-                className="mb-4"
-                style={{
-                  font: "700 13px/1 ui-monospace, monospace",
-                  letterSpacing: "0.22em",
-                  color: "var(--color-ds-teal)",
-                }}
-              >
+              <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal)" }}>
                 WHY DASANONE
               </div>
-              <h2 className="text-[34px] font-extrabold tracking-[-0.03em] text-[color:var(--color-ds-text)]">
+              <h2 className="text-[34px] font-extrabold" style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}>
                 왜 다산원동물의료센터일까요?
               </h2>
             </div>
-            <p className="text-base text-[color:var(--color-ds-text-sub)] max-w-[380px]">
+            <p className="text-base max-w-[380px]" style={{ color: "var(--color-ds-text-sub)" }}>
               대학병원급 진단 인프라와 분과별 전공의 협진으로 한 곳에서 완결되는 진료를 제공합니다.
             </p>
           </div>
-          <div
-            data-stagger=""
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 four"
-          >
+          <div data-stagger="" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 four">
             {STRENGTHS_4.map((s, i) => (
-              <div
-                key={i}
-                className="border-t border-[#d7ddd5] pt-[26px] px-1"
-              >
-                <div
-                  className="mb-[22px]"
-                  style={{
-                    font: "800 14px/1 ui-monospace, monospace",
-                    color: "#bcc7c2",
-                  }}
-                >
-                  {s.n}
-                </div>
-                <div className="text-[18.5px] font-extrabold text-[color:var(--color-ds-text)] leading-[1.4] mb-3">
-                  {s.t}
-                </div>
-                <p className="text-[14.5px] text-[color:var(--color-ds-text-sub)] leading-[1.65]">
-                  {s.d}
-                </p>
+              <div key={i} className="pt-[26px] px-1" style={{ borderTop: "1px solid #ddd0b8" }}>
+                <div className="mb-[22px]" style={{ font: "800 14px/1 ui-monospace, monospace", color: "#c9bda3" }}>{s.n}</div>
+                <div className="text-[18.5px] font-extrabold mb-3" style={{ color: "var(--color-ds-text)", lineHeight: 1.4 }}>{s.t}</div>
+                <p className="text-[14.5px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.65 }}>{s.d}</p>
               </div>
             ))}
           </div>
@@ -384,63 +234,43 @@ export default function Home() {
       </section>
 
       {/* ============ ONE STOP CARE — 탭 ============ */}
-      <section className="border-t border-[color:var(--color-ds-border)]">
+      <section>
         <div className="max-w-[1280px] mx-auto px-8 py-[104px]">
           <div className="text-center mb-11">
-            <div
-              className="mb-4"
-              style={{
-                font: "700 13px/1 ui-monospace, monospace",
-                letterSpacing: "0.22em",
-                color: "var(--color-ds-teal)",
-              }}
-            >
+            <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal)" }}>
               ONE STOP CARE
             </div>
-            <h2 className="text-[34px] font-extrabold tracking-[-0.03em] text-[color:var(--color-ds-text)] mb-3.5">
+            <h2 className="text-[34px] font-extrabold mb-3.5" style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}>
               진단부터 회복까지, 한 곳에서
             </h2>
-            <p className="text-[16.5px] text-[color:var(--color-ds-text-sub)]">
+            <p className="text-[16.5px]" style={{ color: "var(--color-ds-text-sub)" }}>
               정밀 진단 · 분과 협진 · 수술 · 24시 케어가 끊김 없이 이어지는 원스톱 시스템
             </p>
           </div>
-          <div className="flex justify-center gap-14 flex-wrap mb-12 border-b border-[#e3e6ee] soltabs">
-            {SOLUTION_TABS.map((t, i) => {
-              const active = i === solTab;
-              return (
-                <button
-                  key={t.label}
-                  type="button"
-                  onClick={() => setSolTab(i)}
-                  className={
-                    "py-3.5 -mb-px text-[15px] font-bold border-b-2 transition-colors " +
-                    (active
-                      ? "text-[color:var(--color-ds-text)] border-[color:var(--color-ds-teal)]"
-                      : "text-[color:var(--color-ds-text-sub)] border-transparent hover:text-[color:var(--color-ds-text)]")
-                  }
-                >
-                  {t.label}
-                </button>
-              );
-            })}
+          <div className="soltabs flex justify-center gap-14 flex-wrap mb-12" style={{ borderBottom: "1px solid #e3d4b4" }}>
+            {SOLUTION_TABS.map((t, i) => (
+              <button
+                key={t.label}
+                type="button"
+                onClick={() => setSolTab(i)}
+                data-active={i === solTab ? "1" : ""}
+              >
+                {t.label}
+              </button>
+            ))}
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-2 solpanel">
+          <div className="solpanel grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-2">
             <div>
-              <h3 className="text-[26px] font-extrabold tracking-[-0.02em] text-[color:var(--color-ds-text)] mb-4">
+              <h3 className="text-[26px] font-extrabold mb-4" style={{ letterSpacing: "-0.02em", color: "var(--color-ds-text)" }}>
                 {activeSol.title}
               </h3>
-              <p className="text-base text-[color:var(--color-ds-text-sub)] leading-[1.75] mb-6">
+              <p className="text-base mb-6" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.75 }}>
                 {activeSol.desc}
               </p>
               <ul className="list-none flex flex-col gap-[11px]">
                 {activeSol.points.map((p) => (
-                  <li
-                    key={p}
-                    className="flex gap-[11px] text-[15px] font-semibold text-[#2a3b37]"
-                  >
-                    <span className="text-[color:var(--color-ds-teal)] font-extrabold">
-                      ✓
-                    </span>
+                  <li key={p} className="flex gap-[11px] text-[15px] font-semibold" style={{ color: "#2a3b37" }}>
+                    <span className="font-extrabold" style={{ color: "var(--color-ds-teal)" }}>✓</span>
                     {p}
                   </li>
                 ))}
@@ -455,105 +285,89 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ============ SPECIALTY CENTERS — 11 grid ============ */}
-      <section className="max-w-[1280px] mx-auto px-8 py-[104px]">
-        <div className="text-center mb-14">
-          <div
-            className="mb-4"
-            style={{
-              font: "700 13px/1 ui-monospace, monospace",
-              letterSpacing: "0.22em",
-              color: "var(--color-ds-teal)",
-            }}
-          >
+      {/* ============ SPECIALTY CENTERS — 다크 + 가로 스크롤 ============ */}
+      <section style={{ background: "#0d3a35", color: "#fff" }}>
+        <div className="max-w-[1280px] mx-auto px-8 pt-[104px] pb-[18px] text-center">
+          <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "#56c8b8" }}>
             SPECIALTY CENTERS
           </div>
-          <h2 className="text-[36px] font-extrabold tracking-[-0.03em] text-[color:var(--color-ds-text)] mb-3.5">
+          <h2 className="text-[40px] font-extrabold mb-3.5" style={{ letterSpacing: "-0.03em" }}>
             11개 특화진료센터
           </h2>
-          <p className="text-[16.5px] text-[color:var(--color-ds-text-sub)]">
+          <p className="text-[16.5px]" style={{ color: "#aec6bf" }}>
             분과별 전공의가 함께 진단부터 수술, 회복까지 책임지는 원스톱 시스템
           </p>
+          <div className="mt-[22px]" style={{ font: "600 11px/1 ui-monospace, monospace", letterSpacing: "0.24em", color: "#5b7d76" }}>
+            ← WHEEL · DRAG TO SCROLL →
+          </div>
         </div>
         <div
-          data-stagger=""
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 centergrid"
+          id="centertrack"
+          className="centertrack flex gap-[22px] overflow-x-auto"
+          style={{ padding: "14px max(32px, calc((100vw - 1280px)/2 + 32px)) 30px" }}
         >
           {CENTERS.map((c) => (
             <Link
               key={c.id}
               to={`/centers#${c.id}`}
-              className="text-left bg-transparent border border-[color:var(--color-ds-border)] rounded-xl px-6 py-6 flex flex-col gap-3 transition-colors hover:border-[color:var(--color-ds-teal)] hover:bg-[rgba(14,157,140,0.035)]"
+              className="ctrcard text-left bg-white rounded-[20px] p-[40px_34px] cursor-pointer flex flex-col gap-3.5 transition-transform"
+              style={{ flex: "0 0 360px", minHeight: 460, color: "#0d3a35" }}
             >
               <div className="flex items-center justify-between">
-                <span
-                  style={{
-                    font: "800 13px/1 ui-monospace, monospace",
-                    color: "var(--color-ds-teal)",
-                  }}
-                >
+                <span style={{ font: "800 22px/1 ui-monospace, monospace", color: "var(--color-ds-teal)" }}>
                   {c.num}
                 </span>
-                <span className="text-[#cfd8d3] text-lg">→</span>
+                <span style={{ color: "#cbd6d1", fontSize: 26 }}>→</span>
               </div>
-              <div className="text-[19px] font-extrabold text-[color:var(--color-ds-text)] leading-[1.35]">
+              <div className="text-[28px] font-extrabold mt-2.5" style={{ color: "#0d3a35", lineHeight: 1.28 }}>
                 {c.ko}
               </div>
-              <div className="text-xs font-semibold tracking-[0.04em] text-[color:var(--color-ds-text-mute)]">
+              <div className="text-[13px] font-semibold" style={{ letterSpacing: "0.04em", color: "#9aa9a4" }}>
                 {c.en}
               </div>
-              <p className="text-[13.5px] text-[#6b7975] leading-[1.6] mt-0.5">
+              <p className="text-[15px] mt-auto" style={{ color: "#5c6b68", lineHeight: 1.65 }}>
                 {c.targets}
               </p>
             </Link>
           ))}
         </div>
-        <div className="text-center mt-11">
+        <div className="text-center pt-[18px] pb-[104px] px-8">
           <Link
             to="/centers"
-            className="inline-block bg-[color:var(--color-ds-text)] text-white px-[30px] py-[15px] rounded-full text-[15px] font-bold"
+            className="inline-block text-[15px] font-bold"
+            style={{ background: "#0e9d8c", color: "#fff", padding: "15px 30px", borderRadius: 999 }}
           >
             특화진료센터 전체 보기 →
           </Link>
         </div>
       </section>
 
-      {/* ============ BY THE NUMBERS ============ */}
-      <section className="bg-white border-t border-[color:var(--color-ds-border)]">
+      {/* ============ BY THE NUMBERS — 다크 ============ */}
+      <section style={{ background: "#062b28", color: "#fff" }}>
         <div className="max-w-[1280px] mx-auto px-8 py-[104px]">
           <div className="max-w-[720px] mb-14">
-            <div
-              className="mb-4"
-              style={{
-                font: "700 13px/1 ui-monospace, monospace",
-                letterSpacing: "0.22em",
-                color: "var(--color-ds-teal)",
-              }}
-            >
+            <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "#56c8b8" }}>
               BY THE NUMBERS
             </div>
-            <h2 className="text-[34px] font-extrabold tracking-[-0.03em] leading-[1.35] text-[color:var(--color-ds-text)]">
+            <h2 className="text-[34px] font-extrabold" style={{ letterSpacing: "-0.03em", lineHeight: 1.35 }}>
               다산원동물의료센터의 새로운 기준
             </h2>
-            <p className="text-base text-[color:var(--color-ds-text-sub)] mt-4">
+            <p className="text-base mt-4" style={{ color: "#aec6bf" }}>
               대학병원급 진단 인프라와 6명의 전문 의료진이 만드는 수준 높은 의료 서비스.
             </p>
           </div>
           <div
             data-stagger=""
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[color:var(--color-ds-border)] border border-[color:var(--color-ds-border)] rounded-[18px] overflow-hidden four"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px rounded-[18px] overflow-hidden four"
+            style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)" }}
           >
             {STAT_BIG.map((s, i) => (
-              <div key={i} className="bg-white p-9">
-                <div className="text-[46px] font-extrabold text-[color:var(--color-ds-teal)] tracking-[-0.03em] leading-none">
+              <div key={i} className="p-[38px_28px]" style={{ background: "#062b28" }}>
+                <div className="text-[46px] font-extrabold" style={{ color: "#56c8b8", letterSpacing: "-0.03em", lineHeight: 1 }}>
                   {s.v}
                 </div>
-                <div className="text-base font-extrabold text-[color:var(--color-ds-text)] mt-4">
-                  {s.l}
-                </div>
-                <div className="text-[13px] text-[#6b7975] mt-1.5 leading-[1.5]">
-                  {s.s}
-                </div>
+                <div className="text-base font-extrabold mt-4">{s.l}</div>
+                <div className="text-[13px] mt-1.5" style={{ color: "#8ea29b", lineHeight: 1.5 }}>{s.s}</div>
               </div>
             ))}
           </div>
@@ -561,21 +375,14 @@ export default function Home() {
       </section>
 
       {/* ============ MEDIA / NOTICES + BLOG ============ */}
-      <section className="border-t border-[color:var(--color-ds-border)]">
+      <section>
         <div className="max-w-[1280px] mx-auto px-8 py-24">
           <div className="flex items-end justify-between gap-6 mb-10 flex-wrap">
             <div>
-              <div
-                className="mb-3.5"
-                style={{
-                  font: "700 13px/1 ui-monospace, monospace",
-                  letterSpacing: "0.22em",
-                  color: "var(--color-ds-teal)",
-                }}
-              >
+              <div className="mb-3.5" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal)" }}>
                 MEDIA
               </div>
-              <h2 className="text-[32px] font-extrabold tracking-[-0.03em] text-[color:var(--color-ds-text)]">
+              <h2 className="text-[32px] font-extrabold" style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}>
                 다산원 소식 · 진료 케이스
               </h2>
             </div>
@@ -583,27 +390,24 @@ export default function Home() {
               href={HOSPITAL.blog}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 bg-white border border-[color:var(--color-ds-border-2)] text-[color:var(--color-ds-text)] px-[22px] py-3 rounded-full text-sm font-bold"
+              className="inline-flex items-center gap-2 text-sm font-bold"
+              style={{ background: "#fff", border: "1px solid #ddd0b8", color: "var(--color-ds-text)", padding: "12px 22px", borderRadius: 999 }}
             >
               네이버 블로그 →
             </a>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-5 loc">
-            <div className="flex flex-col gap-px bg-[#e3e8e3] border border-[#e3e8e3] rounded-2xl overflow-hidden">
+            <div className="flex flex-col gap-px rounded-2xl overflow-hidden" style={{ background: "#e8ddc6", border: "1px solid #e8ddc6" }}>
               {NOTICES_FALLBACK.map((n, i) => (
-                <div
-                  key={i}
-                  className="bg-white px-6 py-5 flex items-center gap-[18px]"
-                >
-                  <span className="text-[11.5px] font-extrabold text-[color:var(--color-ds-teal)] bg-[#e2f4f1] px-2.5 py-[5px] rounded-md shrink-0">
+                <div key={i} className="px-6 py-5 flex items-center gap-[18px]" style={{ background: "#fff" }}>
+                  <span
+                    className="text-[11.5px] font-extrabold shrink-0"
+                    style={{ color: "var(--color-ds-teal)", background: "#e2f4f1", padding: "5px 11px", borderRadius: 6 }}
+                  >
                     {n.tag}
                   </span>
-                  <span className="text-[15.5px] text-[#2a3b37] font-semibold flex-1">
-                    {n.t}
-                  </span>
-                  <span className="text-[13px] text-[color:var(--color-ds-text-mute)] shrink-0">
-                    {n.date}
-                  </span>
+                  <span className="text-[15.5px] font-semibold flex-1" style={{ color: "#2a3b37" }}>{n.t}</span>
+                  <span className="text-[13px] shrink-0" style={{ color: "#a59a82" }}>{n.date}</span>
                 </div>
               ))}
             </div>
@@ -611,27 +415,18 @@ export default function Home() {
               href={HOSPITAL.blog}
               target="_blank"
               rel="noreferrer"
-              className="relative rounded-2xl overflow-hidden border border-[#e3e8e3] min-h-[180px] flex flex-col justify-end p-6"
+              className="relative rounded-2xl overflow-hidden flex flex-col justify-end p-6"
               style={{
-                background:
-                  "repeating-linear-gradient(45deg,#e8ece9,#e8ece9 11px,#eef2ef 11px,#eef2ef 22px)",
+                minHeight: 180,
+                border: "1px solid #e8ddc6",
+                background: "repeating-linear-gradient(45deg,#ebe1ce,#ebe1ce 11px,#f3ebd9 11px,#f3ebd9 22px)",
               }}
             >
-              <span
-                className="absolute top-4 left-6"
-                style={{
-                  font: "600 11px ui-monospace, monospace",
-                  color: "#9aa9a4",
-                }}
-              >
+              <span className="absolute top-4 left-6" style={{ font: "600 11px ui-monospace, monospace", color: "#a59a82" }}>
                 블로그 썸네일
               </span>
-              <span className="text-[17px] font-extrabold text-[color:var(--color-ds-text)]">
-                진료 케이스 보러가기
-              </span>
-              <span className="text-[13.5px] text-[color:var(--color-ds-text-sub)] mt-1">
-                blog.naver.com/dasanoneamc
-              </span>
+              <span className="text-[17px] font-extrabold" style={{ color: "var(--color-ds-text)" }}>진료 케이스 보러가기</span>
+              <span className="text-[13.5px] mt-1" style={{ color: "var(--color-ds-text-sub)" }}>blog.naver.com/dasanoneamc</span>
             </a>
           </div>
         </div>
@@ -641,30 +436,17 @@ export default function Home() {
       <section className="bg-white">
         <div className="max-w-[1280px] mx-auto px-8 py-24 grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-14 items-center loc">
           <div>
-            <div
-              className="mb-[18px]"
-              style={{
-                font: "700 13px/1 ui-monospace, monospace",
-                letterSpacing: "0.22em",
-                color: "var(--color-ds-teal)",
-              }}
-            >
+            <div className="mb-[18px]" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal)" }}>
               VISIT US
             </div>
-            <h2 className="text-[32px] font-extrabold tracking-[-0.03em] text-[color:var(--color-ds-text)] mb-7">
+            <h2 className="text-[32px] font-extrabold mb-7" style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}>
               오시는 길 · 진료 안내
             </h2>
-            <div className="flex flex-col gap-px bg-[color:var(--color-ds-border)] rounded-2xl overflow-hidden border border-[color:var(--color-ds-border)]">
+            <div className="flex flex-col gap-px rounded-2xl overflow-hidden" style={{ background: "#e7ece8", border: "1px solid #e7ece8" }}>
               {INFO_ROWS.map((r) => (
-                <div
-                  key={r.k}
-                  className="grid grid-cols-[120px_1fr] gap-3 px-5 py-4"
-                  style={{ background: "#f6f9f7" }}
-                >
-                  <span className="text-sm text-[#0a7468] font-bold">
-                    {r.k}
-                  </span>
-                  <span className="text-[14.5px] text-[#3a4744]">{r.v}</span>
+                <div key={r.k} className="grid grid-cols-[120px_1fr] gap-3 px-5 py-4" style={{ background: "#ffffff" }}>
+                  <span className="text-sm font-bold" style={{ color: "#0a7468" }}>{r.k}</span>
+                  <span className="text-[14.5px]" style={{ color: "#3a4744" }}>{r.v}</span>
                 </div>
               ))}
             </div>
@@ -672,14 +454,15 @@ export default function Home() {
               href={HOSPITAL.mapUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex mt-[22px] items-center gap-2 bg-[color:var(--color-ds-teal)] text-white px-6 py-3.5 rounded-[11px] text-[15px] font-bold"
+              className="inline-flex mt-[22px] items-center gap-2 text-[15px] font-bold"
+              style={{ background: "#0e9d8c", color: "#fff", padding: "14px 24px", borderRadius: 11 }}
             >
               네이버 지도로 길찾기 →
             </a>
           </div>
           <AssetSlot
-            className="rounded-2xl overflow-hidden border border-[color:var(--color-ds-border)]"
-            style={{ aspectRatio: "16/11" }}
+            className="rounded-2xl overflow-hidden"
+            style={{ aspectRatio: "16/11", border: "1px solid #e9dfca" }}
             label={`네이버 지도 API 영역 — ${HOSPITAL.address}`}
           />
         </div>

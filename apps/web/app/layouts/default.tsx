@@ -21,14 +21,20 @@ interface ShellProps {
 }
 
 /**
- * 다산원 공개 사이트 레이아웃. 라이트 헤더가 항상 sticky.
+ * 다산원 공개 사이트 레이아웃.
+ *
+ * Header 는 sticky + 다크 hero 위에 떠 있도록 `-mb-[79px]` 트릭으로
+ * 다음 섹션(다크 hero)을 헤더 높이만큼 덮음. theme 전환(dark↔light)은
+ * ScrollEffects 가 `.darkhero` 의 위치를 보고 토글.
  */
 function Shell({ menuItems, children }: PropsWithChildren<ShellProps>) {
   return (
     <SiteMenuProvider menuItems={menuItems || []}>
       <div className="flex min-h-screen flex-col bg-[color:var(--color-ds-bg)]">
         <ScrollEffects />
-        <Header menuItems={menuItems} />
+        <div className="relative z-50 -mb-[79px]">
+          <Header menuItems={menuItems} />
+        </div>
         <div className="flex-1 flex flex-col">
           <main className="flex-1 flex flex-col">{children}</main>
           <SiteFooter />

@@ -77,7 +77,14 @@ export function ScrollEffects() {
 
     // 처음 한 번 + 라우트 전환에 대비한 mutation observer
     scan();
-    const mo = new MutationObserver(() => scan());
+    const mo = new MutationObserver(() => {
+      scan();
+      // 라우트 전환으로 centertrack 이 새로 마운트되면 다시 바인딩
+      const t = document.getElementById("centertrack") as HTMLElement | null;
+      if (t && !(t as any)._wheelBound) {
+        bindCenterTrack();
+      }
+    });
     mo.observe(document.body, { childList: true, subtree: true });
 
     // 안전망: 1.6초 후 남은 reveal/stagger 강제 inview
@@ -88,6 +95,26 @@ export function ScrollEffects() {
         )
         .forEach((el) => el.setAttribute("data-inview", "1"));
     }, 1600);
+
+    // 가로 스크롤 트랙(SPECIALTY CENTERS) — 휠을 가로 스크롤로 변환
+    const bindCenterTrack = () => {
+      const t = document.getElementById("centertrack") as HTMLElement | null;
+      if (!t || (t as any)._wheelBound) return;
+      (t as any)._wheelBound = true;
+      t.addEventListener(
+        "wheel",
+        (e: WheelEvent) => {
+          if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+          const atStart = t.scrollLeft <= 0;
+          const atEnd = t.scrollLeft >= t.scrollWidth - t.clientWidth - 1;
+          if ((e.deltaY < 0 && atStart) || (e.deltaY > 0 && atEnd)) return;
+          t.scrollLeft += e.deltaY;
+          e.preventDefault();
+        },
+        { passive: false },
+      );
+    };
+    bindCenterTrack();
 
     // hero 텍스트 swap 헬퍼
     let lastHeroIdx = -1;
@@ -131,9 +158,15 @@ export function ScrollEffects() {
         }
       }
 
-      // 헤더 hide/show + scrolled
+      // 헤더 theme(dark/light) + hide/show + scrolled
       const header = document.getElementById("siteheader");
       if (header) {
+        // 다크 hero 영역이 헤더(78px) 아래로 사라지면 light, 아니면 dark
+        const dh = document.querySelector(".darkhero");
+        const overHero = dh
+          ? (dh as HTMLElement).getBoundingClientRect().bottom > 84
+          : false;
+        header.setAttribute("data-theme", overHero ? "dark" : "light");
         header.setAttribute("data-scrolled", y > 8 ? "1" : "0");
         if (motionOn && y > 80 && y > lastY + 2) {
           header.setAttribute("data-hidden", "1");
