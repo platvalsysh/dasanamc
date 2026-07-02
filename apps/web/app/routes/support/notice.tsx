@@ -1,6 +1,7 @@
 import type { Route } from "./+types/notice";
 import { HOSPITAL, NOTICES_FALLBACK } from "~/data/dasanone-content";
-import { DarkPageHero } from "~/components/site/DarkPageHero";
+import { StickyBgHero } from "~/components/site/StickyBgHero";
+import { HERO_IMAGES } from "~/data/stock-images";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -15,10 +16,10 @@ export function meta({}: Route.MetaArgs) {
 export default function SupportNotice() {
   return (
     <>
-      <DarkPageHero
-        tag="NOTICE"
-        title="공지사항"
-        subtitle="진료 운영, 휴진 안내, 신규 장비·서비스 소식을 알려드립니다."
+      <StickyBgHero
+        bgImage={HERO_IMAGES.notice}
+        location={[{ label: "고객센터", to: "/support" }, { label: "공지사항" }]}
+        copy={"다산원의 새로운 소식을\n가장 먼저 전해드립니다."}
       />
 
       <section className="max-w-[1080px] mx-auto px-8 py-16">

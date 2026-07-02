@@ -22,8 +22,8 @@ export default function About() {
     <>
       <StickyBgHero
         bgImage="/images/hero-reception.jpg"
-        subtitle="반려동물과 건강한 동행,
-다산원동물의료센터가 함께 하겠습니다."
+        location={[{ label: "병원소개" }]}
+        copy={"반려동물과 건강한 동행,\n다산원동물의료센터가 함께 하겠습니다."}
       />
 
       {/* 인사말 placeholder — 추후 본문 보강 */}

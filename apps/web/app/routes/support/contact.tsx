@@ -1,7 +1,8 @@
 import { Link, useActionData, useNavigation } from "react-router";
 import type { Route } from "./+types/contact";
 import { HOSPITAL } from "~/data/dasanone-content";
-import { DarkPageHero } from "~/components/site/DarkPageHero";
+import { StickyBgHero } from "~/components/site/StickyBgHero";
+import { HERO_IMAGES } from "~/data/stock-images";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -52,10 +53,11 @@ export default function SupportContact() {
 
   return (
     <>
-      <DarkPageHero
-        tag="ONLINE"
-        title="온라인 문의·예약"
-        subtitle="남겨주신 내용은 진료팀이 확인 후 빠르게 연락드립니다. 응급은 전화로 연락 주세요."
+      <StickyBgHero
+        bgImage={HERO_IMAGES.contact}
+        location={[{ label: "고객센터", to: "/support" }, { label: "온라인 문의" }]}
+        copy={"남겨주신 이야기,\n진료팀이 확인해 빠르게 연락드립니다."}
+        sub="응급 상황은 24시간 전화(0507-1330-5958)로 연락 주세요"
       />
 
       <section className="max-w-[1080px] mx-auto px-8 py-16">

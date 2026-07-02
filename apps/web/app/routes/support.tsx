@@ -1,7 +1,8 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/support";
 import { HOSPITAL } from "~/data/dasanone-content";
-import { DarkPageHero } from "~/components/site/DarkPageHero";
+import { StickyBgHero } from "~/components/site/StickyBgHero";
+import { HERO_IMAGES } from "~/data/stock-images";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -17,10 +18,11 @@ export function meta({}: Route.MetaArgs) {
 export default function Support() {
   return (
     <>
-      <DarkPageHero
-        tag="CUSTOMER CENTER"
-        title="고객센터"
-        subtitle="진료 예약·문의는 전화 또는 온라인으로, 진료 케이스와 건강 정보는 블로그에서 만나보세요."
+      <StickyBgHero
+        bgImage={HERO_IMAGES.support}
+        location={[{ label: "고객센터" }]}
+        copy={"궁금한 것은 언제든지,\n가장 가까운 곳에서 답하겠습니다."}
+        sub="진료 예약·문의는 전화 또는 온라인으로, 진료 케이스는 블로그에서"
       />
 
       {/* 3 contact cards */}

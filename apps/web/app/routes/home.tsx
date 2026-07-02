@@ -14,6 +14,7 @@ import {
   NOTICES_FALLBACK,
 } from "~/data/dasanone-content";
 import { AssetSlot } from "~/components/AssetSlot";
+import { CONTENT_IMAGES } from "~/data/stock-images";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -277,7 +278,9 @@ export default function Home() {
               </ul>
             </div>
             <AssetSlot
-              className="rounded-2xl overflow-hidden"
+              src={CONTENT_IMAGES.oneStopCare}
+              alt="진료 현장"
+              className="rounded-2xl overflow-hidden w-full object-cover"
               style={{ aspectRatio: "4/3" }}
               label="진료 현장 사진 영역"
             />
@@ -419,14 +422,13 @@ export default function Home() {
               style={{
                 minHeight: 180,
                 border: "1px solid #e8ddc6",
-                background: "repeating-linear-gradient(45deg,#ebe1ce,#ebe1ce 11px,#f3ebd9 11px,#f3ebd9 22px)",
+                backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(4,24,21,0.72) 100%), url(${CONTENT_IMAGES.blogThumb})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
               }}
             >
-              <span className="absolute top-4 left-6" style={{ font: "600 11px ui-monospace, monospace", color: "#a59a82" }}>
-                블로그 썸네일
-              </span>
-              <span className="text-[17px] font-extrabold" style={{ color: "var(--color-ds-text)" }}>진료 케이스 보러가기</span>
-              <span className="text-[13.5px] mt-1" style={{ color: "var(--color-ds-text-sub)" }}>blog.naver.com/dasanoneamc</span>
+              <span className="text-[17px] font-extrabold text-white">진료 케이스 보러가기</span>
+              <span className="text-[13.5px] mt-1" style={{ color: "rgba(255,255,255,0.78)" }}>blog.naver.com/dasanoneamc</span>
             </a>
           </div>
         </div>

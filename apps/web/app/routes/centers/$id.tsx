@@ -1,7 +1,8 @@
 import { Link, redirect } from "react-router";
 import type { Route } from "./+types/$id";
 import { HOSPITAL, CENTERS, CENTER_CASES } from "~/data/dasanone-content";
-import { DarkPageHero } from "~/components/site/DarkPageHero";
+import { StickyBgHero } from "~/components/site/StickyBgHero";
+import { HERO_IMAGES } from "~/data/stock-images";
 
 export function loader({ params }: Route.LoaderArgs) {
   const id = params.id;
@@ -37,10 +38,11 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      <DarkPageHero
-        tag={`SPECIALTY CENTER ${c.num}`}
-        title={c.ko}
-        subtitle={c.slogan}
+      <StickyBgHero
+        bgImage={HERO_IMAGES.centerDetail}
+        location={[{ label: "특화진료센터", to: "/centers" }, { label: c.ko }]}
+        copy={c.slogan}
+        sub={c.en}
       />
 
       <article className="max-w-[920px] mx-auto px-8 py-16">

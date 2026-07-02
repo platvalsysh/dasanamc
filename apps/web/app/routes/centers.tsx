@@ -1,7 +1,8 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/centers";
 import { HOSPITAL, CENTERS } from "~/data/dasanone-content";
-import { DarkPageHero } from "~/components/site/DarkPageHero";
+import { StickyBgHero } from "~/components/site/StickyBgHero";
+import { HERO_IMAGES } from "~/data/stock-images";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -17,10 +18,11 @@ export function meta({}: Route.MetaArgs) {
 export default function CentersIndex() {
   return (
     <>
-      <DarkPageHero
-        tag="SPECIALTY CENTERS"
-        title="특화진료센터"
-        subtitle="분과별 전공의들의 세밀한 협진 체계와 대학병원급 의료 장비로 진단부터 수술, 회복까지 한 곳에서."
+      <StickyBgHero
+        bgImage={HERO_IMAGES.centers}
+        location={[{ label: "특화진료센터" }]}
+        copy={"분과별 전공의들의 협진으로 완성되는\n11개 특화진료센터"}
+        sub="진단부터 수술, 회복까지 — 끊김 없이 이어지는 원스톱 시스템"
       />
 
       <section className="max-w-[1280px] mx-auto px-8 py-20">

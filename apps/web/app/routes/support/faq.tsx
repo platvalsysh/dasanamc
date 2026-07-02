@@ -1,6 +1,7 @@
 import type { Route } from "./+types/faq";
 import { HOSPITAL, FAQS } from "~/data/dasanone-content";
-import { DarkPageHero } from "~/components/site/DarkPageHero";
+import { StickyBgHero } from "~/components/site/StickyBgHero";
+import { HERO_IMAGES } from "~/data/stock-images";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -15,10 +16,10 @@ export function meta({}: Route.MetaArgs) {
 export default function SupportFaq() {
   return (
     <>
-      <DarkPageHero
-        tag="FAQ"
-        title="자주 묻는 질문"
-        subtitle="보호자님들이 가장 많이 물으시는 질문에 미리 답해두었습니다."
+      <StickyBgHero
+        bgImage={HERO_IMAGES.faq}
+        location={[{ label: "고객센터", to: "/support" }, { label: "자주 묻는 질문" }]}
+        copy={"보호자님들이 가장 많이 물으시는 질문,\n미리 답해두었습니다."}
       />
 
       <section className="max-w-[920px] mx-auto px-8 py-16">

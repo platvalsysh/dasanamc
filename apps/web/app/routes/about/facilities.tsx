@@ -1,6 +1,7 @@
 import type { Route } from "./+types/facilities";
 import { HOSPITAL, FACILITIES } from "~/data/dasanone-content";
-import { DarkPageHero } from "~/components/site/DarkPageHero";
+import { StickyBgHero } from "~/components/site/StickyBgHero";
+import { HERO_IMAGES, FACILITY_STOCK } from "~/data/stock-images";
 import { AssetSlot } from "~/components/AssetSlot";
 
 export function meta({}: Route.MetaArgs) {
@@ -17,10 +18,11 @@ export function meta({}: Route.MetaArgs) {
 export default function AboutFacilities() {
   return (
     <>
-      <DarkPageHero
-        tag="FACILITIES"
-        title="병원 둘러보기"
-        subtitle="진료실부터 ICU 중환자실, 고양이 전용 공간까지 — 환자 동선에 맞춰 설계된 12개 공간."
+      <StickyBgHero
+        bgImage={HERO_IMAGES.facilities}
+        location={[{ label: "병원소개", to: "/about" }, { label: "병원 둘러보기" }]}
+        copy={"아이들은 편안하게, 보호자님은 안심하도록\n세심하게 설계된 공간입니다."}
+        sub="진료실부터 ICU 중환자실, 고양이 전용 공간까지 — 12개 핵심 공간"
       />
 
       <section className="max-w-[1280px] mx-auto px-8 py-20">
@@ -28,13 +30,19 @@ export default function AboutFacilities() {
           data-stagger=""
           className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 facgrid"
         >
-          {FACILITIES.map((f) => (
+          {FACILITIES.map((f, i) => (
             <div
               key={f.name}
               className="rounded-[10px] overflow-hidden bg-white"
               style={{ border: "1px solid #e9dfca" }}
             >
-              <AssetSlot style={{ aspectRatio: "4/3" }} label="사진 영역" />
+              <AssetSlot
+                src={FACILITY_STOCK[i]}
+                alt={f.name}
+                className="w-full object-cover"
+                style={{ aspectRatio: "4/3" }}
+                label="사진 영역"
+              />
               <div className="px-3.5 pt-3 pb-4">
                 <div
                   className="text-[13.5px] font-bold mb-1.5"

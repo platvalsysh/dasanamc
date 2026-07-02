@@ -1,6 +1,7 @@
 import type { Route } from "./+types/equipment";
 import { HOSPITAL, EQUIPMENT, EQUIPMENT_GROUPS } from "~/data/dasanone-content";
-import { DarkPageHero } from "~/components/site/DarkPageHero";
+import { StickyBgHero } from "~/components/site/StickyBgHero";
+import { HERO_IMAGES } from "~/data/stock-images";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -16,10 +17,11 @@ export function meta({}: Route.MetaArgs) {
 export default function AboutEquipment() {
   return (
     <>
-      <DarkPageHero
-        tag="EQUIPMENT"
-        title="장비 소개"
-        subtitle="대학병원급 진단 인프라 — 진료부터 수술, 회복까지 빈틈없이 책임지는 핵심 의료 장비."
+      <StickyBgHero
+        bgImage={HERO_IMAGES.equipment}
+        location={[{ label: "병원소개", to: "/about" }, { label: "장비 소개" }]}
+        copy={"정확한 진단과 안전한 치료,\n대학병원급 의료 장비가 뒷받침합니다."}
+        sub="외과 · 영상 · 내과 · 안과 — 분과별 최신 장비 25종"
       />
 
       {/* 대표 장비 6종 (기존) */}

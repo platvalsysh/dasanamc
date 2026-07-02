@@ -7,7 +7,8 @@ import {
   CHECKUP_GUIDE,
   type CheckRow,
 } from "~/data/dasanone-content";
-import { DarkPageHero } from "~/components/site/DarkPageHero";
+import { StickyBgHero } from "~/components/site/StickyBgHero";
+import { HERO_IMAGES } from "~/data/stock-images";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -71,10 +72,11 @@ function CheckTable({
 export default function CentersCheckup() {
   return (
     <>
-      <DarkPageHero
-        tag="HEALTH CHECKUP"
-        title="건강검진 프로그램"
-        subtitle="최신 의료 가이드라인을 반영한 검진 프로그램 — 생활습관·연령·질환 이력에 맞춘 맞춤형 건강관리 계획."
+      <StickyBgHero
+        bgImage={HERO_IMAGES.checkup}
+        location={[{ label: "특화진료센터", to: "/centers" }, { label: "건강검진 프로그램" }]}
+        copy={"질병의 근본은 조기 발견 —\n연령과 상태에 맞춘 체계적인 검진"}
+        sub="Basic · Standard · Premium 맞춤 프로그램"
       />
 
       <section className="max-w-[1280px] mx-auto px-8 py-16">

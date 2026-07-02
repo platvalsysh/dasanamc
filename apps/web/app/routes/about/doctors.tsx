@@ -6,7 +6,8 @@ import {
   DOCTOR_DETAILS,
   type DoctorDetail,
 } from "~/data/dasanone-content";
-import { DarkPageHero } from "~/components/site/DarkPageHero";
+import { StickyBgHero } from "~/components/site/StickyBgHero";
+import { HERO_IMAGES, DOCTOR_STOCK } from "~/data/stock-images";
 import { AssetSlot } from "~/components/AssetSlot";
 
 export function meta({}: Route.MetaArgs) {
@@ -38,8 +39,11 @@ function DoctorCard({
       className="leadcard grid grid-cols-1 md:grid-cols-[0.38fr_0.62fr] rounded-[20px] overflow-hidden bg-white"
       style={{ border: "1px solid #e9dfca", scrollMarginTop: 100 }}
     >
-      {/* 사진 */}
+      {/* 사진 — 임시 스톡 (실제 프로필 촬영본 준비 시 DOCTOR_STOCK 교체) */}
       <AssetSlot
+        src={DOCTOR_STOCK[doctor.name]}
+        alt={`${doctor.name} ${doctor.role}`}
+        className="w-full h-full object-cover"
         style={{ minHeight: 320 }}
         label={isChief ? "대표원장 사진" : "프로필 사진"}
       />
@@ -133,10 +137,11 @@ function DoctorCard({
 export default function AboutDoctors() {
   return (
     <>
-      <DarkPageHero
-        tag="MEDICAL TEAM"
-        title="의료진 소개"
-        subtitle="경북대 3 · 건국대 2 · 충남대 1 — 6명 전원 석사 이상의 전문 의료진이 함께합니다."
+      <StickyBgHero
+        bgImage={HERO_IMAGES.doctors}
+        location={[{ label: "병원소개", to: "/about" }, { label: "의료진 소개" }]}
+        copy={"아이의 눈높이에서 한 번 더 생각하는\n여섯 명의 전문 의료진이 함께합니다."}
+        sub="경북대 3 · 건국대 2 · 충남대 1 — 전원 석사 이상의 전문 의료진"
       />
 
       <section className="max-w-[1180px] mx-auto px-8 py-20">
