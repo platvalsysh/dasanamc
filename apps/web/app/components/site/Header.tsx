@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { Link, useLocation } from "react-router";
 import { useAuth, checkUserPermissions, useIsAdmin } from "@repo/auth/ui";
-import { Menu, X, Settings, User, LogIn, LogOut } from "lucide-react";
+import { Menu, X, Settings, User, LogOut } from "lucide-react";
 import type { SiteMenuConfigItem } from "@repo/core/types";
 import { ABOUT_MENU, CENTER_MENU, SUPPORT_MENU } from "~/data/dasanone-content";
 
@@ -158,7 +158,7 @@ export function Header({ menuItems = [] }: HeaderProps) {
 
           {/* auth links (compact) */}
           <div className="hidden md:flex items-center gap-1 text-[color:var(--color-ds-text-sub)]">
-            {user ? (
+            {user && (
               <>
                 {isAdmin && (
                   <Link to="/admin" title="관리자페이지" className="p-2 hover:opacity-80">
@@ -172,10 +172,6 @@ export function Header({ menuItems = [] }: HeaderProps) {
                   <LogOut className="w-4 h-4" />
                 </Link>
               </>
-            ) : (
-              <Link to="/auth/login" title="로그인" className="p-2 hover:opacity-80">
-                <LogIn className="w-4 h-4" />
-              </Link>
             )}
           </div>
 
@@ -225,7 +221,7 @@ export function Header({ menuItems = [] }: HeaderProps) {
               >
                 24시 0507-1330-5958
               </a>
-              {user ? (
+              {user && (
                 <>
                   {isAdmin && (
                     <Link
@@ -254,15 +250,6 @@ export function Header({ menuItems = [] }: HeaderProps) {
                     로그아웃
                   </Link>
                 </>
-              ) : (
-                <Link
-                  to="/auth/login"
-                  className="flex items-center justify-center gap-2 w-full py-2 text-sm font-medium text-[color:var(--color-ds-text)] border border-[color:var(--color-ds-border)] rounded-md"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  <LogIn className="w-4 h-4" />
-                  로그인
-                </Link>
               )}
             </div>
           </div>

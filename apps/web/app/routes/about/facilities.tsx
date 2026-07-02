@@ -2,7 +2,7 @@ import type { Route } from "./+types/facilities";
 import { HOSPITAL, FACILITIES } from "~/data/dasanone-content";
 import { StickyBgHero } from "~/components/site/StickyBgHero";
 import { SectionHead } from "~/components/site/SectionHead";
-import { HERO_IMAGES, FACILITY_STOCK } from "~/data/stock-images";
+import { HERO_IMAGES } from "~/data/stock-images";
 import { AssetSlot } from "~/components/AssetSlot";
 
 export function meta({}: Route.MetaArgs) {
@@ -36,18 +36,18 @@ export default function AboutFacilities() {
           data-stagger=""
           className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 facgrid"
         >
-          {FACILITIES.map((f, i) => (
+          {FACILITIES.map((f) => (
             <div
               key={f.name}
               className="rounded-[18px] overflow-hidden"
               style={{ background: "#f4f7f6" }}
             >
               <AssetSlot
-                src={FACILITY_STOCK[i]}
+                src={f.img}
                 alt={f.name}
                 className="w-full object-cover"
                 style={{ aspectRatio: "4/3" }}
-                label="사진 영역"
+                label="사진 준비 중"
               />
               <div className="px-3.5 pt-3 pb-4">
                 <div

@@ -460,13 +460,13 @@ export default function Home() {
       </section>
 
       {/* ============ VISIT US ============ */}
-      <section className="bg-white">
+      <section style={{ background: "#0d3a35", color: "#fff" }}>
         <div className="max-w-[1280px] mx-auto px-8 py-24 grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-14 items-center loc">
           <div>
-            <div className="mb-[18px]" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal)" }}>
+            <div className="mb-[18px]" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "#56c8b8" }}>
               VISIT US
             </div>
-            <h2 className="text-[32px] font-extrabold mb-7" style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}>
+            <h2 className="text-[32px] font-extrabold mb-7 text-white" style={{ letterSpacing: "-0.03em" }}>
               오시는 길 · 진료 안내
             </h2>
             {/* 진료 안내 rows — 테두리 없는 flat 리스트, 라벨 작게 + 값 크게 */}
@@ -478,13 +478,13 @@ export default function Home() {
                 >
                   <span
                     className="text-[13px] font-bold"
-                    style={{ color: "var(--color-ds-teal)", letterSpacing: "0.02em" }}
+                    style={{ color: "#56c8b8", letterSpacing: "0.02em" }}
                   >
                     {r.k}
                   </span>
                   <span
                     className="text-[17px] font-semibold"
-                    style={{ color: "var(--color-ds-text)", letterSpacing: "-0.015em", lineHeight: 1.5 }}
+                    style={{ color: "rgba(255,255,255,0.92)", letterSpacing: "-0.015em", lineHeight: 1.5 }}
                   >
                     {r.v}
                   </span>
@@ -503,7 +503,7 @@ export default function Home() {
           </div>
           <AssetSlot
             className="rounded-2xl overflow-hidden"
-            style={{ aspectRatio: "16/11", border: "1px solid #e7ece8" }}
+            style={{ aspectRatio: "16/11", border: "1px solid rgba(255,255,255,0.14)" }}
             label={`네이버 지도 API 영역 — ${HOSPITAL.address}`}
           />
         </div>

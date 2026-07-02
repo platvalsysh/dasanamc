@@ -11,8 +11,8 @@ const u = (id: string, w = 1920, q = 70) =>
 /** 페이지 hero 배경 (1920px) */
 export const HERO_IMAGES = {
   doctors: u("1628009368231-7bb7cfcb0def"),   // 수의사 + 강아지 진료
-  facilities: u("1601758228041-f3b2795255f1"), // 보호자와 함께 진료받는 강아지
-  equipment: u("1576201836106-db1758fd1c97"),  // 수의사에게 발을 맡긴 강아지
+  facilities: "/images/facility/exam-hall.jpg", // 실촬영 — 진료실 복도
+  equipment: "/images/facility/ct-room.jpg",   // 실촬영 — CT실 (Toshiba Activion)
   centers: u("1548199973-03cce0bbc87b"),       // 함께 달리는 강아지들
   centerDetail: u("1601758124510-52d02ddb7cbd"), // 진료대 위 강아지
   checkup: u("1583337130417-3346a1be7dee"),    // 케어 받는 골든리트리버
@@ -21,22 +21,6 @@ export const HERO_IMAGES = {
   faq: u("1543466835-00a7907e9de1"),           // 점프하는 강아지
   contact: u("1583511655857-d19b40a7a54e"),    // 웃는 강아지
 } as const;
-
-/** 시설 12칸 슬롯 (임시 — 반려동물/클리닉 이미지 순환) */
-export const FACILITY_STOCK: readonly string[] = [
-  u("1548767797-d8c844163c4c", 800), // hero(facilities)와 중복되지 않게 교체
-  u("1628009368231-7bb7cfcb0def", 800),
-  u("1514888286974-6c03e2ca1dba", 800),
-  u("1592194996308-7b43878e84a6", 800),
-  u("1526336024174-e58f5cdd8e13", 800),
-  u("1601758124510-52d02ddb7cbd", 800),
-  u("1552053831-71594a27632d", 800),
-  u("1576201836106-db1758fd1c97", 800),
-  u("1573865526739-10659fec78a5", 800),
-  u("1615751072497-5f5169febe17", 800),
-  u("1601979031925-424e53b6caaa", 800),
-  u("1583511655857-d19b40a7a54e", 800),
-];
 
 /** 홈 ONE STOP CARE 등 콘텐츠 슬롯 */
 export const CONTENT_IMAGES = {

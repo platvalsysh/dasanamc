@@ -62,22 +62,27 @@ export const DOCTORS = [
   { name: "이선아", role: "영상 과장", cred: "건국대 수의학과 · 수의영상진단의학 석사 · 건국대 부속동물병원 영상진단의학과" },
 ] as const;
 
-/** 시설 — 이름 + 설명 (블로그 "병원 소개" 포스트에서 발췌·요약) */
+/** 시설 — 이름 + 설명 + 실촬영본 (블로그 "병원 소개" 포스트에서 발췌) */
 export interface FacilityInfo {
   name: string;
   desc: string;
+  /** 실제 촬영 사진 경로. 미촬영 공간(고양이 처치실·ICU)은 생략 → placeholder */
+  img?: string;
 }
 export const FACILITIES: readonly FacilityInfo[] = [
   {
     name: "안내데스크 (리셉션)",
+    img: "/images/facility/reception.jpg",
     desc: "병원에 들어서면 가장 먼저 마주하는 공간. 밝고 따뜻한 분위기에서 접수와 상담이 이루어집니다.",
   },
   {
     name: "진료실",
+    img: "/images/facility/exam-hall.jpg",
     desc: "기본 신체검사부터 각종 상담까지 — 아이들이 긴장하지 않도록 조용하고 따뜻한 분위기를 유지합니다.",
   },
   {
     name: "고양이 전용 대기실",
+    img: "/images/facility/cat-waiting.jpg",
     desc: "낯선 환경과 소리에 민감한 고양이를 위해 강아지와 분리된 조용한 대기 공간입니다.",
   },
   {
@@ -86,30 +91,37 @@ export const FACILITIES: readonly FacilityInfo[] = [
   },
   {
     name: "고양이 전용 입원실",
+    img: "/images/facility/cat-ward.jpg",
     desc: "독립적인 공간으로 운영되며, 긴장감을 줄이는 가림막을 갖춰 편안한 회복을 돕습니다.",
   },
   {
     name: "강아지 처치실·입원실",
+    img: "/images/facility/treatment-ward.jpg",
     desc: "실시간 모니터링이 가능해 회복 중에도 안심할 수 있는 쾌적한 환경입니다.",
   },
   {
     name: "대형견 전용 입원장",
+    img: "/images/facility/large-dog-ward.jpg",
     desc: "체구가 큰 아이들이 답답하지 않게 머물 수 있는 넓고 튼튼한 전용 공간입니다.",
   },
   {
     name: "X-ray·초음파 검사실",
+    img: "/images/facility/xray.jpg",
     desc: "뼈·내부 장기를 빠르게 확인하는 방사선실과 심장·복부를 세밀하게 관찰하는 초음파실입니다.",
   },
   {
     name: "안과 진료실",
+    img: "/images/facility/eye-clinic.jpg",
     desc: "전문 안과 장비로 세밀한 안구 검사가 가능한 진료 공간입니다.",
   },
   {
     name: "CT 실",
+    img: "/images/facility/ct-room.jpg",
     desc: "X-ray 로 확인하기 어려운 뇌·척추·장기·혈관까지 정밀하게 확인하는 최신 CT 검사실입니다.",
   },
   {
     name: "제1 수술실",
+    img: "/images/facility/operating-room.jpg",
     desc: "최신 장비를 갖췄으며, 밖에서 내부가 보이는 유리창으로 보호자님이 안심하실 수 있습니다.",
   },
   {
