@@ -352,8 +352,38 @@ body {
 .hcheck tbody td[data-head="1"] { font-weight: 700; }
 .hcheck tbody td[data-sep="1"] { border-top: 1px solid #e8ddc6; }
 
-.centertrack { scrollbar-width: none; -ms-overflow-style: none; }
+.centertrack { scrollbar-width: none; -ms-overflow-style: none; cursor: none; }
 .centertrack::-webkit-scrollbar { display: none; }
+.centertrack a { cursor: none; }
+
+/* SPECIALTY CENTERS 트랙 위 커스텀 커서 — "← SCROLL →" 원형 배지 */
+#ct-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: rgba(14, 157, 140, 0.92);
+  color: #fff;
+  font: 700 10px/1 ui-monospace, monospace;
+  letter-spacing: 0.12em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  white-space: pre;
+  pointer-events: none;
+  opacity: 0;
+  scale: 0.6;
+  transition: opacity .25s ease, scale .25s ease;
+  will-change: transform;
+}
+#ct-cursor[data-on="1"] {
+  opacity: 1;
+  scale: 1;
+}
 
 /* quick 메뉴 라벨 — hover 시 밑줄이 좌→우로 채워짐 (brainall 패턴) */
 .qb-label::before {

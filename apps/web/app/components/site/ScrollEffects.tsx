@@ -99,23 +99,82 @@ export function ScrollEffects() {
         .forEach((el) => el.setAttribute("data-inview", "1"));
     }, 1600);
 
-    // 가로 스크롤 트랙(SPECIALTY CENTERS) — 휠을 가로 스크롤로 변환
+    // 가로 스크롤 트랙(SPECIALTY CENTERS)
+    //  1) 휠 → 가로 스크롤 변환. 소비 시 stopPropagation 으로 Lenis(window
+    //     wheel 리스너)에 전달되지 않게 해 세로 스크롤 동시 발생 방지.
+    //  2) 마우스 드래그로도 가로 스크롤.
+    //  3) 트랙 위에서 "← SCROLL →" 커스텀 커서가 마우스를 따라다님.
     const bindCenterTrack = () => {
       const t = document.getElementById("centertrack") as HTMLElement | null;
       if (!t || (t as any)._wheelBound) return;
       (t as any)._wheelBound = true;
+
+      // --- 휠 → 가로 변환 (Lenis 차단 포함) ---
       t.addEventListener(
         "wheel",
         (e: WheelEvent) => {
           if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
           const atStart = t.scrollLeft <= 0;
           const atEnd = t.scrollLeft >= t.scrollWidth - t.clientWidth - 1;
+          // 끝단에서는 이벤트를 그대로 흘려 페이지 세로 스크롤(Lenis)로
           if ((e.deltaY < 0 && atStart) || (e.deltaY > 0 && atEnd)) return;
           t.scrollLeft += e.deltaY;
           e.preventDefault();
+          e.stopPropagation(); // Lenis 가 같은 휠로 세로 스크롤하지 않게
         },
         { passive: false },
       );
+
+      // --- 드래그 스크롤 ---
+      let dragging = false;
+      let moved = false;
+      let startX = 0;
+      let startLeft = 0;
+      t.addEventListener("pointerdown", (e: PointerEvent) => {
+        if (e.pointerType !== "mouse") return; // 터치는 네이티브 스크롤 사용
+        dragging = true;
+        moved = false;
+        startX = e.clientX;
+        startLeft = t.scrollLeft;
+      });
+      t.addEventListener("pointermove", (e: PointerEvent) => {
+        if (!dragging) return;
+        const dx = e.clientX - startX;
+        if (Math.abs(dx) > 5) moved = true;
+        t.scrollLeft = startLeft - dx;
+      });
+      const endDrag = () => {
+        dragging = false;
+      };
+      t.addEventListener("pointerup", endDrag);
+      t.addEventListener("pointerleave", endDrag);
+      // 드래그 후 링크 click 오작동 방지
+      t.addEventListener(
+        "click",
+        (e: MouseEvent) => {
+          if (moved) {
+            e.preventDefault();
+            e.stopPropagation();
+            moved = false;
+          }
+        },
+        { capture: true },
+      );
+
+      // --- 커스텀 커서 (← SCROLL →) ---
+      let cursor = document.getElementById("ct-cursor") as HTMLElement | null;
+      if (!cursor) {
+        cursor = document.createElement("div");
+        cursor.id = "ct-cursor";
+        cursor.textContent = "←  SCROLL  →";
+        document.body.appendChild(cursor);
+      }
+      const cur = cursor;
+      t.addEventListener("mouseenter", () => cur.setAttribute("data-on", "1"));
+      t.addEventListener("mouseleave", () => cur.removeAttribute("data-on"));
+      t.addEventListener("mousemove", (e: MouseEvent) => {
+        cur.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+      });
     };
     bindCenterTrack();
 
@@ -202,6 +261,7 @@ export function ScrollEffects() {
       clearTimeout(fallback);
       io?.disconnect();
       mo.disconnect();
+      document.getElementById("ct-cursor")?.remove();
       delete (window as unknown as { __dsRunOnScroll?: () => void })
         .__dsRunOnScroll;
     };
