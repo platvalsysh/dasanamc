@@ -17,6 +17,13 @@ import { AssetSlot } from "~/components/AssetSlot";
 import { SectionHead } from "~/components/site/SectionHead";
 import { CONTENT_IMAGES } from "~/data/stock-images";
 
+/** 3 ONE SYSTEM 카드 배경 — 실촬영본 */
+const THREE_ONE_IMAGES = [
+  "/images/facility/exam-hall.jpg",
+  "/images/facility/operating-room.jpg",
+  "/images/facility/reception.jpg",
+];
+
 export function meta({}: Route.MetaArgs) {
   return [
     { title: `${HOSPITAL.name}` },
@@ -174,8 +181,8 @@ export default function Home() {
         </div>
         <p
           data-reveal=""
-          className="font-extrabold text-balance"
-          style={{ fontSize: "clamp(23px, 3.3vw, 38px)", lineHeight: 1.5, letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}
+          className="serif font-medium text-balance"
+          style={{ fontSize: "clamp(25px, 3.6vw, 42px)", lineHeight: 1.55, letterSpacing: "-0.025em", color: "var(--color-ds-text)" }}
         >
           아픈 아이를 안고 병원 문을 들어서는 보호자님의<br />
           무거운 마음을 누구보다 잘 알기에,{" "}
@@ -197,24 +204,36 @@ export default function Home() {
           {THREE_ONE.map((t, i) => (
             <div
               key={i}
-              className="rounded-[24px] p-9 md:p-10 min-h-[300px] flex flex-col"
-              style={{ background: "#f4f7f6" }}
+              className="group relative rounded-[24px] p-9 md:p-10 min-h-[420px] flex flex-col overflow-hidden"
+              style={{ background: "#06201c" }}
             >
+              {/* 실촬영 배경 + 다크 그라데이션 */}
+              <img
+                src={THREE_ONE_IMAGES[i]}
+                alt=""
+                aria-hidden
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
+              />
               <div
+                className="absolute inset-0"
+                style={{ background: "linear-gradient(180deg, rgba(4,24,21,0.30) 0%, rgba(4,24,21,0.55) 45%, rgba(4,24,21,0.88) 100%)" }}
+              />
+              <div
+                className="relative"
                 style={{
                   font: "800 clamp(40px, 4.5vw, 60px)/1 ui-monospace, monospace",
-                  color: "var(--color-ds-teal)",
+                  color: "#6ed4c5",
                   letterSpacing: "-0.03em",
                 }}
               >
                 {String(i + 1).padStart(2, "0")}
               </div>
-              <div className="mt-auto pt-10">
-                <div className="mb-2" style={{ font: "800 14px/1 ui-monospace, monospace", color: "var(--color-ds-teal)" }}>
+              <div className="relative mt-auto pt-10">
+                <div className="mb-2" style={{ font: "800 14px/1 ui-monospace, monospace", color: "#56c8b8" }}>
                   {t.tag}
                 </div>
-                <div className="text-[22px] font-extrabold mb-3.5" style={{ color: "var(--color-ds-text)" }}>{t.ko}</div>
-                <p className="text-[15px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.75 }}>{t.d}</p>
+                <div className="text-[24px] font-extrabold mb-3.5 text-white">{t.ko}</div>
+                <p className="text-[15px]" style={{ color: "rgba(255,255,255,0.82)", lineHeight: 1.75 }}>{t.d}</p>
               </div>
             </div>
           ))}
@@ -233,10 +252,11 @@ export default function Home() {
             {STRENGTHS_4.map((s) => (
               <div
                 key={s.n}
-                className="rounded-[24px] p-10 md:p-12 min-h-[230px] flex flex-col"
+                className="group rounded-[24px] p-10 md:p-12 min-h-[230px] flex flex-col transition-colors duration-300 hover:bg-[#0d3a35]"
                 style={{ background: "#f4f7f6" }}
               >
                 <div
+                  className="transition-colors group-hover:text-[#56c8b8]"
                   style={{
                     font: "800 clamp(34px, 4vw, 52px)/1 ui-monospace, monospace",
                     color: "var(--color-ds-teal)",
@@ -246,10 +266,16 @@ export default function Home() {
                   {s.n}
                 </div>
                 <div className="mt-auto pt-10">
-                  <div className="text-[20px] font-extrabold mb-2.5" style={{ color: "var(--color-ds-text)", lineHeight: 1.35 }}>
+                  <div
+                    className="text-[20px] font-extrabold mb-2.5 transition-colors group-hover:text-white"
+                    style={{ color: "var(--color-ds-text)", lineHeight: 1.35 }}
+                  >
                     {s.t}
                   </div>
-                  <p className="text-[15px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.7 }}>
+                  <p
+                    className="text-[15px] transition-colors group-hover:text-[#aec6bf]"
+                    style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.7 }}
+                  >
                     {s.d}
                   </p>
                 </div>
@@ -370,9 +396,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ============ BY THE NUMBERS — 다크 ============ */}
-      <section style={{ background: "#062b28", color: "#fff" }}>
-        <div className="max-w-[1280px] mx-auto px-8 py-[104px]">
+      {/* ============ BY THE NUMBERS — 다크 + CT실 배경 ============ */}
+      <section className="relative overflow-hidden" style={{ background: "#062b28", color: "#fff" }}>
+        <img
+          src="/images/facility/ct-room.jpg"
+          alt=""
+          aria-hidden
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ opacity: 0.16 }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: "linear-gradient(160deg, rgba(6,43,40,0.55) 0%, rgba(6,43,40,0.92) 70%, #062b28 100%)" }}
+        />
+        <div className="relative max-w-[1280px] mx-auto px-8 py-[104px]">
           <div className="max-w-[720px] mb-14">
             <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "#56c8b8" }}>
               BY THE NUMBERS
@@ -390,7 +427,7 @@ export default function Home() {
             style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)" }}
           >
             {STAT_BIG.map((s, i) => (
-              <div key={i} className="p-[38px_28px]" style={{ background: "#062b28" }}>
+              <div key={i} className="p-[38px_28px] backdrop-blur-[2px]" style={{ background: "rgba(6,43,40,0.78)" }}>
                 <div className="text-[46px] font-extrabold" style={{ color: "#56c8b8", letterSpacing: "-0.03em", lineHeight: 1 }}>
                   {s.v}
                 </div>
