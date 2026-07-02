@@ -29,9 +29,18 @@ interface ShellProps {
  * ScrollEffects 가 `.darkhero` 의 위치를 보고 토글.
  */
 function Shell({ menuItems, children }: PropsWithChildren<ShellProps>) {
+  const location = useLocation();
+  // 홈 외 서브페이지 본문에 warm 텍스트 톤 (배경은 흰색 유지)
+  const isHome = location.pathname === "/";
+
   return (
     <SiteMenuProvider menuItems={menuItems || []}>
-      <div className="flex min-h-screen flex-col bg-[color:var(--color-ds-bg)]">
+      <div
+        className={
+          "flex min-h-screen flex-col bg-[color:var(--color-ds-bg)]" +
+          (isHome ? "" : " warm-body")
+        }
+      >
         <SmoothScroll />
         <ScrollEffects />
         <Header menuItems={menuItems} />

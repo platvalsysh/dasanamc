@@ -47,7 +47,16 @@ export function SmoothScroll() {
         touchMultiplier: 1.6,
       });
 
-      scrollHandler = () => ScrollTrigger.update();
+      // Lenis 가 스크롤을 갱신할 때마다:
+      //  1) GSAP ScrollTrigger 진행률 업데이트
+      //  2) ScrollEffects 의 헤더 theme/scrolled/darkhero 재계산 (native scroll
+      //     이벤트가 매 프레임 발생하지 않아 헤더가 stale 상태로 남는 문제 방지)
+      scrollHandler = () => {
+        ScrollTrigger.update();
+        const runFn = (window as unknown as { __dsRunOnScroll?: () => void })
+          .__dsRunOnScroll;
+        runFn?.();
+      };
       lenis.on("scroll", scrollHandler);
 
       tickerFn = (time: number) => {

@@ -33,6 +33,16 @@
   --color-ds-beige-mute: #a59a82;
   --color-ds-card-bg: #ffffff;
 
+  /* ----- Warm sub-page palette (teal & orange 톤) ----- */
+  --color-ds-warm-bg: #faf5eb;       /* (예비) warm cream 배경 */
+  --color-ds-warm-card: #ffffff;
+  --color-ds-warm-hairline: #e9dfca;
+  --color-ds-orange: #c67c48;         /* teal 보정색 orange accent */
+  --color-ds-orange-soft: #f2d19e;
+  /* 서브페이지 본문 텍스트 (브라운-오렌지 계열) */
+  --color-ds-warm-text: #3e2718;      /* 진한 브라운 — h1/h2/제목 */
+  --color-ds-warm-text-sub: #7a6753;  /* warm taupe — 본문/부 텍스트 */
+
   /* Legacy snu* tokens — 동창회 템플릿 시점의 토큰명. 값은 새 팔레트.
      기존 코드 참조 (var(--color-snublue) 등) 호환 위해 유지. */
   --color-snublue: #0d3a35;
@@ -46,6 +56,20 @@
 .serif,
 .font-serif {
   font-family: var(--font-serif) !important;
+}
+
+/* 서브페이지 본문 텍스트를 브라운-오렌지 톤으로.
+   `--color-ds-text` / `--color-ds-text-sub` 를 재정의해 var() 참조하는 모든
+   본문 텍스트가 warm 톤이 됨. 다크 hero(.darkhero) 하위와 헤더/푸터는 자기
+   자체 색상을 하드코딩하고 있어 영향 없음. */
+.warm-body {
+  --color-ds-text: var(--color-ds-warm-text);
+  --color-ds-text-sub: var(--color-ds-warm-text-sub);
+}
+/* 다크 hero 안에서는 원래 색 복원 (hero 는 손대지 않음) */
+.warm-body .darkhero {
+  --color-ds-text: #0d3a35;
+  --color-ds-text-sub: #5c6b68;
 }
 
 html,

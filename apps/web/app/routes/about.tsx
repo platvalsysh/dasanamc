@@ -33,7 +33,7 @@ export default function About() {
           style={{
             font: "700 13px/1 ui-monospace, monospace",
             letterSpacing: "0.24em",
-            color: "var(--color-ds-teal)",
+            color: "var(--color-ds-orange)",
           }}
         >
           GREETING
@@ -58,31 +58,37 @@ export default function About() {
         </p>
       </section>
 
-      {/* 3 ONE */}
-      <section className="max-w-[1280px] mx-auto px-8 pt-12 pb-12">
-        <div className="text-center max-w-[760px] mx-auto mb-12">
-          <div
-            className="mb-4"
-            style={{
-              font: "700 13px/1 ui-monospace, monospace",
-              letterSpacing: "0.22em",
-              color: "var(--color-ds-teal)",
-            }}
-          >
-            3 ONE SYSTEM
-          </div>
-          <h2 className="text-[32px] font-extrabold" style={{ letterSpacing: "-0.03em", lineHeight: 1.35, color: "var(--color-ds-text)" }}>
-            세 가지 ‘ONE’, 다산원이 지키겠습니다
-          </h2>
-        </div>
-        <div data-stagger="" className="grid grid-cols-1 md:grid-cols-3 gap-6 three">
-          {THREE_ONE.map((t, i) => (
-            <div key={i} className="pt-[30px] px-1" style={{ borderTop: "2px solid #0d3a35" }}>
-              <div className="mb-2" style={{ font: "800 16px/1 ui-monospace, monospace", color: "var(--color-ds-teal)" }}>{t.tag}</div>
-              <div className="text-[21px] font-extrabold mb-3.5" style={{ color: "var(--color-ds-text)" }}>{t.ko}</div>
-              <p className="text-[15px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.7 }}>{t.d}</p>
+      {/* 3 ONE — 홈의 SPECIALTY CENTERS 와 통일된 다크 teal 섹션 */}
+      <section
+        className="darkhero py-20 md:py-24"
+        data-bg-full="1"
+        style={{ background: "#0d3a35", color: "#fff" }}
+      >
+        <div className="max-w-[1280px] mx-auto px-8">
+          <div className="text-center max-w-[760px] mx-auto mb-12">
+            <div
+              className="mb-4"
+              style={{
+                font: "700 13px/1 ui-monospace, monospace",
+                letterSpacing: "0.22em",
+                color: "#56c8b8",
+              }}
+            >
+              3 ONE SYSTEM
             </div>
-          ))}
+            <h2 className="text-[32px] font-extrabold" style={{ letterSpacing: "-0.03em", lineHeight: 1.35, color: "#fff" }}>
+              세 가지 ‘ONE’, 다산원이 지키겠습니다
+            </h2>
+          </div>
+          <div data-stagger="" className="grid grid-cols-1 md:grid-cols-3 gap-6 three">
+            {THREE_ONE.map((t, i) => (
+              <div key={i} className="pt-[30px] px-1" style={{ borderTop: "2px solid #6ed4c5" }}>
+                <div className="mb-2" style={{ font: "800 16px/1 ui-monospace, monospace", color: "#6ed4c5" }}>{t.tag}</div>
+                <div className="text-[21px] font-extrabold mb-3.5" style={{ color: "#fff" }}>{t.ko}</div>
+                <p className="text-[15px]" style={{ color: "#aec6bf", lineHeight: 1.7 }}>{t.d}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

@@ -164,10 +164,16 @@ export function ScrollEffects() {
       // 헤더 theme(dark / light-over / light) 3-state
       const header = document.getElementById("siteheader");
       if (header) {
-        // viewport 상단 (헤더 아래 84px 안) 을 덮은 `.darkhero` 후보 찾기
+        // 헤더 영역(y=0~78) 을 실제로 덮은 `.darkhero` 만 유효.
+        //  - top <= 78  : 요소 상단이 헤더 하단 위(또는 헤더 안)
+        //  - bottom > 84: 요소 하단이 헤더 아래로 이어짐
+        // → 두 조건을 모두 만족해야 헤더 뒤 배경이 실제로 이 요소.
         const overCandidate = (
           Array.from(document.querySelectorAll(".darkhero")) as HTMLElement[]
-        ).find((el) => el.getBoundingClientRect().bottom > 84);
+        ).find((el) => {
+          const r = el.getBoundingClientRect();
+          return r.top <= 78 && r.bottom > 84;
+        });
 
         let theme: "dark" | "light-over" | "light" = "light";
         if (overCandidate) {
