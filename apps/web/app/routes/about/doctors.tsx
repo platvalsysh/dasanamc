@@ -8,8 +8,7 @@ import {
 } from "~/data/dasanone-content";
 import { StickyBgHero } from "~/components/site/StickyBgHero";
 import { SectionHead } from "~/components/site/SectionHead";
-import { HERO_IMAGES, DOCTOR_STOCK } from "~/data/stock-images";
-import { AssetSlot } from "~/components/AssetSlot";
+import { HERO_IMAGES } from "~/data/stock-images";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -40,14 +39,33 @@ function DoctorCard({
       className="leadcard grid grid-cols-1 md:grid-cols-[0.38fr_0.62fr] rounded-[24px] overflow-hidden"
       style={{ background: "#f4f7f6", scrollMarginTop: 100 }}
     >
-      {/* 사진 — 임시 스톡 (실제 프로필 촬영본 준비 시 DOCTOR_STOCK 교체) */}
-      <AssetSlot
-        src={DOCTOR_STOCK[doctor.name]}
-        alt={`${doctor.name} ${doctor.role}`}
-        className="w-full h-full object-cover"
-        style={{ minHeight: 320 }}
-        label={isChief ? "대표원장 사진" : "프로필 사진"}
-      />
+      {/* 사진 — 실루엣 placeholder (실제 프로필 촬영본 준비 시 <img> 로 교체) */}
+      <div
+        role="img"
+        aria-label={`${doctor.name} ${doctor.role} 프로필 사진 준비 중`}
+        className="flex flex-col items-center justify-center gap-4"
+        style={{ minHeight: 320, background: "#e9eeec" }}
+      >
+        <svg
+          width="110"
+          height="110"
+          viewBox="0 0 24 24"
+          fill="#c3cdc8"
+          aria-hidden
+        >
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4 21c0-4.42 3.58-8 8-8s8 3.58 8 8v1H4v-1z" />
+        </svg>
+        <span
+          style={{
+            font: "600 11px ui-monospace, monospace",
+            letterSpacing: "0.1em",
+            color: "#9aa9a4",
+          }}
+        >
+          {isChief ? "대표원장 사진" : "프로필 사진"}
+        </span>
+      </div>
 
       {/* 상세 */}
       <div className="px-8 py-9 md:px-10 md:py-10 flex flex-col">
