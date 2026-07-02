@@ -1,6 +1,7 @@
 import type { Route } from "./+types/equipment";
 import { HOSPITAL, EQUIPMENT, EQUIPMENT_GROUPS } from "~/data/dasanone-content";
 import { StickyBgHero } from "~/components/site/StickyBgHero";
+import { SectionHead } from "~/components/site/SectionHead";
 import { HERO_IMAGES } from "~/data/stock-images";
 
 export function meta({}: Route.MetaArgs) {
@@ -26,43 +27,44 @@ export default function AboutEquipment() {
 
       {/* 대표 장비 6종 (기존) */}
       <section className="max-w-[1280px] mx-auto px-8 py-20">
-        <div className="mb-10">
-          <div
-            className="mb-3.5"
-            style={{
-              font: "700 13px/1 ui-monospace, monospace",
-              letterSpacing: "0.22em",
-              color: "var(--color-ds-teal)",
-            }}
-          >
-            KEY EQUIPMENT
-          </div>
-          <h2 className="text-[28px] font-extrabold" style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}>
-            핵심 장비
-          </h2>
-        </div>
+        <SectionHead
+          eyebrow="KEY EQUIPMENT"
+          title="핵심 장비"
+          desc="진료의 기준을 바꾸는 대학병원급 핵심 장비 6종."
+        />
         <div
           data-stagger=""
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 three"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 three"
         >
-          {EQUIPMENT.map((e) => (
+          {EQUIPMENT.map((e, i) => (
             <div
               key={e.t}
-              className="pt-[28px] px-1"
-              style={{ borderTop: "2px solid #0d3a35" }}
+              className="rounded-[24px] p-9 min-h-[260px] flex flex-col"
+              style={{ background: "#f4f7f6" }}
             >
               <div
-                className="text-[21px] font-extrabold mb-3"
-                style={{ color: "var(--color-ds-text)" }}
+                style={{
+                  font: "800 clamp(28px, 3vw, 38px)/1 ui-monospace, monospace",
+                  color: "var(--color-ds-teal)",
+                  letterSpacing: "-0.02em",
+                }}
               >
-                {e.t}
+                {String(i + 1).padStart(2, "0")}
               </div>
-              <p
-                className="text-[14.5px]"
-                style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.75 }}
-              >
-                {e.d}
-              </p>
+              <div className="mt-auto pt-9">
+                <div
+                  className="text-[19px] font-extrabold mb-2.5"
+                  style={{ color: "var(--color-ds-text)" }}
+                >
+                  {e.t}
+                </div>
+                <p
+                  className="text-[14px]"
+                  style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.7 }}
+                >
+                  {e.d}
+                </p>
+              </div>
             </div>
           ))}
         </div>
@@ -71,34 +73,23 @@ export default function AboutEquipment() {
       {/* ===== 분과별 전체 장비 — 블로그 장비소개 기반 ===== */}
       <section className="py-20">
         <div className="max-w-[1280px] mx-auto px-8">
-          <div className="mb-12">
-            <div
-              className="mb-3.5"
-              style={{
-                font: "700 13px/1 ui-monospace, monospace",
-                letterSpacing: "0.22em",
-                color: "var(--color-ds-teal)",
-              }}
-            >
-              ALL EQUIPMENT
-            </div>
-            <h2 className="text-[28px] font-extrabold mb-3" style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}>
-              분과별 전체 장비
-            </h2>
-            <p className="text-[15px] max-w-[680px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.75 }}>
-              다양한 진료 분야에 맞춘 최신 의료장비를 도입하여
-              더 정밀하고 신속한 진료 서비스를 제공하고 있습니다.
-            </p>
-          </div>
+          <SectionHead
+            eyebrow="ALL EQUIPMENT"
+            title="분과별 전체 장비"
+            desc="다양한 진료 분야에 맞춘 최신 의료장비를 도입하여 더 정밀하고 신속한 진료 서비스를 제공하고 있습니다."
+          />
 
           <div className="flex flex-col gap-14">
             {EQUIPMENT_GROUPS.map((g) => (
               <div key={g.key}>
-                <div className="mb-6 pb-4" style={{ borderBottom: "2px solid var(--color-ds-teal)" }}>
-                  <h3 className="text-[21px] font-extrabold mb-1.5" style={{ color: "var(--color-ds-text)" }}>
+                <div className="mb-7 pb-5 flex items-end gap-5" style={{ borderBottom: "2px solid var(--color-ds-text)" }}>
+                  <h3
+                    className="font-extrabold"
+                    style={{ fontSize: "clamp(24px, 2.4vw, 32px)", letterSpacing: "-0.02em", color: "var(--color-ds-text)" }}
+                  >
                     {g.title}
                   </h3>
-                  <p className="text-[14px]" style={{ color: "var(--color-ds-text-sub)" }}>{g.intro}</p>
+                  <p className="text-[14px] pb-1" style={{ color: "var(--color-ds-text-sub)" }}>{g.intro}</p>
                 </div>
                 <div
                   data-stagger=""
@@ -107,8 +98,8 @@ export default function AboutEquipment() {
                   {g.items.map((item) => (
                     <div
                       key={item.name}
-                      className="rounded-xl bg-white p-6"
-                      style={{ border: "1px solid #e9dfca" }}
+                      className="rounded-[18px] p-7"
+                      style={{ background: "#f4f7f6" }}
                     >
                       <div className="text-[15.5px] font-extrabold mb-2" style={{ color: "var(--color-ds-text)" }}>
                         {item.name}

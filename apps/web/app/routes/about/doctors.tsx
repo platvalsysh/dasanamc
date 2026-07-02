@@ -7,6 +7,7 @@ import {
   type DoctorDetail,
 } from "~/data/dasanone-content";
 import { StickyBgHero } from "~/components/site/StickyBgHero";
+import { SectionHead } from "~/components/site/SectionHead";
 import { HERO_IMAGES, DOCTOR_STOCK } from "~/data/stock-images";
 import { AssetSlot } from "~/components/AssetSlot";
 
@@ -147,22 +148,7 @@ export default function AboutDoctors() {
       <section className="max-w-[1180px] mx-auto px-8 py-20">
         {/* 대표원장 */}
         <div className="mb-16">
-          <div
-            className="mb-3.5"
-            style={{
-              font: "700 13px/1 ui-monospace, monospace",
-              letterSpacing: "0.22em",
-              color: "var(--color-ds-teal)",
-            }}
-          >
-            CHIEF DIRECTORS
-          </div>
-          <h2
-            className="text-[28px] font-extrabold mb-10"
-            style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}
-          >
-            대표원장
-          </h2>
+          <SectionHead eyebrow="CHIEF DIRECTORS" title="대표원장" className="mb-10 md:mb-10" />
           <div className="flex flex-col gap-8">
             {LEAD_DOCTORS.map((d) => (
               <DoctorCard key={d.name} doctor={d} isChief />
@@ -172,22 +158,7 @@ export default function AboutDoctors() {
 
         {/* 진료의 */}
         <div>
-          <div
-            className="mb-3.5"
-            style={{
-              font: "700 13px/1 ui-monospace, monospace",
-              letterSpacing: "0.22em",
-              color: "var(--color-ds-teal)",
-            }}
-          >
-            VETERINARIANS
-          </div>
-          <h2
-            className="text-[28px] font-extrabold mb-10"
-            style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}
-          >
-            진료의
-          </h2>
+          <SectionHead eyebrow="VETERINARIANS" title="진료의" className="mb-10 md:mb-10" />
           <div className="flex flex-col gap-8">
             {REST_DOCTORS.map((d) => (
               <DoctorCard key={d.name} doctor={d} />

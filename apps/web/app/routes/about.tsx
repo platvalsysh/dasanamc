@@ -1,10 +1,13 @@
+import { Link } from "react-router";
 import type { Route } from "./+types/about";
 import {
   HOSPITAL,
   THREE_ONE,
   STRENGTHS_4,
+  STAT_BIG,
 } from "~/data/dasanone-content";
 import { StickyBgHero } from "~/components/site/StickyBgHero";
+import { SectionHead } from "~/components/site/SectionHead";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -17,6 +20,9 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+/** WHY DASANONE bento 카드용 강조 지표 */
+const STRENGTH_FIGURES = ["협진", "직접 집도", "CT", "CAT"] as const;
+
 export default function About() {
   return (
     <>
@@ -26,96 +32,202 @@ export default function About() {
         copy={"반려동물과 건강한 동행,\n다산원동물의료센터가 함께 하겠습니다."}
       />
 
-      {/* 인사말 placeholder — 추후 본문 보강 */}
-      <section className="max-w-[920px] mx-auto px-8 pt-[88px] pb-12 text-center">
+      {/* GREETING — 대형 serif statement */}
+      <section className="max-w-[1080px] mx-auto px-8 pt-28 pb-24 text-center">
         <div
-          className="mb-7"
+          className="mb-8"
           style={{
             font: "700 13px/1 ui-monospace, monospace",
             letterSpacing: "0.24em",
-            color: "var(--color-ds-orange)",
+            color: "var(--color-ds-teal)",
           }}
         >
           GREETING
         </div>
         <p
           data-reveal=""
-          className="font-extrabold text-balance"
+          className="serif font-medium text-balance"
           style={{
-            fontSize: "clamp(22px, 3vw, 34px)",
-            lineHeight: 1.55,
-            letterSpacing: "-0.025em",
+            fontSize: "clamp(26px, 3.4vw, 44px)",
+            lineHeight: 1.5,
+            letterSpacing: "-0.02em",
             color: "var(--color-ds-text)",
           }}
         >
-          말 못 하는 아이들의 작은 신호 하나까지<br />
-          놓치지 않는 진료, 다산원동물의료센터가 약속합니다.
+          말 못 하는 아이들의 작은 신호 하나까지
+          <br />
+          놓치지 않는 진료를 약속합니다.
         </p>
-        <p className="mt-7 text-[16px] max-w-[640px] mx-auto" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.85 }}>
+        <p
+          className="mt-9 text-[16.5px] max-w-[680px] mx-auto"
+          style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.9 }}
+        >
           365일 24시간 연중무휴로 운영되는 응급·중환자 시스템과 11개 분과별
           특화센터, 6명의 전공의가 한 명의 환자를 함께 보는 협진 체계로
           내 아이의 가장 가까운 주치의가 되겠습니다.
         </p>
       </section>
 
-      {/* 3 ONE — 홈의 SPECIALTY CENTERS 와 통일된 다크 teal 섹션 */}
+      {/* BY THE NUMBERS — bento 대형 숫자 카드 */}
+      <section className="max-w-[1280px] mx-auto px-8 pb-28">
+        <div
+          data-stagger=""
+          className="grid grid-cols-1 md:grid-cols-2 gap-5 four"
+        >
+          {STAT_BIG.map((s, i) => (
+            <div
+              key={i}
+              className="rounded-[24px] p-10 md:p-12 flex flex-col justify-between min-h-[240px]"
+              style={{ background: "#f4f7f6" }}
+            >
+              <div
+                className="font-extrabold"
+                style={{
+                  fontSize: "clamp(56px, 7vw, 96px)",
+                  lineHeight: 1,
+                  letterSpacing: "-0.04em",
+                  color: "var(--color-ds-text)",
+                }}
+              >
+                {s.v}
+              </div>
+              <div className="mt-8">
+                <div className="text-[19px] font-extrabold mb-1.5" style={{ color: "var(--color-ds-text)" }}>
+                  {s.l}
+                </div>
+                <p className="text-[14.5px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.6 }}>
+                  {s.s}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 3 ONE — 다크 teal statement 섹션 */}
       <section
-        className="darkhero py-20 md:py-24"
+        className="darkhero py-24 md:py-32"
         data-bg-full="1"
         style={{ background: "#0d3a35", color: "#fff" }}
       >
         <div className="max-w-[1280px] mx-auto px-8">
-          <div className="text-center max-w-[760px] mx-auto mb-12">
-            <div
-              className="mb-4"
-              style={{
-                font: "700 13px/1 ui-monospace, monospace",
-                letterSpacing: "0.22em",
-                color: "#56c8b8",
-              }}
-            >
-              3 ONE SYSTEM
-            </div>
-            <h2 className="text-[32px] font-extrabold" style={{ letterSpacing: "-0.03em", lineHeight: 1.35, color: "#fff" }}>
-              세 가지 ‘ONE’, 다산원이 지키겠습니다
-            </h2>
-          </div>
-          <div data-stagger="" className="grid grid-cols-1 md:grid-cols-3 gap-6 three">
+          <SectionHead
+            eyebrow="3 ONE SYSTEM"
+            title="세 가지 ‘ONE’, 다산원이 지키겠습니다"
+            align="center"
+            onDark
+          />
+          <div data-stagger="" className="grid grid-cols-1 md:grid-cols-3 gap-5 three">
             {THREE_ONE.map((t, i) => (
-              <div key={i} className="pt-[30px] px-1" style={{ borderTop: "2px solid #6ed4c5" }}>
-                <div className="mb-2" style={{ font: "800 16px/1 ui-monospace, monospace", color: "#6ed4c5" }}>{t.tag}</div>
-                <div className="text-[21px] font-extrabold mb-3.5" style={{ color: "#fff" }}>{t.ko}</div>
-                <p className="text-[15px]" style={{ color: "#aec6bf", lineHeight: 1.7 }}>{t.d}</p>
+              <div
+                key={i}
+                className="rounded-[24px] p-9 md:p-10 min-h-[300px] flex flex-col"
+                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)" }}
+              >
+                <div
+                  className="font-extrabold mb-auto"
+                  style={{
+                    font: "800 clamp(40px, 4.5vw, 60px)/1 ui-monospace, monospace",
+                    color: "#56c8b8",
+                    letterSpacing: "-0.03em",
+                  }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </div>
+                <div className="mt-10">
+                  <div className="mb-2" style={{ font: "800 14px/1 ui-monospace, monospace", color: "#6ed4c5" }}>
+                    {t.tag}
+                  </div>
+                  <div className="text-[22px] font-extrabold mb-3.5" style={{ color: "#fff" }}>{t.ko}</div>
+                  <p className="text-[15px]" style={{ color: "#aec6bf", lineHeight: 1.75 }}>{t.d}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 4 strengths */}
-      <section className="max-w-[1280px] mx-auto px-8 pt-12 pb-24">
-        <div className="text-center max-w-[760px] mx-auto mb-12">
-          <div
-            className="mb-4"
-            style={{
-              font: "700 13px/1 ui-monospace, monospace",
-              letterSpacing: "0.22em",
-              color: "var(--color-ds-teal)",
-            }}
-          >
-            WHY DASANONE
-          </div>
-          <h2 className="text-[32px] font-extrabold" style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}>
-            왜 다산원동물의료센터일까요?
-          </h2>
-        </div>
-        <div data-stagger="" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 four">
+      {/* WHY DASANONE — bento 그리드 */}
+      <section className="max-w-[1280px] mx-auto px-8 py-24 md:py-32">
+        <SectionHead
+          eyebrow="WHY DASANONE"
+          title="왜 다산원동물의료센터일까요?"
+          desc="대학병원급 진단 인프라와 분과별 전공의 협진으로 한 곳에서 완결되는 진료를 제공합니다."
+        />
+        <div data-stagger="" className="grid grid-cols-1 md:grid-cols-2 gap-5 four">
           {STRENGTHS_4.map((s, i) => (
-            <div key={i} className="pt-[26px] px-1" style={{ borderTop: "1px solid #ddd0b8" }}>
-              <div className="mb-[18px]" style={{ font: "800 14px/1 ui-monospace, monospace", color: "#c9bda3" }}>{s.n}</div>
-              <div className="text-[17px] font-extrabold mb-2.5" style={{ color: "var(--color-ds-text)", lineHeight: 1.4 }}>{s.t}</div>
-              <p className="text-sm" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.6 }}>{s.d}</p>
+            <div
+              key={i}
+              className="rounded-[24px] p-10 md:p-12 min-h-[230px] flex flex-col"
+              style={{ background: "#f4f7f6" }}
+            >
+              <div className="flex items-start justify-between">
+                <div
+                  style={{
+                    font: "800 clamp(34px, 4vw, 52px)/1 ui-monospace, monospace",
+                    color: "var(--color-ds-teal)",
+                    letterSpacing: "-0.03em",
+                  }}
+                >
+                  {s.n}
+                </div>
+                <div
+                  className="font-extrabold text-right"
+                  style={{
+                    fontSize: "clamp(17px, 1.8vw, 22px)",
+                    color: "#c2ccc8",
+                    letterSpacing: "-0.01em",
+                  }}
+                >
+                  {STRENGTH_FIGURES[i]}
+                </div>
+              </div>
+              <div className="mt-auto pt-10">
+                <div className="text-[20px] font-extrabold mb-2.5" style={{ color: "var(--color-ds-text)", lineHeight: 1.35 }}>
+                  {s.t}
+                </div>
+                <p className="text-[15px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.7 }}>
+                  {s.d}
+                </p>
+              </div>
             </div>
+          ))}
+        </div>
+
+        {/* 하위 페이지 안내 CTA */}
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[
+            { to: "/about/doctors", label: "의료진 소개", desc: "6명 전원 석사 이상의 전문 의료진" },
+            { to: "/about/facilities", label: "병원 둘러보기", desc: "환자 동선에 맞춰 설계된 12개 공간" },
+            { to: "/about/equipment", label: "장비 소개", desc: "분과별 최신 의료 장비 25종" },
+          ].map((card) => (
+            <Link
+              key={card.to}
+              to={card.to}
+              className="group flex items-center justify-between rounded-[18px] px-8 py-7 transition-colors hover:bg-[#0d3a35]"
+              style={{ background: "#f4f7f6" }}
+            >
+              <div>
+                <div
+                  className="text-[18px] font-extrabold mb-1 transition-colors group-hover:text-white"
+                  style={{ color: "var(--color-ds-text)" }}
+                >
+                  {card.label}
+                </div>
+                <p
+                  className="text-[13.5px] transition-colors group-hover:text-[#aec6bf]"
+                  style={{ color: "var(--color-ds-text-sub)" }}
+                >
+                  {card.desc}
+                </p>
+              </div>
+              <span
+                className="text-[22px] transition-all group-hover:translate-x-1 group-hover:text-[#6ed4c5]"
+                style={{ color: "#c2ccc8" }}
+              >
+                →
+              </span>
+            </Link>
           ))}
         </div>
       </section>

@@ -45,32 +45,74 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
         sub={c.en}
       />
 
-      <article className="max-w-[920px] mx-auto px-8 py-16">
-        <div className="mb-2 text-[13px] font-semibold" style={{ letterSpacing: "0.06em", color: "#a59a82" }}>
-          {c.en}
+      <article className="max-w-[1080px] mx-auto px-8 py-24">
+        {/* 리드 — 센터 번호 + overview 대형 문단 */}
+        <div className="grid grid-cols-1 md:grid-cols-[0.28fr_0.72fr] gap-8 md:gap-14 mb-16 items-start">
+          <div>
+            <div
+              style={{
+                font: "800 clamp(56px, 8vw, 104px)/1 ui-monospace, monospace",
+                color: "var(--color-ds-teal)",
+                letterSpacing: "-0.04em",
+              }}
+            >
+              {c.num}
+            </div>
+            <div className="mt-3 text-[13px] font-semibold" style={{ letterSpacing: "0.05em", color: "#a8b3ae" }}>
+              {c.en}
+            </div>
+          </div>
+          <p
+            className="font-medium"
+            style={{
+              fontSize: "clamp(18px, 2vw, 24px)",
+              color: "var(--color-ds-text)",
+              lineHeight: 1.75,
+              letterSpacing: "-0.015em",
+            }}
+          >
+            {c.overview}
+          </p>
         </div>
 
-        <p className="text-[16px] mb-12" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.85 }}>
-          {c.overview}
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
-          <div>
-            <div className="text-[12.5px] font-extrabold mb-3" style={{ letterSpacing: "0.04em", color: "var(--color-ds-teal)" }}>
+        {/* 진료 대상 / 강점 — bento 카드 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-20">
+          <div className="rounded-[24px] p-9 md:p-10" style={{ background: "#f4f7f6" }}>
+            <div
+              className="mb-5"
+              style={{
+                font: "700 13px/1 ui-monospace, monospace",
+                letterSpacing: "0.2em",
+                color: "var(--color-ds-teal)",
+              }}
+            >
+              TARGETS
+            </div>
+            <div className="text-[19px] font-extrabold mb-4" style={{ color: "var(--color-ds-text)" }}>
               주요 진료 대상
             </div>
-            <p className="text-[15px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.8 }}>
+            <p className="text-[15.5px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.85 }}>
               {c.targets}
             </p>
           </div>
-          <div>
-            <div className="text-[12.5px] font-extrabold mb-3" style={{ letterSpacing: "0.04em", color: "var(--color-ds-teal)" }}>
+          <div className="rounded-[24px] p-9 md:p-10" style={{ background: "#0d3a35" }}>
+            <div
+              className="mb-5"
+              style={{
+                font: "700 13px/1 ui-monospace, monospace",
+                letterSpacing: "0.2em",
+                color: "#56c8b8",
+              }}
+            >
+              STRENGTHS
+            </div>
+            <div className="text-[19px] font-extrabold mb-4 text-white">
               다산원의 강점
             </div>
-            <ul className="list-none flex flex-col gap-2.5">
+            <ul className="list-none flex flex-col gap-3">
               {c.strengths.map((s) => (
-                <li key={s} className="flex gap-3 text-[15px]" style={{ color: "#3a4744", lineHeight: 1.65 }}>
-                  <span className="font-extrabold shrink-0" style={{ color: "var(--color-ds-teal)" }}>✓</span>
+                <li key={s} className="flex gap-3 text-[15px]" style={{ color: "#cfe3dd", lineHeight: 1.7 }}>
+                  <span className="font-extrabold shrink-0" style={{ color: "#6ed4c5" }}>✓</span>
                   {s}
                 </li>
               ))}

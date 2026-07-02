@@ -1,6 +1,7 @@
 import type { Route } from "./+types/facilities";
 import { HOSPITAL, FACILITIES } from "~/data/dasanone-content";
 import { StickyBgHero } from "~/components/site/StickyBgHero";
+import { SectionHead } from "~/components/site/SectionHead";
 import { HERO_IMAGES, FACILITY_STOCK } from "~/data/stock-images";
 import { AssetSlot } from "~/components/AssetSlot";
 
@@ -25,7 +26,12 @@ export default function AboutFacilities() {
         sub="진료실부터 ICU 중환자실, 고양이 전용 공간까지 — 12개 핵심 공간"
       />
 
-      <section className="max-w-[1280px] mx-auto px-8 py-20">
+      <section className="max-w-[1280px] mx-auto px-8 py-24 md:py-28">
+        <SectionHead
+          eyebrow="FACILITIES"
+          title="공간 하나하나에 아이들을 담았습니다"
+          desc="진료실부터 ICU 중환자실, 고양이 전용 공간까지 — 환자 동선에 맞춰 설계된 12개 핵심 공간."
+        />
         <div
           data-stagger=""
           className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 facgrid"
@@ -33,8 +39,8 @@ export default function AboutFacilities() {
           {FACILITIES.map((f, i) => (
             <div
               key={f.name}
-              className="rounded-[10px] overflow-hidden bg-white"
-              style={{ border: "1px solid #e9dfca" }}
+              className="rounded-[18px] overflow-hidden"
+              style={{ background: "#f4f7f6" }}
             >
               <AssetSlot
                 src={FACILITY_STOCK[i]}

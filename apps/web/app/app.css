@@ -355,6 +355,20 @@ body {
 .centertrack { scrollbar-width: none; -ms-overflow-style: none; }
 .centertrack::-webkit-scrollbar { display: none; }
 
+/* quick 메뉴 라벨 — hover 시 밑줄이 좌→우로 채워짐 (brainall 패턴) */
+.qb-label::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -3px;
+  transform: translateX(-50%);
+  width: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.65);
+  transition: width .4s;
+}
+.qb-item:hover .qb-label::before { width: 100%; }
+
 @media (max-width: 1080px) {
   .topnav { gap: 22px !important; }
   .three { grid-template-columns: 1fr !important; }

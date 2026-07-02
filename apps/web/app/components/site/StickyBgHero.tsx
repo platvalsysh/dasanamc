@@ -110,13 +110,13 @@ export function StickyBgHero({ bgImage, location, copy, sub }: StickyBgHeroProps
             // 스크롤 완료 시 텍스트 블록이 viewport 세로 정중앙에 오도록,
             // 초기 paddingTop 과 실제 콘텐츠 높이를 실측해 이동량 계산.
             y: () => {
+              const vh = window.innerHeight || 800;
               const inner =
                 txtWrap.querySelector<HTMLElement>(".sb-txt-inner");
-              if (!inner) return "26vh";
+              if (!inner) return vh * 0.26;
               const padTop = parseFloat(
                 getComputedStyle(txtWrap).paddingTop || "0",
               );
-              const vh = window.innerHeight || 800;
               const target = (vh - inner.offsetHeight) / 2 - padTop;
               return Math.max(0, target);
             },

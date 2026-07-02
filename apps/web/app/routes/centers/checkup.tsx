@@ -8,6 +8,7 @@ import {
   type CheckRow,
 } from "~/data/dasanone-content";
 import { StickyBgHero } from "~/components/site/StickyBgHero";
+import { SectionHead } from "~/components/site/SectionHead";
 import { HERO_IMAGES } from "~/data/stock-images";
 
 export function meta({}: Route.MetaArgs) {
@@ -79,74 +80,81 @@ export default function CentersCheckup() {
         sub="Basic · Standard · Premium 맞춤 프로그램"
       />
 
-      <section className="max-w-[1280px] mx-auto px-8 py-16">
-        <div className="rounded-[20px] p-11" style={{ background: "#f4f7f5", border: "1px solid #e7ece8" }}>
-          <div className="mb-3" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.18em", color: "var(--color-ds-teal)" }}>
-            PROCESS
-          </div>
-          <h2 className="text-[26px] font-extrabold mb-3.5" style={{ letterSpacing: "-0.02em", color: "var(--color-ds-text)" }}>
-            5단계 검진 프로세스
-          </h2>
-          <p className="text-[15px] max-w-[760px] mb-9" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.7 }}>
-            결과는 보호자와 충분히 상담하여 생활습관·연령·질환 이력에 맞춘
-            맞춤형 건강관리 계획으로 이어집니다.
-          </p>
-          <div data-stagger="" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 proc">
-            {PROCESS_STEPS.map((p) => (
-              <div key={p.n} className="bg-white rounded-[13px] px-[18px] py-5" style={{ border: "1px solid #e7ece8" }}>
-                <div className="mb-3" style={{ font: "800 15px/1 ui-monospace, monospace", color: "var(--color-ds-teal)" }}>
-                  {p.n}
+      {/* 5단계 프로세스 — 대형 번호 bento */}
+      <section className="max-w-[1280px] mx-auto px-8 py-24 md:py-28">
+        <SectionHead
+          eyebrow="PROCESS"
+          title="5단계 검진 프로세스"
+          desc="결과는 보호자와 충분히 상담하여 생활습관·연령·질환 이력에 맞춘 맞춤형 건강관리 계획으로 이어집니다."
+        />
+        <div data-stagger="" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 proc">
+          {PROCESS_STEPS.map((p) => (
+            <div
+              key={p.n}
+              className="rounded-[20px] px-7 py-8 flex flex-col min-h-[240px]"
+              style={{ background: "#f4f7f6" }}
+            >
+              <div
+                style={{
+                  font: "800 clamp(30px, 3vw, 40px)/1 ui-monospace, monospace",
+                  color: "var(--color-ds-teal)",
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                {p.n}
+              </div>
+              <div className="mt-auto pt-8">
+                <div className="text-[16.5px] font-extrabold mb-2" style={{ color: "var(--color-ds-text)" }}>{p.t}</div>
+                <p className="text-[13px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.6 }}>{p.d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 프로그램 선택 가이드 — 다크 하이라이트 카드 */}
+      <section
+        className="darkhero py-24 md:py-28"
+        data-bg-full="1"
+        style={{ background: "#0d3a35" }}
+      >
+        <div className="max-w-[1280px] mx-auto px-8">
+          <SectionHead
+            eyebrow="WHICH PROGRAM?"
+            title="우리 아이에게 맞는 프로그램은?"
+            onDark
+          />
+          <div data-stagger="" className="grid grid-cols-1 md:grid-cols-3 gap-5 three">
+            {CHECKUP_GUIDE.map((g) => (
+              <div
+                key={g.level}
+                className="rounded-[24px] p-9 md:p-10 min-h-[280px] flex flex-col"
+                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)" }}
+              >
+                <div
+                  style={{
+                    font: "800 clamp(30px, 3.2vw, 42px)/1.1 ui-monospace, monospace",
+                    color: "#56c8b8",
+                    letterSpacing: "-0.02em",
+                  }}
+                >
+                  {g.level}
                 </div>
-                <div className="text-[15px] font-extrabold mb-2">{p.t}</div>
-                <p className="text-[12.5px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.55 }}>{p.d}</p>
+                <div className="mt-auto pt-10">
+                  <div className="text-[18px] font-extrabold mb-3 text-white">
+                    {g.target}
+                  </div>
+                  <p className="text-[14.5px]" style={{ color: "#aec6bf", lineHeight: 1.75 }}>
+                    {g.desc}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 프로그램 선택 가이드 — 연령별 권장 */}
-      <section className="max-w-[1280px] mx-auto px-8 pb-14">
-        <div className="mb-8">
-          <div
-            className="mb-3.5"
-            style={{
-              font: "700 13px/1 ui-monospace, monospace",
-              letterSpacing: "0.22em",
-              color: "var(--color-ds-teal)",
-            }}
-          >
-            WHICH PROGRAM?
-          </div>
-          <h2 className="text-[26px] font-extrabold" style={{ letterSpacing: "-0.02em", color: "var(--color-ds-text)" }}>
-            우리 아이에게 맞는 프로그램은?
-          </h2>
-        </div>
-        <div data-stagger="" className="grid grid-cols-1 md:grid-cols-3 gap-4 three">
-          {CHECKUP_GUIDE.map((g) => (
-            <div
-              key={g.level}
-              className="rounded-2xl bg-white p-7"
-              style={{ border: "1px solid #e9dfca" }}
-            >
-              <div
-                className="mb-1"
-                style={{ font: "800 20px/1.2 ui-monospace, monospace", color: "var(--color-ds-teal)" }}
-              >
-                {g.level}
-              </div>
-              <div className="text-[15px] font-extrabold mb-3" style={{ color: "var(--color-ds-text)" }}>
-                {g.target}
-              </div>
-              <p className="text-[13.5px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.7 }}>
-                {g.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="max-w-[1280px] mx-auto px-8 pb-20">
+      <section className="max-w-[1280px] mx-auto px-8 py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 tablewrap">
           <CheckTable title="강아지 건강검진" emoji="🐶" subtitle="Dog Health Check" rows={DOG_ROWS} />
           <CheckTable title="고양이 건강검진" emoji="🐱" subtitle="Cat Health Check" rows={CAT_ROWS} />
