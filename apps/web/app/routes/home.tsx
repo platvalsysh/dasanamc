@@ -70,11 +70,11 @@ export default function Home() {
                   365일 24시간 연중무휴 응급진료
                 </div>
                 <h1
-                  className="font-extrabold"
+                  className="serif font-medium"
                   style={{
-                    fontSize: "clamp(36px, 5.6vw, 76px)",
-                    lineHeight: 1.15,
-                    letterSpacing: "-0.035em",
+                    fontSize: "clamp(38px, 5.8vw, 78px)",
+                    lineHeight: 1.2,
+                    letterSpacing: "-0.025em",
                     background: "linear-gradient(178deg,#fbf7ee 30%,rgba(232,219,199,0.78))",
                     WebkitBackgroundClip: "text",
                     backgroundClip: "text",

@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useLocation } from "react-router";
 
 /**
  * 다산원 reference 디자인의 스크롤 효과를 한 곳에서 처리.
@@ -26,6 +27,8 @@ const HERO_PHRASES = [
 const HERO_THRESHOLDS = [0, 0.25, 0.5, 0.75];
 
 export function ScrollEffects() {
+  const location = useLocation();
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     const doc = document.documentElement;
@@ -158,17 +161,24 @@ export function ScrollEffects() {
         }
       }
 
-      // 헤더 theme(dark/light) + scrolled
+      // 헤더 theme(dark / light-over / light) 3-state
       const header = document.getElementById("siteheader");
       if (header) {
-        // 다크 hero 영역이 헤더(78px) 아래로 사라지면 light, 아니면 dark
-        const dh = document.querySelector(".darkhero");
-        const overHero = dh
-          ? (dh as HTMLElement).getBoundingClientRect().bottom > 84
-          : false;
-        header.setAttribute("data-theme", overHero ? "dark" : "light");
+        // viewport 상단 (헤더 아래 84px 안) 을 덮은 `.darkhero` 후보 찾기
+        const overCandidate = (
+          Array.from(document.querySelectorAll(".darkhero")) as HTMLElement[]
+        ).find((el) => el.getBoundingClientRect().bottom > 84);
+
+        let theme: "dark" | "light-over" | "light" = "light";
+        if (overCandidate) {
+          const bgFull = overCandidate.getAttribute("data-bg-full");
+          // attribute 없음 = 항상 다크 (DarkPageHero) → dark
+          // attribute "1" = StickyBgHero 배경 다 채워짐 → dark
+          // attribute "0" = StickyBgHero 초기(흰 배경) → light-over (투명 + 어두운 글자)
+          theme = bgFull === "0" ? "light-over" : "dark";
+        }
+        header.setAttribute("data-theme", theme);
         header.setAttribute("data-scrolled", y > 8 ? "1" : "0");
-        // hide-on-scroll-down 비활성: 헤더는 항상 sticky 유지
         header.setAttribute("data-hidden", "0");
       }
       lastY = y;
@@ -177,13 +187,35 @@ export function ScrollEffects() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
 
+    // 라우트 전환 감지용 — window 에 attach 해서 다른 useEffect 에서 재호출
+    (window as unknown as { __dsRunOnScroll?: () => void }).__dsRunOnScroll =
+      onScroll;
+
     return () => {
       window.removeEventListener("scroll", onScroll);
       clearTimeout(fallback);
       io?.disconnect();
       mo.disconnect();
+      delete (window as unknown as { __dsRunOnScroll?: () => void })
+        .__dsRunOnScroll;
     };
   }, []);
+
+  // 라우트 전환 시 헤더 theme 즉시 갱신 — 새 페이지의 `.darkhero` 위치를 반영
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const run = (window as unknown as { __dsRunOnScroll?: () => void })
+      .__dsRunOnScroll;
+    if (!run) return;
+    // 다음 프레임까지 미뤄서 새 페이지 DOM 이 mount 된 후 측정
+    const raf1 = requestAnimationFrame(() => {
+      run();
+      const raf2 = requestAnimationFrame(run);
+      // 하나 더 예약해두면 async 서브트리에도 대응
+      (window as unknown as { __dsRafId?: number }).__dsRafId = raf2;
+    });
+    return () => cancelAnimationFrame(raf1);
+  }, [location.pathname, location.hash]);
 
   // 페이지 상단 진행률 바 (CSS 가 width 처리)
   return <div id="scrollbar" />;

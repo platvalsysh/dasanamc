@@ -8,7 +8,8 @@
 
 @theme {
   --font-sans: "Spoqa Han Sans Neo", "Spoqa Han Sans", "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
-  --font-serif: "Noto Serif KR", serif;
+  /* 영문(Noto Serif) + 한글(Noto Serif KR) 혼용 폴백 체인 */
+  --font-serif: "Noto Serif", "Noto Serif KR", "Nanum Myeongjo", "Apple SD Gothic Neo", serif;
 
   /* ----- DASANONE design tokens (from DasanoneSite.dc.html) ----- */
   --color-ds-bg: #ffffff;
@@ -39,6 +40,12 @@
   --color-snugray: #6f7d79;
   --color-snugold: #0e9d8c;
   --color-snusilver: #c4d3ce;
+}
+
+/* 세리프 유틸리티 — `.serif` 만 붙이면 Noto Serif / Noto Serif KR 로 전환 */
+.serif,
+.font-serif {
+  font-family: var(--font-serif) !important;
 }
 
 html,
@@ -201,12 +208,31 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.22) !important;
   backdrop-filter: blur(6px);
 }
-/* light theme — over light body (흰 배경 + 진한 글자) */
+/* light theme — over light body (흰 배경 + 진한 글자, 깔끔 — 라인/그림자 없음) */
 #siteheader[data-theme="light"] {
   background: #ffffff;
   backdrop-filter: none;
-  border-bottom: 1px solid var(--color-ds-border);
-  box-shadow: 0 1px 0 rgba(20, 42, 38, 0.04);
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+}
+/* light-over theme — 다크 hero 초기(아직 배경 안 채워짐) 상태: 투명 + 어두운 글자 */
+#siteheader[data-theme="light-over"] {
+  background: transparent;
+  backdrop-filter: none;
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+}
+#siteheader[data-theme="light-over"] .logo-light { display: none !important; }
+#siteheader[data-theme="light-over"] .logo-dark { display: block !important; }
+#siteheader[data-theme="light-over"] .topnav a,
+#siteheader[data-theme="light-over"] .topnav button { color: #1b2627; }
+#siteheader[data-theme="light-over"] .topnav a[data-active="1"],
+#siteheader[data-theme="light-over"] .topnav button[data-active="1"] { color: #0a7468; border-bottom-color: #0e9d8c; }
+#siteheader[data-theme="light-over"] .cta-call {
+  background: var(--color-ds-dark-warm) !important;
+  border: 1px solid var(--color-ds-dark-warm) !important;
+  color: #fff !important;
+  backdrop-filter: none !important;
 }
 #siteheader[data-theme="light"] .logo-light { display: none !important; }
 #siteheader[data-theme="light"] .logo-dark { display: block !important; }
@@ -220,8 +246,9 @@ body {
   color: #fff !important;
   backdrop-filter: none !important;
 }
+/* 스크롤 시에도 그림자/라인 없이 깔끔 유지 */
 #siteheader[data-scrolled="1"] {
-  box-shadow: 0 1px 0 rgba(20, 42, 38, .05), 0 10px 28px rgba(20, 42, 38, .05);
+  box-shadow: none;
 }
 .topnav a, .topnav button { font-weight: 600; color: #ffffff; border: none; border-bottom: 2.5px solid transparent; transition: color .2s ease; }
 .topnav a[data-active="1"], .topnav button[data-active="1"] { font-weight: 800; }

@@ -10,6 +10,7 @@ import { SiteFooter } from "~/components/site/SiteFooter";
 import { QuickBar } from "~/components/site/QuickBar";
 import { MobileBar } from "~/components/site/MobileBar";
 import { ScrollEffects } from "~/components/site/ScrollEffects";
+import { SmoothScroll } from "~/components/site/SmoothScroll";
 
 export async function loader() {
   const menuItems = await getSiteMenu("header");
@@ -31,6 +32,7 @@ function Shell({ menuItems, children }: PropsWithChildren<ShellProps>) {
   return (
     <SiteMenuProvider menuItems={menuItems || []}>
       <div className="flex min-h-screen flex-col bg-[color:var(--color-ds-bg)]">
+        <SmoothScroll />
         <ScrollEffects />
         <Header menuItems={menuItems} />
         <div className="flex-1 flex flex-col">

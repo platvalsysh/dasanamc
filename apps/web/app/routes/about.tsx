@@ -4,7 +4,7 @@ import {
   THREE_ONE,
   STRENGTHS_4,
 } from "~/data/dasanone-content";
-import { DarkPageHero } from "~/components/site/DarkPageHero";
+import { StickyBgHero } from "~/components/site/StickyBgHero";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -20,10 +20,10 @@ export function meta({}: Route.MetaArgs) {
 export default function About() {
   return (
     <>
-      <DarkPageHero
-        tag="ABOUT"
-        title="병원소개"
-        subtitle="반려동물과 건강한 동행이 되도록, 다산원동물의료센터가 함께 하겠습니다."
+      <StickyBgHero
+        bgImage="/images/hero-reception.jpg"
+        subtitle="반려동물과 건강한 동행,
+다산원동물의료센터가 함께 하겠습니다."
       />
 
       {/* 인사말 placeholder — 추후 본문 보강 */}

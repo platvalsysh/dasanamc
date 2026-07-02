@@ -41,10 +41,13 @@ export const links: Route.LinksFunction = () => [
     rel: "stylesheet",
     href: "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css",
   },
+  // 세리프 폰트 — 영문 Noto Serif + 한글 Noto Serif KR (혼용 시 자연스러운 매칭)
+  { rel: "preconnect", href: "https://fonts.googleapis.com" },
+  { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap",
-  }
+    href: "https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&family=Noto+Serif:ital,wght@0,400..700;1,400..700&display=swap",
+  },
 ];
 
 export const meta: Route.MetaFunction = () => [
