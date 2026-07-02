@@ -70,6 +70,9 @@ export default defineConfig(({ mode, isSsrBuild }) => ({
       "lucide-react",
       "clsx",
       "tailwind-merge",
+      // gsap 은 CJS 배포라 Node ESM 런타임(Vercel)에서 named import 가 깨짐 — 서버 번들에 포함
+      /^gsap(\/|$)/,
+      /^lenis(\/|$)/,
     ],
     external: [
       "react",
