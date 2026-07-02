@@ -30,16 +30,24 @@ export default function AboutFacilities() {
         >
           {FACILITIES.map((f) => (
             <div
-              key={f}
-              className="rounded-[10px] overflow-hidden"
+              key={f.name}
+              className="rounded-[10px] overflow-hidden bg-white"
               style={{ border: "1px solid #e9dfca" }}
             >
               <AssetSlot style={{ aspectRatio: "4/3" }} label="사진 영역" />
-              <div
-                className="px-3.5 py-3 text-[13.5px] font-bold"
-                style={{ color: "#2a3b37" }}
-              >
-                {f}
+              <div className="px-3.5 pt-3 pb-4">
+                <div
+                  className="text-[13.5px] font-bold mb-1.5"
+                  style={{ color: "#2a3b37" }}
+                >
+                  {f.name}
+                </div>
+                <p
+                  className="text-[12.5px]"
+                  style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.6 }}
+                >
+                  {f.desc}
+                </p>
               </div>
             </div>
           ))}

@@ -1,6 +1,6 @@
 import { Link, redirect } from "react-router";
 import type { Route } from "./+types/$id";
-import { HOSPITAL, CENTERS } from "~/data/dasanone-content";
+import { HOSPITAL, CENTERS, CENTER_CASES } from "~/data/dasanone-content";
 import { DarkPageHero } from "~/components/site/DarkPageHero";
 
 export function loader({ params }: Route.LoaderArgs) {
@@ -31,6 +31,9 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
   const idx = CENTERS.findIndex((x) => x.id === c.id);
   const prev = idx > 0 ? CENTERS[idx - 1] : null;
   const next = idx >= 0 && idx < CENTERS.length - 1 ? CENTERS[idx + 1] : null;
+
+  // 이 센터와 관련된 블로그 진료 케이스
+  const cases = CENTER_CASES[c.id] ?? [];
 
   return (
     <>
@@ -72,6 +75,47 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
             </ul>
           </div>
         </div>
+
+        {/* 관련 진료 케이스 — 네이버 블로그 실제 포스트 */}
+        {cases.length > 0 && (
+          <div className="mb-16">
+            <div
+              className="mb-3.5"
+              style={{
+                font: "700 13px/1 ui-monospace, monospace",
+                letterSpacing: "0.22em",
+                color: "var(--color-ds-teal)",
+              }}
+            >
+              CASES
+            </div>
+            <h2 className="text-[22px] font-extrabold mb-6" style={{ letterSpacing: "-0.02em", color: "var(--color-ds-text)" }}>
+              관련 진료 케이스
+            </h2>
+            <div className="flex flex-col gap-px rounded-2xl overflow-hidden" style={{ background: "#e8ddc6", border: "1px solid #e8ddc6" }}>
+              {cases.map((cs) => (
+                <a
+                  key={cs.url}
+                  href={cs.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="bg-white px-6 py-4 flex items-center gap-4 transition-colors hover:bg-[rgba(14,157,140,0.04)]"
+                >
+                  <span
+                    className="text-[11px] font-extrabold shrink-0"
+                    style={{ color: "var(--color-ds-teal)", background: "#e2f4f1", padding: "4px 10px", borderRadius: 6 }}
+                  >
+                    블로그
+                  </span>
+                  <span className="text-[14.5px] font-semibold flex-1" style={{ color: "#2a3b37" }}>
+                    {cs.title}
+                  </span>
+                  <span className="shrink-0 text-[15px]" style={{ color: "#cbd6d1" }}>→</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* prev / next nav */}
         <div className="grid grid-cols-2 gap-4 pt-10" style={{ borderTop: "1px solid #e9dfca" }}>

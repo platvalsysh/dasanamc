@@ -4,6 +4,7 @@ import {
   PROCESS_STEPS,
   DOG_ROWS,
   CAT_ROWS,
+  CHECKUP_GUIDE,
   type CheckRow,
 } from "~/data/dasanone-content";
 import { DarkPageHero } from "~/components/site/DarkPageHero";
@@ -99,6 +100,47 @@ export default function CentersCheckup() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* 프로그램 선택 가이드 — 연령별 권장 */}
+      <section className="max-w-[1280px] mx-auto px-8 pb-14">
+        <div className="mb-8">
+          <div
+            className="mb-3.5"
+            style={{
+              font: "700 13px/1 ui-monospace, monospace",
+              letterSpacing: "0.22em",
+              color: "var(--color-ds-teal)",
+            }}
+          >
+            WHICH PROGRAM?
+          </div>
+          <h2 className="text-[26px] font-extrabold" style={{ letterSpacing: "-0.02em", color: "var(--color-ds-text)" }}>
+            우리 아이에게 맞는 프로그램은?
+          </h2>
+        </div>
+        <div data-stagger="" className="grid grid-cols-1 md:grid-cols-3 gap-4 three">
+          {CHECKUP_GUIDE.map((g) => (
+            <div
+              key={g.level}
+              className="rounded-2xl bg-white p-7"
+              style={{ border: "1px solid #e9dfca" }}
+            >
+              <div
+                className="mb-1"
+                style={{ font: "800 20px/1.2 ui-monospace, monospace", color: "var(--color-ds-teal)" }}
+              >
+                {g.level}
+              </div>
+              <div className="text-[15px] font-extrabold mb-3" style={{ color: "var(--color-ds-text)" }}>
+                {g.target}
+              </div>
+              <p className="text-[13.5px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.7 }}>
+                {g.desc}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 

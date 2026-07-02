@@ -3,6 +3,8 @@ import {
   HOSPITAL,
   LEAD_DOCTORS,
   REST_DOCTORS,
+  DOCTOR_DETAILS,
+  type DoctorDetail,
 } from "~/data/dasanone-content";
 import { DarkPageHero } from "~/components/site/DarkPageHero";
 import { AssetSlot } from "~/components/AssetSlot";
@@ -18,6 +20,116 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+/** 통합 프로필 카드 — 사진 + 이름/직책/약력 요약 + 철학 인용구 + 인사말 + 전체 약력 */
+function DoctorCard({
+  doctor,
+  isChief,
+}: {
+  doctor: { name: string; role: string; cred: string };
+  isChief?: boolean;
+}) {
+  const detail: DoctorDetail | undefined = DOCTOR_DETAILS.find(
+    (d) => d.name === doctor.name,
+  );
+
+  return (
+    <article
+      id={`profile-${doctor.name}`}
+      className="leadcard grid grid-cols-1 md:grid-cols-[0.38fr_0.62fr] rounded-[20px] overflow-hidden bg-white"
+      style={{ border: "1px solid #e9dfca", scrollMarginTop: 100 }}
+    >
+      {/* 사진 */}
+      <AssetSlot
+        style={{ minHeight: 320 }}
+        label={isChief ? "대표원장 사진" : "프로필 사진"}
+      />
+
+      {/* 상세 */}
+      <div className="px-8 py-9 md:px-10 md:py-10 flex flex-col">
+        <span
+          className="mb-3"
+          style={{
+            font: "700 12px/1 ui-monospace, monospace",
+            letterSpacing: "0.18em",
+            color: "var(--color-ds-teal)",
+          }}
+        >
+          {isChief ? "CHIEF DIRECTOR" : "VETERINARIAN"}
+        </span>
+        <div className="flex items-baseline gap-3 flex-wrap mb-2">
+          <span
+            className="text-[30px] font-extrabold"
+            style={{ color: "var(--color-ds-text)", letterSpacing: "-0.02em" }}
+          >
+            {doctor.name}
+          </span>
+          <span className="text-[14.5px] font-bold" style={{ color: "var(--color-ds-teal)" }}>
+            {doctor.role}
+          </span>
+        </div>
+        <p className="text-[13.5px] mb-5" style={{ color: "#6b7975", lineHeight: 1.6 }}>
+          {doctor.cred}
+        </p>
+
+        {detail && (
+          <>
+            {/* 진료 철학 인용구 */}
+            <blockquote
+              className="serif mb-5"
+              style={{
+                fontSize: "clamp(17px, 1.8vw, 20px)",
+                lineHeight: 1.5,
+                color: "#0a7468",
+                fontStyle: "italic",
+                borderLeft: "3px solid var(--color-ds-teal)",
+                paddingLeft: 16,
+              }}
+            >
+              “{detail.quote}”
+            </blockquote>
+
+            {/* 인사말 */}
+            <p
+              className="text-[14.5px] mb-7"
+              style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.85 }}
+            >
+              {detail.greeting}
+            </p>
+
+            {/* 전체 약력 */}
+            <div className="mt-auto">
+              <div
+                className="mb-3.5"
+                style={{
+                  font: "700 12px/1 ui-monospace, monospace",
+                  letterSpacing: "0.18em",
+                  color: "var(--color-ds-teal)",
+                }}
+              >
+                CAREER
+              </div>
+              <ul className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-1.5 list-none p-0 m-0">
+                {detail.career.map((c) => (
+                  <li
+                    key={c}
+                    className="flex gap-2.5 text-[13px]"
+                    style={{ color: "#5a554c", lineHeight: 1.65 }}
+                  >
+                    <span className="shrink-0 font-extrabold" style={{ color: "var(--color-ds-teal)" }}>
+                      ·
+                    </span>
+                    {c}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
+        )}
+      </div>
+    </article>
+  );
+}
+
 export default function AboutDoctors() {
   return (
     <>
@@ -27,11 +139,11 @@ export default function AboutDoctors() {
         subtitle="경북대 3 · 건국대 2 · 충남대 1 — 6명 전원 석사 이상의 전문 의료진이 함께합니다."
       />
 
-      <section className="max-w-[1280px] mx-auto px-8 py-20">
-        {/* 대표원장 2명 — 큰 카드 */}
-        <div className="mb-12">
+      <section className="max-w-[1180px] mx-auto px-8 py-20">
+        {/* 대표원장 */}
+        <div className="mb-16">
           <div
-            className="mb-7"
+            className="mb-3.5"
             style={{
               font: "700 13px/1 ui-monospace, monospace",
               letterSpacing: "0.22em",
@@ -40,36 +152,23 @@ export default function AboutDoctors() {
           >
             CHIEF DIRECTORS
           </div>
-          <h2 className="text-[28px] font-extrabold mb-10" style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}>
+          <h2
+            className="text-[28px] font-extrabold mb-10"
+            style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}
+          >
             대표원장
           </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[26px] leadgrid">
+          <div className="flex flex-col gap-8">
             {LEAD_DOCTORS.map((d) => (
-              <div
-                key={d.name}
-                className="leadcard grid grid-cols-[0.9fr_1.1fr] rounded-[20px] overflow-hidden"
-                style={{ border: "1px solid #e9dfca", background: "#fff" }}
-              >
-                <AssetSlot style={{ minHeight: 300 }} label="대표원장 사진" />
-                <div className="px-8 py-[34px] flex flex-col justify-center">
-                  <span className="mb-3.5" style={{ font: "700 12px/1 ui-monospace, monospace", letterSpacing: "0.18em", color: "var(--color-ds-teal)" }}>
-                    CHIEF DIRECTOR
-                  </span>
-                  <div className="flex items-baseline gap-3 mb-3 flex-wrap">
-                    <span className="text-[36px] font-extrabold" style={{ color: "var(--color-ds-text)", letterSpacing: "-0.02em" }}>{d.name}</span>
-                    <span className="text-[15px] font-bold" style={{ color: "var(--color-ds-teal)" }}>{d.role}</span>
-                  </div>
-                  <p className="text-[14.5px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.75 }}>{d.cred}</p>
-                </div>
-              </div>
+              <DoctorCard key={d.name} doctor={d} isChief />
             ))}
           </div>
         </div>
 
-        {/* 나머지 진료의 — 4명 */}
+        {/* 진료의 */}
         <div>
           <div
-            className="mb-7"
+            className="mb-3.5"
             style={{
               font: "700 13px/1 ui-monospace, monospace",
               letterSpacing: "0.22em",
@@ -78,21 +177,15 @@ export default function AboutDoctors() {
           >
             VETERINARIANS
           </div>
-          <h2 className="text-[28px] font-extrabold mb-10" style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}>
+          <h2
+            className="text-[28px] font-extrabold mb-10"
+            style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}
+          >
             진료의
           </h2>
-          <div data-stagger="" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 docgrid">
+          <div className="flex flex-col gap-8">
             {REST_DOCTORS.map((d) => (
-              <div key={d.name} className="rounded-xl overflow-hidden" style={{ border: "1px solid #e9dfca" }}>
-                <AssetSlot style={{ aspectRatio: "4 / 3.4" }} label="프로필 사진" />
-                <div className="p-[22px]">
-                  <div className="flex items-baseline gap-2.5 mb-1.5">
-                    <span className="text-[19px] font-extrabold" style={{ color: "var(--color-ds-text)" }}>{d.name}</span>
-                    <span className="text-[12.5px] font-bold" style={{ color: "var(--color-ds-teal)" }}>{d.role}</span>
-                  </div>
-                  <p className="text-[13px]" style={{ color: "#6b7975", lineHeight: 1.6 }}>{d.cred}</p>
-                </div>
-              </div>
+              <DoctorCard key={d.name} doctor={d} />
             ))}
           </div>
         </div>
