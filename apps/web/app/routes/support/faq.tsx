@@ -19,19 +19,20 @@ export default function SupportFaq() {
       <StickyBgHero
         bgImage={HERO_IMAGES.faq}
         location={[{ label: "고객센터", to: "/support" }, { label: "자주 묻는 질문" }]}
+        compact
         copy={"보호자님들이 가장 많이 물으시는 질문,\n미리 답해두었습니다."}
       />
 
       <section className="max-w-[920px] mx-auto px-8 py-16">
         <div className="flex flex-col gap-3">
           {FAQS.map((f, i) => (
-            <div key={i} className="px-1 py-7" style={{ borderTop: "1px solid #e9dfca" }}>
+            <div key={i} className="px-1 py-7" style={{ borderTop: "1px solid #e2e8e4" }}>
               <div className="flex gap-3 items-start mb-3">
                 <span className="text-[17px] font-extrabold shrink-0" style={{ color: "var(--color-ds-teal)" }}>Q</span>
                 <span className="text-[17px] font-extrabold" style={{ color: "var(--color-ds-text)", lineHeight: 1.5 }}>{f.q}</span>
               </div>
               <div className="flex gap-3 items-start pl-px">
-                <span className="text-[17px] font-extrabold shrink-0" style={{ color: "#c9bda3" }}>A</span>
+                <span className="text-[17px] font-extrabold shrink-0" style={{ color: "#b8c4bf" }}>A</span>
                 <p className="text-[15px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.75 }}>{f.a}</p>
               </div>
             </div>

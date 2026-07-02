@@ -19,25 +19,30 @@ export default function SupportNotice() {
       <StickyBgHero
         bgImage={HERO_IMAGES.notice}
         location={[{ label: "고객센터", to: "/support" }, { label: "공지사항" }]}
+        compact
         copy={"다산원의 새로운 소식을\n가장 먼저 전해드립니다."}
       />
 
-      <section className="max-w-[1080px] mx-auto px-8 py-16">
-        <div className="flex flex-col gap-px rounded-2xl overflow-hidden" style={{ background: "#e8ddc6", border: "1px solid #e8ddc6" }}>
+      <section className="max-w-[1080px] mx-auto px-8 py-24">
+        <div className="flex flex-col gap-3">
           {NOTICES_FALLBACK.map((n, i) => (
-            <div key={i} className="bg-white px-6 py-5 flex items-center gap-[18px]">
+            <div
+              key={i}
+              className="rounded-[18px] px-8 py-6 flex items-center gap-5"
+              style={{ background: "#f4f7f6" }}
+            >
               <span
                 className="text-[11.5px] font-extrabold shrink-0"
-                style={{ color: "var(--color-ds-teal)", background: "#e2f4f1", padding: "5px 11px", borderRadius: 6 }}
+                style={{ color: "var(--color-ds-teal)", background: "#ffffff", padding: "6px 12px", borderRadius: 8 }}
               >
                 {n.tag}
               </span>
-              <span className="text-[15px] font-semibold flex-1" style={{ color: "#2a3b37" }}>{n.t}</span>
-              <span className="text-[13px] shrink-0" style={{ color: "#a59a82" }}>{n.date}</span>
+              <span className="text-[15.5px] font-semibold flex-1" style={{ color: "var(--color-ds-text)" }}>{n.t}</span>
+              <span className="text-[13px] shrink-0" style={{ color: "#8a948f" }}>{n.date}</span>
             </div>
           ))}
         </div>
-        <p className="text-[13px] mt-5" style={{ color: "#a59a82" }}>
+        <p className="text-[13px] mt-6" style={{ color: "#8a948f" }}>
           ※ 추가 공지는 네이버 블로그({HOSPITAL.blog})에서도 확인하실 수 있습니다.
         </p>
       </section>

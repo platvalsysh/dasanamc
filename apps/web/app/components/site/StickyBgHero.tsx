@@ -29,9 +29,11 @@ interface StickyBgHeroProps {
   copy: string;
   /** 카피 아래 보조 텍스트 (선택) */
   sub?: string;
+  /** 콘텐츠가 얕은 페이지용 — 스크롤 트랙을 200vh 로 줄임 (기본 300vh) */
+  compact?: boolean;
 }
 
-export function StickyBgHero({ bgImage, location, copy, sub }: StickyBgHeroProps) {
+export function StickyBgHero({ bgImage, location, copy, sub, compact = false }: StickyBgHeroProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -132,7 +134,14 @@ export function StickyBgHero({ bgImage, location, copy, sub }: StickyBgHeroProps
           0.28,
         )
         // hold — 풀-블리드 상태에서 추가 스크롤 동안 머무름
-        .to({}, { duration: 0.5 });
+        .to({}, { duration: 0.5 })
+        // exit fade — hero 가 빠져나가기 직전 텍스트·breadcrumb 을 지워
+        // 헤더/로고와 겹쳐 보이는 프레임 방지
+        .to(
+          [txtWrap, section.querySelector(".sb-loc")].filter(Boolean),
+          { opacity: 0, ease: "none", duration: 0.1 },
+          0.9,
+        );
     }, section);
 
     return () => ctx.revert();
@@ -144,7 +153,8 @@ export function StickyBgHero({ bgImage, location, copy, sub }: StickyBgHeroProps
       className="relative"
       style={{
         background: "#ffffff",
-        height: "300vh", // 2 viewport 스크롤 영역 + 여유
+        // compact: 확장 1/2 viewport + 짧은 hold (얕은 페이지용)
+        height: compact ? "200vh" : "300vh",
       }}
       aria-label={copy}
     >
@@ -180,7 +190,7 @@ export function StickyBgHero({ bgImage, location, copy, sub }: StickyBgHeroProps
         {location && location.length > 0 && (
           <nav
             aria-label="현재 위치"
-            className="absolute z-[4] flex items-center flex-wrap gap-x-2.5 gap-y-1"
+            className="sb-loc absolute z-[4] flex items-center flex-wrap gap-x-2.5 gap-y-1"
             style={{
               top: 104,
               left: "clamp(24px, 4vw, 64px)",

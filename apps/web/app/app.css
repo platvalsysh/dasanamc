@@ -350,7 +350,7 @@ body {
 .soltabs button[data-active="1"] { font-weight: 800; color: #0e9d8c; border-bottom-color: #0e9d8c; }
 .hcheck tbody td:first-child { font-weight: 500; }
 .hcheck tbody td[data-head="1"] { font-weight: 700; }
-.hcheck tbody td[data-sep="1"] { border-top: 1px solid #e8ddc6; }
+.hcheck tbody td[data-sep="1"] { border-top: 1px solid #dfe6e2; }
 
 .centertrack { scrollbar-width: none; -ms-overflow-style: none; cursor: none; }
 .centertrack::-webkit-scrollbar { display: none; }

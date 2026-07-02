@@ -92,14 +92,14 @@ export default function SupportContact() {
                 required
                 placeholder="보호자 성함"
                 className="px-4 py-3.5 rounded-[10px] text-[15px] bg-white font-[inherit]"
-                style={{ border: "1px solid #ddd0b8" }}
+                style={{ border: "1px solid #d8e0dc" }}
               />
               <input
                 name="phone"
                 required
                 placeholder="연락처"
                 className="px-4 py-3.5 rounded-[10px] text-[15px] bg-white font-[inherit]"
-                style={{ border: "1px solid #ddd0b8" }}
+                style={{ border: "1px solid #d8e0dc" }}
               />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
@@ -107,13 +107,13 @@ export default function SupportContact() {
                 name="pet"
                 placeholder="반려동물 (이름/종/나이)"
                 className="px-4 py-3.5 rounded-[10px] text-[15px] bg-white font-[inherit]"
-                style={{ border: "1px solid #ddd0b8" }}
+                style={{ border: "1px solid #d8e0dc" }}
               />
               <input
                 name="desired"
                 placeholder="희망 진료 (예: CT, 외과 협진)"
                 className="px-4 py-3.5 rounded-[10px] text-[15px] bg-white font-[inherit]"
-                style={{ border: "1px solid #ddd0b8" }}
+                style={{ border: "1px solid #d8e0dc" }}
               />
             </div>
             <textarea
@@ -122,7 +122,7 @@ export default function SupportContact() {
               rows={5}
               placeholder="문의 내용을 남겨주세요"
               className="px-4 py-3.5 rounded-[10px] text-[15px] bg-white font-[inherit] resize-y"
-              style={{ border: "1px solid #ddd0b8" }}
+              style={{ border: "1px solid #d8e0dc" }}
             />
             <label className="flex items-center gap-2.5 text-[13.5px]" style={{ color: "var(--color-ds-text-sub)" }}>
               <input type="checkbox" name="agree" required className="w-4 h-4 accent-[color:var(--color-ds-teal)]" />

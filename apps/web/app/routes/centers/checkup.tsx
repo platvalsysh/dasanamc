@@ -34,11 +34,11 @@ function CheckTable({
   rows: readonly CheckRow[];
 }) {
   return (
-    <div className="rounded-xl px-6 py-[26px] overflow-x-auto" style={{ border: "1px solid #e9dfca", background: "transparent" }}>
+    <div className="rounded-xl px-6 py-[26px] overflow-x-auto" style={{ border: "1px solid #e2e8e4", background: "transparent" }}>
       <div className="text-[19px] font-extrabold mb-1" style={{ color: "var(--color-ds-text)" }}>
         {emoji} {title}
       </div>
-      <div className="text-[12.5px] mb-[18px]" style={{ color: "#a59a82" }}>{subtitle}</div>
+      <div className="text-[12.5px] mb-[18px]" style={{ color: "#8a948f" }}>{subtitle}</div>
       <table className="hcheck w-full border-collapse text-[12.5px]">
         <thead>
           <tr>
@@ -159,7 +159,7 @@ export default function CentersCheckup() {
           <CheckTable title="강아지 건강검진" emoji="🐶" subtitle="Dog Health Check" rows={DOG_ROWS} />
           <CheckTable title="고양이 건강검진" emoji="🐱" subtitle="Cat Health Check" rows={CAT_ROWS} />
         </div>
-        <p className="text-[13px] pl-1 mt-4" style={{ color: "#a59a82" }}>
+        <p className="text-[13px] pl-1 mt-4" style={{ color: "#8a948f" }}>
           ※ 표시된 검진 비용은 예시값이며 확정 후 업데이트됩니다. 검진 항목은
           연령·품종·증상에 따라 조정될 수 있어요.
         </p>

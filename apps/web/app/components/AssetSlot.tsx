@@ -28,7 +28,7 @@ export function AssetSlot({ src, alt = "", label, className, style }: AssetSlotP
       }
       style={{
         backgroundImage:
-          "repeating-linear-gradient(45deg,#ebe1ce,#ebe1ce 11px,#f3ebd9 11px,#f3ebd9 22px)",
+          "repeating-linear-gradient(45deg,#e8ece9,#e8ece9 11px,#eef2ef 11px,#eef2ef 22px)",
         ...style,
       }}
       aria-label={label || alt || "이미지"}
@@ -38,7 +38,7 @@ export function AssetSlot({ src, alt = "", label, className, style }: AssetSlotP
           style={{
             font: "600 11px ui-monospace,monospace",
             letterSpacing: "0.08em",
-            color: "#a59a82",
+            color: "#9aa9a4",
             textAlign: "center",
             padding: "0 8px",
           }}

@@ -14,6 +14,7 @@ import {
   NOTICES_FALLBACK,
 } from "~/data/dasanone-content";
 import { AssetSlot } from "~/components/AssetSlot";
+import { SectionHead } from "~/components/site/SectionHead";
 import { CONTENT_IMAGES } from "~/data/stock-images";
 
 export function meta({}: Route.MetaArgs) {
@@ -160,7 +161,7 @@ export default function Home() {
               style={{ color: "#5c6b68" }}
             >
               {m}
-              <span style={{ color: "#d8c9a8" }}>/</span>
+              <span style={{ color: "#cfd8d3" }}>/</span>
             </span>
           ))}
         </div>
@@ -185,49 +186,73 @@ export default function Home() {
         </p>
       </section>
 
-      {/* ============ 3 ONE SYSTEM ============ */}
-      <section className="max-w-[1280px] mx-auto px-8 pt-16 pb-[104px]">
-        <div className="text-center max-w-[760px] mx-auto mb-[52px]">
-          <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal)" }}>
-            3 ONE SYSTEM
-          </div>
-          <h2 className="text-[34px] font-extrabold" style={{ letterSpacing: "-0.03em", lineHeight: 1.35, color: "var(--color-ds-text)" }}>
-            세 가지 ‘ONE’, 다산원이 지키겠습니다
-          </h2>
-        </div>
-        <div data-stagger="" className="grid gap-6 grid-cols-1 md:grid-cols-3 three">
+      {/* ============ 3 ONE SYSTEM — bento ============ */}
+      <section className="max-w-[1280px] mx-auto px-8 pt-20 pb-[104px]">
+        <SectionHead
+          eyebrow="3 ONE SYSTEM"
+          title="세 가지 ‘ONE’, 다산원이 지키겠습니다"
+          align="center"
+        />
+        <div data-stagger="" className="grid gap-5 grid-cols-1 md:grid-cols-3 three">
           {THREE_ONE.map((t, i) => (
-            <div key={i} className="border-t-2 pt-[34px] px-1" style={{ borderColor: "#0d3a35" }}>
-              <div className="mb-2" style={{ font: "800 16px/1 ui-monospace, monospace", color: "var(--color-ds-teal)", letterSpacing: "-0.01em" }}>{t.tag}</div>
-              <div className="text-[22px] font-extrabold mb-4" style={{ color: "var(--color-ds-text)" }}>{t.ko}</div>
-              <p className="text-[15.5px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.7 }}>{t.d}</p>
+            <div
+              key={i}
+              className="rounded-[24px] p-9 md:p-10 min-h-[300px] flex flex-col"
+              style={{ background: "#f4f7f6" }}
+            >
+              <div
+                style={{
+                  font: "800 clamp(40px, 4.5vw, 60px)/1 ui-monospace, monospace",
+                  color: "var(--color-ds-teal)",
+                  letterSpacing: "-0.03em",
+                }}
+              >
+                {String(i + 1).padStart(2, "0")}
+              </div>
+              <div className="mt-auto pt-10">
+                <div className="mb-2" style={{ font: "800 14px/1 ui-monospace, monospace", color: "var(--color-ds-teal)" }}>
+                  {t.tag}
+                </div>
+                <div className="text-[22px] font-extrabold mb-3.5" style={{ color: "var(--color-ds-text)" }}>{t.ko}</div>
+                <p className="text-[15px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.75 }}>{t.d}</p>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ============ WHY DASANONE — 4 strengths ============ */}
+      {/* ============ WHY DASANONE — bento 2×2 ============ */}
       <section>
         <div className="max-w-[1280px] mx-auto px-8 py-24">
-          <div className="flex items-end justify-between gap-6 mb-[52px] flex-wrap">
-            <div>
-              <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal)" }}>
-                WHY DASANONE
-              </div>
-              <h2 className="text-[34px] font-extrabold" style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}>
-                왜 다산원동물의료센터일까요?
-              </h2>
-            </div>
-            <p className="text-base max-w-[380px]" style={{ color: "var(--color-ds-text-sub)" }}>
-              대학병원급 진단 인프라와 분과별 전공의 협진으로 한 곳에서 완결되는 진료를 제공합니다.
-            </p>
-          </div>
-          <div data-stagger="" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 four">
-            {STRENGTHS_4.map((s, i) => (
-              <div key={i} className="pt-[26px] px-1" style={{ borderTop: "1px solid #ddd0b8" }}>
-                <div className="mb-[22px]" style={{ font: "800 14px/1 ui-monospace, monospace", color: "#c9bda3" }}>{s.n}</div>
-                <div className="text-[18.5px] font-extrabold mb-3" style={{ color: "var(--color-ds-text)", lineHeight: 1.4 }}>{s.t}</div>
-                <p className="text-[14.5px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.65 }}>{s.d}</p>
+          <SectionHead
+            eyebrow="WHY DASANONE"
+            title="왜 다산원동물의료센터일까요?"
+            desc="대학병원급 진단 인프라와 분과별 전공의 협진으로 한 곳에서 완결되는 진료를 제공합니다."
+          />
+          <div data-stagger="" className="grid grid-cols-1 md:grid-cols-2 gap-5 four">
+            {STRENGTHS_4.map((s) => (
+              <div
+                key={s.n}
+                className="rounded-[24px] p-10 md:p-12 min-h-[230px] flex flex-col"
+                style={{ background: "#f4f7f6" }}
+              >
+                <div
+                  style={{
+                    font: "800 clamp(34px, 4vw, 52px)/1 ui-monospace, monospace",
+                    color: "var(--color-ds-teal)",
+                    letterSpacing: "-0.03em",
+                  }}
+                >
+                  {s.n}
+                </div>
+                <div className="mt-auto pt-10">
+                  <div className="text-[20px] font-extrabold mb-2.5" style={{ color: "var(--color-ds-text)", lineHeight: 1.35 }}>
+                    {s.t}
+                  </div>
+                  <p className="text-[15px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.7 }}>
+                    {s.d}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
@@ -394,13 +419,13 @@ export default function Home() {
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 text-sm font-bold"
-              style={{ background: "#fff", border: "1px solid #ddd0b8", color: "var(--color-ds-text)", padding: "12px 22px", borderRadius: 999 }}
+              style={{ background: "#fff", border: "1px solid #dbe3df", color: "var(--color-ds-text)", padding: "12px 22px", borderRadius: 999 }}
             >
               네이버 블로그 →
             </a>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-5 loc">
-            <div className="flex flex-col gap-px rounded-2xl overflow-hidden" style={{ background: "#e8ddc6", border: "1px solid #e8ddc6" }}>
+            <div className="flex flex-col gap-px rounded-2xl overflow-hidden" style={{ background: "#e7ece8", border: "1px solid #e7ece8" }}>
               {NOTICES_FALLBACK.map((n, i) => (
                 <div key={i} className="px-6 py-5 flex items-center gap-[18px]" style={{ background: "#fff" }}>
                   <span
@@ -410,7 +435,7 @@ export default function Home() {
                     {n.tag}
                   </span>
                   <span className="text-[15.5px] font-semibold flex-1" style={{ color: "#2a3b37" }}>{n.t}</span>
-                  <span className="text-[13px] shrink-0" style={{ color: "#a59a82" }}>{n.date}</span>
+                  <span className="text-[13px] shrink-0" style={{ color: "#8a948f" }}>{n.date}</span>
                 </div>
               ))}
             </div>
@@ -421,7 +446,7 @@ export default function Home() {
               className="relative rounded-2xl overflow-hidden flex flex-col justify-end p-6"
               style={{
                 minHeight: 180,
-                border: "1px solid #e8ddc6",
+                border: "1px solid #e7ece8",
                 backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(4,24,21,0.72) 100%), url(${CONTENT_IMAGES.blogThumb})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
@@ -464,7 +489,7 @@ export default function Home() {
           </div>
           <AssetSlot
             className="rounded-2xl overflow-hidden"
-            style={{ aspectRatio: "16/11", border: "1px solid #e9dfca" }}
+            style={{ aspectRatio: "16/11", border: "1px solid #e7ece8" }}
             label={`네이버 지도 API 영역 — ${HOSPITAL.address}`}
           />
         </div>

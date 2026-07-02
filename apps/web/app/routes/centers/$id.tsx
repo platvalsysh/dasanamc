@@ -136,7 +136,7 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
             <h2 className="text-[22px] font-extrabold mb-6" style={{ letterSpacing: "-0.02em", color: "var(--color-ds-text)" }}>
               관련 진료 케이스
             </h2>
-            <div className="flex flex-col gap-px rounded-2xl overflow-hidden" style={{ background: "#e8ddc6", border: "1px solid #e8ddc6" }}>
+            <div className="flex flex-col gap-px rounded-2xl overflow-hidden" style={{ background: "#e7ece8", border: "1px solid #e7ece8" }}>
               {cases.map((cs) => (
                 <a
                   key={cs.url}
@@ -162,14 +162,14 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
         )}
 
         {/* prev / next nav */}
-        <div className="grid grid-cols-2 gap-4 pt-10" style={{ borderTop: "1px solid #e9dfca" }}>
+        <div className="grid grid-cols-2 gap-4 pt-10" style={{ borderTop: "1px solid #e2e8e4" }}>
           {prev ? (
             <Link
               to={`/centers/${prev.id}`}
               className="block px-6 py-5 rounded-xl transition-colors hover:bg-[rgba(14,157,140,0.04)]"
-              style={{ border: "1px solid #e9dfca" }}
+              style={{ border: "1px solid #e2e8e4" }}
             >
-              <div className="text-[11.5px] font-semibold mb-1" style={{ letterSpacing: "0.08em", color: "#a59a82" }}>
+              <div className="text-[11.5px] font-semibold mb-1" style={{ letterSpacing: "0.08em", color: "#8a948f" }}>
                 ← PREV
               </div>
               <div className="text-[15px] font-extrabold" style={{ color: "var(--color-ds-text)" }}>
@@ -183,9 +183,9 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
             <Link
               to={`/centers/${next.id}`}
               className="block px-6 py-5 rounded-xl text-right transition-colors hover:bg-[rgba(14,157,140,0.04)]"
-              style={{ border: "1px solid #e9dfca" }}
+              style={{ border: "1px solid #e2e8e4" }}
             >
-              <div className="text-[11.5px] font-semibold mb-1" style={{ letterSpacing: "0.08em", color: "#a59a82" }}>
+              <div className="text-[11.5px] font-semibold mb-1" style={{ letterSpacing: "0.08em", color: "#8a948f" }}>
                 NEXT →
               </div>
               <div className="text-[15px] font-extrabold" style={{ color: "var(--color-ds-text)" }}>
@@ -196,9 +196,9 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
             <Link
               to="/centers/checkup"
               className="block px-6 py-5 rounded-xl text-right transition-colors hover:bg-[rgba(14,157,140,0.04)]"
-              style={{ border: "1px solid #e9dfca" }}
+              style={{ border: "1px solid #e2e8e4" }}
             >
-              <div className="text-[11.5px] font-semibold mb-1" style={{ letterSpacing: "0.08em", color: "#a59a82" }}>
+              <div className="text-[11.5px] font-semibold mb-1" style={{ letterSpacing: "0.08em", color: "#8a948f" }}>
                 NEXT →
               </div>
               <div className="text-[15px] font-extrabold" style={{ color: "var(--color-ds-text)" }}>

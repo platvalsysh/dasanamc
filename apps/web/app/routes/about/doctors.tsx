@@ -37,8 +37,8 @@ function DoctorCard({
   return (
     <article
       id={`profile-${doctor.name}`}
-      className="leadcard grid grid-cols-1 md:grid-cols-[0.38fr_0.62fr] rounded-[20px] overflow-hidden bg-white"
-      style={{ border: "1px solid #e9dfca", scrollMarginTop: 100 }}
+      className="leadcard grid grid-cols-1 md:grid-cols-[0.38fr_0.62fr] rounded-[24px] overflow-hidden"
+      style={{ background: "#f4f7f6", scrollMarginTop: 100 }}
     >
       {/* 사진 — 임시 스톡 (실제 프로필 촬영본 준비 시 DOCTOR_STOCK 교체) */}
       <AssetSlot
