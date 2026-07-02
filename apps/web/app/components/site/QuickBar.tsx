@@ -42,7 +42,7 @@ export function QuickBar() {
           ...circleBase,
           background: "#0e9d8c",
           color: "#fff",
-          boxShadow: "0 10px 24px rgba(13,58,53,0.28)",
+          border: "1px solid rgba(255,255,255,0.25)",
         }}
       >
         📞
@@ -56,8 +56,7 @@ export function QuickBar() {
           ...circleBase,
           background: "#fff",
           color: "#0d3a35",
-          border: "1px solid #e7ece8",
-          boxShadow: "0 10px 24px rgba(13,58,53,0.14)",
+          border: "1px solid #d8ded8",
         }}
       >
         💬
@@ -70,11 +69,10 @@ export function QuickBar() {
           ...circleBase,
           background: "#0d3a35",
           color: "#fff",
-          border: "none",
           cursor: "pointer",
           fontSize: 20,
           fontFamily: "inherit",
-          boxShadow: "0 10px 24px rgba(13,58,53,0.28)",
+          border: "1px solid rgba(255,255,255,0.2)",
           opacity: showTop ? 1 : 0,
           pointerEvents: showTop ? "auto" : "none",
           transition: "opacity .2s",

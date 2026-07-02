@@ -124,7 +124,6 @@ export function Header({ menuItems = [] }: HeaderProps) {
                   style={{ padding: "0 2px", fontSize: "15.5px", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}
                 >
                   {menu.label}
-                  {hasChildren && <span className="ddcaret">⌄</span>}
                 </Link>
                 {hasChildren && (
                   <div className={"dropdown" + (wide ? " wide" : "")}>

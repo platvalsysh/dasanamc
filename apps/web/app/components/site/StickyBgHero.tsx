@@ -106,7 +106,23 @@ export function StickyBgHero({ bgImage, location, copy, sub }: StickyBgHeroProps
         .fromTo(
           txtWrap,
           { y: 0 },
-          { y: "26vh", ease: "none", duration: 0.5 },
+          {
+            // 스크롤 완료 시 텍스트 블록이 viewport 세로 정중앙에 오도록,
+            // 초기 paddingTop 과 실제 콘텐츠 높이를 실측해 이동량 계산.
+            y: () => {
+              const inner =
+                txtWrap.querySelector<HTMLElement>(".sb-txt-inner");
+              if (!inner) return "26vh";
+              const padTop = parseFloat(
+                getComputedStyle(txtWrap).paddingTop || "0",
+              );
+              const vh = window.innerHeight || 800;
+              const target = (vh - inner.offsetHeight) / 2 - padTop;
+              return Math.max(0, target);
+            },
+            ease: "none",
+            duration: 0.5,
+          },
           0,
         )
         // 텍스트 색 — 배경이 어느 정도 채워진 후(progress 0.28)부터 빠르게 흰색으로
@@ -173,14 +189,24 @@ export function StickyBgHero({ bgImage, location, copy, sub }: StickyBgHeroProps
           >
             <Link
               to="/"
-              className="sb-text hover:opacity-70 transition-opacity"
-              style={{
-                font: "700 11.5px/1 ui-monospace, monospace",
-                letterSpacing: "0.14em",
-                color: "#9aa9a4",
-              }}
+              aria-label="메인페이지"
+              title="메인페이지"
+              className="sb-text flex items-center hover:opacity-70 transition-opacity"
+              style={{ color: "#9aa9a4" }}
             >
-              HOME
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 10.5 12 3l9 7.5" />
+                <path d="M5 9.5V20h14V9.5" />
+              </svg>
             </Link>
             {location.map((item) => (
               <span key={item.label} className="flex items-center gap-x-2.5">
@@ -196,8 +222,10 @@ export function StickyBgHero({ bgImage, location, copy, sub }: StickyBgHeroProps
                     to={item.to}
                     className="sb-text hover:opacity-70 transition-opacity"
                     style={{
-                      font: "700 11.5px/1 ui-monospace, monospace",
-                      letterSpacing: "0.14em",
+                      fontSize: 12.5,
+                      fontWeight: 600,
+                      lineHeight: 1,
+                      letterSpacing: "-0.01em",
                       color: "#9aa9a4",
                     }}
                   >
@@ -207,8 +235,10 @@ export function StickyBgHero({ bgImage, location, copy, sub }: StickyBgHeroProps
                   <span
                     className="sb-text"
                     style={{
-                      font: "700 11.5px/1 ui-monospace, monospace",
-                      letterSpacing: "0.14em",
+                      fontSize: 12.5,
+                      fontWeight: 700,
+                      lineHeight: 1,
+                      letterSpacing: "-0.01em",
                       color: "#0d3a35",
                     }}
                   >
@@ -228,28 +258,31 @@ export function StickyBgHero({ bgImage, location, copy, sub }: StickyBgHeroProps
             willChange: "transform",
           }}
         >
-          <h1
-            className="sb-text serif font-medium max-w-[900px]"
-            style={{
-              fontSize: "clamp(30px, 4.2vw, 56px)",
-              lineHeight: 1.45,
-              letterSpacing: "-0.02em",
-              color: "#0d3a35",
-              transition: "none",
-              whiteSpace: "pre-line",
-              textWrap: "balance",
-            }}
-          >
-            {copy}
-          </h1>
-          {sub && (
-            <p
-              className="sb-text mt-6 max-w-[640px] text-[16px]"
-              style={{ color: "#5c6b68", lineHeight: 1.7 }}
+          {/* 이동량 계산용 inner — 콘텐츠 실측 높이 기준으로 중앙 정렬 */}
+          <div className="sb-txt-inner flex flex-col items-center">
+            <h1
+              className="sb-text serif font-medium max-w-[900px]"
+              style={{
+                fontSize: "clamp(30px, 4.2vw, 56px)",
+                lineHeight: 1.45,
+                letterSpacing: "-0.02em",
+                color: "#0d3a35",
+                transition: "none",
+                whiteSpace: "pre-line",
+                textWrap: "balance",
+              }}
             >
-              {sub}
-            </p>
-          )}
+              {copy}
+            </h1>
+            {sub && (
+              <p
+                className="sb-text mt-6 max-w-[640px] text-[16px]"
+                style={{ color: "#5c6b68", lineHeight: 1.7 }}
+              >
+                {sub}
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </section>

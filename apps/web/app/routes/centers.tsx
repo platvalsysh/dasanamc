@@ -34,7 +34,7 @@ export default function CentersIndex() {
             <Link
               key={c.id}
               to={`/centers/${c.id}`}
-              className="block rounded-2xl p-7 transition-all hover:-translate-y-1 hover:shadow-[0_22px_48px_rgba(0,0,0,0.08)]"
+              className="ctr-card group block rounded-2xl p-7 transition-colors hover:border-[color:var(--color-ds-teal)] hover:bg-[rgba(14,157,140,0.035)]"
               style={{
                 border: "1px solid #e9dfca",
                 background: "#fff",
@@ -43,7 +43,12 @@ export default function CentersIndex() {
             >
               <div className="flex items-center justify-between mb-4">
                 <span style={{ font: "800 18px/1 ui-monospace, monospace", color: "var(--color-ds-teal)" }}>{c.num}</span>
-                <span style={{ color: "#cbd6d1", fontSize: 22 }}>→</span>
+                <span
+                  className="transition-all group-hover:translate-x-1 group-hover:text-[color:var(--color-ds-teal)]"
+                  style={{ color: "#cbd6d1", fontSize: 22 }}
+                >
+                  →
+                </span>
               </div>
               <div className="text-[22px] font-extrabold mb-1" style={{ color: "var(--color-ds-text)", lineHeight: 1.3 }}>
                 {c.ko}

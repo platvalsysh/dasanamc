@@ -69,7 +69,7 @@ export default function AboutEquipment() {
       </section>
 
       {/* ===== 분과별 전체 장비 — 블로그 장비소개 기반 ===== */}
-      <section className="py-20" style={{ background: "#f7f3ec" }}>
+      <section className="py-20">
         <div className="max-w-[1280px] mx-auto px-8">
           <div className="mb-12">
             <div
