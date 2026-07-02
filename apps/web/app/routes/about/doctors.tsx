@@ -45,7 +45,7 @@ function DoctorCard({
   return (
     <article
       id={`profile-${doctor.name}`}
-      className="leadcard grid grid-cols-1 md:grid-cols-[0.38fr_0.62fr] rounded-[24px] overflow-hidden"
+      className="leadcard grid grid-cols-1 md:grid-cols-[0.4fr_0.6fr] rounded-[28px] overflow-hidden"
       style={{ background: "#f4f7f6", scrollMarginTop: 100 }}
     >
       {/* 사진 — 실촬영 프로필 배너, 없으면 실루엣 placeholder */}
@@ -54,7 +54,7 @@ function DoctorCard({
           src={DOCTOR_PHOTOS[doctor.name]}
           alt={`${doctor.name} ${doctor.role}`}
           className="w-full h-full object-cover"
-          style={{ minHeight: 320 }}
+          style={{ minHeight: 420 }}
           loading="lazy"
         />
       ) : (
@@ -62,11 +62,11 @@ function DoctorCard({
           role="img"
           aria-label={`${doctor.name} ${doctor.role} 프로필 사진 준비 중`}
           className="flex flex-col items-center justify-center gap-4"
-          style={{ minHeight: 320, background: "#e9eeec" }}
+          style={{ minHeight: 420, background: "#e9eeec" }}
         >
           <svg
-            width="110"
-            height="110"
+            width="130"
+            height="130"
             viewBox="0 0 24 24"
             fill="#c3cdc8"
             aria-hidden
@@ -76,7 +76,7 @@ function DoctorCard({
           </svg>
           <span
             style={{
-              font: "600 11px ui-monospace, monospace",
+              font: "600 12px ui-monospace, monospace",
               letterSpacing: "0.1em",
               color: "#9aa9a4",
             }}
@@ -87,29 +87,34 @@ function DoctorCard({
       )}
 
       {/* 상세 */}
-      <div className="px-8 py-9 md:px-10 md:py-10 flex flex-col">
+      <div className="px-8 py-10 md:px-14 md:py-14 flex flex-col">
         <span
-          className="mb-3"
+          className="mb-4"
           style={{
-            font: "700 12px/1 ui-monospace, monospace",
-            letterSpacing: "0.18em",
+            font: "700 13px/1 ui-monospace, monospace",
+            letterSpacing: "0.2em",
             color: "var(--color-ds-teal)",
           }}
         >
           {isChief ? "CHIEF DIRECTOR" : "VETERINARIAN"}
         </span>
-        <div className="flex items-baseline gap-3 flex-wrap mb-2">
+        <div className="flex items-baseline gap-4 flex-wrap mb-3">
           <span
-            className="text-[30px] font-extrabold"
-            style={{ color: "var(--color-ds-text)", letterSpacing: "-0.02em" }}
+            className="font-extrabold"
+            style={{
+              fontSize: "clamp(32px, 3.4vw, 42px)",
+              color: "var(--color-ds-text)",
+              letterSpacing: "-0.025em",
+              lineHeight: 1.1,
+            }}
           >
             {doctor.name}
           </span>
-          <span className="text-[14.5px] font-bold" style={{ color: "var(--color-ds-teal)" }}>
+          <span className="text-[17px] font-bold" style={{ color: "var(--color-ds-teal)" }}>
             {doctor.role}
           </span>
         </div>
-        <p className="text-[13.5px] mb-5" style={{ color: "#6b7975", lineHeight: 1.6 }}>
+        <p className="text-[15px] mb-8" style={{ color: "#6b7975", lineHeight: 1.65 }}>
           {doctor.cred}
         </p>
 
@@ -117,14 +122,14 @@ function DoctorCard({
           <>
             {/* 진료 철학 인용구 */}
             <blockquote
-              className="serif mb-5"
+              className="serif mb-7"
               style={{
-                fontSize: "clamp(17px, 1.8vw, 20px)",
+                fontSize: "clamp(20px, 2.2vw, 26px)",
                 lineHeight: 1.5,
                 color: "#0a7468",
                 fontStyle: "italic",
                 borderLeft: "3px solid var(--color-ds-teal)",
-                paddingLeft: 16,
+                paddingLeft: 20,
               }}
             >
               “{detail.quote}”
@@ -132,8 +137,8 @@ function DoctorCard({
 
             {/* 인사말 */}
             <p
-              className="text-[14.5px] mb-7"
-              style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.85 }}
+              className="text-[16.5px] mb-10"
+              style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.9, maxWidth: "62ch" }}
             >
               {detail.greeting}
             </p>
@@ -141,21 +146,21 @@ function DoctorCard({
             {/* 전체 약력 */}
             <div className="mt-auto">
               <div
-                className="mb-3.5"
+                className="mb-4"
                 style={{
-                  font: "700 12px/1 ui-monospace, monospace",
-                  letterSpacing: "0.18em",
+                  font: "700 13px/1 ui-monospace, monospace",
+                  letterSpacing: "0.2em",
                   color: "var(--color-ds-teal)",
                 }}
               >
                 CAREER
               </div>
-              <ul className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-1.5 list-none p-0 m-0">
+              <ul className="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-2.5 list-none p-0 m-0">
                 {detail.career.map((c) => (
                   <li
                     key={c}
-                    className="flex gap-2.5 text-[13px]"
-                    style={{ color: "#5a554c", lineHeight: 1.65 }}
+                    className="flex gap-3 text-[14.5px]"
+                    style={{ color: "#5a554c", lineHeight: 1.7 }}
                   >
                     <span className="shrink-0 font-extrabold" style={{ color: "var(--color-ds-teal)" }}>
                       ·
@@ -182,11 +187,11 @@ export default function AboutDoctors() {
         sub="경북대 3 · 건국대 2 · 충남대 1 — 전원 석사 이상의 전문 의료진"
       />
 
-      <section className="max-w-[1180px] mx-auto px-8 py-20">
+      <section className="max-w-[1320px] mx-auto px-8 py-24 md:py-28">
         {/* 대표원장 */}
-        <div className="mb-16">
-          <SectionHead eyebrow="CHIEF DIRECTORS" title="대표원장" className="mb-10 md:mb-10" />
-          <div className="flex flex-col gap-8">
+        <div className="mb-24">
+          <SectionHead eyebrow="CHIEF DIRECTORS" title="대표원장" className="mb-12 md:mb-12" />
+          <div className="flex flex-col gap-12">
             {LEAD_DOCTORS.map((d) => (
               <DoctorCard key={d.name} doctor={d} isChief />
             ))}
@@ -195,8 +200,8 @@ export default function AboutDoctors() {
 
         {/* 진료의 */}
         <div>
-          <SectionHead eyebrow="VETERINARIANS" title="진료의" className="mb-10 md:mb-10" />
-          <div className="flex flex-col gap-8">
+          <SectionHead eyebrow="VETERINARIANS" title="진료의" className="mb-12 md:mb-12" />
+          <div className="flex flex-col gap-12">
             {REST_DOCTORS.map((d) => (
               <DoctorCard key={d.name} doctor={d} />
             ))}
