@@ -70,7 +70,7 @@ export default function CentersIndex() {
                 </div>
                 <div
                   className="text-[12px] font-semibold mb-4 transition-colors group-hover:text-[#7d968f]"
-                  style={{ letterSpacing: "0.05em", color: "#a8b3ae" }}
+                  style={{ letterSpacing: "0.05em", color: "#7d8a85" }}
                 >
                   {c.en}
                 </div>

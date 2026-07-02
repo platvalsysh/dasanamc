@@ -58,20 +58,6 @@
   font-family: var(--font-serif) !important;
 }
 
-/* 서브페이지 본문 텍스트를 브라운-오렌지 톤으로.
-   `--color-ds-text` / `--color-ds-text-sub` 를 재정의해 var() 참조하는 모든
-   본문 텍스트가 warm 톤이 됨. 다크 hero(.darkhero) 하위와 헤더/푸터는 자기
-   자체 색상을 하드코딩하고 있어 영향 없음. */
-.warm-body {
-  --color-ds-text: var(--color-ds-warm-text);
-  --color-ds-text-sub: var(--color-ds-warm-text-sub);
-}
-/* 다크 hero 안에서는 원래 색 복원 (hero 는 손대지 않음) */
-.warm-body .darkhero {
-  --color-ds-text: #0d3a35;
-  --color-ds-text-sub: #5c6b68;
-}
-
 html,
 body {
   font-family: var(--font-sans);
@@ -362,8 +348,8 @@ body {
   top: 0;
   left: 0;
   z-index: 90;
-  width: 96px;
-  height: 96px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background: rgba(14, 157, 140, 0.92);
   color: #fff;

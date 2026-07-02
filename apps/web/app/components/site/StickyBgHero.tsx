@@ -63,10 +63,14 @@ export function StickyBgHero({ bgImage, location, copy, sub, compact = false }: 
 
     pinInner.setAttribute("data-bg-full", "0");
 
+    // 초기 이미지 창 — 모바일은 좌우 여백을 줄여 창이 너무 좁아지지 않게
+    const startInset =
+      window.innerWidth < 768 ? "inset(60% 6% 0 6%)" : "inset(55% 13% 0 13%)";
+
     const ctx = gsap.context(() => {
       gsap.set(imgWrap, {
-        clipPath: "inset(55% 13% 0 13%)",
-        webkitClipPath: "inset(55% 13% 0 13%)",
+        clipPath: startInset,
+        webkitClipPath: startInset,
       });
 
       const tl = gsap.timeline({
@@ -88,8 +92,8 @@ export function StickyBgHero({ bgImage, location, copy, sub, compact = false }: 
       tl.fromTo(
         imgWrap,
         {
-          clipPath: "inset(55% 13% 0 13%)",
-          webkitClipPath: "inset(55% 13% 0 13%)",
+          clipPath: startInset,
+          webkitClipPath: startInset,
         },
         {
           clipPath: "inset(0% 0% 0% 0%)",
@@ -202,7 +206,7 @@ export function StickyBgHero({ bgImage, location, copy, sub, compact = false }: 
               aria-label="메인페이지"
               title="메인페이지"
               className="sb-text flex items-center hover:opacity-70 transition-opacity"
-              style={{ color: "#9aa9a4" }}
+              style={{ color: "#6f7d79" }}
             >
               <svg
                 width="14"
@@ -236,7 +240,7 @@ export function StickyBgHero({ bgImage, location, copy, sub, compact = false }: 
                       fontWeight: 600,
                       lineHeight: 1,
                       letterSpacing: "-0.01em",
-                      color: "#9aa9a4",
+                      color: "#6f7d79",
                     }}
                   >
                     {item.label}

@@ -469,11 +469,25 @@ export default function Home() {
             <h2 className="text-[32px] font-extrabold mb-7" style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}>
               오시는 길 · 진료 안내
             </h2>
-            <div className="flex flex-col gap-px rounded-2xl overflow-hidden" style={{ background: "#e7ece8", border: "1px solid #e7ece8" }}>
+            {/* 진료 안내 rows — 테두리 없는 flat 리스트, 라벨 작게 + 값 크게 */}
+            <div className="flex flex-col">
               {INFO_ROWS.map((r) => (
-                <div key={r.k} className="grid grid-cols-[120px_1fr] gap-3 px-5 py-4" style={{ background: "#ffffff" }}>
-                  <span className="text-sm font-bold" style={{ color: "#0a7468" }}>{r.k}</span>
-                  <span className="text-[14.5px]" style={{ color: "#3a4744" }}>{r.v}</span>
+                <div
+                  key={r.k}
+                  className="grid grid-cols-[104px_1fr] items-baseline gap-4 py-[15px]"
+                >
+                  <span
+                    className="text-[13px] font-bold"
+                    style={{ color: "var(--color-ds-teal)", letterSpacing: "0.02em" }}
+                  >
+                    {r.k}
+                  </span>
+                  <span
+                    className="text-[17px] font-semibold"
+                    style={{ color: "var(--color-ds-text)", letterSpacing: "-0.015em", lineHeight: 1.5 }}
+                  >
+                    {r.v}
+                  </span>
                 </div>
               ))}
             </div>
@@ -481,7 +495,7 @@ export default function Home() {
               href={HOSPITAL.mapUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex mt-[22px] items-center gap-2 text-[15px] font-bold"
+              className="inline-flex mt-8 items-center gap-2 text-[15px] font-bold"
               style={{ background: "#0e9d8c", color: "#fff", padding: "14px 24px", borderRadius: 11 }}
             >
               네이버 지도로 길찾기 →

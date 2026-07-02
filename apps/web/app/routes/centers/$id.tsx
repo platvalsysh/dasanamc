@@ -58,7 +58,7 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
             >
               {c.num}
             </div>
-            <div className="mt-3 text-[13px] font-semibold" style={{ letterSpacing: "0.05em", color: "#a8b3ae" }}>
+            <div className="mt-3 text-[13px] font-semibold" style={{ letterSpacing: "0.05em", color: "#7d8a85" }}>
               {c.en}
             </div>
           </div>

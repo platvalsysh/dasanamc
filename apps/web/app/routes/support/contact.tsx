@@ -60,7 +60,7 @@ export default function SupportContact() {
         sub="응급 상황은 24시간 전화(0507-1330-5958)로 연락 주세요"
       />
 
-      <section className="max-w-[1080px] mx-auto px-8 py-16">
+      <section className="max-w-[1080px] mx-auto px-8 py-24">
         <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-12 formgrid">
           <div>
             <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.2em", color: "var(--color-ds-teal)" }}>
