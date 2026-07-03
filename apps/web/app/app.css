@@ -197,12 +197,10 @@ body {
   pointer-events: none;
 }
 
+/* transform transition·will-change 금지 — iOS Safari 에서 fixed 헤더가
+   스크롤 중 레이어 분리로 상단에서 떠 보이는 버그 유발 (숨김 기능 미사용) */
 #siteheader {
-  transition: transform .42s cubic-bezier(.4, 0, .2, 1), box-shadow .35s ease, background .35s ease, border-color .35s ease;
-  will-change: transform;
-}
-#siteheader[data-hidden="1"] {
-  transform: translateY(-100%);
+  transition: box-shadow .35s ease, background .35s ease, border-color .35s ease;
 }
 /* dark theme — over dark hero (default) */
 #siteheader[data-theme="dark"] {

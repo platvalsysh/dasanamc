@@ -84,31 +84,30 @@ export function Header({ menuItems = [] }: HeaderProps) {
       className="fixed top-0 left-0 right-0 z-50 w-full"
     >
       <div
-        className="mx-auto h-[78px] grid items-center gap-5"
+        className="mx-auto h-[78px] grid items-center gap-5 grid-cols-[auto_1fr_auto] lg:grid-cols-[1fr_auto_1fr]"
         style={{
           maxWidth: "none",
           padding: "0 clamp(24px, 4vw, 64px)",
-          gridTemplateColumns: "1fr auto 1fr",
         }}
       >
-        {/* Logo */}
-        <Link to="/" className="justify-self-start flex items-center">
+        {/* Logo — 원본 비율(1000:215) 유지: 칸 폭에 눌리지 않게 max-w-none */}
+        <Link to="/" className="col-start-1 justify-self-start flex items-center">
           <img
             src="/images/logo-horizontal.png"
             alt="24시 다산 원동물의료센터"
-            className="logo-light h-10 w-auto block"
+            className="logo-light h-8 lg:h-10 w-auto max-w-none block"
             style={{ filter: "brightness(0) invert(1)" }}
           />
           <img
             src="/images/logo-horizontal.png"
             alt="24시 다산 원동물의료센터"
-            className="logo-dark h-10 w-auto block"
+            className="logo-dark h-8 lg:h-10 w-auto max-w-none block"
             style={{ display: "none" }}
           />
         </Link>
 
         {/* Center nav */}
-        <nav className="hidden lg:flex items-center gap-8 topnav">
+        <nav className="hidden lg:flex items-center gap-8 topnav lg:col-start-2">
           <Link
             to="/"
             aria-label="메인페이지"
@@ -155,8 +154,8 @@ export function Header({ menuItems = [] }: HeaderProps) {
           })}
         </nav>
 
-        {/* Right side */}
-        <div className="justify-self-end flex items-center gap-3">
+        {/* Right side — nav 가 display:none 인 모바일에서도 3번째 칸 고정 */}
+        <div className="col-start-3 justify-self-end flex items-center gap-3">
           <a
             href="tel:0507-1330-5958"
             className="cta-call hidden sm:flex items-center gap-2 px-5 py-[11px] rounded-full text-sm font-bold transition-colors"
