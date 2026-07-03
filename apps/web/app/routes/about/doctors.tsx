@@ -1,9 +1,12 @@
+import { Link } from "react-router";
 import type { Route } from "./+types/doctors";
 import {
   HOSPITAL,
   LEAD_DOCTORS,
   REST_DOCTORS,
   DOCTOR_DETAILS,
+  DOCTOR_CENTERS,
+  CENTERS,
   type DoctorDetail,
 } from "~/data/dasanone-content";
 import { StickyBgHero } from "~/components/site/StickyBgHero";
@@ -41,6 +44,9 @@ function DoctorCard({
   const detail: DoctorDetail | undefined = DOCTOR_DETAILS.find(
     (d) => d.name === doctor.name,
   );
+  const centers = (DOCTOR_CENTERS[doctor.name] ?? [])
+    .map((id) => CENTERS.find((c) => c.id === id))
+    .filter((c) => c != null);
 
   return (
     <article
@@ -114,9 +120,25 @@ function DoctorCard({
             {doctor.role}
           </span>
         </div>
-        <p className="text-[15px] mb-8" style={{ color: "#6b7975", lineHeight: 1.65 }}>
+        <p className="text-[15px] mb-5" style={{ color: "#6b7975", lineHeight: 1.65 }}>
           {doctor.cred}
         </p>
+
+        {/* 담당 센터 배지 — 센터 상세로 크로스 링크 */}
+        {centers.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-8">
+            {centers.map((c) => (
+              <Link
+                key={c.id}
+                to={`/centers/${c.id}`}
+                className="text-[12.5px] font-bold rounded-full px-3.5 py-1.5 transition-colors hover:bg-[#0d3a35] hover:text-white"
+                style={{ background: "#e2f4f1", color: "#0a7468" }}
+              >
+                {c.ko}
+              </Link>
+            ))}
+          </div>
+        )}
 
         {detail && (
           <>

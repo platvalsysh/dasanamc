@@ -23,6 +23,10 @@ const routes: RouteConfigEntry[] = [
     route("/centers/checkup", "./routes/centers/checkup.tsx"),
     route("/centers/:id", "./routes/centers/$id.tsx"),
 
+    // 치료 케이스 아카이브 + 24시 응급
+    route("/cases", "./routes/cases.tsx"),
+    route("/emergency", "./routes/emergency.tsx"),
+
     // /support 그룹
     route("/support", "./routes/support.tsx"),
     route("/support/notice", "./routes/support/notice.tsx"),
@@ -40,6 +44,7 @@ const routes: RouteConfigEntry[] = [
     route("/rules", "./routes/rules.tsx"),
     route("/privacy", "./routes/privacy.tsx"),
     route("/email-reject", "./routes/email-reject.tsx"),
+    route("/sitemap.xml", "./routes/sitemap.tsx"),
 
     ...moduleManager.getRoutes("public"),
   ]),

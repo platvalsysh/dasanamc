@@ -11,8 +11,8 @@ import {
   MARQUEE_ITEMS,
   SOLUTION_TABS,
   INFO_ROWS,
-  NOTICES_FALLBACK,
 } from "~/data/dasanone-content";
+import { BLOG_LATEST, CASE_ARTICLES, blogPostUrl } from "~/data/case-archive";
 import { AssetSlot } from "~/components/AssetSlot";
 import { SectionHead } from "~/components/site/SectionHead";
 import { CONTENT_IMAGES } from "~/data/stock-images";
@@ -24,13 +24,46 @@ const THREE_ONE_IMAGES = [
   "/images/facility/reception.jpg",
 ];
 
+const DESCRIPTION =
+  "경기 남양주 24시 동물병원. 11개 특화진료센터, 대학병원급 CT, 365일 24시간 연중무휴 응급진료.";
+
 export function meta({}: Route.MetaArgs) {
   return [
     { title: `${HOSPITAL.name}` },
+    { name: "description", content: DESCRIPTION },
+    // Open Graph — 카카오톡/네이버 공유 미리보기
+    { property: "og:type", content: "website" },
+    { property: "og:title", content: HOSPITAL.name },
+    { property: "og:description", content: DESCRIPTION },
+    { property: "og:image", content: `${HOSPITAL.siteUrl}/images/hero-reception.jpg` },
+    { property: "og:url", content: HOSPITAL.siteUrl },
+    // 지역 검색용 구조화 데이터 (VeterinaryCare)
     {
-      name: "description",
-      content:
-        "경기 남양주 24시 동물병원. 11개 특화진료센터, 대학병원급 CT, 365일 24시간 연중무휴 응급진료.",
+      "script:ld+json": {
+        "@context": "https://schema.org",
+        "@type": "VeterinaryCare",
+        name: HOSPITAL.name,
+        url: HOSPITAL.siteUrl,
+        telephone: HOSPITAL.phone,
+        email: HOSPITAL.email,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "다산중앙로 15, 3층",
+          addressLocality: "남양주시",
+          addressRegion: "경기도",
+          addressCountry: "KR",
+        },
+        openingHoursSpecification: [
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            opens: "00:00",
+            closes: "23:59",
+          },
+        ],
+        image: `${HOSPITAL.siteUrl}/images/hero-reception.jpg`,
+        sameAs: [HOSPITAL.blog],
+      },
     },
   ];
 }
@@ -462,36 +495,99 @@ export default function Home() {
             </a>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-5 loc">
+            {/* 최신 블로그 포스트 — case-archive 자동 생성 데이터 */}
             <div className="flex flex-col gap-px rounded-2xl overflow-hidden" style={{ background: "#e7ece8", border: "1px solid #e7ece8" }}>
-              {NOTICES_FALLBACK.map((n, i) => (
-                <div key={i} className="px-6 py-5 flex items-center gap-[18px]" style={{ background: "#fff" }}>
+              {BLOG_LATEST.map((p) => (
+                <a
+                  key={p.logNo}
+                  href={blogPostUrl(p.logNo)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group px-6 py-[18px] flex items-center gap-[18px] transition-colors hover:bg-[#f7faf9]"
+                  style={{ background: "#fff" }}
+                >
+                  {p.thumb && (
+                    <img
+                      src={p.thumb}
+                      alt=""
+                      aria-hidden
+                      loading="lazy"
+                      className="w-[54px] h-[54px] rounded-[10px] object-cover shrink-0"
+                    />
+                  )}
                   <span
                     className="text-[11.5px] font-extrabold shrink-0"
                     style={{ color: "var(--color-ds-teal)", background: "#e2f4f1", padding: "5px 11px", borderRadius: 6 }}
                   >
-                    {n.tag}
+                    {p.kind === "case" ? "케이스" : "칼럼"}
                   </span>
-                  <span className="text-[15.5px] font-semibold flex-1" style={{ color: "#2a3b37" }}>{n.t}</span>
-                  <span className="text-[13px] shrink-0" style={{ color: "#8a948f" }}>{n.date}</span>
-                </div>
+                  <span className="text-[15.5px] font-semibold flex-1 line-clamp-1" style={{ color: "#2a3b37" }}>
+                    {p.title}
+                  </span>
+                  <span className="text-[13px] shrink-0" style={{ color: "#8a948f" }}>{p.date}</span>
+                </a>
               ))}
             </div>
-            <a
-              href={HOSPITAL.blog}
-              target="_blank"
-              rel="noreferrer"
-              className="relative rounded-2xl overflow-hidden flex flex-col justify-end p-6"
+            <Link
+              to="/cases"
+              className="group relative rounded-2xl overflow-hidden flex flex-col justify-end p-6"
               style={{
                 minHeight: 180,
                 border: "1px solid #e7ece8",
-                backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(4,24,21,0.72) 100%), url(${CONTENT_IMAGES.blogThumb})`,
+                backgroundImage:
+                  "linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(4,24,21,0.78) 100%), url(/images/facility/operating-room.jpg)",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
             >
-              <span className="text-[17px] font-extrabold text-white">진료 케이스 보러가기</span>
-              <span className="text-[13.5px] mt-1" style={{ color: "rgba(255,255,255,0.78)" }}>blog.naver.com/dasanoneamc</span>
+              <span className="text-[17px] font-extrabold text-white">
+                치료 케이스 아카이브
+                <span className="inline-block ml-2 transition-transform group-hover:translate-x-1">→</span>
+              </span>
+              <span className="text-[13.5px] mt-1" style={{ color: "rgba(255,255,255,0.78)" }}>
+                실제 치료 기록 {CASE_ARTICLES.length}건 — 수술·응급·질환 정보
+              </span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ============ 24H EMERGENCY BAND ============ */}
+      <section className="relative overflow-hidden" style={{ background: "#041815", color: "#fff" }}>
+        <div
+          className="absolute inset-0"
+          style={{ background: "radial-gradient(60% 90% at 82% 20%, rgba(194,80,74,0.22), transparent 60%)" }}
+        />
+        <div className="relative max-w-[1280px] mx-auto px-8 py-20 flex flex-wrap items-center justify-between gap-10">
+          <div className="max-w-[680px]">
+            <div className="inline-flex items-center gap-2.5 mb-5" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "#ff9d97" }}>
+              <span className="w-[7px] h-[7px] rounded-full animate-pulse-dot" style={{ background: "#ff6b63" }} />
+              24H EMERGENCY
+            </div>
+            <h2 className="serif font-medium" style={{ fontSize: "clamp(26px, 3.4vw, 40px)", lineHeight: 1.4, letterSpacing: "-0.02em" }}>
+              한밤중 아이가 이상하다면,
+              <br />
+              망설이지 말고 전화 주세요.
+            </h2>
+            <p className="text-[15.5px] mt-4" style={{ color: "#a7bcb5", lineHeight: 1.7 }}>
+              365일 24시간 수의사가 상주합니다. 이동 중 응급 대처법 안내부터 도착 즉시 처치까지.
+            </p>
+          </div>
+          <div className="flex flex-col gap-3">
+            <a
+              href={`tel:${HOSPITAL.phone}`}
+              className="inline-flex items-center justify-center gap-3 font-extrabold transition-transform hover:scale-[1.02]"
+              style={{ background: "#0e9d8c", color: "#fff", padding: "20px 36px", borderRadius: 16, fontSize: "clamp(20px, 2.4vw, 27px)" }}
+            >
+              ☎ {HOSPITAL.phone}
             </a>
+            <Link
+              to="/emergency"
+              className="inline-flex items-center justify-center gap-2 text-[14.5px] font-bold"
+              style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(244,238,228,0.25)", color: "#f4efe6", padding: "13px 24px", borderRadius: 12 }}
+            >
+              응급 상황 대처 가이드 →
+            </Link>
           </div>
         </div>
       </section>
@@ -538,11 +634,20 @@ export default function Home() {
               네이버 지도로 길찾기 →
             </a>
           </div>
-          <AssetSlot
+          <div
             className="rounded-2xl overflow-hidden"
-            style={{ aspectRatio: "16/11", border: "1px solid rgba(255,255,255,0.14)" }}
-            label={`네이버 지도 API 영역 — ${HOSPITAL.address}`}
-          />
+            style={{ aspectRatio: "16/11", border: "1px solid rgba(255,255,255,0.14)", background: "#0a2e29" }}
+          >
+            <iframe
+              title={`오시는 길 지도 — ${HOSPITAL.address}`}
+              src={`https://maps.google.com/maps?q=${encodeURIComponent(HOSPITAL.address)}&z=16&output=embed&hl=ko`}
+              className="w-full h-full"
+              style={{ border: 0, filter: "saturate(0.92)" }}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+          </div>
         </div>
       </section>
     </>

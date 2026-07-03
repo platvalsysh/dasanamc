@@ -9,6 +9,8 @@
 export const HOSPITAL = {
   name: "24시 다산 원동물의료센터",
   nameEn: "DASANONE ANIMAL MEDICAL CENTER",
+  /** 배포 도메인 — 커스텀 도메인 연결 시 여기만 교체 (sitemap/OG/JSON-LD 에서 사용) */
+  siteUrl: "https://dasanamc-web.vercel.app",
   phone: "0507-1330-5958",
   phone2: "031-522-5956",
   email: "dasanoneamc@gmail.com",
@@ -549,6 +551,32 @@ export const SUPPORT_MENU = [
 
 export const LEAD_DOCTORS = DOCTORS.slice(0, 2);
 export const REST_DOCTORS = DOCTORS.slice(2);
+
+/**
+ * 센터별 담당 의료진 — 전공·약력에서 확실히 뒷받침되는 매핑만 표기.
+ * (외과 전공 → 수술 계열, 내과 전공 → 내과 계열, 응급/영상 전담)
+ */
+export const CENTER_DOCTORS: Readonly<Record<string, readonly string[]>> = {
+  ortho: ["이현우"],
+  surgery: ["이현우"],
+  neuro: ["이현우"],
+  hepato: ["조항빈", "정지윤"],
+  heart: ["조항빈", "정지윤"],
+  onco: ["조항빈", "정지윤"],
+  endo: ["조항빈", "정지윤"],
+  er: ["박병준"],
+  ct: ["이선아"],
+  "checkup-c": ["임동환"],
+};
+
+/** 의료진 → 담당 센터 역매핑 */
+export const DOCTOR_CENTERS: Readonly<Record<string, readonly string[]>> = (() => {
+  const map: Record<string, string[]> = {};
+  for (const [center, names] of Object.entries(CENTER_DOCTORS)) {
+    for (const n of names) (map[n] ??= []).push(center);
+  }
+  return map;
+})();
 
 /**
  * 의료진 상세 프로필 — 블로그 의료진 소개 포스트(카테고리 7)에서 발췌.

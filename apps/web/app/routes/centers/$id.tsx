@@ -1,6 +1,12 @@
 import { Link, redirect } from "react-router";
 import type { Route } from "./+types/$id";
-import { HOSPITAL, CENTERS, CENTER_CASES } from "~/data/dasanone-content";
+import {
+  HOSPITAL,
+  CENTERS,
+  CENTER_CASES,
+  CENTER_DOCTORS,
+  DOCTORS,
+} from "~/data/dasanone-content";
 import { StickyBgHero } from "~/components/site/StickyBgHero";
 import { HERO_IMAGES } from "~/data/stock-images";
 
@@ -33,8 +39,11 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
   const prev = idx > 0 ? CENTERS[idx - 1] : null;
   const next = idx >= 0 && idx < CENTERS.length - 1 ? CENTERS[idx + 1] : null;
 
-  // 이 센터와 관련된 블로그 진료 케이스
+  // 이 센터와 관련된 블로그 진료 케이스 + 담당 의료진
   const cases = CENTER_CASES[c.id] ?? [];
+  const doctors = (CENTER_DOCTORS[c.id] ?? [])
+    .map((name) => DOCTORS.find((d) => d.name === name))
+    .filter((d) => d != null);
 
   return (
     <>
@@ -119,6 +128,47 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
             </ul>
           </div>
         </div>
+
+        {/* 담당 의료진 — 전공이 뒷받침되는 매핑만 노출 */}
+        {doctors.length > 0 && (
+          <div className="mb-16">
+            <div
+              className="mb-3.5"
+              style={{
+                font: "700 13px/1 ui-monospace, monospace",
+                letterSpacing: "0.22em",
+                color: "var(--color-ds-teal)",
+              }}
+            >
+              MEDICAL TEAM
+            </div>
+            <h2 className="text-[22px] font-extrabold mb-6" style={{ letterSpacing: "-0.02em", color: "var(--color-ds-text)" }}>
+              함께하는 의료진
+            </h2>
+            <div className="flex flex-wrap gap-4">
+              {doctors.map((d) => (
+                <Link
+                  key={d.name}
+                  to={`/about/doctors#profile-${d.name}`}
+                  className="group flex items-center gap-4 rounded-[18px] px-6 py-5 transition-colors hover:bg-[#0d3a35]"
+                  style={{ background: "#f4f7f6", minWidth: 260 }}
+                >
+                  <div>
+                    <div className="text-[18px] font-extrabold transition-colors group-hover:text-white" style={{ color: "var(--color-ds-text)" }}>
+                      {d.name}
+                    </div>
+                    <div className="text-[13px] font-bold mt-0.5 transition-colors group-hover:text-[#7be0d0]" style={{ color: "var(--color-ds-teal)" }}>
+                      {d.role}
+                    </div>
+                  </div>
+                  <span className="ml-auto transition-all group-hover:translate-x-1 group-hover:text-[#6ed4c5]" style={{ color: "#c2ccc8", fontSize: 20 }}>
+                    →
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* 관련 진료 케이스 — 네이버 블로그 실제 포스트 */}
         {cases.length > 0 && (

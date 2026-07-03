@@ -27,6 +27,16 @@ const MENU_ITEMS_FALLBACK: SiteMenuConfigItem[] = [
     children: CENTER_MENU.map((m, i) => ({ id: `c-${i}`, label: m.label, to: m.to })),
   },
   {
+    id: "emergency",
+    label: "24시 응급",
+    to: "/emergency",
+  },
+  {
+    id: "cases",
+    label: "치료사례",
+    to: "/cases",
+  },
+  {
     id: "support",
     label: "고객센터",
     to: "/support",
