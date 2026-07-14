@@ -112,7 +112,7 @@ export default function Home() {
                   365일 24시간 연중무휴 응급진료
                 </div>
                 <h1
-                  className="serif font-medium"
+                  className="serif font-semibold"
                   style={{
                     fontSize: "clamp(38px, 5.8vw, 78px)",
                     lineHeight: 1.2,

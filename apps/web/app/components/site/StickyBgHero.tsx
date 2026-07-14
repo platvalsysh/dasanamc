@@ -275,7 +275,7 @@ export function StickyBgHero({ bgImage, location, copy, sub, compact = false }: 
           {/* 이동량 계산용 inner — 콘텐츠 실측 높이 기준으로 중앙 정렬 */}
           <div className="sb-txt-inner flex flex-col items-center">
             <h1
-              className="sb-text serif font-medium max-w-[900px]"
+              className="sb-text serif font-semibold max-w-[900px]"
               style={{
                 fontSize: "clamp(30px, 4.2vw, 56px)",
                 lineHeight: 1.45,
