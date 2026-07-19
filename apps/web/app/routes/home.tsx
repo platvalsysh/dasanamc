@@ -75,7 +75,7 @@ export default function Home() {
   return (
     <>
       {/* ============ HERO (다크, pin 220vh) ============ */}
-      <section className="darkhero relative" style={{ background: "#06201c", color: "#f4efe6" }}>
+      <section className="darkhero relative" style={{ background: "var(--color-ds-dark)", color: "#f4efe6" }}>
         <div id="heropin" className="relative" style={{ height: "var(--pinH, 100vh)" }}>
           <div
             className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center"
@@ -108,7 +108,7 @@ export default function Home() {
                     color: "#8fe0d2",
                   }}
                 >
-                  <span className="w-[7px] h-[7px] rounded-full animate-pulse-dot" style={{ background: "#6ed4c5" }} />
+                  <span className="w-[7px] h-[7px] rounded-full animate-pulse-dot" style={{ background: "var(--color-ds-teal-3)" }} />
                   365일 24시간 연중무휴 응급진료
                 </div>
                 <h1
@@ -125,7 +125,7 @@ export default function Home() {
                 >
                   모두를 위한 동물 주치의,
                   <br />
-                  <span style={{ color: "#6ed4c5", WebkitTextFillColor: "#6ed4c5" }}>다산원동물의료센터</span>
+                  <span style={{ color: "var(--color-ds-teal-3)", WebkitTextFillColor: "var(--color-ds-teal-3)" }}>다산원동물의료센터</span>
                 </h1>
                 <div
                   className="mt-7"
@@ -139,20 +139,20 @@ export default function Home() {
                 >
                   <span id="heroswap" className="inline-block">수준 높은 의료 서비스</span>
                 </div>
-                <p className="text-[14.5px] mt-2" style={{ color: "#b3c2bc", letterSpacing: "0.01em" }}>
+                <p className="text-[15px] mt-2" style={{ color: "#b3c2bc", letterSpacing: "0.01em" }}>
                   Comprehensive Care for Every Companion
                 </p>
                 <div className="flex gap-2.5 flex-wrap mt-7">
                   <a
                     href={`tel:${HOSPITAL.phone}`}
-                    className="flex items-center gap-2 text-[15px] font-bold"
-                    style={{ background: "#0e9d8c", color: "#fff", padding: "14px 24px", borderRadius: 11 }}
+                    className="flex items-center gap-2 text-[16px] font-bold"
+                    style={{ background: "var(--color-ds-teal-deep)", color: "#fff", padding: "14px 24px", borderRadius: 11 }}
                   >
                     전화 예약·문의
                   </a>
                   <Link
                     to="/support#contactform"
-                    className="flex items-center gap-2 text-[15px] font-bold"
+                    className="flex items-center gap-2 text-[16px] font-bold"
                     style={{
                       background: "rgba(255,255,255,0.06)",
                       border: "1px solid rgba(244,238,228,0.28)",
@@ -167,7 +167,7 @@ export default function Home() {
               </div>
 
               <div id="heroscroll" className="absolute bottom-5 left-1/2 -translate-x-1/2 z-[3] flex flex-col items-center gap-2">
-                <span style={{ font: "600 10px/1 ui-monospace, monospace", letterSpacing: "0.25em", color: "#b9a78c" }}>SCROLL</span>
+                <span style={{ font: "600 11px/1 ui-monospace, monospace", letterSpacing: "0.25em", color: "#cbbfa4" }}>SCROLL</span>
                 <span className="w-px" style={{ height: 34, background: "linear-gradient(#6ed4c5,transparent)" }} />
               </div>
             </div>
@@ -175,7 +175,7 @@ export default function Home() {
         </div>
 
         {/* hero stats strip — 다크 */}
-        <div className="relative" style={{ background: "#041815" }}>
+        <div className="relative" style={{ background: "var(--color-ds-dark-3)" }}>
           <div className="max-w-[1280px] mx-auto px-8 grid grid-cols-4 statgrid">
             {HERO_STATS.map((s, i) => (
               <div
@@ -183,7 +183,7 @@ export default function Home() {
                 className="py-7 px-2"
                 style={{ borderLeft: i === 0 ? "none" : "1px solid rgba(244,238,228,0.12)" }}
               >
-                <div className="text-[28px] font-extrabold" style={{ color: "#6ed4c5", letterSpacing: "-0.02em" }}>{s.v}</div>
+                <div className="text-[28px] font-extrabold" style={{ color: "var(--color-ds-teal-3)", letterSpacing: "-0.02em" }}>{s.v}</div>
                 <div className="text-[13.5px] mt-1" style={{ color: "#a7bcb5" }}>{s.l}</div>
               </div>
             ))}
@@ -197,7 +197,7 @@ export default function Home() {
           {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((m, i) => (
             <span
               key={i}
-              className="inline-flex items-center gap-4 px-7 text-[15px] font-semibold whitespace-nowrap"
+              className="inline-flex items-center gap-4 px-7 text-[16px] font-semibold whitespace-nowrap"
               style={{ color: "#5c6b68" }}
             >
               {m}
@@ -209,7 +209,7 @@ export default function Home() {
 
       {/* ============ OUR PROMISE ============ */}
       <section className="max-w-[1060px] mx-auto px-8 pt-[120px] text-center">
-        <div className="mb-7" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.24em", color: "var(--color-ds-teal)" }}>
+        <div className="mb-7" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.24em", color: "var(--color-ds-teal-deep)" }}>
           OUR PROMISE
         </div>
         <p
@@ -219,7 +219,7 @@ export default function Home() {
         >
           아픈 아이를 안고 병원 문을 들어서는 보호자님의<br />
           무거운 마음을 누구보다 잘 알기에,{" "}
-          <span style={{ color: "var(--color-ds-teal)" }}>
+          <span style={{ color: "var(--color-ds-teal-deep)" }}>
             다산원동물의료센터는<br />세 가지 ‘ONE’
           </span>
           을 약속합니다.
@@ -238,7 +238,7 @@ export default function Home() {
             <div
               key={i}
               className="group relative rounded-[24px] p-9 md:p-10 min-h-[420px] flex flex-col overflow-hidden"
-              style={{ background: "#06201c" }}
+              style={{ background: "var(--color-ds-dark)" }}
             >
               {/* 실촬영 배경 + 다크 그라데이션 */}
               <img
@@ -255,18 +255,18 @@ export default function Home() {
                 className="relative"
                 style={{
                   font: "800 clamp(40px, 4.5vw, 60px)/1 ui-monospace, monospace",
-                  color: "#6ed4c5",
+                  color: "var(--color-ds-teal-3)",
                   letterSpacing: "-0.03em",
                 }}
               >
                 {String(i + 1).padStart(2, "0")}
               </div>
               <div className="relative mt-auto pt-10">
-                <div className="mb-2" style={{ font: "800 14px/1 ui-monospace, monospace", color: "#56c8b8" }}>
+                <div className="mb-2" style={{ font: "800 14px/1 ui-monospace, monospace", color: "var(--color-ds-teal-2)" }}>
                   {t.tag}
                 </div>
                 <div className="text-[24px] font-extrabold mb-3.5 text-white">{t.ko}</div>
-                <p className="text-[15px]" style={{ color: "rgba(255,255,255,0.82)", lineHeight: 1.75 }}>{t.d}</p>
+                <p className="text-[16px]" style={{ color: "rgba(255,255,255,0.82)", lineHeight: 1.75 }}>{t.d}</p>
               </div>
             </div>
           ))}
@@ -285,14 +285,14 @@ export default function Home() {
             {STRENGTHS_4.map((s) => (
               <div
                 key={s.n}
-                className="group rounded-[24px] p-10 md:p-12 min-h-[230px] flex flex-col transition-colors duration-300 hover:bg-[#0d3a35]"
-                style={{ background: "#f4f7f6" }}
+                className="group rounded-[24px] p-10 md:p-12 min-h-[230px] flex flex-col transition-colors duration-300 hover:bg-[color:var(--color-ds-dark-warm)]"
+                style={{ background: "var(--color-ds-bento)" }}
               >
                 <div
-                  className="transition-colors group-hover:text-[#56c8b8]"
+                  className="transition-colors group-hover:text-[color:var(--color-ds-teal-2)]"
                   style={{
                     font: "800 clamp(34px, 4vw, 52px)/1 ui-monospace, monospace",
-                    color: "var(--color-ds-teal)",
+                    color: "var(--color-ds-teal-deep)",
                     letterSpacing: "-0.03em",
                   }}
                 >
@@ -306,7 +306,7 @@ export default function Home() {
                     {s.t}
                   </div>
                   <p
-                    className="text-[15px] transition-colors group-hover:text-[#aec6bf]"
+                    className="text-[16px] transition-colors group-hover:text-[#aec6bf]"
                     style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.7 }}
                   >
                     {s.d}
@@ -322,7 +322,7 @@ export default function Home() {
       <section>
         <div className="max-w-[1280px] mx-auto px-8 py-[104px]">
           <div className="text-center mb-11">
-            <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal)" }}>
+            <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal-deep)" }}>
               ONE STOP CARE
             </div>
             <h2 className="text-[34px] font-extrabold mb-3.5" style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}>
@@ -354,8 +354,8 @@ export default function Home() {
               </p>
               <ul className="list-none flex flex-col gap-[11px]">
                 {activeSol.points.map((p) => (
-                  <li key={p} className="flex gap-[11px] text-[15px] font-semibold" style={{ color: "#2a3b37" }}>
-                    <span className="font-extrabold" style={{ color: "var(--color-ds-teal)" }}>✓</span>
+                  <li key={p} className="flex gap-[11px] text-[16px] font-semibold" style={{ color: "#2a3b37" }}>
+                    <span className="font-extrabold" style={{ color: "var(--color-ds-teal-deep)" }}>✓</span>
                     {p}
                   </li>
                 ))}
@@ -373,9 +373,9 @@ export default function Home() {
       </section>
 
       {/* ============ SPECIALTY CENTERS — 다크 + 가로 스크롤 ============ */}
-      <section style={{ background: "#0d3a35", color: "#fff" }}>
+      <section style={{ background: "var(--color-ds-dark-warm)", color: "#fff" }}>
         <div className="max-w-[1280px] mx-auto px-8 pt-[104px] pb-[18px] text-center">
-          <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "#56c8b8" }}>
+          <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal-2)" }}>
             SPECIALTY CENTERS
           </div>
           <h2 className="text-[40px] font-extrabold mb-3.5" style={{ letterSpacing: "-0.03em" }}>
@@ -384,7 +384,7 @@ export default function Home() {
           <p className="text-[16.5px]" style={{ color: "#aec6bf" }}>
             분과별 전공의가 함께 진단부터 수술, 회복까지 책임지는 원스톱 시스템
           </p>
-          <div className="mt-[22px]" style={{ font: "600 11px/1 ui-monospace, monospace", letterSpacing: "0.24em", color: "#5b7d76" }}>
+          <div className="mt-[22px]" style={{ font: "600 12px/1 ui-monospace, monospace", letterSpacing: "0.24em", color: "#8fb5ac" }}>
             ← WHEEL · DRAG TO SCROLL →
           </div>
         </div>
@@ -398,21 +398,21 @@ export default function Home() {
               key={c.id}
               to={`/centers/${c.id}`}
               className="ctrcard text-left bg-white rounded-[20px] p-[40px_34px] cursor-pointer flex flex-col gap-3.5 transition-transform"
-              style={{ flex: "0 0 360px", minHeight: 460, color: "#0d3a35" }}
+              style={{ flex: "0 0 360px", minHeight: 460, color: "var(--color-ds-dark-warm)" }}
             >
               <div className="flex items-center justify-between">
-                <span style={{ font: "800 22px/1 ui-monospace, monospace", color: "var(--color-ds-teal)" }}>
+                <span style={{ font: "800 22px/1 ui-monospace, monospace", color: "var(--color-ds-teal-deep)" }}>
                   {c.num}
                 </span>
                 <span style={{ color: "#cbd6d1", fontSize: 26 }}>→</span>
               </div>
-              <div className="text-[28px] font-extrabold mt-2.5" style={{ color: "#0d3a35", lineHeight: 1.28 }}>
+              <div className="text-[28px] font-extrabold mt-2.5" style={{ color: "var(--color-ds-dark-warm)", lineHeight: 1.28 }}>
                 {c.ko}
               </div>
-              <div className="text-[13px] font-semibold" style={{ letterSpacing: "0.04em", color: "#9aa9a4" }}>
+              <div className="text-[13px] font-semibold" style={{ letterSpacing: "0.04em", color: "var(--color-ds-text-sub)" }}>
                 {c.en}
               </div>
-              <p className="text-[15px] mt-auto" style={{ color: "#5c6b68", lineHeight: 1.65 }}>
+              <p className="text-[16px] mt-auto" style={{ color: "#5c6b68", lineHeight: 1.65 }}>
                 {c.targets}
               </p>
             </Link>
@@ -421,8 +421,8 @@ export default function Home() {
         <div className="text-center pt-[18px] pb-[104px] px-8">
           <Link
             to="/centers"
-            className="inline-block text-[15px] font-bold"
-            style={{ background: "#0e9d8c", color: "#fff", padding: "15px 30px", borderRadius: 999 }}
+            className="inline-block text-[16px] font-bold"
+            style={{ background: "var(--color-ds-teal-deep)", color: "#fff", padding: "15px 30px", borderRadius: 999 }}
           >
             특화진료센터 전체 보기 →
           </Link>
@@ -430,7 +430,7 @@ export default function Home() {
       </section>
 
       {/* ============ BY THE NUMBERS — 다크 + CT실 배경 ============ */}
-      <section className="relative overflow-hidden" style={{ background: "#062b28", color: "#fff" }}>
+      <section className="relative overflow-hidden" style={{ background: "var(--color-ds-dark-2)", color: "#fff" }}>
         <img
           src="/images/facility/ct-room.jpg"
           alt=""
@@ -444,7 +444,7 @@ export default function Home() {
         />
         <div className="relative max-w-[1280px] mx-auto px-8 py-[104px]">
           <div className="max-w-[720px] mb-14">
-            <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "#56c8b8" }}>
+            <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal-2)" }}>
               BY THE NUMBERS
             </div>
             <h2 className="text-[34px] font-extrabold" style={{ letterSpacing: "-0.03em", lineHeight: 1.35 }}>
@@ -456,12 +456,12 @@ export default function Home() {
           </div>
           <div
             data-stagger=""
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px rounded-[18px] overflow-hidden four"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px rounded-[20px] overflow-hidden four"
             style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)" }}
           >
             {STAT_BIG.map((s, i) => (
               <div key={i} className="p-[38px_28px] backdrop-blur-[2px]" style={{ background: "rgba(6,43,40,0.78)" }}>
-                <div className="text-[46px] font-extrabold" style={{ color: "#56c8b8", letterSpacing: "-0.03em", lineHeight: 1 }}>
+                <div className="text-[46px] font-extrabold" style={{ color: "var(--color-ds-teal-2)", letterSpacing: "-0.03em", lineHeight: 1 }}>
                   {s.v}
                 </div>
                 <div className="text-base font-extrabold mt-4">{s.l}</div>
@@ -477,7 +477,7 @@ export default function Home() {
         <div className="max-w-[1280px] mx-auto px-8 py-24">
           <div className="flex items-end justify-between gap-6 mb-10 flex-wrap">
             <div>
-              <div className="mb-3.5" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal)" }}>
+              <div className="mb-3.5" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal-deep)" }}>
                 MEDIA
               </div>
               <h2 className="text-[32px] font-extrabold" style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}>
@@ -516,15 +516,15 @@ export default function Home() {
                     />
                   )}
                   <span
-                    className="text-[11.5px] font-extrabold shrink-0"
-                    style={{ color: "var(--color-ds-teal)", background: "#e2f4f1", padding: "5px 11px", borderRadius: 6 }}
+                    className="text-[12px] font-extrabold shrink-0"
+                    style={{ color: "var(--color-ds-teal-deep)", background: "#e2f4f1", padding: "5px 11px", borderRadius: 6 }}
                   >
                     {p.kind === "case" ? "케이스" : "칼럼"}
                   </span>
                   <span className="text-[15.5px] font-semibold flex-1 line-clamp-1" style={{ color: "#2a3b37" }}>
                     {p.title}
                   </span>
-                  <span className="text-[13px] shrink-0" style={{ color: "#8a948f" }}>{p.date}</span>
+                  <span className="text-[13px] shrink-0" style={{ color: "var(--color-ds-text-sub)" }}>{p.date}</span>
                 </a>
               ))}
             </div>
@@ -553,7 +553,7 @@ export default function Home() {
       </section>
 
       {/* ============ 24H EMERGENCY BAND ============ */}
-      <section className="relative overflow-hidden" style={{ background: "#041815", color: "#fff" }}>
+      <section className="relative overflow-hidden" style={{ background: "var(--color-ds-dark-3)", color: "#fff" }}>
         <div
           className="absolute inset-0"
           style={{ background: "radial-gradient(60% 90% at 82% 20%, rgba(194,80,74,0.22), transparent 60%)" }}
@@ -577,13 +577,13 @@ export default function Home() {
             <a
               href={`tel:${HOSPITAL.phone}`}
               className="inline-flex items-center justify-center gap-3 font-extrabold transition-transform hover:scale-[1.02]"
-              style={{ background: "#0e9d8c", color: "#fff", padding: "20px 36px", borderRadius: 16, fontSize: "clamp(20px, 2.4vw, 27px)" }}
+              style={{ background: "var(--color-ds-teal-deep)", color: "#fff", padding: "20px 36px", borderRadius: 16, fontSize: "clamp(20px, 2.4vw, 27px)" }}
             >
               ☎ {HOSPITAL.phone}
             </a>
             <Link
               to="/emergency"
-              className="inline-flex items-center justify-center gap-2 text-[14.5px] font-bold"
+              className="inline-flex items-center justify-center gap-2 text-[15px] font-bold"
               style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(244,238,228,0.25)", color: "#f4efe6", padding: "13px 24px", borderRadius: 12 }}
             >
               응급 상황 대처 가이드 →
@@ -593,10 +593,10 @@ export default function Home() {
       </section>
 
       {/* ============ VISIT US ============ */}
-      <section style={{ background: "#0d3a35", color: "#fff" }}>
+      <section style={{ background: "var(--color-ds-dark-warm)", color: "#fff" }}>
         <div className="max-w-[1280px] mx-auto px-8 py-24 grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-14 items-center loc">
           <div>
-            <div className="mb-[18px]" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "#56c8b8" }}>
+            <div className="mb-[18px]" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal-2)" }}>
               VISIT US
             </div>
             <h2 className="text-[32px] font-extrabold mb-7 text-white" style={{ letterSpacing: "-0.03em" }}>
@@ -611,7 +611,7 @@ export default function Home() {
                 >
                   <span
                     className="text-[13px] font-bold"
-                    style={{ color: "#56c8b8", letterSpacing: "0.02em" }}
+                    style={{ color: "var(--color-ds-teal-2)", letterSpacing: "0.02em" }}
                   >
                     {r.k}
                   </span>
@@ -628,8 +628,8 @@ export default function Home() {
               href={HOSPITAL.mapUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex mt-8 items-center gap-2 text-[15px] font-bold"
-              style={{ background: "#0e9d8c", color: "#fff", padding: "14px 24px", borderRadius: 11 }}
+              className="inline-flex mt-8 items-center gap-2 text-[16px] font-bold"
+              style={{ background: "var(--color-ds-teal-deep)", color: "#fff", padding: "14px 24px", borderRadius: 11 }}
             >
               네이버 지도로 길찾기 →
             </a>

@@ -1,16 +1,11 @@
 import type { Route } from "./+types/notice";
+import { ogMeta } from "~/lib/og";
 import { HOSPITAL, NOTICES_FALLBACK } from "~/data/dasanone-content";
 import { StickyBgHero } from "~/components/site/StickyBgHero";
 import { HERO_IMAGES } from "~/data/stock-images";
 
 export function meta({}: Route.MetaArgs) {
-  return [
-    { title: `공지사항 — ${HOSPITAL.name}` },
-    {
-      name: "description",
-      content: "다산원동물의료센터 공지사항 — 진료 안내, 운영 변경, 새 장비/서비스 소식.",
-    },
-  ];
+  return ogMeta(`공지사항 — ${HOSPITAL.name}`, "다산원동물의료센터 공지사항 — 진료 안내, 운영 변경, 새 장비/서비스 소식.", "/support/notice");
 }
 
 export default function SupportNotice() {
@@ -28,21 +23,21 @@ export default function SupportNotice() {
           {NOTICES_FALLBACK.map((n, i) => (
             <div
               key={i}
-              className="rounded-[18px] px-8 py-6 flex items-center gap-5"
-              style={{ background: "#f4f7f6" }}
+              className="rounded-[20px] px-8 py-6 flex items-center gap-5"
+              style={{ background: "var(--color-ds-bento)" }}
             >
               <span
                 className="text-[11.5px] font-extrabold shrink-0"
-                style={{ color: "var(--color-ds-teal)", background: "#ffffff", padding: "6px 12px", borderRadius: 8 }}
+                style={{ color: "var(--color-ds-teal-deep)", background: "#ffffff", padding: "6px 12px", borderRadius: 8 }}
               >
                 {n.tag}
               </span>
               <span className="text-[15.5px] font-semibold flex-1" style={{ color: "var(--color-ds-text)" }}>{n.t}</span>
-              <span className="text-[13px] shrink-0" style={{ color: "#8a948f" }}>{n.date}</span>
+              <span className="text-[13px] shrink-0" style={{ color: "var(--color-ds-text-sub)" }}>{n.date}</span>
             </div>
           ))}
         </div>
-        <p className="text-[13px] mt-6" style={{ color: "#8a948f" }}>
+        <p className="text-[13px] mt-6" style={{ color: "var(--color-ds-text-sub)" }}>
           ※ 추가 공지는 네이버 블로그({HOSPITAL.blog})에서도 확인하실 수 있습니다.
         </p>
       </section>

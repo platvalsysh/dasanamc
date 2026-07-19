@@ -39,7 +39,7 @@ export function SectionHead({
           style={{
             font: "700 13px/1 ui-monospace, monospace",
             letterSpacing: "0.22em",
-            color: onDark ? "#56c8b8" : "var(--color-ds-teal)",
+            color: onDark ? "var(--color-ds-teal-2)" : "var(--color-ds-teal-deep)",
           }}
         >
           {eyebrow}

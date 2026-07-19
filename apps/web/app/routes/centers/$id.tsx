@@ -1,5 +1,6 @@
 import { Link, redirect } from "react-router";
 import type { Route } from "./+types/$id";
+import { ogMeta } from "~/lib/og";
 import {
   HOSPITAL,
   CENTERS,
@@ -25,10 +26,11 @@ export function loader({ params }: Route.LoaderArgs) {
 
 export function meta({ data }: Route.MetaArgs) {
   if (!data) return [{ title: `특화진료센터 — ${HOSPITAL.name}` }];
-  return [
-    { title: `${data.center.ko} — ${HOSPITAL.name}` },
-    { name: "description", content: data.center.slogan },
-  ];
+  return ogMeta(
+    `${data.center.ko} — ${HOSPITAL.name}`,
+    data.center.slogan,
+    `/centers/${data.center.id}`,
+  );
 }
 
 export default function CenterDetail({ loaderData }: Route.ComponentProps) {
@@ -61,13 +63,13 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
             <div
               style={{
                 font: "800 clamp(56px, 8vw, 104px)/1 ui-monospace, monospace",
-                color: "var(--color-ds-teal)",
+                color: "var(--color-ds-teal-deep)",
                 letterSpacing: "-0.04em",
               }}
             >
               {c.num}
             </div>
-            <div className="mt-3 text-[13px] font-semibold" style={{ letterSpacing: "0.05em", color: "#7d8a85" }}>
+            <div className="mt-3 text-[13px] font-semibold" style={{ letterSpacing: "0.05em", color: "var(--color-ds-text-sub)" }}>
               {c.en}
             </div>
           </div>
@@ -86,13 +88,13 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
 
         {/* 진료 대상 / 강점 — bento 카드 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-20">
-          <div className="rounded-[24px] p-9 md:p-10" style={{ background: "#f4f7f6" }}>
+          <div className="rounded-[24px] p-9 md:p-10" style={{ background: "var(--color-ds-bento)" }}>
             <div
               className="mb-5"
               style={{
                 font: "700 13px/1 ui-monospace, monospace",
                 letterSpacing: "0.2em",
-                color: "var(--color-ds-teal)",
+                color: "var(--color-ds-teal-deep)",
               }}
             >
               TARGETS
@@ -104,13 +106,13 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
               {c.targets}
             </p>
           </div>
-          <div className="rounded-[24px] p-9 md:p-10" style={{ background: "#0d3a35" }}>
+          <div className="rounded-[24px] p-9 md:p-10" style={{ background: "var(--color-ds-dark-warm)" }}>
             <div
               className="mb-5"
               style={{
                 font: "700 13px/1 ui-monospace, monospace",
                 letterSpacing: "0.2em",
-                color: "#56c8b8",
+                color: "var(--color-ds-teal-2)",
               }}
             >
               STRENGTHS
@@ -120,8 +122,8 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
             </div>
             <ul className="list-none flex flex-col gap-3">
               {c.strengths.map((s) => (
-                <li key={s} className="flex gap-3 text-[15px]" style={{ color: "#cfe3dd", lineHeight: 1.7 }}>
-                  <span className="font-extrabold shrink-0" style={{ color: "#6ed4c5" }}>✓</span>
+                <li key={s} className="flex gap-3 text-[16px]" style={{ color: "#cfe3dd", lineHeight: 1.7 }}>
+                  <span className="font-extrabold shrink-0" style={{ color: "var(--color-ds-teal-3)" }}>✓</span>
                   {s}
                 </li>
               ))}
@@ -137,7 +139,7 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
               style={{
                 font: "700 13px/1 ui-monospace, monospace",
                 letterSpacing: "0.22em",
-                color: "var(--color-ds-teal)",
+                color: "var(--color-ds-teal-deep)",
               }}
             >
               MEDICAL TEAM
@@ -150,14 +152,14 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
                 <Link
                   key={d.name}
                   to={`/about/doctors#profile-${d.name}`}
-                  className="group flex items-center gap-4 rounded-[18px] px-6 py-5 transition-colors hover:bg-[#0d3a35]"
-                  style={{ background: "#f4f7f6", minWidth: 260 }}
+                  className="group flex items-center gap-4 rounded-[20px] px-6 py-5 transition-colors hover:bg-[color:var(--color-ds-dark-warm)]"
+                  style={{ background: "var(--color-ds-bento)", minWidth: 260 }}
                 >
                   <div>
                     <div className="text-[18px] font-extrabold transition-colors group-hover:text-white" style={{ color: "var(--color-ds-text)" }}>
                       {d.name}
                     </div>
-                    <div className="text-[13px] font-bold mt-0.5 transition-colors group-hover:text-[#7be0d0]" style={{ color: "var(--color-ds-teal)" }}>
+                    <div className="text-[13px] font-bold mt-0.5 transition-colors group-hover:text-[#7be0d0]" style={{ color: "var(--color-ds-teal-deep)" }}>
                       {d.role}
                     </div>
                   </div>
@@ -178,7 +180,7 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
               style={{
                 font: "700 13px/1 ui-monospace, monospace",
                 letterSpacing: "0.22em",
-                color: "var(--color-ds-teal)",
+                color: "var(--color-ds-teal-deep)",
               }}
             >
               CASES
@@ -196,15 +198,15 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
                   className="bg-white px-6 py-4 flex items-center gap-4 transition-colors hover:bg-[rgba(14,157,140,0.04)]"
                 >
                   <span
-                    className="text-[11px] font-extrabold shrink-0"
-                    style={{ color: "var(--color-ds-teal)", background: "#e2f4f1", padding: "4px 10px", borderRadius: 6 }}
+                    className="text-[12px] font-extrabold shrink-0"
+                    style={{ color: "var(--color-ds-teal-deep)", background: "#e2f4f1", padding: "4px 10px", borderRadius: 6 }}
                   >
                     블로그
                   </span>
-                  <span className="text-[14.5px] font-semibold flex-1" style={{ color: "#2a3b37" }}>
+                  <span className="text-[15px] font-semibold flex-1" style={{ color: "#2a3b37" }}>
                     {cs.title}
                   </span>
-                  <span className="shrink-0 text-[15px]" style={{ color: "#cbd6d1" }}>→</span>
+                  <span className="shrink-0 text-[16px]" style={{ color: "#cbd6d1" }}>→</span>
                 </a>
               ))}
             </div>
@@ -219,10 +221,10 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
               className="block px-6 py-5 rounded-xl transition-colors hover:bg-[rgba(14,157,140,0.04)]"
               style={{ border: "1px solid #e2e8e4" }}
             >
-              <div className="text-[11.5px] font-semibold mb-1" style={{ letterSpacing: "0.08em", color: "#8a948f" }}>
+              <div className="text-[11.5px] font-semibold mb-1" style={{ letterSpacing: "0.08em", color: "var(--color-ds-text-sub)" }}>
                 ← PREV
               </div>
-              <div className="text-[15px] font-extrabold" style={{ color: "var(--color-ds-text)" }}>
+              <div className="text-[16px] font-extrabold" style={{ color: "var(--color-ds-text)" }}>
                 {prev.num}. {prev.ko}
               </div>
             </Link>
@@ -235,10 +237,10 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
               className="block px-6 py-5 rounded-xl text-right transition-colors hover:bg-[rgba(14,157,140,0.04)]"
               style={{ border: "1px solid #e2e8e4" }}
             >
-              <div className="text-[11.5px] font-semibold mb-1" style={{ letterSpacing: "0.08em", color: "#8a948f" }}>
+              <div className="text-[11.5px] font-semibold mb-1" style={{ letterSpacing: "0.08em", color: "var(--color-ds-text-sub)" }}>
                 NEXT →
               </div>
-              <div className="text-[15px] font-extrabold" style={{ color: "var(--color-ds-text)" }}>
+              <div className="text-[16px] font-extrabold" style={{ color: "var(--color-ds-text)" }}>
                 {next.num}. {next.ko}
               </div>
             </Link>
@@ -248,10 +250,10 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
               className="block px-6 py-5 rounded-xl text-right transition-colors hover:bg-[rgba(14,157,140,0.04)]"
               style={{ border: "1px solid #e2e8e4" }}
             >
-              <div className="text-[11.5px] font-semibold mb-1" style={{ letterSpacing: "0.08em", color: "#8a948f" }}>
+              <div className="text-[11.5px] font-semibold mb-1" style={{ letterSpacing: "0.08em", color: "var(--color-ds-text-sub)" }}>
                 NEXT →
               </div>
-              <div className="text-[15px] font-extrabold" style={{ color: "var(--color-ds-text)" }}>
+              <div className="text-[16px] font-extrabold" style={{ color: "var(--color-ds-text)" }}>
                 건강검진 프로그램
               </div>
             </Link>
@@ -259,7 +261,7 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
         </div>
 
         <div className="text-center mt-10">
-          <Link to="/centers" className="text-[14px] font-semibold" style={{ color: "var(--color-ds-teal)" }}>
+          <Link to="/centers" className="text-[14px] font-semibold" style={{ color: "var(--color-ds-teal-deep)" }}>
             ← 특화진료센터 전체 보기
           </Link>
         </div>

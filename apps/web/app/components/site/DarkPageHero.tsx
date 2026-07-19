@@ -16,7 +16,7 @@ export function DarkPageHero({ tag, title, subtitle }: DarkPageHeroProps) {
   return (
     <div
       className="darkhero relative overflow-hidden"
-      style={{ background: "#06201c", color: "#f4efe6" }}
+      style={{ background: "var(--color-ds-dark)", color: "#f4efe6" }}
     >
       <div
         className="absolute inset-0"
@@ -66,7 +66,7 @@ export function DarkPageHero({ tag, title, subtitle }: DarkPageHeroProps) {
           style={{
             font: "700 13px/1 ui-monospace, monospace",
             letterSpacing: "0.22em",
-            color: "#6ed4c5",
+            color: "var(--color-ds-teal-3)",
           }}
         >
           {tag}

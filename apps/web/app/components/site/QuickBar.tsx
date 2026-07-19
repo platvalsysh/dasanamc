@@ -57,7 +57,7 @@ export function QuickBar() {
       aria-label="빠른 메뉴"
     >
       {/* 메뉴 컬럼 — solid 다크 teal 사각 */}
-      <div className="flex flex-col" style={{ background: "#0d3a35" }}>
+      <div className="flex flex-col" style={{ background: "var(--color-ds-dark-warm)" }}>
         {items.map((item) =>
           item.kind === "link" ? (
             <Link key={item.label} to={item.to} className={itemCls}>

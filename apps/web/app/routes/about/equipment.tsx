@@ -1,18 +1,12 @@
 import type { Route } from "./+types/equipment";
+import { ogMeta } from "~/lib/og";
 import { HOSPITAL, EQUIPMENT, EQUIPMENT_GROUPS } from "~/data/dasanone-content";
 import { StickyBgHero } from "~/components/site/StickyBgHero";
 import { SectionHead } from "~/components/site/SectionHead";
 import { HERO_IMAGES } from "~/data/stock-images";
 
 export function meta({}: Route.MetaArgs) {
-  return [
-    { title: `장비 안내 — ${HOSPITAL.name}` },
-    {
-      name: "description",
-      content:
-        "대학병원급 CT, 고사양 초음파, 동물용 HFNC, C-arm, 내시경, ICU — 정확한 진단과 안전한 수술을 위한 의료 장비.",
-    },
-  ];
+  return ogMeta(`장비 안내 — ${HOSPITAL.name}`, "대학병원급 CT, 고사양 초음파, 동물용 HFNC, C-arm, 내시경, ICU — 정확한 진단과 안전한 수술을 위한 의료 장비.", "/about/equipment");
 }
 
 export default function AboutEquipment() {
@@ -40,12 +34,12 @@ export default function AboutEquipment() {
             <div
               key={e.t}
               className="rounded-[24px] p-9 min-h-[260px] flex flex-col"
-              style={{ background: "#f4f7f6" }}
+              style={{ background: "var(--color-ds-bento)" }}
             >
               <div
                 style={{
                   font: "800 clamp(28px, 3vw, 38px)/1 ui-monospace, monospace",
-                  color: "var(--color-ds-teal)",
+                  color: "var(--color-ds-teal-deep)",
                   letterSpacing: "-0.02em",
                 }}
               >
@@ -98,8 +92,8 @@ export default function AboutEquipment() {
                   {g.items.map((item) => (
                     <div
                       key={item.name}
-                      className="rounded-[18px] p-7"
-                      style={{ background: "#f4f7f6" }}
+                      className="rounded-[20px] p-7"
+                      style={{ background: "var(--color-ds-bento)" }}
                     >
                       <div className="text-[15.5px] font-extrabold mb-2" style={{ color: "var(--color-ds-text)" }}>
                         {item.name}

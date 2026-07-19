@@ -32,11 +32,14 @@ function Shell({ menuItems, children }: PropsWithChildren<ShellProps>) {
   return (
     <SiteMenuProvider menuItems={menuItems || []}>
       <div className="flex min-h-screen flex-col bg-[color:var(--color-ds-bg)]">
+        <a href="#main" className="skip-link">
+          본문 바로가기
+        </a>
         <SmoothScroll />
         <ScrollEffects />
         <Header menuItems={menuItems} />
         <div className="flex-1 flex flex-col">
-          <main className="flex-1 flex flex-col">{children}</main>
+          <main id="main" className="flex-1 flex flex-col">{children}</main>
           <SiteFooter />
         </div>
         <QuickBar />

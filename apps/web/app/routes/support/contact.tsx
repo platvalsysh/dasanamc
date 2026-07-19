@@ -1,18 +1,12 @@
 import { Link, useActionData, useNavigation } from "react-router";
 import type { Route } from "./+types/contact";
+import { ogMeta } from "~/lib/og";
 import { HOSPITAL } from "~/data/dasanone-content";
 import { StickyBgHero } from "~/components/site/StickyBgHero";
 import { HERO_IMAGES } from "~/data/stock-images";
 
 export function meta({}: Route.MetaArgs) {
-  return [
-    { title: `온라인 문의 — ${HOSPITAL.name}` },
-    {
-      name: "description",
-      content:
-        "진료 예약·상담·CT/외과 협진 의뢰 — 진료팀이 확인 후 빠르게 연락드립니다.",
-    },
-  ];
+  return ogMeta(`온라인 문의 — ${HOSPITAL.name}`, "진료 예약·상담·CT/외과 협진 의뢰 — 진료팀이 확인 후 빠르게 연락드립니다.", "/support/contact");
 }
 
 interface ActionResult {
@@ -63,7 +57,7 @@ export default function SupportContact() {
       <section className="max-w-[1080px] mx-auto px-8 py-24">
         <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-12 formgrid">
           <div>
-            <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.2em", color: "var(--color-ds-teal)" }}>
+            <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.2em", color: "var(--color-ds-teal-deep)" }}>
               CONTACT
             </div>
             <h2 className="text-[24px] font-extrabold mb-4" style={{ letterSpacing: "-0.02em", color: "var(--color-ds-text)" }}>
@@ -91,14 +85,14 @@ export default function SupportContact() {
                 name="name"
                 required
                 placeholder="보호자 성함"
-                className="px-4 py-3.5 rounded-[10px] text-[15px] bg-white font-[inherit]"
+                className="px-4 py-3.5 rounded-[10px] text-[16px] bg-white font-[inherit]"
                 style={{ border: "1px solid #d8e0dc" }}
               />
               <input
                 name="phone"
                 required
                 placeholder="연락처"
-                className="px-4 py-3.5 rounded-[10px] text-[15px] bg-white font-[inherit]"
+                className="px-4 py-3.5 rounded-[10px] text-[16px] bg-white font-[inherit]"
                 style={{ border: "1px solid #d8e0dc" }}
               />
             </div>
@@ -106,13 +100,13 @@ export default function SupportContact() {
               <input
                 name="pet"
                 placeholder="반려동물 (이름/종/나이)"
-                className="px-4 py-3.5 rounded-[10px] text-[15px] bg-white font-[inherit]"
+                className="px-4 py-3.5 rounded-[10px] text-[16px] bg-white font-[inherit]"
                 style={{ border: "1px solid #d8e0dc" }}
               />
               <input
                 name="desired"
                 placeholder="희망 진료 (예: CT, 외과 협진)"
-                className="px-4 py-3.5 rounded-[10px] text-[15px] bg-white font-[inherit]"
+                className="px-4 py-3.5 rounded-[10px] text-[16px] bg-white font-[inherit]"
                 style={{ border: "1px solid #d8e0dc" }}
               />
             </div>
@@ -121,7 +115,7 @@ export default function SupportContact() {
               required
               rows={5}
               placeholder="문의 내용을 남겨주세요"
-              className="px-4 py-3.5 rounded-[10px] text-[15px] bg-white font-[inherit] resize-y"
+              className="px-4 py-3.5 rounded-[10px] text-[16px] bg-white font-[inherit] resize-y"
               style={{ border: "1px solid #d8e0dc" }}
             />
             <label className="flex items-center gap-2.5 text-[13.5px]" style={{ color: "var(--color-ds-text-sub)" }}>
@@ -147,7 +141,7 @@ export default function SupportContact() {
               type="submit"
               disabled={submitting}
               className="text-white border-none py-4 rounded-[11px] text-base font-bold cursor-pointer disabled:opacity-60"
-              style={{ background: "#0d3a35" }}
+              style={{ background: "var(--color-ds-dark-warm)" }}
             >
               {submitting ? "보내는 중…" : "문의 보내기"}
             </button>

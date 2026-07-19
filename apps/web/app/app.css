@@ -17,9 +17,11 @@
   --color-ds-dark-2: #062b28;     /* dark stats / footer */
   --color-ds-dark-3: #041815;     /* dark hero deepest */
   --color-ds-dark-warm: #0d3a35;  /* primary text on light bg */
-  --color-ds-teal: #0e9d8c;       /* primary accent */
+  --color-ds-teal: #0e9d8c;       /* primary accent (장식·대형 텍스트 전용) */
+  --color-ds-teal-deep: #0a7468;  /* CTA 배경·소형 라벨용 — 흰 글자 4.6:1, 흰 배경 위 4.5:1 */
   --color-ds-teal-2: #56c8b8;     /* on-dark accent */
   --color-ds-teal-3: #6ed4c5;     /* lightest accent (on dark) */
+  --color-ds-bento: #f4f7f6;      /* 라이트 카드 배경 */
   --color-ds-text: #0d3a35;
   --color-ds-text-warm: #f4efe6;  /* warm off-white on dark */
   --color-ds-text-sub: #5c6b68;
@@ -56,6 +58,44 @@
 .serif,
 .font-serif {
   font-family: var(--font-serif) !important;
+}
+
+/* ----- 접근성 기반 ----- */
+/* 키보드 포커스 링 — 마우스 클릭에는 안 뜨고 키보드 탐색에만 표시 */
+:focus-visible {
+  outline: 3px solid var(--color-ds-teal-deep);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* skip link — 키보드 사용자용 본문 바로가기 (포커스 시에만 노출) */
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 16px;
+  z-index: 200;
+  background: var(--color-ds-dark-warm);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  transition: top .15s ease;
+}
+.skip-link:focus-visible {
+  top: 16px;
+}
+
+/* 모션 최소화 사용자 — 장식성 CSS 애니메이션 정지 */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-pulse-dot,
+  [class*="animate-"] {
+    animation: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 html,

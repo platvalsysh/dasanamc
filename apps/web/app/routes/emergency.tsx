@@ -1,19 +1,13 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/emergency";
+import { ogMeta } from "~/lib/og";
 import { HOSPITAL } from "~/data/dasanone-content";
 import { CASE_ARTICLES, blogPostUrl } from "~/data/case-archive";
 import { StickyBgHero } from "~/components/site/StickyBgHero";
 import { SectionHead } from "~/components/site/SectionHead";
 
 export function meta({}: Route.MetaArgs) {
-  return [
-    { title: `24시 응급진료 — ${HOSPITAL.name}` },
-    {
-      name: "description",
-      content:
-        "365일 24시간 연중무휴 응급진료. 야간·심야 응급 상황 대처 가이드와 내원 절차 안내.",
-    },
-  ];
+  return ogMeta(`24시 응급진료 — ${HOSPITAL.name}`, "365일 24시간 연중무휴 응급진료. 야간·심야 응급 상황 대처 가이드와 내원 절차 안내.", "/emergency");
 }
 
 /** 즉시 내원이 필요한 응급 신호 — 일반적 보호자 안내 수준 */
@@ -82,10 +76,10 @@ export default function Emergency() {
       />
 
       {/* 대형 전화 CTA */}
-      <section style={{ background: "#0d3a35", color: "#fff" }}>
+      <section style={{ background: "var(--color-ds-dark-warm)", color: "#fff" }}>
         <div className="max-w-[1280px] mx-auto px-8 py-14 flex flex-wrap items-center justify-between gap-8">
           <div>
-            <div className="mb-2.5" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "#56c8b8" }}>
+            <div className="mb-2.5" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal-2)" }}>
               EMERGENCY HOTLINE
             </div>
             <div className="text-[17px] font-bold" style={{ color: "rgba(255,255,255,0.85)" }}>
@@ -96,7 +90,7 @@ export default function Emergency() {
             href={`tel:${HOSPITAL.phone}`}
             className="inline-flex items-center gap-3 font-extrabold transition-transform hover:scale-[1.02]"
             style={{
-              background: "#0e9d8c",
+              background: "var(--color-ds-teal-deep)",
               color: "#fff",
               padding: "20px 34px",
               borderRadius: 16,
@@ -121,7 +115,7 @@ export default function Emergency() {
             <div
               key={s.t}
               className="rounded-[20px] p-8 flex flex-col gap-3"
-              style={{ background: "#f4f7f6" }}
+              style={{ background: "var(--color-ds-bento)" }}
             >
               <div style={{ font: "800 15px/1 ui-monospace, monospace", color: "#c2504a" }}>
                 {String(i + 1).padStart(2, "0")}
@@ -129,7 +123,7 @@ export default function Emergency() {
               <div className="text-[19px] font-extrabold" style={{ color: "var(--color-ds-text)" }}>
                 {s.t}
               </div>
-              <p className="text-[14.5px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.75 }}>
+              <p className="text-[15px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.75 }}>
                 {s.d}
               </p>
             </div>
@@ -138,9 +132,9 @@ export default function Emergency() {
       </section>
 
       {/* 내원 절차 + 인프라 */}
-      <section style={{ background: "#062b28", color: "#fff" }}>
+      <section style={{ background: "var(--color-ds-dark-2)", color: "#fff" }}>
         <div className="max-w-[1280px] mx-auto px-8 py-24">
-          <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "#56c8b8" }}>
+          <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal-2)" }}>
             HOW TO VISIT
           </div>
           <h2 className="text-[32px] font-extrabold mb-12" style={{ letterSpacing: "-0.03em" }}>
@@ -149,21 +143,21 @@ export default function Emergency() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-16">
             {VISIT_STEPS.map((st) => (
               <div key={st.n} className="rounded-[20px] p-9" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
-                <div style={{ font: "800 34px/1 ui-monospace, monospace", color: "#56c8b8", letterSpacing: "-0.03em" }}>
+                <div style={{ font: "800 34px/1 ui-monospace, monospace", color: "var(--color-ds-teal-2)", letterSpacing: "-0.03em" }}>
                   {st.n}
                 </div>
                 <div className="text-[20px] font-extrabold mt-8 mb-3">{st.t}</div>
-                <p className="text-[14.5px]" style={{ color: "#aec6bf", lineHeight: 1.75 }}>{st.d}</p>
+                <p className="text-[15px]" style={{ color: "#aec6bf", lineHeight: 1.75 }}>{st.d}</p>
               </div>
             ))}
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-px rounded-[18px] overflow-hidden" style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)" }}>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-px rounded-[20px] overflow-hidden" style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)" }}>
             {ER_INFRA.map((s) => (
-              <div key={s.v} className="p-[32px_26px]" style={{ background: "#062b28" }}>
-                <div className="text-[38px] font-extrabold" style={{ color: "#56c8b8", letterSpacing: "-0.03em", lineHeight: 1 }}>
+              <div key={s.v} className="p-[32px_26px]" style={{ background: "var(--color-ds-dark-2)" }}>
+                <div className="text-[38px] font-extrabold" style={{ color: "var(--color-ds-teal-2)", letterSpacing: "-0.03em", lineHeight: 1 }}>
                   {s.v}
                 </div>
-                <div className="text-[15px] font-extrabold mt-3.5">{s.l}</div>
+                <div className="text-[16px] font-extrabold mt-3.5">{s.l}</div>
                 <div className="text-[12.5px] mt-1" style={{ color: "#8ea29b" }}>{s.s}</div>
               </div>
             ))}
@@ -187,7 +181,7 @@ export default function Emergency() {
                 target="_blank"
                 rel="noreferrer"
                 className="group flex gap-5 rounded-[20px] p-5 transition-transform hover:-translate-y-1"
-                style={{ background: "#f4f7f6" }}
+                style={{ background: "var(--color-ds-bento)" }}
               >
                 {a.thumb && (
                   <img
@@ -201,8 +195,8 @@ export default function Emergency() {
                   <div className="text-[16.5px] font-extrabold mb-1.5" style={{ color: "var(--color-ds-text)", lineHeight: 1.4 }}>
                     {a.title}
                   </div>
-                  <span className="text-[12.5px]" style={{ color: "#9aa9a4" }}>{a.date}</span>
-                  <span className="mt-auto text-[13px] font-bold transition-transform group-hover:translate-x-1" style={{ color: "var(--color-ds-teal)" }}>
+                  <span className="text-[12.5px]" style={{ color: "var(--color-ds-text-sub)" }}>{a.date}</span>
+                  <span className="mt-auto text-[13px] font-bold transition-transform group-hover:translate-x-1" style={{ color: "var(--color-ds-teal-deep)" }}>
                     원문 보기 →
                   </span>
                 </div>
@@ -211,8 +205,8 @@ export default function Emergency() {
           </div>
           <Link
             to="/cases"
-            className="inline-block text-[15px] font-bold"
-            style={{ background: "#0d3a35", color: "#fff", padding: "15px 30px", borderRadius: 999 }}
+            className="inline-block text-[16px] font-bold"
+            style={{ background: "var(--color-ds-dark-warm)", color: "#fff", padding: "15px 30px", borderRadius: 999 }}
           >
             전체 치료 케이스 보기 →
           </Link>

@@ -1,19 +1,13 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/support";
+import { ogMeta } from "~/lib/og";
 import { HOSPITAL } from "~/data/dasanone-content";
 import { StickyBgHero } from "~/components/site/StickyBgHero";
 import { SectionHead } from "~/components/site/SectionHead";
 import { HERO_IMAGES } from "~/data/stock-images";
 
 export function meta({}: Route.MetaArgs) {
-  return [
-    { title: `고객센터 — ${HOSPITAL.name}` },
-    {
-      name: "description",
-      content:
-        "진료 예약·문의는 전화 또는 온라인으로, 진료 케이스와 건강 정보는 블로그에서.",
-    },
-  ];
+  return ogMeta(`고객센터 — ${HOSPITAL.name}`, "진료 예약·문의는 전화 또는 온라인으로, 진료 케이스와 건강 정보는 블로그에서.", "/support");
 }
 
 export default function Support() {
@@ -32,7 +26,7 @@ export default function Support() {
           <a
             href={`tel:${HOSPITAL.phone}`}
             className="rounded-[24px] p-10 flex flex-col min-h-[280px]"
-            style={{ background: "#0e9d8c", color: "#fff" }}
+            style={{ background: "var(--color-ds-teal-deep)", color: "#fff" }}
           >
             <span className="text-[13.5px] font-bold" style={{ color: "#bfe8e1" }}>24시간 전화 상담</span>
             <div className="mt-auto pt-12">
@@ -42,15 +36,15 @@ export default function Support() {
               >
                 {HOSPITAL.phone}
               </div>
-              <div className="text-[15px] mt-2" style={{ color: "#c8ebe4" }}>{HOSPITAL.phone2}</div>
+              <div className="text-[16px] mt-2" style={{ color: "#c8ebe4" }}>{HOSPITAL.phone2}</div>
             </div>
           </a>
           <Link
             to="/support/contact"
-            className="group text-left rounded-[24px] p-10 flex flex-col min-h-[280px] transition-colors hover:bg-[#0d3a35]"
-            style={{ background: "#f4f7f6" }}
+            className="group text-left rounded-[24px] p-10 flex flex-col min-h-[280px] transition-colors hover:bg-[color:var(--color-ds-dark-warm)]"
+            style={{ background: "var(--color-ds-bento)" }}
           >
-            <span className="text-[13.5px] font-bold" style={{ color: "var(--color-ds-teal)" }}>온라인 문의·예약</span>
+            <span className="text-[13.5px] font-bold" style={{ color: "var(--color-ds-teal-deep)" }}>온라인 문의·예약</span>
             <div className="mt-auto pt-12">
               <div
                 className="font-extrabold transition-colors group-hover:text-white"
@@ -58,7 +52,7 @@ export default function Support() {
               >
                 문의 남기기 →
               </div>
-              <div className="text-[14.5px] mt-2 transition-colors group-hover:text-[#aec6bf]" style={{ color: "#6b7975" }}>
+              <div className="text-[15px] mt-2 transition-colors group-hover:text-[#aec6bf]" style={{ color: "#6b7975" }}>
                 진료 예약과 일반 문의를 접수합니다
               </div>
             </div>
@@ -67,10 +61,10 @@ export default function Support() {
             href={HOSPITAL.blog}
             target="_blank"
             rel="noreferrer"
-            className="group rounded-[24px] p-10 flex flex-col min-h-[280px] transition-colors hover:bg-[#0d3a35]"
-            style={{ background: "#f4f7f6" }}
+            className="group rounded-[24px] p-10 flex flex-col min-h-[280px] transition-colors hover:bg-[color:var(--color-ds-dark-warm)]"
+            style={{ background: "var(--color-ds-bento)" }}
           >
-            <span className="text-[13.5px] font-bold" style={{ color: "var(--color-ds-teal)" }}>진료 케이스 · 블로그</span>
+            <span className="text-[13.5px] font-bold" style={{ color: "var(--color-ds-teal-deep)" }}>진료 케이스 · 블로그</span>
             <div className="mt-auto pt-12">
               <div
                 className="font-extrabold transition-colors group-hover:text-white"
@@ -78,7 +72,7 @@ export default function Support() {
               >
                 네이버 블로그 →
               </div>
-              <div className="text-[14.5px] mt-2 transition-colors group-hover:text-[#aec6bf]" style={{ color: "#6b7975" }}>
+              <div className="text-[15px] mt-2 transition-colors group-hover:text-[#aec6bf]" style={{ color: "#6b7975" }}>
                 blog.naver.com/dasanoneamc
               </div>
             </div>
@@ -97,8 +91,8 @@ export default function Support() {
             <Link
               key={card.to}
               to={card.to}
-              className="group block rounded-[18px] p-8 transition-colors hover:bg-[#0d3a35]"
-              style={{ background: "#f4f7f6" }}
+              className="group block rounded-[20px] p-8 transition-colors hover:bg-[color:var(--color-ds-dark-warm)]"
+              style={{ background: "var(--color-ds-bento)" }}
             >
               <div className="text-[19px] font-extrabold mb-2 transition-colors group-hover:text-white" style={{ color: "var(--color-ds-text)" }}>
                 {card.label} →

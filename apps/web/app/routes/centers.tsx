@@ -1,19 +1,13 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/centers";
+import { ogMeta } from "~/lib/og";
 import { HOSPITAL, CENTERS } from "~/data/dasanone-content";
 import { StickyBgHero } from "~/components/site/StickyBgHero";
 import { SectionHead } from "~/components/site/SectionHead";
 import { HERO_IMAGES } from "~/data/stock-images";
 
 export function meta({}: Route.MetaArgs) {
-  return [
-    { title: `특화진료센터 — ${HOSPITAL.name}` },
-    {
-      name: "description",
-      content:
-        "11개 특화진료센터 — 분과별 전공의가 함께 진단부터 수술, 회복까지 책임지는 원스톱 시스템.",
-    },
-  ];
+  return ogMeta(`특화진료센터 — ${HOSPITAL.name}`, "11개 특화진료센터 — 분과별 전공의가 함께 진단부터 수술, 회복까지 책임지는 원스톱 시스템.", "/centers");
 }
 
 export default function CentersIndex() {
@@ -40,15 +34,15 @@ export default function CentersIndex() {
             <Link
               key={c.id}
               to={`/centers/${c.id}`}
-              className="group flex flex-col rounded-[24px] p-9 min-h-[280px] transition-colors hover:bg-[#0d3a35]"
-              style={{ background: "#f4f7f6", color: "var(--color-ds-text)" }}
+              className="group flex flex-col rounded-[24px] p-9 min-h-[280px] transition-colors hover:bg-[color:var(--color-ds-dark-warm)]"
+              style={{ background: "var(--color-ds-bento)", color: "var(--color-ds-text)" }}
             >
               <div className="flex items-start justify-between">
                 <span
-                  className="transition-colors group-hover:text-[#56c8b8]"
+                  className="transition-colors group-hover:text-[color:var(--color-ds-teal-2)]"
                   style={{
                     font: "800 clamp(30px, 3.4vw, 44px)/1 ui-monospace, monospace",
-                    color: "var(--color-ds-teal)",
+                    color: "var(--color-ds-teal-deep)",
                     letterSpacing: "-0.03em",
                   }}
                 >
@@ -70,7 +64,7 @@ export default function CentersIndex() {
                 </div>
                 <div
                   className="text-[12px] font-semibold mb-4 transition-colors group-hover:text-[#7d968f]"
-                  style={{ letterSpacing: "0.05em", color: "#7d8a85" }}
+                  style={{ letterSpacing: "0.05em", color: "var(--color-ds-text-sub)" }}
                 >
                   {c.en}
                 </div>
@@ -88,7 +82,7 @@ export default function CentersIndex() {
           <Link
             to="/centers/checkup"
             className="group flex flex-col rounded-[24px] p-9 min-h-[280px] transition-colors hover:bg-[#0a7468]"
-            style={{ background: "#0e9d8c", color: "#fff" }}
+            style={{ background: "var(--color-ds-teal-deep)", color: "#fff" }}
           >
             <div className="flex items-start justify-between">
               <span

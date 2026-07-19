@@ -178,6 +178,16 @@ export function StickyBgHero({ bgImage, location, copy, sub, compact = false }: 
               backgroundSize: "cover",
               backgroundPosition: "center 38%",
               backgroundRepeat: "no-repeat",
+              // 사진별 색감 편차를 줄이는 브랜드 듀오톤 베이스
+              filter: "saturate(0.82)",
+            }}
+          />
+          {/* 상시 teal wash — 스톡/실촬영 혼용 시 톤 통일 */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(150deg, rgba(9,45,40,0.30) 0%, rgba(9,45,40,0.14) 55%, rgba(9,45,40,0.26) 100%)",
             }}
           />
           <div
@@ -253,7 +263,7 @@ export function StickyBgHero({ bgImage, location, copy, sub, compact = false }: 
                       fontWeight: 700,
                       lineHeight: 1,
                       letterSpacing: "-0.01em",
-                      color: "#0d3a35",
+                      color: "var(--color-ds-dark-warm)",
                     }}
                   >
                     {item.label}
@@ -280,7 +290,7 @@ export function StickyBgHero({ bgImage, location, copy, sub, compact = false }: 
                 fontSize: "clamp(30px, 4.2vw, 56px)",
                 lineHeight: 1.45,
                 letterSpacing: "-0.02em",
-                color: "#0d3a35",
+                color: "var(--color-ds-dark-warm)",
                 transition: "none",
                 whiteSpace: "pre-line",
                 textWrap: "balance",

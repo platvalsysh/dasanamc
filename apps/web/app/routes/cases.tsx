@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import type { Route } from "./+types/cases";
+import { ogMeta } from "~/lib/og";
 import { HOSPITAL, CENTERS } from "~/data/dasanone-content";
 import {
   CASE_ARTICLES,
@@ -10,14 +11,7 @@ import {
 import { StickyBgHero } from "~/components/site/StickyBgHero";
 
 export function meta({}: Route.MetaArgs) {
-  return [
-    { title: `치료 케이스 · 질환 정보 — ${HOSPITAL.name}` },
-    {
-      name: "description",
-      content:
-        "TPLO·FHNO·종양 절제·내시경 이물 제거 등 실제 치료 케이스와 분과별 질환 정보 아카이브.",
-    },
-  ];
+  return ogMeta(`치료 케이스 · 질환 정보 — ${HOSPITAL.name}`, "TPLO·FHNO·종양 절제·내시경 이물 제거 등 실제 치료 케이스와 분과별 질환 정보 아카이브.", "/cases");
 }
 
 const KIND_FILTERS: { key: CaseKind | "all"; label: string }[] = [
@@ -77,7 +71,7 @@ export default function Cases() {
                 className="rounded-full px-5 py-2.5 text-[14px] font-bold transition-colors cursor-pointer"
                 style={
                   active
-                    ? { background: "#0d3a35", color: "#fff", border: "1px solid #0d3a35" }
+                    ? { background: "var(--color-ds-dark-warm)", color: "#fff", border: "1px solid #0d3a35" }
                     : { background: "#fff", color: "var(--color-ds-text-sub)", border: "1px solid #d8e0dc" }
                 }
               >
@@ -105,7 +99,7 @@ export default function Cases() {
             );
           })}
         </div>
-        <p className="text-[13.5px] mb-10" style={{ color: "#8a948f" }}>
+        <p className="text-[13.5px] mb-10" style={{ color: "var(--color-ds-text-sub)" }}>
           {filtered.length}건 — 카드를 누르면 네이버 블로그 원문에서 전체 치료 과정을 볼 수 있습니다.
         </p>
 
@@ -118,7 +112,7 @@ export default function Cases() {
               target="_blank"
               rel="noreferrer"
               className="group flex flex-col rounded-[20px] overflow-hidden transition-transform hover:-translate-y-1"
-              style={{ background: "#f4f7f6" }}
+              style={{ background: "var(--color-ds-bento)" }}
             >
               {a.thumb && (
                 <div className="overflow-hidden" style={{ aspectRatio: "4/3" }}>
@@ -133,10 +127,10 @@ export default function Cases() {
               <div className="flex flex-col flex-1 p-6">
                 <div className="flex items-center gap-2 mb-3">
                   <span
-                    className="text-[11.5px] font-extrabold rounded-md px-2.5 py-1"
+                    className="text-[12px] font-extrabold rounded-md px-2.5 py-1"
                     style={
                       a.kind === "case"
-                        ? { background: "#0d3a35", color: "#7be0d0" }
+                        ? { background: "var(--color-ds-dark-warm)", color: "#7be0d0" }
                         : { background: "#e2f4f1", color: "#0a7468" }
                     }
                   >
@@ -171,10 +165,10 @@ export default function Cases() {
                   {a.excerpt}
                 </p>
                 <div className="mt-auto flex items-center justify-between">
-                  <span className="text-[12.5px]" style={{ color: "#9aa9a4" }}>{a.date}</span>
+                  <span className="text-[12.5px]" style={{ color: "var(--color-ds-text-sub)" }}>{a.date}</span>
                   <span
                     className="text-[13px] font-bold transition-transform group-hover:translate-x-1"
-                    style={{ color: "var(--color-ds-teal)" }}
+                    style={{ color: "var(--color-ds-teal-deep)" }}
                   >
                     원문 보기 →
                   </span>

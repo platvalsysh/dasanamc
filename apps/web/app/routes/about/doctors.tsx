@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/doctors";
+import { ogMeta } from "~/lib/og";
 import {
   HOSPITAL,
   LEAD_DOCTORS,
@@ -23,14 +24,7 @@ const DOCTOR_PHOTOS: Record<string, string> = {
 };
 
 export function meta({}: Route.MetaArgs) {
-  return [
-    { title: `의료진 — ${HOSPITAL.name}` },
-    {
-      name: "description",
-      content:
-        "경북대 3 · 건국대 2 · 충남대 1 — 6명 전원 석사 이상의 전문 의료진이 진료합니다.",
-    },
-  ];
+  return ogMeta(`의료진 — ${HOSPITAL.name}`, "경북대 3 · 건국대 2 · 충남대 1 — 6명 전원 석사 이상의 전문 의료진이 진료합니다.", "/about/doctors");
 }
 
 /** 통합 프로필 카드 — 사진 + 이름/직책/약력 요약 + 철학 인용구 + 인사말 + 전체 약력 */
@@ -51,8 +45,8 @@ function DoctorCard({
   return (
     <article
       id={`profile-${doctor.name}`}
-      className="leadcard grid grid-cols-1 md:grid-cols-[0.4fr_0.6fr] rounded-[28px] overflow-hidden"
-      style={{ background: "#f4f7f6", scrollMarginTop: 100 }}
+      className="leadcard grid grid-cols-1 md:grid-cols-[0.4fr_0.6fr] rounded-[24px] overflow-hidden"
+      style={{ background: "var(--color-ds-bento)", scrollMarginTop: 100 }}
     >
       {/* 사진 — 실촬영 프로필 배너, 없으면 실루엣 placeholder */}
       {DOCTOR_PHOTOS[doctor.name] ? (
@@ -84,7 +78,7 @@ function DoctorCard({
             style={{
               font: "600 12px ui-monospace, monospace",
               letterSpacing: "0.1em",
-              color: "#9aa9a4",
+              color: "var(--color-ds-text-sub)",
             }}
           >
             {isChief ? "대표원장 사진" : "프로필 사진"}
@@ -99,7 +93,7 @@ function DoctorCard({
           style={{
             font: "700 13px/1 ui-monospace, monospace",
             letterSpacing: "0.2em",
-            color: "var(--color-ds-teal)",
+            color: "var(--color-ds-teal-deep)",
           }}
         >
           {isChief ? "CHIEF DIRECTOR" : "VETERINARIAN"}
@@ -116,11 +110,11 @@ function DoctorCard({
           >
             {doctor.name}
           </span>
-          <span className="text-[17px] font-bold" style={{ color: "var(--color-ds-teal)" }}>
+          <span className="text-[17px] font-bold" style={{ color: "var(--color-ds-teal-deep)" }}>
             {doctor.role}
           </span>
         </div>
-        <p className="text-[15px] mb-5" style={{ color: "#6b7975", lineHeight: 1.65 }}>
+        <p className="text-[16px] mb-5" style={{ color: "#6b7975", lineHeight: 1.65 }}>
           {doctor.cred}
         </p>
 
@@ -131,7 +125,7 @@ function DoctorCard({
               <Link
                 key={c.id}
                 to={`/centers/${c.id}`}
-                className="text-[12.5px] font-bold rounded-full px-3.5 py-1.5 transition-colors hover:bg-[#0d3a35] hover:text-white"
+                className="text-[12.5px] font-bold rounded-full px-3.5 py-1.5 transition-colors hover:bg-[color:var(--color-ds-dark-warm)] hover:text-white"
                 style={{ background: "#e2f4f1", color: "#0a7468" }}
               >
                 {c.ko}
@@ -172,7 +166,7 @@ function DoctorCard({
                 style={{
                   font: "700 13px/1 ui-monospace, monospace",
                   letterSpacing: "0.2em",
-                  color: "var(--color-ds-teal)",
+                  color: "var(--color-ds-teal-deep)",
                 }}
               >
                 CAREER
@@ -181,10 +175,10 @@ function DoctorCard({
                 {detail.career.map((c) => (
                   <li
                     key={c}
-                    className="flex gap-3 text-[14.5px]"
+                    className="flex gap-3 text-[15px]"
                     style={{ color: "#5a554c", lineHeight: 1.7 }}
                   >
-                    <span className="shrink-0 font-extrabold" style={{ color: "var(--color-ds-teal)" }}>
+                    <span className="shrink-0 font-extrabold" style={{ color: "var(--color-ds-teal-deep)" }}>
                       ·
                     </span>
                     {c}

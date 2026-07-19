@@ -1,4 +1,5 @@
 import type { Route } from "./+types/checkup";
+import { ogMeta } from "~/lib/og";
 import {
   HOSPITAL,
   PROCESS_STEPS,
@@ -12,14 +13,7 @@ import { SectionHead } from "~/components/site/SectionHead";
 import { HERO_IMAGES } from "~/data/stock-images";
 
 export function meta({}: Route.MetaArgs) {
-  return [
-    { title: `건강검진 프로그램 — ${HOSPITAL.name}` },
-    {
-      name: "description",
-      content:
-        "최신 의료 가이드라인 기반의 5단계 검진 프로세스 — 강아지/고양이별 Basic·Standard·Premium 패키지로 운영.",
-    },
-  ];
+  return ogMeta(`건강검진 프로그램 — ${HOSPITAL.name}`, "최신 의료 가이드라인 기반의 5단계 검진 프로세스 — 강아지/고양이별 Basic·Standard·Premium 패키지로 운영.", "/centers/checkup");
 }
 
 function CheckTable({
@@ -38,7 +32,7 @@ function CheckTable({
       <div className="text-[19px] font-extrabold mb-1" style={{ color: "var(--color-ds-text)" }}>
         {emoji} {title}
       </div>
-      <div className="text-[12.5px] mb-[18px]" style={{ color: "#8a948f" }}>{subtitle}</div>
+      <div className="text-[12.5px] mb-[18px]" style={{ color: "var(--color-ds-text-sub)" }}>{subtitle}</div>
       <table className="hcheck w-full border-collapse text-[12.5px]">
         <thead>
           <tr>
@@ -59,9 +53,9 @@ function CheckTable({
               >
                 {r.item}
               </td>
-              <td className="text-center px-1 py-1.5 font-bold" style={{ color: "var(--color-ds-teal)" }}>{r.b}</td>
-              <td className="text-center px-1 py-1.5 font-bold" style={{ color: "var(--color-ds-teal)" }}>{r.s}</td>
-              <td className="text-center px-1 py-1.5 font-bold" style={{ color: "var(--color-ds-teal)" }}>{r.p}</td>
+              <td className="text-center px-1 py-1.5 font-bold" style={{ color: "var(--color-ds-teal-deep)" }}>{r.b}</td>
+              <td className="text-center px-1 py-1.5 font-bold" style={{ color: "var(--color-ds-teal-deep)" }}>{r.s}</td>
+              <td className="text-center px-1 py-1.5 font-bold" style={{ color: "var(--color-ds-teal-deep)" }}>{r.p}</td>
             </tr>
           ))}
         </tbody>
@@ -92,12 +86,12 @@ export default function CentersCheckup() {
             <div
               key={p.n}
               className="rounded-[20px] px-7 py-8 flex flex-col min-h-[240px]"
-              style={{ background: "#f4f7f6" }}
+              style={{ background: "var(--color-ds-bento)" }}
             >
               <div
                 style={{
                   font: "800 clamp(30px, 3vw, 40px)/1 ui-monospace, monospace",
-                  color: "var(--color-ds-teal)",
+                  color: "var(--color-ds-teal-deep)",
                   letterSpacing: "-0.02em",
                 }}
               >
@@ -116,7 +110,7 @@ export default function CentersCheckup() {
       <section
         className="darkhero py-24 md:py-28"
         data-bg-full="1"
-        style={{ background: "#0d3a35" }}
+        style={{ background: "var(--color-ds-dark-warm)" }}
       >
         <div className="max-w-[1280px] mx-auto px-8">
           <SectionHead
@@ -134,7 +128,7 @@ export default function CentersCheckup() {
                 <div
                   style={{
                     font: "800 clamp(30px, 3.2vw, 42px)/1.1 ui-monospace, monospace",
-                    color: "#56c8b8",
+                    color: "var(--color-ds-teal-2)",
                     letterSpacing: "-0.02em",
                   }}
                 >
@@ -144,7 +138,7 @@ export default function CentersCheckup() {
                   <div className="text-[18px] font-extrabold mb-3 text-white">
                     {g.target}
                   </div>
-                  <p className="text-[14.5px]" style={{ color: "#aec6bf", lineHeight: 1.75 }}>
+                  <p className="text-[15px]" style={{ color: "#aec6bf", lineHeight: 1.75 }}>
                     {g.desc}
                   </p>
                 </div>
@@ -159,7 +153,7 @@ export default function CentersCheckup() {
           <CheckTable title="강아지 건강검진" emoji="🐶" subtitle="Dog Health Check" rows={DOG_ROWS} />
           <CheckTable title="고양이 건강검진" emoji="🐱" subtitle="Cat Health Check" rows={CAT_ROWS} />
         </div>
-        <p className="text-[13px] pl-1 mt-4" style={{ color: "#8a948f" }}>
+        <p className="text-[13px] pl-1 mt-4" style={{ color: "var(--color-ds-text-sub)" }}>
           ※ 표시된 검진 비용은 예시값이며 확정 후 업데이트됩니다. 검진 항목은
           연령·품종·증상에 따라 조정될 수 있어요.
         </p>

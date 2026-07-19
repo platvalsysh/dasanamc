@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/about";
+import { ogMeta } from "~/lib/og";
 import {
   HOSPITAL,
   THREE_ONE,
@@ -10,14 +11,7 @@ import { StickyBgHero } from "~/components/site/StickyBgHero";
 import { SectionHead } from "~/components/site/SectionHead";
 
 export function meta({}: Route.MetaArgs) {
-  return [
-    { title: `병원소개 — ${HOSPITAL.name}` },
-    {
-      name: "description",
-      content:
-        "다산원동물의료센터의 진심 — 세 가지 ‘ONE’ 약속과 네 가지 강점을 소개합니다.",
-    },
-  ];
+  return ogMeta(`병원소개 — ${HOSPITAL.name}`, "다산원동물의료센터의 진심 — 세 가지 ‘ONE’ 약속과 네 가지 강점을 소개합니다.", "/about");
 }
 
 /** WHY DASANONE bento 카드용 강조 지표 */
@@ -39,7 +33,7 @@ export default function About() {
           style={{
             font: "700 13px/1 ui-monospace, monospace",
             letterSpacing: "0.24em",
-            color: "var(--color-ds-teal)",
+            color: "var(--color-ds-teal-deep)",
           }}
         >
           GREETING
@@ -78,7 +72,7 @@ export default function About() {
             <div
               key={i}
               className="rounded-[24px] p-10 md:p-12 flex flex-col justify-between min-h-[240px]"
-              style={{ background: "#f4f7f6" }}
+              style={{ background: "var(--color-ds-bento)" }}
             >
               <div
                 className="font-extrabold"
@@ -95,7 +89,7 @@ export default function About() {
                 <div className="text-[19px] font-extrabold mb-1.5" style={{ color: "var(--color-ds-text)" }}>
                   {s.l}
                 </div>
-                <p className="text-[14.5px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.6 }}>
+                <p className="text-[15px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.6 }}>
                   {s.s}
                 </p>
               </div>
@@ -108,7 +102,7 @@ export default function About() {
       <section
         className="darkhero py-24 md:py-32"
         data-bg-full="1"
-        style={{ background: "#0d3a35", color: "#fff" }}
+        style={{ background: "var(--color-ds-dark-warm)", color: "#fff" }}
       >
         <div className="max-w-[1280px] mx-auto px-8">
           <SectionHead
@@ -128,18 +122,18 @@ export default function About() {
                   className="font-extrabold mb-auto"
                   style={{
                     font: "800 clamp(40px, 4.5vw, 60px)/1 ui-monospace, monospace",
-                    color: "#56c8b8",
+                    color: "var(--color-ds-teal-2)",
                     letterSpacing: "-0.03em",
                   }}
                 >
                   {String(i + 1).padStart(2, "0")}
                 </div>
                 <div className="mt-10">
-                  <div className="mb-2" style={{ font: "800 14px/1 ui-monospace, monospace", color: "#6ed4c5" }}>
+                  <div className="mb-2" style={{ font: "800 14px/1 ui-monospace, monospace", color: "var(--color-ds-teal-3)" }}>
                     {t.tag}
                   </div>
                   <div className="text-[22px] font-extrabold mb-3.5" style={{ color: "#fff" }}>{t.ko}</div>
-                  <p className="text-[15px]" style={{ color: "#aec6bf", lineHeight: 1.75 }}>{t.d}</p>
+                  <p className="text-[16px]" style={{ color: "#aec6bf", lineHeight: 1.75 }}>{t.d}</p>
                 </div>
               </div>
             ))}
@@ -159,13 +153,13 @@ export default function About() {
             <div
               key={i}
               className="rounded-[24px] p-10 md:p-12 min-h-[230px] flex flex-col"
-              style={{ background: "#f4f7f6" }}
+              style={{ background: "var(--color-ds-bento)" }}
             >
               <div className="flex items-start justify-between">
                 <div
                   style={{
                     font: "800 clamp(34px, 4vw, 52px)/1 ui-monospace, monospace",
-                    color: "var(--color-ds-teal)",
+                    color: "var(--color-ds-teal-deep)",
                     letterSpacing: "-0.03em",
                   }}
                 >
@@ -186,7 +180,7 @@ export default function About() {
                 <div className="text-[20px] font-extrabold mb-2.5" style={{ color: "var(--color-ds-text)", lineHeight: 1.35 }}>
                   {s.t}
                 </div>
-                <p className="text-[15px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.7 }}>
+                <p className="text-[16px]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.7 }}>
                   {s.d}
                 </p>
               </div>
@@ -204,8 +198,8 @@ export default function About() {
             <Link
               key={card.to}
               to={card.to}
-              className="group flex items-center justify-between rounded-[18px] px-8 py-7 transition-colors hover:bg-[#0d3a35]"
-              style={{ background: "#f4f7f6" }}
+              className="group flex items-center justify-between rounded-[20px] px-8 py-7 transition-colors hover:bg-[color:var(--color-ds-dark-warm)]"
+              style={{ background: "var(--color-ds-bento)" }}
             >
               <div>
                 <div

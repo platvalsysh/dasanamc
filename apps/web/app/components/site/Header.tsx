@@ -159,7 +159,7 @@ export function Header({ menuItems = [] }: HeaderProps) {
           <a
             href="tel:0507-1330-5958"
             className="cta-call hidden sm:flex items-center gap-2 px-5 py-[11px] rounded-full text-sm font-bold transition-colors"
-            style={{ background: "#0d3a35", color: "#fff" }}
+            style={{ background: "var(--color-ds-dark-warm)", color: "#fff" }}
           >
             <span className="w-[7px] h-[7px] rounded-full bg-[color:var(--color-ds-teal-2)] animate-pulse-dot" />
             24시 0507-1330-5958
