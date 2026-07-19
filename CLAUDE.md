@@ -47,6 +47,7 @@ React Router 7 + pnpm 9 + Turborepo + Supabase Postgres 로 만든 **모듈식
 | 에러 처리 | [docs/guidelines/error-handling.md](docs/guidelines/error-handling.md) |
 | 상태 어디 둘지 | [docs/guidelines/state-management.md](docs/guidelines/state-management.md) |
 | 다국어 | [docs/guidelines/i18n.md](docs/guidelines/i18n.md) |
+| UI/디자인 작업 | [design-system/dasanamc/MASTER.md](design-system/dasanamc/MASTER.md) — 색 토큰·타이포·radius·접근성 기준선 (원본은 `apps/web/app/app.css` `@theme`) |
 | DB 스키마 변경 | **`schema.prisma` 직접 수정 금지**. `packages/{모듈}/migrate/*.sql` 작성 후 `pnpm db:migrate` → `pnpm db:pull` → `pnpm db:gen` |
 | 새 마이그레이션 idempotent 작성 | `packages/core/migrate/000_init.sql` 패턴 참고 (`CREATE ... IF NOT EXISTS` + `DO $$ pg_constraint 체크 $$`) |
 

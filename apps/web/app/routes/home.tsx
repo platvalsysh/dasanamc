@@ -15,6 +15,7 @@ import {
 import { BLOG_LATEST, CASE_ARTICLES, blogPostUrl } from "~/data/case-archive";
 import { AssetSlot } from "~/components/AssetSlot";
 import { SectionHead } from "~/components/site/SectionHead";
+import { Rise, CountUp } from "~/components/site/motion-bits";
 import { CONTENT_IMAGES } from "~/data/stock-images";
 
 /** 3 ONE SYSTEM 카드 배경 — 실촬영본 */
@@ -84,7 +85,7 @@ export default function Home() {
             <img
               src="/images/hero-reception.jpg"
               alt="다산원동물의료센터 리셉션"
-              className="absolute inset-0 w-full h-full"
+              className="hero-kb absolute inset-0 w-full h-full"
               style={{ objectFit: "cover", objectPosition: "center 38%" }}
             />
             {/* overlays */}
@@ -94,76 +95,84 @@ export default function Home() {
             <div className="absolute inset-0" style={{ background: "repeating-linear-gradient(125deg,rgba(255,255,255,0.02) 0 1px,transparent 1px 66px)" }} />
 
             <div className="relative w-full h-full max-w-[1360px] mx-auto px-11 flex items-center">
-              {/* main hero content */}
+              {/* main hero content — 로드 시 배지→카피→보조→CTA 계단 등장 */}
               <div id="herocontent" className="relative z-[3] max-w-[820px]">
-                <div
-                  className="inline-flex items-center gap-2.5 mb-6"
-                  style={{
-                    border: "1px solid rgba(110,212,197,0.35)",
-                    background: "rgba(110,212,197,0.10)",
-                    padding: "7px 15px",
-                    borderRadius: 999,
-                    fontSize: "12.5px",
-                    fontWeight: 700,
-                    color: "#8fe0d2",
-                  }}
-                >
-                  <span className="w-[7px] h-[7px] rounded-full animate-pulse-dot" style={{ background: "var(--color-ds-teal-3)" }} />
-                  365일 24시간 연중무휴 응급진료
-                </div>
-                <h1
-                  className="serif font-semibold"
-                  style={{
-                    fontSize: "clamp(38px, 5.8vw, 78px)",
-                    lineHeight: 1.2,
-                    letterSpacing: "-0.025em",
-                    background: "linear-gradient(178deg,#fbf7ee 30%,rgba(232,219,199,0.78))",
-                    WebkitBackgroundClip: "text",
-                    backgroundClip: "text",
-                    color: "transparent",
-                  }}
-                >
-                  모두를 위한 동물 주치의,
-                  <br />
-                  <span style={{ color: "var(--color-ds-teal-3)", WebkitTextFillColor: "var(--color-ds-teal-3)" }}>다산원동물의료센터</span>
-                </h1>
-                <div
-                  className="mt-7"
-                  style={{
-                    fontSize: "clamp(18px, 2vw, 24px)",
-                    lineHeight: 1.4,
-                    letterSpacing: "-0.015em",
-                    fontWeight: 700,
-                    color: "#f4efe6",
-                  }}
-                >
-                  <span id="heroswap" className="inline-block">수준 높은 의료 서비스</span>
-                </div>
-                <p className="text-[15px] mt-2" style={{ color: "#b3c2bc", letterSpacing: "0.01em" }}>
-                  Comprehensive Care for Every Companion
-                </p>
-                <div className="flex gap-2.5 flex-wrap mt-7">
-                  <a
-                    href={`tel:${HOSPITAL.phone}`}
-                    className="flex items-center gap-2 text-[16px] font-bold"
-                    style={{ background: "var(--color-ds-teal-deep)", color: "#fff", padding: "14px 24px", borderRadius: 11 }}
-                  >
-                    전화 예약·문의
-                  </a>
-                  <Link
-                    to="/support#contactform"
-                    className="flex items-center gap-2 text-[16px] font-bold"
+                <Rise delay={0.05} y={18}>
+                  <div
+                    className="inline-flex items-center gap-2.5 mb-6"
                     style={{
-                      background: "rgba(255,255,255,0.06)",
-                      border: "1px solid rgba(244,238,228,0.28)",
-                      color: "#f4efe6",
-                      padding: "14px 24px",
-                      borderRadius: 11,
+                      border: "1px solid rgba(110,212,197,0.35)",
+                      background: "rgba(110,212,197,0.10)",
+                      padding: "7px 15px",
+                      borderRadius: 999,
+                      fontSize: "12.5px",
+                      fontWeight: 700,
+                      color: "#8fe0d2",
                     }}
                   >
-                    온라인 문의
-                  </Link>
-                </div>
+                    <span className="w-[7px] h-[7px] rounded-full animate-pulse-dot" style={{ background: "var(--color-ds-teal-3)" }} />
+                    365일 24시간 연중무휴 응급진료
+                  </div>
+                </Rise>
+                <Rise delay={0.16} y={30} blur>
+                  <h1
+                    className="serif font-semibold"
+                    style={{
+                      fontSize: "clamp(38px, 5.8vw, 78px)",
+                      lineHeight: 1.2,
+                      letterSpacing: "-0.025em",
+                      background: "linear-gradient(178deg,#fbf7ee 30%,rgba(232,219,199,0.78))",
+                      WebkitBackgroundClip: "text",
+                      backgroundClip: "text",
+                      color: "transparent",
+                    }}
+                  >
+                    모두를 위한 동물 주치의,
+                    <br />
+                    <span style={{ color: "var(--color-ds-teal-3)", WebkitTextFillColor: "var(--color-ds-teal-3)" }}>다산원동물의료센터</span>
+                  </h1>
+                </Rise>
+                <Rise delay={0.34} y={20}>
+                  <div
+                    className="mt-7"
+                    style={{
+                      fontSize: "clamp(18px, 2vw, 24px)",
+                      lineHeight: 1.4,
+                      letterSpacing: "-0.015em",
+                      fontWeight: 700,
+                      color: "#f4efe6",
+                    }}
+                  >
+                    <span id="heroswap" className="inline-block">수준 높은 의료 서비스</span>
+                  </div>
+                  <p className="text-[15px] mt-2" style={{ color: "#b3c2bc", letterSpacing: "0.01em" }}>
+                    Comprehensive Care for Every Companion
+                  </p>
+                </Rise>
+                <Rise delay={0.48} y={18}>
+                  <div className="flex gap-2.5 flex-wrap mt-7">
+                    <a
+                      href={`tel:${HOSPITAL.phone}`}
+                      className="flex items-center gap-2 text-[16px] font-bold transition-transform duration-200 hover:-translate-y-0.5"
+                      style={{ background: "var(--color-ds-teal-deep)", color: "#fff", padding: "14px 24px", borderRadius: 11 }}
+                    >
+                      전화 예약·문의
+                    </a>
+                    <Link
+                      to="/support#contactform"
+                      className="flex items-center gap-2 text-[16px] font-bold transition-transform duration-200 hover:-translate-y-0.5"
+                      style={{
+                        background: "rgba(255,255,255,0.06)",
+                        border: "1px solid rgba(244,238,228,0.28)",
+                        color: "#f4efe6",
+                        padding: "14px 24px",
+                        borderRadius: 11,
+                      }}
+                    >
+                      온라인 문의
+                    </Link>
+                  </div>
+                </Rise>
               </div>
 
               <div id="heroscroll" className="absolute bottom-5 left-1/2 -translate-x-1/2 z-[3] flex flex-col items-center gap-2">
@@ -183,7 +192,9 @@ export default function Home() {
                 className="py-7 px-2"
                 style={{ borderLeft: i === 0 ? "none" : "1px solid rgba(244,238,228,0.12)" }}
               >
-                <div className="text-[28px] font-extrabold" style={{ color: "var(--color-ds-teal-3)", letterSpacing: "-0.02em" }}>{s.v}</div>
+                <div className="text-[28px] font-extrabold" style={{ color: "var(--color-ds-teal-3)", letterSpacing: "-0.02em" }}>
+                  <CountUp value={s.v} />
+                </div>
                 <div className="text-[13.5px] mt-1" style={{ color: "#a7bcb5" }}>{s.l}</div>
               </div>
             ))}
@@ -192,7 +203,13 @@ export default function Home() {
       </section>
 
       {/* ============ MARQUEE ============ */}
-      <section className="bg-white overflow-hidden py-[18px]">
+      <section
+        className="bg-white overflow-hidden py-[18px]"
+        style={{
+          maskImage: "linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)",
+          WebkitMaskImage: "linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)",
+        }}
+      >
         <div className="flex w-max gap-0 animate-marquee">
           {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((m, i) => (
             <span
@@ -212,18 +229,20 @@ export default function Home() {
         <div className="mb-7" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.24em", color: "var(--color-ds-teal-deep)" }}>
           OUR PROMISE
         </div>
-        <p
-          data-reveal=""
-          className="serif font-medium text-balance"
-          style={{ fontSize: "clamp(25px, 3.6vw, 42px)", lineHeight: 1.55, letterSpacing: "-0.025em", color: "var(--color-ds-text)" }}
-        >
-          아픈 아이를 안고 병원 문을 들어서는 보호자님의<br />
-          무거운 마음을 누구보다 잘 알기에,{" "}
-          <span style={{ color: "var(--color-ds-teal-deep)" }}>
-            다산원동물의료센터는<br />세 가지 ‘ONE’
-          </span>
-          을 약속합니다.
-        </p>
+        {/* serif 카피 — blur→선명 reveal (Rise 가 담당, data-reveal 제거) */}
+        <Rise blur y={30}>
+          <p
+            className="serif font-medium text-balance"
+            style={{ fontSize: "clamp(25px, 3.6vw, 42px)", lineHeight: 1.55, letterSpacing: "-0.025em", color: "var(--color-ds-text)" }}
+          >
+            아픈 아이를 안고 병원 문을 들어서는 보호자님의<br />
+            무거운 마음을 누구보다 잘 알기에,{" "}
+            <span style={{ color: "var(--color-ds-teal-deep)" }}>
+              다산원동물의료센터는<br />세 가지 ‘ONE’
+            </span>
+            을 약속합니다.
+          </p>
+        </Rise>
       </section>
 
       {/* ============ 3 ONE SYSTEM — bento ============ */}
@@ -388,6 +407,18 @@ export default function Home() {
             ← WHEEL · DRAG TO SCROLL →
           </div>
         </div>
+        {/* 가로 트랙 — 좌우 edge fade 로 "더 있음" 시각 힌트 */}
+        <div className="relative">
+          <div
+            aria-hidden
+            className="hidden md:block absolute inset-y-0 left-0 w-[72px] z-10 pointer-events-none"
+            style={{ background: "linear-gradient(90deg, var(--color-ds-dark-warm), transparent)" }}
+          />
+          <div
+            aria-hidden
+            className="hidden md:block absolute inset-y-0 right-0 w-[72px] z-10 pointer-events-none"
+            style={{ background: "linear-gradient(270deg, var(--color-ds-dark-warm), transparent)" }}
+          />
         <div
           id="centertrack"
           className="centertrack flex gap-[22px] overflow-x-auto"
@@ -417,6 +448,7 @@ export default function Home() {
               </p>
             </Link>
           ))}
+        </div>
         </div>
         <div className="text-center pt-[18px] pb-[104px] px-8">
           <Link
@@ -462,7 +494,7 @@ export default function Home() {
             {STAT_BIG.map((s, i) => (
               <div key={i} className="p-[38px_28px] backdrop-blur-[2px]" style={{ background: "rgba(6,43,40,0.78)" }}>
                 <div className="text-[46px] font-extrabold" style={{ color: "var(--color-ds-teal-2)", letterSpacing: "-0.03em", lineHeight: 1 }}>
-                  {s.v}
+                  <CountUp value={s.v} duration={1.4} />
                 </div>
                 <div className="text-base font-extrabold mt-4">{s.l}</div>
                 <div className="text-[13px] mt-1.5" style={{ color: "#8ea29b", lineHeight: 1.5 }}>{s.s}</div>

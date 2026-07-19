@@ -86,6 +86,25 @@
   top: 16px;
 }
 
+/* StickyBgHero 텍스트 — 배경이 채워지면(data-txt-white) 흰색으로 전환 */
+.sb-pin .sb-text {
+  transition: color 0.35s ease;
+}
+.sb-pin[data-txt-white="1"] .sb-text {
+  color: #ffffff !important;
+}
+
+/* 홈 hero 배경 — 로드 시 은은한 줌아웃 (Ken Burns, 1회) */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-kb {
+    animation: heroKb 14s cubic-bezier(0.2, 0.55, 0.25, 1) both;
+  }
+  @keyframes heroKb {
+    from { transform: scale(1.07); }
+    to { transform: scale(1); }
+  }
+}
+
 /* 모션 최소화 사용자 — 장식성 CSS 애니메이션 정지 */
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee,

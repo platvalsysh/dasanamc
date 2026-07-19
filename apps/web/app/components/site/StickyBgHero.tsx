@@ -1,18 +1,25 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import {
+  motion,
+  useScroll,
+  useSpring,
+  useTransform,
+  useMotionValueEvent,
+  useReducedMotion,
+} from "motion/react";
 
 /**
- * clip-path 확장 + overlay + 텍스트 이동 hero.
+ * clip-path 확장 + overlay + 텍스트 이동 hero — motion/react 기반.
  *
  * 레이아웃:
  * - 좌상단: 현재 location breadcrumb (HOME / 병원소개 / 의료진 소개)
  * - 중앙 상단: serif 메인 카피 (+선택 보조 텍스트) — 스크롤 시 중앙으로 이동
  * - 배경: 가운데 작은 창의 이미지가 스크롤에 따라 풀-블리드로 확장
  *
- * pin 은 GSAP `pin:true` 가 아니라 **CSS `position: sticky`** 로 구현.
- * (GSAP pin 은 spacer DOM 조작 → React 라우트 전환 시 removeChild 에러)
+ * pin 은 **CSS `position: sticky`** (라이브러리 무관 — 라우트 전환 안전).
+ * 스크럽은 `useScroll` 진행률 + `useSpring` 관성으로 GSAP `scrub: 1` 을 재현.
+ * 텍스트 색 전환은 progress 0.34 임계값에서 `data-txt-white` 토글 + CSS transition.
  */
 
 export interface HeroLocationItem {
@@ -34,122 +41,71 @@ interface StickyBgHeroProps {
 }
 
 export function StickyBgHero({ bgImage, location, copy, sub, compact = false }: StickyBgHeroProps) {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const pinRef = useRef<HTMLDivElement>(null);
+  const txtWrapRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+
+  // 초기 이미지 창 인셋 + 텍스트 중앙 이동량 — 마운트 시 실측 (SSR 은 데스크톱 기본값)
+  const [inset, setInset] = useState({ top: 55, side: 13 });
+  const [textShift, setTextShift] = useState(0);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const prefersReduced =
-      typeof matchMedia !== "undefined" &&
-      matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    const pinInner = section.querySelector<HTMLDivElement>(".sb-pin")!;
-    const imgWrap = section.querySelector<HTMLDivElement>(".sb-img-wrap")!;
-    const overlay = section.querySelector<HTMLDivElement>(".sb-overlay")!;
-    const txtWrap = section.querySelector<HTMLDivElement>(".sb-txt-wrap")!;
-    const txtEls = section.querySelectorAll<HTMLElement>(".sb-text");
-
-    if (prefersReduced) {
-      gsap.set(imgWrap, { clipPath: "inset(0% 0% 0% 0%)" });
-      gsap.set(overlay, { opacity: 1 });
-      txtEls.forEach((el) => (el.style.color = "#ffffff"));
-      pinInner.setAttribute("data-bg-full", "1");
-      return;
-    }
-
-    pinInner.setAttribute("data-bg-full", "0");
-
-    // 초기 이미지 창 — 모바일은 좌우 여백을 줄여 창이 너무 좁아지지 않게
-    const startInset =
-      window.innerWidth < 768 ? "inset(60% 6% 0 6%)" : "inset(55% 13% 0 13%)";
-
-    const ctx = gsap.context(() => {
-      gsap.set(imgWrap, {
-        clipPath: startInset,
-        webkitClipPath: startInset,
-      });
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            pinInner.setAttribute(
-              "data-bg-full",
-              self.progress > 0.45 ? "1" : "0",
-            );
-          },
-        },
-      });
-
-      tl.fromTo(
-        imgWrap,
-        {
-          clipPath: startInset,
-          webkitClipPath: startInset,
-        },
-        {
-          clipPath: "inset(0% 0% 0% 0%)",
-          webkitClipPath: "inset(0% 0% 0% 0%)",
-          ease: "none",
-          immediateRender: false,
-          duration: 0.5,
-        },
-      )
-        .fromTo(
-          overlay,
-          { opacity: 0 },
-          { opacity: 1, ease: "none", duration: 0.5 },
-          0,
-        )
-        .fromTo(
-          txtWrap,
-          { y: 0 },
-          {
-            // 스크롤 완료 시 텍스트 블록이 viewport 세로 정중앙에 오도록,
-            // 초기 paddingTop 과 실제 콘텐츠 높이를 실측해 이동량 계산.
-            y: () => {
-              const vh = window.innerHeight || 800;
-              const inner =
-                txtWrap.querySelector<HTMLElement>(".sb-txt-inner");
-              if (!inner) return vh * 0.26;
-              const padTop = parseFloat(
-                getComputedStyle(txtWrap).paddingTop || "0",
-              );
-              const target = (vh - inner.offsetHeight) / 2 - padTop;
-              return Math.max(0, target);
-            },
-            ease: "none",
-            duration: 0.5,
-          },
-          0,
-        )
-        // 텍스트 색 — 배경이 어느 정도 채워진 후(progress 0.28)부터 빠르게 흰색으로
-        .to(
-          txtEls,
-          { color: "#ffffff", ease: "none", duration: 0.22 },
-          0.28,
-        )
-        // hold — 풀-블리드 상태에서 추가 스크롤 동안 머무름
-        .to({}, { duration: 0.5 })
-        // exit fade — hero 가 빠져나가기 직전 텍스트·breadcrumb 을 지워
-        // 헤더/로고와 겹쳐 보이는 프레임 방지
-        .to(
-          [txtWrap, section.querySelector(".sb-loc")].filter(Boolean),
-          { opacity: 0, ease: "none", duration: 0.1 },
-          0.9,
-        );
-    }, section);
-
-    return () => ctx.revert();
+    const measure = () => {
+      setInset(
+        window.innerWidth < 768 ? { top: 60, side: 6 } : { top: 55, side: 13 },
+      );
+      const wrap = txtWrapRef.current;
+      const inner = wrap?.querySelector<HTMLElement>(".sb-txt-inner");
+      if (wrap && inner) {
+        const vh = window.innerHeight || 800;
+        const padTop = parseFloat(getComputedStyle(wrap).paddingTop || "0");
+        setTextShift(Math.max(0, (vh - inner.offsetHeight) / 2 - padTop));
+      }
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
   }, []);
+
+  // 섹션 스크롤 진행률 (0 = 상단 도달, 1 = 트랙 끝) + scrub 관성
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 90,
+    damping: 24,
+    restDelta: 0.001,
+  });
+
+  // 배경 clip-path — progress 0→0.5 동안 창이 풀-블리드로 확장
+  const clipPath = useTransform(progress, (v) => {
+    const t = Math.min(Math.max(v / 0.5, 0), 1);
+    const top = inset.top * (1 - t);
+    const side = inset.side * (1 - t);
+    return `inset(${top}% ${side}% 0% ${side}%)`;
+  });
+  // 다크 overlay 0→0.5 페이드인
+  const overlayOpacity = useTransform(progress, [0, 0.5], [0, 1]);
+  // 텍스트 블록 — viewport 세로 정중앙까지 이동
+  const textY = useTransform(progress, [0, 0.5], [0, textShift]);
+  // exit fade — hero 이탈 직전 텍스트·breadcrumb 제거 (헤더와 겹침 방지)
+  const exitOpacity = useTransform(progress, [0.9, 1], [1, 0]);
+
+  // 헤더 테마(data-bg-full) + 텍스트 흰색 전환(data-txt-white) — 임계값 토글.
+  // 스프링 관성이 마지막 scroll 이벤트 이후에 임계값을 넘을 수 있으므로,
+  // 값이 바뀌면 ScrollEffects 의 헤더 재계산을 직접 호출해 stale 방지.
+  useMotionValueEvent(progress, "change", (v) => {
+    const pin = pinRef.current;
+    if (!pin) return;
+    const bgFull = v > 0.45 ? "1" : "0";
+    if (pin.getAttribute("data-bg-full") !== bgFull) {
+      pin.setAttribute("data-bg-full", bgFull);
+      (window as unknown as { __dsRunOnScroll?: () => void }).__dsRunOnScroll?.();
+    }
+    pin.setAttribute("data-txt-white", v > 0.34 ? "1" : "0");
+  });
 
   return (
     <section
@@ -163,13 +119,15 @@ export function StickyBgHero({ bgImage, location, copy, sub, compact = false }: 
       aria-label={copy}
     >
       <div
+        ref={pinRef}
         className="sb-pin darkhero sticky top-0 h-screen w-full overflow-hidden"
-        data-bg-full="0"
+        data-bg-full={reduced ? "1" : "0"}
+        data-txt-white={reduced ? "1" : "0"}
       >
         {/* 이미지 + overlay — clip-path 로 마스킹되는 wrapper */}
-        <div
+        <motion.div
           className="sb-img-wrap absolute inset-0"
-          style={{ willChange: "clip-path" }}
+          style={reduced ? undefined : { clipPath, willChange: "clip-path" }}
         >
           <div
             className="sb-bg absolute inset-0"
@@ -190,25 +148,26 @@ export function StickyBgHero({ bgImage, location, copy, sub, compact = false }: 
                 "linear-gradient(150deg, rgba(9,45,40,0.30) 0%, rgba(9,45,40,0.14) 55%, rgba(9,45,40,0.26) 100%)",
             }}
           />
-          <div
+          <motion.div
             className="sb-overlay absolute inset-0"
             style={{
               background:
                 "linear-gradient(160deg,rgba(8,34,29,0.45) 0%,rgba(6,30,26,0.55) 45%,rgba(4,22,19,0.68) 100%)",
-              opacity: 0,
+              opacity: reduced ? 1 : overlayOpacity,
             }}
           />
-        </div>
+        </motion.div>
 
         {/* 좌상단 location breadcrumb — 헤더 아래 고정 (카피와 함께 이동하지 않음) */}
         {location && location.length > 0 && (
-          <nav
+          <motion.nav
             aria-label="현재 위치"
             className="sb-loc absolute z-[4] flex items-center flex-wrap gap-x-2.5 gap-y-1"
             style={{
               top: 104,
               left: "clamp(24px, 4vw, 64px)",
               right: "clamp(24px, 4vw, 64px)",
+              opacity: reduced ? 1 : exitOpacity,
             }}
           >
             <Link
@@ -271,15 +230,18 @@ export function StickyBgHero({ bgImage, location, copy, sub, compact = false }: 
                 )}
               </span>
             ))}
-          </nav>
+          </motion.nav>
         )}
 
         {/* serif 메인 카피 — 상단 18vh, 스크롤 진행에 따라 중앙으로 이동 */}
-        <div
+        <motion.div
+          ref={txtWrapRef}
           className="sb-txt-wrap absolute inset-0 flex flex-col items-center text-center px-8 pointer-events-none"
           style={{
             paddingTop: "clamp(140px, 20vh, 240px)",
             willChange: "transform",
+            y: reduced ? 0 : textY,
+            opacity: reduced ? 1 : exitOpacity,
           }}
         >
           {/* 이동량 계산용 inner — 콘텐츠 실측 높이 기준으로 중앙 정렬 */}
@@ -291,7 +253,6 @@ export function StickyBgHero({ bgImage, location, copy, sub, compact = false }: 
                 lineHeight: 1.45,
                 letterSpacing: "-0.02em",
                 color: "var(--color-ds-dark-warm)",
-                transition: "none",
                 whiteSpace: "pre-line",
                 textWrap: "balance",
               }}
@@ -307,7 +268,7 @@ export function StickyBgHero({ bgImage, location, copy, sub, compact = false }: 
               </p>
             )}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
