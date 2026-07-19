@@ -16,6 +16,7 @@ import { BLOG_LATEST, CASE_ARTICLES, blogPostUrl } from "~/data/case-archive";
 import { AssetSlot } from "~/components/AssetSlot";
 import { SectionHead } from "~/components/site/SectionHead";
 import { Rise, CountUp } from "~/components/site/motion-bits";
+import { HomeHero } from "~/components/site/HomeHero";
 import { CONTENT_IMAGES } from "~/data/stock-images";
 
 /** 3 ONE SYSTEM 카드 배경 — 실촬영본 */
@@ -75,113 +76,9 @@ export default function Home() {
 
   return (
     <>
-      {/* ============ HERO (다크, pin 220vh) ============ */}
+      {/* ============ HERO — 스크롤 스토리텔링 (380vh, 3장면) ============ */}
       <section className="darkhero relative" style={{ background: "var(--color-ds-dark)", color: "#f4efe6" }}>
-        <div id="heropin" className="relative" style={{ height: "var(--pinH, 100vh)" }}>
-          <div
-            className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center"
-            style={{ background: "linear-gradient(165deg,#0a2620 0%,#06201c 46%,#041815 100%)" }}
-          >
-            <img
-              src="/images/hero-reception.jpg"
-              alt="다산원동물의료센터 리셉션"
-              className="hero-kb absolute inset-0 w-full h-full"
-              style={{ objectFit: "cover", objectPosition: "center 38%" }}
-            />
-            {/* overlays */}
-            <div className="absolute inset-0" style={{ background: "linear-gradient(160deg,rgba(8,34,29,0.22) 0%,rgba(6,30,26,0.30) 45%,rgba(4,22,19,0.42) 100%)" }} />
-            <div className="absolute inset-0" style={{ background: "radial-gradient(70% 60% at 78% 12%,rgba(176,128,82,0.22),transparent 62%)" }} />
-            <div className="absolute inset-0" style={{ background: "radial-gradient(60% 70% at 16% 86%,rgba(14,157,140,0.20),transparent 64%)" }} />
-            <div className="absolute inset-0" style={{ background: "repeating-linear-gradient(125deg,rgba(255,255,255,0.02) 0 1px,transparent 1px 66px)" }} />
-
-            <div className="relative w-full h-full max-w-[1360px] mx-auto px-11 flex items-center">
-              {/* main hero content — 로드 시 배지→카피→보조→CTA 계단 등장 */}
-              <div id="herocontent" className="relative z-[3] max-w-[820px]">
-                <Rise delay={0.05} y={18}>
-                  <div
-                    className="inline-flex items-center gap-2.5 mb-6"
-                    style={{
-                      border: "1px solid rgba(110,212,197,0.35)",
-                      background: "rgba(110,212,197,0.10)",
-                      padding: "7px 15px",
-                      borderRadius: 999,
-                      fontSize: "12.5px",
-                      fontWeight: 700,
-                      color: "#8fe0d2",
-                    }}
-                  >
-                    <span className="w-[7px] h-[7px] rounded-full animate-pulse-dot" style={{ background: "var(--color-ds-teal-3)" }} />
-                    365일 24시간 연중무휴 응급진료
-                  </div>
-                </Rise>
-                <Rise delay={0.16} y={30} blur>
-                  <h1
-                    className="serif font-semibold"
-                    style={{
-                      fontSize: "clamp(38px, 5.8vw, 78px)",
-                      lineHeight: 1.2,
-                      letterSpacing: "-0.025em",
-                      background: "linear-gradient(178deg,#fbf7ee 30%,rgba(232,219,199,0.78))",
-                      WebkitBackgroundClip: "text",
-                      backgroundClip: "text",
-                      color: "transparent",
-                    }}
-                  >
-                    모두를 위한 동물 주치의,
-                    <br />
-                    <span style={{ color: "var(--color-ds-teal-3)", WebkitTextFillColor: "var(--color-ds-teal-3)" }}>다산원동물의료센터</span>
-                  </h1>
-                </Rise>
-                <Rise delay={0.34} y={20}>
-                  <div
-                    className="mt-7"
-                    style={{
-                      fontSize: "clamp(18px, 2vw, 24px)",
-                      lineHeight: 1.4,
-                      letterSpacing: "-0.015em",
-                      fontWeight: 700,
-                      color: "#f4efe6",
-                    }}
-                  >
-                    <span id="heroswap" className="inline-block">수준 높은 의료 서비스</span>
-                  </div>
-                  <p className="text-[15px] mt-2" style={{ color: "#b3c2bc", letterSpacing: "0.01em" }}>
-                    Comprehensive Care for Every Companion
-                  </p>
-                </Rise>
-                <Rise delay={0.48} y={18}>
-                  <div className="flex gap-2.5 flex-wrap mt-7">
-                    <a
-                      href={`tel:${HOSPITAL.phone}`}
-                      className="flex items-center gap-2 text-[16px] font-bold transition-transform duration-200 hover:-translate-y-0.5"
-                      style={{ background: "var(--color-ds-teal-deep)", color: "#fff", padding: "14px 24px", borderRadius: 11 }}
-                    >
-                      전화 예약·문의
-                    </a>
-                    <Link
-                      to="/support#contactform"
-                      className="flex items-center gap-2 text-[16px] font-bold transition-transform duration-200 hover:-translate-y-0.5"
-                      style={{
-                        background: "rgba(255,255,255,0.06)",
-                        border: "1px solid rgba(244,238,228,0.28)",
-                        color: "#f4efe6",
-                        padding: "14px 24px",
-                        borderRadius: 11,
-                      }}
-                    >
-                      온라인 문의
-                    </Link>
-                  </div>
-                </Rise>
-              </div>
-
-              <div id="heroscroll" className="absolute bottom-5 left-1/2 -translate-x-1/2 z-[3] flex flex-col items-center gap-2">
-                <span style={{ font: "600 11px/1 ui-monospace, monospace", letterSpacing: "0.25em", color: "#cbbfa4" }}>SCROLL</span>
-                <span className="w-px" style={{ height: 34, background: "linear-gradient(#6ed4c5,transparent)" }} />
-              </div>
-            </div>
-          </div>
-        </div>
+        <HomeHero />
 
         {/* hero stats strip — 다크 */}
         <div className="relative" style={{ background: "var(--color-ds-dark-3)" }}>
