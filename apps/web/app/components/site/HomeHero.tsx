@@ -137,19 +137,19 @@ export function HomeHero() {
             <h1
               className="serif font-semibold"
               style={{
-                fontSize: "clamp(38px, 6.4vw, 88px)",
-                lineHeight: 1.22,
+                fontSize: "clamp(32px, 5.2vw, 72px)",
+                lineHeight: 1.3,
                 letterSpacing: "-0.03em",
                 color: "#f4efe6",
                 textWrap: "balance",
               }}
             >
-              한밤중,
+              말 못 하는 아이들의 작은 신호,
               <br />
-              갑자기 아픈 반려동물에게
+              <span style={{ color: "#6ed4c5" }}>그 하나도 놓치지 않겠습니다.</span>
             </h1>
             <p className="mt-7 text-[17px] font-semibold" style={{ color: "#b3c2bc" }}>
-              말 못하는 아이의 신호는 예고 없이 찾아옵니다
+              작은 변화를 읽어내는 것부터 진료는 시작됩니다
             </p>
           </motion.div>
         </motion.div>
@@ -174,7 +174,7 @@ export function HomeHero() {
             <span style={{ color: "#6ed4c5" }}>24시간 깨어 있습니다</span>
           </h2>
           <p className="mt-7 text-[17px] font-semibold" style={{ color: "#cfe0db" }}>
-            365일 24시간, 진료실의 불은 꺼지지 않습니다
+            말 못하는 아이의 신호는 예고 없이 찾아옵니다
           </p>
         </motion.div>
 

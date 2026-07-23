@@ -130,6 +130,8 @@ export default function Home() {
               className="serif font-medium text-balance"
               style={{ fontSize: "clamp(25px, 3.6vw, 42px)", lineHeight: 1.5, letterSpacing: "-0.025em", color: "var(--color-ds-text)" }}
             >
+              아픈 아이를 안고 들어서는 그 마음을 알기에,
+              <br />
               다산원은 <span style={{ color: "var(--color-ds-teal-deep)" }}>세 가지 ‘ONE’</span>을 약속합니다.
             </p>
           </Rise>
