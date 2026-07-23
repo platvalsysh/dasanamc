@@ -45,6 +45,57 @@ export function Rise({ children, delay = 0, y = 26, blur = false, className, sty
   );
 }
 
+interface LineRevealProps {
+  /** 한 줄씩 전달 — 각 줄이 마스크 아래에서 밀려 올라옴 */
+  lines: ReactNode[];
+  className?: string;
+  style?: CSSProperties;
+  /** 줄 간 지연 (초) */
+  step?: number;
+}
+
+/**
+ * 에디토리얼 라인 리빌 — 줄 단위 마스크 안에서 텍스트가 밀려 올라온다.
+ * 큰 serif 선언문에 사용 (한 글자씩 쪼개지 않아 한글 줄바꿈이 안전).
+ */
+export function LineReveal({ lines, className, style, step = 0.12 }: LineRevealProps) {
+  const reduced = useReducedMotion();
+  if (reduced) {
+    return (
+      <div className={className} style={style}>
+        {lines.map((l, i) => (
+          <div key={i}>{l}</div>
+        ))}
+      </div>
+    );
+  }
+  return (
+    <div className={className} style={style}>
+      {lines.map((l, i) => (
+        // whileInView 는 클리핑되지 않는 바깥 래퍼에 건다.
+        // (안쪽 요소에 직접 걸면 115% 아래로 밀려 clip 되어 교차 비율이 0 →
+        //  임계값을 영원히 못 넘기고 애니메이션이 시작되지 않음)
+        <motion.span
+          key={i}
+          className="block overflow-hidden"
+          style={{ paddingBottom: "0.08em" }}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.4 }}
+        >
+          <motion.span
+            className="block"
+            variants={{ hidden: { y: "115%" }, show: { y: 0 } }}
+            transition={{ duration: 0.9, delay: i * step, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {l}
+          </motion.span>
+        </motion.span>
+      ))}
+    </div>
+  );
+}
+
 interface CountUpProps {
   /** "11" · "24/7" · "6" · "CT" — 앞자리 숫자만 카운트, 나머지는 그대로 */
   value: string;

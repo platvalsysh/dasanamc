@@ -11,7 +11,8 @@ import {
 } from "~/data/dasanone-content";
 import { BLOG_LATEST, CASE_ARTICLES, blogPostUrl } from "~/data/case-archive";
 import { AssetSlot } from "~/components/AssetSlot";
-import { Rise } from "~/components/site/motion-bits";
+import { Rise, LineReveal } from "~/components/site/motion-bits";
+import { motion, AnimatePresence } from "motion/react";
 import { HomeHero } from "~/components/site/HomeHero";
 import { CONTENT_IMAGES } from "~/data/stock-images";
 
@@ -81,21 +82,26 @@ export default function Home() {
       {/* MARQUEE 는 HomeHero 안(첫 화면)으로 이동 */}
 
       {/* ============ OUR PROMISE + 3 ONE — 약속 선언 후 카드 3장 ============ */}
-      <section className="max-w-[1280px] mx-auto px-8 pt-[110px] pb-[100px]">
-        <div className="text-center max-w-[860px] mx-auto mb-14">
-          <div className="mb-7" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.24em", color: "var(--color-ds-teal-deep)" }}>
+      <section className="max-w-[1280px] mx-auto px-8 pt-[130px] pb-[110px]">
+        <div className="text-center max-w-[1000px] mx-auto mb-[72px]">
+          <div className="mb-8" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.24em", color: "var(--color-ds-teal-deep)" }}>
             OUR PROMISE
           </div>
-          <Rise blur y={30}>
-            <p
-              className="serif font-medium text-balance"
-              style={{ fontSize: "clamp(25px, 3.6vw, 42px)", lineHeight: 1.5, letterSpacing: "-0.025em", color: "var(--color-ds-text)" }}
-            >
-              아픈 아이를 안고 들어서는 그 마음을 알기에,
-              <br />
-              다산원은 <span style={{ color: "var(--color-ds-teal-deep)" }}>세 가지 ‘ONE’</span>을 약속합니다.
-            </p>
-          </Rise>
+          <LineReveal
+            className="serif font-medium"
+            style={{
+              fontSize: "clamp(26px, 3.9vw, 48px)",
+              lineHeight: 1.4,
+              letterSpacing: "-0.03em",
+              color: "var(--color-ds-text)",
+            }}
+            lines={[
+              "아픈 아이를 안고 들어서는 그 마음을 알기에,",
+              <>
+                다산원은 <span style={{ color: "var(--color-ds-teal-deep)" }}>세 가지 ‘ONE’</span>을 약속합니다.
+              </>,
+            ]}
+          />
         </div>
 
         {/* 카드 — 태그 + 한 줄 요약만, 상세 설명은 /about */}
@@ -103,7 +109,7 @@ export default function Home() {
           {THREE_ONE.map((t, i) => (
             <div
               key={i}
-              className="group relative rounded-[24px] p-9 md:p-10 min-h-[300px] flex flex-col overflow-hidden"
+              className="group relative rounded-[24px] p-9 md:p-11 min-h-[380px] flex flex-col overflow-hidden transition-transform duration-500 hover:-translate-y-2"
               style={{ background: "var(--color-ds-dark)" }}
             >
               {/* 실촬영 배경 + 다크 그라데이션 */}
@@ -111,29 +117,43 @@ export default function Home() {
                 src={THREE_ONE_IMAGES[i]}
                 alt=""
                 aria-hidden
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-[1.09]"
               />
               <div
-                className="absolute inset-0"
-                style={{ background: "linear-gradient(180deg, rgba(4,24,21,0.28) 0%, rgba(4,24,21,0.52) 45%, rgba(4,24,21,0.86) 100%)" }}
+                className="absolute inset-0 transition-opacity duration-500 group-hover:opacity-90"
+                style={{ background: "linear-gradient(180deg, rgba(4,24,21,0.28) 0%, rgba(4,24,21,0.52) 45%, rgba(4,24,21,0.88) 100%)" }}
+              />
+              {/* hover teal wash */}
+              <div
+                className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                style={{ background: "radial-gradient(80% 60% at 50% 100%, rgba(14,157,140,0.35), transparent 70%)" }}
               />
               <div
-                className="relative"
+                className="relative transition-colors duration-500 group-hover:text-white"
                 style={{
-                  font: "800 clamp(40px, 4.5vw, 60px)/1 ui-monospace, monospace",
+                  font: "800 clamp(52px, 6vw, 84px)/1 ui-monospace, monospace",
                   color: "var(--color-ds-teal-3)",
-                  letterSpacing: "-0.03em",
+                  letterSpacing: "-0.04em",
                 }}
               >
                 {String(i + 1).padStart(2, "0")}
               </div>
               <div className="relative mt-auto pt-10">
-                <div className="mb-2.5" style={{ font: "800 14px/1 ui-monospace, monospace", color: "var(--color-ds-teal-2)" }}>
+                <div className="mb-3" style={{ font: "800 14px/1 ui-monospace, monospace", letterSpacing: "0.06em", color: "var(--color-ds-teal-2)" }}>
                   {t.tag}
                 </div>
-                <div className="text-[24px] font-extrabold text-white" style={{ lineHeight: 1.3 }}>
+                <div
+                  className="font-extrabold text-white"
+                  style={{ fontSize: "clamp(24px, 2.3vw, 30px)", lineHeight: 1.28, letterSpacing: "-0.02em" }}
+                >
                   {t.ko}
                 </div>
+                {/* hover 시 좌→우로 그어지는 teal 라인 (transform 기반) */}
+                <span
+                  aria-hidden
+                  className="block mt-5 h-[3px] w-16 origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
+                  style={{ background: "var(--color-ds-teal-3)" }}
+                />
               </div>
             </div>
           ))}
@@ -148,13 +168,16 @@ export default function Home() {
               <div className="mb-3.5" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal-deep)" }}>
                 WHY DASANONE
               </div>
-              <h2 className="text-[32px] font-extrabold" style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}>
+              <h2
+                className="font-extrabold"
+                style={{ fontSize: "clamp(30px, 4.2vw, 52px)", letterSpacing: "-0.035em", lineHeight: 1.2, color: "var(--color-ds-text)" }}
+              >
                 왜 다산원동물의료센터일까요?
               </h2>
             </div>
             <Link
               to="/about"
-              className="group inline-flex items-center gap-2 text-[15px] font-bold"
+              className="group inline-flex items-center gap-2 text-[16px] font-bold"
               style={{ color: "var(--color-ds-teal-deep)" }}
             >
               병원소개에서 자세히 보기
@@ -165,21 +188,27 @@ export default function Home() {
             {STRENGTHS_4.map((s) => (
               <div
                 key={s.n}
-                className="group rounded-[20px] p-8 bg-white flex flex-col gap-6 transition-colors duration-300 hover:bg-[color:var(--color-ds-dark-warm)]"
+                className="group relative rounded-[20px] p-9 bg-white flex flex-col gap-7 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:bg-[color:var(--color-ds-dark-warm)] hover:shadow-[0_22px_48px_rgba(13,58,53,0.16)]"
               >
+                {/* hover 시 좌→우로 그어지는 teal 액센트 바 (transform 기반) */}
+                <span
+                  aria-hidden
+                  className="absolute top-0 left-0 h-[4px] w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
+                  style={{ background: "var(--color-ds-teal-2)" }}
+                />
                 <div
-                  className="transition-colors group-hover:text-[color:var(--color-ds-teal-2)]"
+                  className="transition-colors duration-300 group-hover:text-[color:var(--color-ds-teal-2)]"
                   style={{
-                    font: "800 30px/1 ui-monospace, monospace",
+                    font: "800 clamp(38px, 3.6vw, 48px)/1 ui-monospace, monospace",
                     color: "var(--color-ds-teal-deep)",
-                    letterSpacing: "-0.03em",
+                    letterSpacing: "-0.04em",
                   }}
                 >
                   {s.n}
                 </div>
                 <div
-                  className="text-[18px] font-extrabold transition-colors group-hover:text-white"
-                  style={{ color: "var(--color-ds-text)", lineHeight: 1.4 }}
+                  className="font-extrabold transition-colors duration-300 group-hover:text-white"
+                  style={{ fontSize: "clamp(19px, 1.6vw, 21px)", color: "var(--color-ds-text)", lineHeight: 1.38, letterSpacing: "-0.02em" }}
                 >
                   {s.t}
                 </div>
@@ -196,36 +225,60 @@ export default function Home() {
             <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal-deep)" }}>
               ONE STOP CARE
             </div>
-            <h2 className="text-[34px] font-extrabold" style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}>
+            <h2
+              className="font-extrabold"
+              style={{ fontSize: "clamp(30px, 4.4vw, 54px)", letterSpacing: "-0.035em", lineHeight: 1.2, color: "var(--color-ds-text)" }}
+            >
               진단부터 회복까지, 한 곳에서
             </h2>
           </div>
-          <div className="soltabs flex justify-center gap-14 flex-wrap mb-12" style={{ borderBottom: "1px solid #e3d4b4" }}>
+          {/* 탭 — 활성 인디케이터가 미끄러져 이동 */}
+          <div className="soltabs flex justify-center gap-8 md:gap-14 flex-wrap mb-14" style={{ borderBottom: "1px solid #e3d4b4" }}>
             {SOLUTION_TABS.map((t, i) => (
               <button
                 key={t.label}
                 type="button"
                 onClick={() => setSolTab(i)}
                 data-active={i === solTab ? "1" : ""}
+                className="relative"
               >
                 {t.label}
+                {i === solTab && (
+                  <motion.span
+                    layoutId="soltab-indicator"
+                    className="absolute left-0 right-0 -bottom-[2px] h-[3px] rounded-full"
+                    style={{ background: "var(--color-ds-teal-deep)" }}
+                    transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                  />
+                )}
               </button>
             ))}
           </div>
           <div className="solpanel grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-2">
-            <div>
-              <h3 className="text-[26px] font-extrabold mb-6" style={{ letterSpacing: "-0.02em", color: "var(--color-ds-text)" }}>
-                {activeSol.title}
-              </h3>
-              <ul className="list-none flex flex-col gap-[11px]">
-                {activeSol.points.map((p) => (
-                  <li key={p} className="flex gap-[11px] text-[16px] font-semibold" style={{ color: "#2a3b37" }}>
-                    <span className="font-extrabold" style={{ color: "var(--color-ds-teal-deep)" }}>✓</span>
-                    {p}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={solTab}
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.35, ease: [0.2, 0.65, 0.25, 1] }}
+              >
+                <h3
+                  className="font-extrabold mb-7"
+                  style={{ fontSize: "clamp(24px, 2.6vw, 34px)", letterSpacing: "-0.025em", lineHeight: 1.3, color: "var(--color-ds-text)" }}
+                >
+                  {activeSol.title}
+                </h3>
+                <ul className="list-none flex flex-col gap-3.5">
+                  {activeSol.points.map((p) => (
+                    <li key={p} className="flex gap-3 text-[17px] font-semibold" style={{ color: "#2a3b37" }}>
+                      <span className="font-extrabold" style={{ color: "var(--color-ds-teal-deep)" }}>✓</span>
+                      {p}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            </AnimatePresence>
             <AssetSlot
               src={CONTENT_IMAGES.oneStopCare}
               alt="진료 현장"
@@ -243,8 +296,11 @@ export default function Home() {
           <div className="mb-4" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal-2)" }}>
             SPECIALTY CENTERS
           </div>
-          <h2 className="text-[40px] font-extrabold mb-3.5" style={{ letterSpacing: "-0.03em" }}>
-            11개 특화진료센터
+          <h2
+            className="font-extrabold mb-4"
+            style={{ fontSize: "clamp(34px, 5vw, 62px)", letterSpacing: "-0.04em", lineHeight: 1.15 }}
+          >
+            <span style={{ color: "var(--color-ds-teal-2)" }}>11개</span> 특화진료센터
           </h2>
           <p className="text-[16.5px]" style={{ color: "#aec6bf" }}>
             분과별 전공의가 한 명의 환자를 함께 봅니다
@@ -328,7 +384,10 @@ export default function Home() {
               <div className="mb-3.5" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal-deep)" }}>
                 MEDIA
               </div>
-              <h2 className="text-[32px] font-extrabold" style={{ letterSpacing: "-0.03em", color: "var(--color-ds-text)" }}>
+              <h2
+                className="font-extrabold"
+                style={{ fontSize: "clamp(30px, 4vw, 48px)", letterSpacing: "-0.035em", lineHeight: 1.2, color: "var(--color-ds-text)" }}
+              >
                 다산원 소식 · 진료 케이스
               </h2>
             </div>
@@ -447,7 +506,10 @@ export default function Home() {
             <div className="mb-[18px]" style={{ font: "700 13px/1 ui-monospace, monospace", letterSpacing: "0.22em", color: "var(--color-ds-teal-2)" }}>
               VISIT US
             </div>
-            <h2 className="text-[32px] font-extrabold mb-7 text-white" style={{ letterSpacing: "-0.03em" }}>
+            <h2
+              className="font-extrabold mb-8 text-white"
+              style={{ fontSize: "clamp(30px, 4vw, 48px)", letterSpacing: "-0.035em", lineHeight: 1.2 }}
+            >
               오시는 길 · 진료 안내
             </h2>
             {/* 진료 안내 rows — 테두리 없는 flat 리스트, 라벨 작게 + 값 크게 */}
