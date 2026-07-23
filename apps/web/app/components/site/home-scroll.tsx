@@ -238,11 +238,9 @@ export function StrengthsScene() {
   const reduced = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const p = useSpring(scrollYProgress, { stiffness: 80, damping: 26, restDelta: 0.001 });
-  // 섹션이 지나가는 동안 카드 열이 왼쪽으로 흐른다 (비-pin 패럴랙스)
-  const x = useTransform(p, [0, 1], ["6%", "-16%"]);
 
   return (
-    <section ref={ref} className="overflow-hidden py-[110px]" style={{ background: "var(--color-ds-bento)" }}>
+    <section ref={ref} className="py-[110px]" style={{ background: "var(--color-ds-bento)" }}>
       <div className="max-w-[1280px] mx-auto px-8 flex items-end justify-between gap-6 flex-wrap mb-14">
         <div>
           <div className="mb-4" style={EYEBROW}>
@@ -265,40 +263,89 @@ export function StrengthsScene() {
         </Link>
       </div>
 
-      <motion.div
-        className="flex gap-6 px-8 will-change-transform"
-        style={reduced ? undefined : { x }}
-      >
-        {STRENGTHS_4.map((s) => (
-          <div
-            key={s.n}
-            className="group relative shrink-0 rounded-[22px] bg-white p-10 flex flex-col gap-8 overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_26px_54px_rgba(13,58,53,0.16)]"
-            style={{ width: "clamp(260px, 26vw, 360px)" }}
-          >
-            <span
-              aria-hidden
-              className="absolute top-0 left-0 h-[4px] w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
-              style={{ background: "var(--color-ds-teal-2)" }}
-            />
-            <div
-              style={{
-                font: "800 clamp(48px, 4.6vw, 68px)/1 ui-monospace, monospace",
-                color: "var(--color-ds-teal-deep)",
-                letterSpacing: "-0.05em",
-              }}
-            >
-              {s.n}
-            </div>
-            <div
-              className="font-extrabold"
-              style={{ fontSize: "clamp(19px, 1.7vw, 23px)", color: "var(--color-ds-text)", lineHeight: 1.36, letterSpacing: "-0.02em" }}
-            >
-              {s.t}
-            </div>
-          </div>
+      {/* 4장이 항상 모두 보이도록 그리드로 배치하고, 스크롤 연동은 카드별
+          세로 패럴랙스로 준다 (가로 이동은 첫 카드가 잘려 보여 폐기) */}
+      <div className="max-w-[1280px] mx-auto px-8 grid grid-cols-2 lg:grid-cols-4 gap-5">
+        {STRENGTHS_4.map((s, i) => (
+          <StrengthCard key={s.n} p={p} index={i} n={s.n} t={s.t} badge={s.badge} still={!!reduced} />
         ))}
-      </motion.div>
+      </div>
     </section>
+  );
+}
+
+function StrengthCard({
+  p,
+  index,
+  n,
+  t,
+  badge,
+  still,
+}: {
+  p: MotionValue<number>;
+  index: number;
+  n: string;
+  t: string;
+  badge?: string;
+  still: boolean;
+}) {
+  // 카드마다 다른 속도로 오르내려 열이 살아 있는 느낌 (잘림 없음)
+  const drift = 34 + index * 20;
+  const y = useTransform(p, [0, 1], [drift, -drift]);
+
+  return (
+    <motion.div
+      className="group relative rounded-[22px] bg-white p-9 flex flex-col gap-8 overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_26px_54px_rgba(13,58,53,0.16)]"
+      style={still ? undefined : { y }}
+    >
+      <span
+        aria-hidden
+        className="absolute top-0 left-0 h-[4px] w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
+        style={{ background: "var(--color-ds-teal-2)" }}
+      />
+      <div
+        style={{
+          font: "800 clamp(42px, 3.8vw, 62px)/1 ui-monospace, monospace",
+          color: "var(--color-ds-teal-deep)",
+          letterSpacing: "-0.05em",
+        }}
+      >
+        {n}
+      </div>
+      <div>
+        <div
+          className="font-extrabold"
+          style={{ fontSize: "clamp(18px, 1.5vw, 22px)", color: "var(--color-ds-text)", lineHeight: 1.36, letterSpacing: "-0.02em" }}
+        >
+          {t}
+        </div>
+        {badge && <GoldBadge label={badge} />}
+      </div>
+    </motion.div>
+  );
+}
+
+/**
+ * ISFM 골드 등급 배지 — 티일 팔레트 위에서 인증 항목만 골드로 구분.
+ * 밝은 배경/다크 반전 카드 어느 쪽에 올려도 읽히도록 불투명 칩으로 고정
+ * (반투명이면 hover 로 카드가 다크로 뒤집힐 때 대비가 무너짐).
+ */
+export function GoldBadge({ label, className = "" }: { label: string; className?: string }) {
+  return (
+    <span
+      className={`inline-flex items-center gap-2 mt-3.5 rounded-full font-extrabold ${className}`}
+      style={{
+        background: "#f6ead1",
+        border: "1px solid rgba(184,134,59,0.42)",
+        color: "#7a561a",
+        fontSize: 12,
+        letterSpacing: "0.01em",
+        padding: "6px 12px",
+      }}
+    >
+      <span aria-hidden style={{ width: 7, height: 7, borderRadius: 999, background: "#b8863b" }} />
+      {label}
+    </span>
   );
 }
 

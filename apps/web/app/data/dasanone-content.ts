@@ -48,12 +48,35 @@ export const THREE_ONE = [
   },
 ] as const;
 
-export const STRENGTHS_4 = [
+/**
+ * 국제고양이수의학회(ISFM) 고양이 친화 병원 인증 — 골드 등급.
+ * 고양이 친화 진료의 대외 근거로 홈·병원소개에 노출.
+ */
+export const ISFM_BADGE = {
+  short: "ISFM GOLD",
+  label: "ISFM Cat Friendly Clinic · GOLD",
+  desc: "국제고양이수의학회(ISFM) 고양이 친화 병원 골드 등급 인증",
+} as const;
+
+export interface StrengthItem {
+  n: string;
+  t: string;
+  d: string;
+  /** 대외 인증 배지 (있는 항목만) */
+  badge?: string;
+}
+
+export const STRENGTHS_4: readonly StrengthItem[] = [
   { n: "01", t: "분야별 협진 진료 시스템", d: "내과·외과·영상의학과 협진으로 최상의 의료 서비스를 제공합니다." },
   { n: "02", t: "외과 전공 대표원장 직접 집도", d: "정형외과부터 신경외과 수술까지 외과 전공 대표원장이 직접 집도합니다." },
   { n: "03", t: "대학병원급 CT·영상장비", d: "대학병원급 CT와 영상장비로 정확하고 빠른 진단이 가능합니다." },
-  { n: "04", t: "고양이 전용 별도 공간", d: "스트레스에 예민한 고양이를 위한 별도의 전용 공간을 갖췄습니다." },
-] as const;
+  {
+    n: "04",
+    t: "고양이 친화 진료 · ISFM 골드",
+    d: "국제고양이수의학회(ISFM) 고양이 친화 병원 골드 등급 인증. 스트레스에 예민한 고양이를 위한 별도의 전용 공간과 진료 프로토콜을 갖췄습니다.",
+    badge: ISFM_BADGE.label,
+  },
+];
 
 export const DOCTORS = [
   { name: "이현우", role: "대표원장 · 외과", cred: "경북대 수의과 · 수의외과학 석사 · AOVET TPLO 마스터" },

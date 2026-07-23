@@ -10,13 +10,14 @@ import {
 import { StickyBgHero } from "~/components/site/StickyBgHero";
 import { SectionHead } from "~/components/site/SectionHead";
 import { Rise, CountUp } from "~/components/site/motion-bits";
+import { GoldBadge } from "~/components/site/home-scroll";
 
 export function meta({}: Route.MetaArgs) {
   return ogMeta(`병원소개 — ${HOSPITAL.name}`, "다산원동물의료센터의 진심 — 세 가지 ‘ONE’ 약속과 네 가지 강점을 소개합니다.", "/about");
 }
 
 /** WHY DASANONE bento 카드용 강조 지표 */
-const STRENGTH_FIGURES = ["협진", "직접 집도", "CT", "CAT"] as const;
+const STRENGTH_FIGURES = ["협진", "직접 집도", "CT", "ISFM GOLD"] as const;
 
 /** 3 ONE 카드 hover 시 드러나는 실촬영 사진 */
 const THREE_ONE_PHOTOS = [
@@ -214,6 +215,7 @@ export default function About() {
                 <p className="text-[16px] transition-colors group-hover:text-[#aec6bf]" style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.7 }}>
                   {s.d}
                 </p>
+                {s.badge && <GoldBadge label={s.badge} />}
               </div>
             </div>
           ))}
