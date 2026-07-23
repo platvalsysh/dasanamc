@@ -21,15 +21,19 @@ import { HOSPITAL } from "~/data/dasanone-content";
  * reduced-motion: S3 만 정적 표시.
  */
 
-/** 장면 등장→퇴장 구간을 opacity / y / blur 로 변환 */
+/**
+ * 장면 등장→퇴장 구간을 opacity / y / blur 로 변환.
+ * `enter` 가 null 이면 스크롤 0 지점부터 이미 보이는 상태 (첫 장면용).
+ */
 function useScene(
   progress: MotionValue<number>,
-  enter: [number, number],
+  enter: [number, number] | null,
   exit: [number, number] | null,
 ) {
+  const enterKeys = enter ?? [-2, -1]; // 진입 구간을 트랙 밖으로 → 시작부터 노출
   const keys = exit
-    ? [enter[0], enter[1], exit[0], exit[1]]
-    : [enter[0], enter[1], 2, 3]; // exit 없음 = 끝까지 유지
+    ? [enterKeys[0], enterKeys[1], exit[0], exit[1]]
+    : [enterKeys[0], enterKeys[1], 2, 3]; // exit 없음 = 끝까지 유지
   const opacity = useTransform(progress, keys, [0, 1, 1, 0]);
   const y = useTransform(progress, keys, [56, 0, 0, -64]);
   const blur = useTransform(progress, keys, [8, 0, 0, 8]);
@@ -63,8 +67,8 @@ export function HomeHero() {
   const wmOpacity = useTransform(progress, [0.26, 0.38, 0.52, 0.62], [0, 0.14, 0.14, 0]);
   const wmScale = useTransform(progress, [0.26, 0.62], [0.82, 1.28]);
 
-  // 장면 텍스트
-  const s1 = useScene(progress, [0.0, 0.06], [0.22, 0.3]);
+  // 장면 텍스트 — S1 은 스크롤 전부터 노출 (로드 시 fade-in 은 내부 래퍼가 담당)
+  const s1 = useScene(progress, null, [0.22, 0.3]);
   const s2 = useScene(progress, [0.3, 0.38], [0.52, 0.6]);
   const s3 = useScene(progress, [0.6, 0.7], null);
 
@@ -119,28 +123,35 @@ export function HomeHero() {
           </span>
         </motion.div>
 
-        {/* S1 — 문제 제기 */}
+        {/* S1 — 문제 제기 (스크롤 전부터 노출, 로드 시 자체 fade-in) */}
         <motion.div
           className="absolute inset-0 z-[3] flex flex-col items-center justify-center text-center px-8 pointer-events-none"
           style={{ opacity: s1.opacity, y: s1.y, filter: s1.filter }}
         >
-          <h1
-            className="serif font-semibold"
-            style={{
-              fontSize: "clamp(40px, 7vw, 96px)",
-              lineHeight: 1.22,
-              letterSpacing: "-0.03em",
-              color: "#f4efe6",
-              textWrap: "balance",
-            }}
+          <motion.div
+            className="flex flex-col items-center"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.85, delay: 0.15, ease: [0.2, 0.65, 0.25, 1] }}
           >
-            한밤중,
-            <br />
-            아이가 아픕니다.
-          </h1>
-          <p className="mt-7 text-[17px] font-semibold" style={{ color: "#b3c2bc" }}>
-            말 못 하는 아이의 신호는 예고 없이 찾아옵니다.
-          </p>
+            <h1
+              className="serif font-semibold"
+              style={{
+                fontSize: "clamp(38px, 6.4vw, 88px)",
+                lineHeight: 1.22,
+                letterSpacing: "-0.03em",
+                color: "#f4efe6",
+                textWrap: "balance",
+              }}
+            >
+              한밤중,
+              <br />
+              갑자기 아픈 반려동물에게
+            </h1>
+            <p className="mt-7 text-[17px] font-semibold" style={{ color: "#b3c2bc" }}>
+              말 못하는 아이의 신호는 예고 없이 찾아옵니다
+            </p>
+          </motion.div>
         </motion.div>
 
         {/* S2 — 응답 */}
@@ -151,19 +162,19 @@ export function HomeHero() {
           <h2
             className="serif font-semibold"
             style={{
-              fontSize: "clamp(40px, 7vw, 96px)",
+              fontSize: "clamp(38px, 6.4vw, 88px)",
               lineHeight: 1.22,
               letterSpacing: "-0.03em",
               color: "#fbf7ee",
               textWrap: "balance",
             }}
           >
-            괜찮습니다.
+            다산원은
             <br />
-            <span style={{ color: "#6ed4c5" }}>다산원은 깨어 있습니다.</span>
+            <span style={{ color: "#6ed4c5" }}>24시간 깨어 있습니다</span>
           </h2>
           <p className="mt-7 text-[17px] font-semibold" style={{ color: "#cfe0db" }}>
-            365일 24시간, 진료실의 불은 꺼지지 않습니다.
+            365일 24시간, 진료실의 불은 꺼지지 않습니다
           </p>
         </motion.div>
 
