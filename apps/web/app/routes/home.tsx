@@ -6,14 +6,12 @@ import {
   THREE_ONE,
   STRENGTHS_4,
   CENTERS,
-  HERO_STATS,
-  MARQUEE_ITEMS,
   SOLUTION_TABS,
   INFO_ROWS,
 } from "~/data/dasanone-content";
 import { BLOG_LATEST, CASE_ARTICLES, blogPostUrl } from "~/data/case-archive";
 import { AssetSlot } from "~/components/AssetSlot";
-import { Rise, CountUp } from "~/components/site/motion-bits";
+import { Rise } from "~/components/site/motion-bits";
 import { HomeHero } from "~/components/site/HomeHero";
 import { CONTENT_IMAGES } from "~/data/stock-images";
 
@@ -76,48 +74,11 @@ export default function Home() {
     <>
       {/* ============ HERO — 스크롤 스토리텔링 (380vh, 3장면) ============ */}
       <section className="darkhero relative" style={{ background: "var(--color-ds-dark)", color: "#f4efe6" }}>
+        {/* 통계 스트립은 HomeHero 안(첫 화면)으로 이동 */}
         <HomeHero />
-
-        {/* hero stats strip — 다크 */}
-        <div className="relative" style={{ background: "var(--color-ds-dark-3)" }}>
-          <div className="max-w-[1280px] mx-auto px-8 grid grid-cols-4 statgrid">
-            {HERO_STATS.map((s, i) => (
-              <div
-                key={i}
-                className="py-7 px-2"
-                style={{ borderLeft: i === 0 ? "none" : "1px solid rgba(244,238,228,0.12)" }}
-              >
-                <div className="text-[28px] font-extrabold" style={{ color: "var(--color-ds-teal-3)", letterSpacing: "-0.02em" }}>
-                  <CountUp value={s.v} />
-                </div>
-                <div className="text-[13.5px] mt-1" style={{ color: "#a7bcb5" }}>{s.l}</div>
-              </div>
-            ))}
-          </div>
-        </div>
       </section>
 
-      {/* ============ MARQUEE ============ */}
-      <section
-        className="bg-white overflow-hidden py-[18px]"
-        style={{
-          maskImage: "linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)",
-          WebkitMaskImage: "linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)",
-        }}
-      >
-        <div className="flex w-max gap-0 animate-marquee">
-          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((m, i) => (
-            <span
-              key={i}
-              className="inline-flex items-center gap-4 px-7 text-[16px] font-semibold whitespace-nowrap"
-              style={{ color: "#5c6b68" }}
-            >
-              {m}
-              <span style={{ color: "#cfd8d3" }}>/</span>
-            </span>
-          ))}
-        </div>
-      </section>
+      {/* MARQUEE 는 HomeHero 안(첫 화면)으로 이동 */}
 
       {/* ============ OUR PROMISE + 3 ONE — 약속 선언 후 카드 3장 ============ */}
       <section className="max-w-[1280px] mx-auto px-8 pt-[110px] pb-[100px]">

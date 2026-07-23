@@ -10,6 +10,7 @@ const u = (id: string, w = 1920, q = 70) =>
 
 /** 페이지 hero 배경 (1920px) */
 export const HERO_IMAGES = {
+  home: u("1477884213360-7e9d7dcc1e48"),       // 보호자와 산책 중인 강아지 (홈 hero)
   doctors: u("1628009368231-7bb7cfcb0def"),   // 수의사 + 강아지 진료
   facilities: "/images/facility/exam-hall.jpg", // 실촬영 — 진료실 복도
   equipment: "/images/facility/ct-room.jpg",   // 실촬영 — CT실 (Toshiba Activion)

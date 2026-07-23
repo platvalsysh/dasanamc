@@ -8,16 +8,19 @@ import {
   useReducedMotion,
   type MotionValue,
 } from "motion/react";
-import { HOSPITAL } from "~/data/dasanone-content";
+import { HOSPITAL, HERO_STATS, MARQUEE_ITEMS } from "~/data/dasanone-content";
+import { HERO_IMAGES } from "~/data/stock-images";
+import { CountUp } from "~/components/site/motion-bits";
 
 /**
  * 홈 스크롤 스토리텔링 hero — 380vh 트랙, CSS sticky pin.
  *
  * 장면 구성 (스크롤 진행률):
- *  S1 0.00~0.30  "한밤중, 아이가 아픕니다."     — 어두운 화면, 문제 제기
- *  S2 0.30~0.60  "다산원은 깨어 있습니다."      — 사진 밝아짐 + 거대 24 워터마크
- *  S3 0.60~1.00  브랜드 선언 + CTA              — 기존 hero 콘텐츠 정착 + hold
+ *  S1 0.00~0.30  "작은 신호, 그 하나도 놓치지 않겠습니다" — 스크롤 전부터 노출
+ *  S2 0.30~0.60  "다산원은 24시간 깨어 있습니다"          — 사진 밝아짐 + 24 워터마크
+ *  S3 0.60~1.00  브랜드 선언 + CTA                        — 정착 + hold
  *
+ * 하단에는 통계 스트립·키워드 마퀴가 sticky 안에 함께 고정되어 첫 화면부터 보인다.
  * reduced-motion: S3 만 정적 표시.
  */
 
@@ -78,22 +81,26 @@ export function HomeHero() {
   if (reduced) {
     // 모션 최소화 — 최종 장면만 정적 렌더
     return (
-      <div className="relative h-screen overflow-hidden flex items-center">
+      <div className="relative h-screen overflow-hidden flex flex-col">
         <HeroBackdrop staticBright />
-        <div className="relative z-[3] w-full max-w-[1360px] mx-auto px-11">
-          <FinalScene />
+        <div className="relative z-[3] flex-1 flex items-center">
+          <div className="w-full max-w-[1360px] mx-auto px-11">
+            <FinalScene />
+          </div>
         </div>
+        <StatsStrip />
+        <MarqueeBar />
       </div>
     );
   }
 
   return (
     <div ref={trackRef} className="relative" style={{ height: "380vh" }}>
-      <div className="sticky top-0 h-screen overflow-hidden">
-        {/* 배경 사진 + 오버레이 */}
+      <div className="sticky top-0 h-screen overflow-hidden flex flex-col">
+        {/* 배경 사진 + 오버레이 — 통계 스트립 뒤까지 덮음 */}
         <motion.img
-          src="/images/hero-reception.jpg"
-          alt="다산원동물의료센터 리셉션"
+          src={HERO_IMAGES.home}
+          alt="보호자와 함께 산책하는 반려견"
           className="absolute inset-0 w-full h-full"
           style={{
             objectFit: "cover",
@@ -122,6 +129,9 @@ export function HomeHero() {
             24
           </span>
         </motion.div>
+
+        {/* 장면 영역 — 통계 스트립을 뺀 나머지 높이 */}
+        <div className="relative flex-1">
 
         {/* S1 — 문제 제기 (스크롤 전부터 노출, 로드 시 자체 fade-in) */}
         <motion.div
@@ -190,14 +200,79 @@ export function HomeHero() {
 
         {/* 스크롤 힌트 */}
         <motion.div
-          className="absolute bottom-5 left-1/2 -translate-x-1/2 z-[4] flex flex-col items-center gap-2"
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[4] flex flex-col items-center gap-2"
           style={{ opacity: hintOpacity }}
         >
           <span style={{ font: "600 11px/1 ui-monospace, monospace", letterSpacing: "0.25em", color: "#cbbfa4" }}>
             SCROLL
           </span>
-          <span className="w-px" style={{ height: 34, background: "linear-gradient(#6ed4c5,transparent)" }} />
+          <span className="w-px" style={{ height: 28, background: "linear-gradient(#6ed4c5,transparent)" }} />
         </motion.div>
+        </div>
+
+        <StatsStrip />
+        <MarqueeBar />
+      </div>
+    </div>
+  );
+}
+
+/** hero 최하단 키워드 마퀴 — 첫 화면부터 노출 */
+function MarqueeBar() {
+  return (
+    <div
+      className="relative z-[4] shrink-0 bg-white overflow-hidden py-[18px]"
+      style={{
+        maskImage: "linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)",
+        WebkitMaskImage: "linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)",
+      }}
+    >
+      <div className="flex w-max gap-0 animate-marquee">
+        {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((m, i) => (
+          <span
+            key={i}
+            className="inline-flex items-center gap-4 px-7 text-[16px] font-semibold whitespace-nowrap"
+            style={{ color: "#5c6b68" }}
+          >
+            {m}
+            <span style={{ color: "#cfd8d3" }}>/</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** hero 하단 통계 스트립 — 배경 사진 위 반투명 바 (첫 화면부터 노출) */
+function StatsStrip() {
+  return (
+    <div
+      className="relative z-[4] shrink-0"
+      style={{
+        background: "rgba(4,24,21,0.76)",
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
+        borderTop: "1px solid rgba(244,238,228,0.12)",
+      }}
+    >
+      <div className="max-w-[1280px] mx-auto px-8 grid grid-cols-4 statgrid">
+        {HERO_STATS.map((s, i) => (
+          <div
+            key={i}
+            className="py-4 md:py-6 px-2"
+            style={{ borderLeft: i === 0 ? "none" : "1px solid rgba(244,238,228,0.12)" }}
+          >
+            <div
+              className="text-[22px] md:text-[28px] font-extrabold"
+              style={{ color: "var(--color-ds-teal-3)", letterSpacing: "-0.02em" }}
+            >
+              <CountUp value={s.v} />
+            </div>
+            <div className="text-[12px] md:text-[13.5px] mt-1" style={{ color: "#a7bcb5" }}>
+              {s.l}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -209,8 +284,8 @@ function HeroBackdrop({ staticBright = false }: { staticBright?: boolean }) {
     <>
       {staticBright && (
         <img
-          src="/images/hero-reception.jpg"
-          alt="다산원동물의료센터 리셉션"
+          src={HERO_IMAGES.home}
+          alt="보호자와 함께 산책하는 반려견"
           className="absolute inset-0 w-full h-full"
           style={{ objectFit: "cover", objectPosition: "center 38%", filter: "saturate(0.82)" }}
         />
