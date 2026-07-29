@@ -16,11 +16,11 @@ import { HERO_IMAGES } from "~/data/stock-images";
 
 /** 실제 프로필 배너 (블로그 의료진 소개 포스트). 이선아는 촬영본 미공개 → 실루엣 */
 const DOCTOR_PHOTOS: Record<string, string> = {
-  이현우: "/images/doctors/lee-hyunwoo.jpg",
-  조항빈: "/images/doctors/cho-hangbin.jpg",
-  임동환: "/images/doctors/lim-donghwan.jpg",
-  정지윤: "/images/doctors/jung-jiyoon.jpg",
-  박병준: "/images/doctors/park-byungjoon.jpg",
+  이현우: "/images/doctors/lee-hyunwoo.png",
+  조항빈: "/images/doctors/cho-hangbin.png",
+  임동환: "/images/doctors/lim-donghwan.png",
+  정지윤: "/images/doctors/jung-jiyoon.png",
+  박병준: "/images/doctors/park-byungjoon.png",
 };
 
 export function meta({}: Route.MetaArgs) {
@@ -48,15 +48,24 @@ function DoctorCard({
       className="leadcard grid grid-cols-1 md:grid-cols-[0.4fr_0.6fr] rounded-[24px] overflow-hidden"
       style={{ background: "var(--color-ds-bento)", scrollMarginTop: 100 }}
     >
-      {/* 사진 — 실촬영 프로필 배너, 없으면 실루엣 placeholder */}
+      {/* 사진 — 배경 제거된 인물 컷아웃(투명 PNG). 연한 teal 배경 위에 하단 정렬 */}
       {DOCTOR_PHOTOS[doctor.name] ? (
-        <img
-          src={DOCTOR_PHOTOS[doctor.name]}
-          alt={`${doctor.name} ${doctor.role}`}
-          className="w-full h-full object-cover"
-          style={{ minHeight: 420 }}
-          loading="lazy"
-        />
+        <div
+          className="relative overflow-hidden"
+          style={{
+            minHeight: 420,
+            background:
+              "radial-gradient(120% 90% at 50% 12%, #eef4f2 0%, #e2ece9 55%, #d6e5e0 100%)",
+          }}
+        >
+          {/* 인물 컷아웃 — 칸을 채우되 머리 기준(top) 정렬로 얼굴이 잘리지 않게 */}
+          <img
+            src={DOCTOR_PHOTOS[doctor.name]}
+            alt={`${doctor.name} ${doctor.role}`}
+            className="absolute inset-0 w-full h-full object-cover object-top"
+            loading="lazy"
+          />
+        </div>
       ) : (
         <div
           role="img"

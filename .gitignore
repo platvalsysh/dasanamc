@@ -41,3 +41,6 @@ ds-bundle/
 .design-sync/.cache/
 .design-sync/learnings/
 .design-sync/node_modules
+
+# 의료진 원본 마스터(초고해상도) — 웹용은 apps/web/public/images/doctors 에 최적화 반영
+의료진사진new/
