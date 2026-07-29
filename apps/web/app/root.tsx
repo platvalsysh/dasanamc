@@ -33,10 +33,11 @@ import { removeTrailingSlashMiddleware, clientIPAddressMiddleware } from "@repo/
 
 export const links: Route.LinksFunction = () => [
   // 파비콘 — dasanico.png 원본을 사이즈별로 리사이즈만 한 것 (변조 없음)
-  { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32.png" },
-  { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16.png" },
-  { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
-  { rel: "alternate icon", type: "image/x-icon", href: "/favicon.ico" },
+  // ?v=2: 구 favicon.ico(서울대 로고) 브라우저 캐시 무효화
+  { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32.png?v=2" },
+  { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16.png?v=2" },
+  { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png?v=2" },
+  { rel: "alternate icon", type: "image/x-icon", href: "/favicon.ico?v=2" },
   {
     rel: "stylesheet",
     href: "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css",
