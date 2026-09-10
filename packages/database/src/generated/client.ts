@@ -245,6 +245,11 @@ export type comment_vote_log = Prisma.comment_vote_logModel
  */
 export type comments = Prisma.commentsModel
 /**
+ * Model doctors
+ * 
+ */
+export type doctors = Prisma.doctorsModel
+/**
  * Model document_categories
  * 
  */

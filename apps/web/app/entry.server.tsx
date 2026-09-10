@@ -9,6 +9,8 @@ import { renderToPipeableStream } from "react-dom/server";
 
 import { moduleManager } from "@repo/core/server";
 import { modules } from "./modules.server";
+// 의료진 모듈 옵션 주입 (센터 선택지 + 사진 저장소) — side-effect import
+import "./doctors.server";
 
 if (!moduleManager.isRegistered()) {
   moduleManager.register(modules);

@@ -1,17 +1,12 @@
 import { Link, redirect } from "react-router";
 import type { Route } from "./+types/$id";
 import { ogMeta } from "~/lib/og";
-import {
-  HOSPITAL,
-  CENTERS,
-  CENTER_CASES,
-  CENTER_DOCTORS,
-  DOCTORS,
-} from "~/data/dasanone-content";
+import { HOSPITAL, CENTERS, CENTER_CASES } from "~/data/dasanone-content";
+import { DoctorsService } from "@repo/module-doctors/server";
 import { StickyBgHero } from "~/components/site/StickyBgHero";
 import { HERO_IMAGES } from "~/data/stock-images";
 
-export function loader({ params }: Route.LoaderArgs) {
+export async function loader({ params }: Route.LoaderArgs) {
   const id = params.id;
   // checkup-c 는 건강검진센터(11번 센터), checkup 은 별도 페이지에서 처리
   if (id === "checkup") {
@@ -21,7 +16,9 @@ export function loader({ params }: Route.LoaderArgs) {
   if (!center) {
     throw new Response("센터를 찾을 수 없습니다.", { status: 404 });
   }
-  return { center };
+  // 담당 의료진 — admin(/admin/doctors) 에서 센터를 지정한 노출 중인 프로필
+  const doctors = await DoctorsService.listActiveByCenter(center.id);
+  return { center, doctors: doctors.map((d) => ({ id: d.id, name: d.name, title: d.title })) };
 }
 
 export function meta({ data }: Route.MetaArgs) {
@@ -34,18 +31,15 @@ export function meta({ data }: Route.MetaArgs) {
 }
 
 export default function CenterDetail({ loaderData }: Route.ComponentProps) {
-  const { center: c } = loaderData;
+  const { center: c, doctors } = loaderData;
 
   // 이전/다음 센터 (CENTERS 순서 기준)
   const idx = CENTERS.findIndex((x) => x.id === c.id);
   const prev = idx > 0 ? CENTERS[idx - 1] : null;
   const next = idx >= 0 && idx < CENTERS.length - 1 ? CENTERS[idx + 1] : null;
 
-  // 이 센터와 관련된 블로그 진료 케이스 + 담당 의료진
+  // 이 센터와 관련된 블로그 진료 케이스
   const cases = CENTER_CASES[c.id] ?? [];
-  const doctors = (CENTER_DOCTORS[c.id] ?? [])
-    .map((name) => DOCTORS.find((d) => d.name === name))
-    .filter((d) => d != null);
 
   return (
     <>
@@ -150,7 +144,7 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
             <div className="flex flex-wrap gap-4">
               {doctors.map((d) => (
                 <Link
-                  key={d.name}
+                  key={d.id}
                   to={`/about/doctors#profile-${d.name}`}
                   className="group flex items-center gap-4 rounded-[20px] px-6 py-5 transition-colors hover:bg-[color:var(--color-ds-dark-warm)]"
                   style={{ background: "var(--color-ds-bento)", minWidth: 260 }}
@@ -160,7 +154,7 @@ export default function CenterDetail({ loaderData }: Route.ComponentProps) {
                       {d.name}
                     </div>
                     <div className="text-[13px] font-bold mt-0.5 transition-colors group-hover:text-[#7be0d0]" style={{ color: "var(--color-ds-teal-deep)" }}>
-                      {d.role}
+                      {d.title}
                     </div>
                   </div>
                   <span className="ml-auto transition-all group-hover:translate-x-1 group-hover:text-[#6ed4c5]" style={{ color: "#c2ccc8", fontSize: 20 }}>

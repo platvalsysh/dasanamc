@@ -1,44 +1,37 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/doctors";
 import { ogMeta } from "~/lib/og";
-import {
-  HOSPITAL,
-  LEAD_DOCTORS,
-  REST_DOCTORS,
-  DOCTOR_DETAILS,
-  DOCTOR_CENTERS,
-  CENTERS,
-  type DoctorDetail,
-} from "~/data/dasanone-content";
+import { HOSPITAL, CENTERS } from "~/data/dasanone-content";
+import { DoctorsService, type DoctorView } from "@repo/module-doctors/server";
 import { StickyBgHero } from "~/components/site/StickyBgHero";
 import { SectionHead } from "~/components/site/SectionHead";
 import { HERO_IMAGES } from "~/data/stock-images";
 
-/** 실제 프로필 배너 (블로그 의료진 소개 포스트). 이선아는 촬영본 미공개 → 실루엣 */
-const DOCTOR_PHOTOS: Record<string, string> = {
-  이현우: "/images/doctors/lee-hyunwoo.png",
-  조항빈: "/images/doctors/cho-hangbin.png",
-  임동환: "/images/doctors/lim-donghwan.png",
-  정지윤: "/images/doctors/jung-jiyoon.png",
-  박병준: "/images/doctors/park-byungjoon.png",
-};
+/**
+ * 의료진 소개 — 데이터는 admin(/admin/doctors) 에서 관리하는 modules.doctors 테이블.
+ * 대표원장(is_chief) 과 진료의를 나눠 노출.
+ */
+export async function loader({}: Route.LoaderArgs) {
+  const doctors = await DoctorsService.listActive();
+  return {
+    chiefs: doctors.filter((d) => d.isChief),
+    rest: doctors.filter((d) => !d.isChief),
+    total: doctors.length,
+  };
+}
 
-export function meta({}: Route.MetaArgs) {
-  return ogMeta(`의료진 — ${HOSPITAL.name}`, "경북대 3 · 건국대 2 · 충남대 1 — 6명 전원 석사 이상의 전문 의료진이 진료합니다.", "/about/doctors");
+export function meta({ data }: Route.MetaArgs) {
+  const count = data?.total ?? 0;
+  return ogMeta(
+    `의료진 — ${HOSPITAL.name}`,
+    `${count > 0 ? `${count}명의 ` : ""}전문 의료진이 함께합니다. 경북대 · 건국대 · 충남대 출신 석사 이상의 수의사가 진료합니다.`,
+    "/about/doctors",
+  );
 }
 
 /** 통합 프로필 카드 — 사진 + 이름/직책/약력 요약 + 철학 인용구 + 인사말 + 전체 약력 */
-function DoctorCard({
-  doctor,
-  isChief,
-}: {
-  doctor: { name: string; role: string; cred: string };
-  isChief?: boolean;
-}) {
-  const detail: DoctorDetail | undefined = DOCTOR_DETAILS.find(
-    (d) => d.name === doctor.name,
-  );
-  const centers = (DOCTOR_CENTERS[doctor.name] ?? [])
+function DoctorCard({ doctor, isChief }: { doctor: DoctorView; isChief?: boolean }) {
+  const centers = doctor.centers
     .map((id) => CENTERS.find((c) => c.id === id))
     .filter((c) => c != null);
 
@@ -49,7 +42,7 @@ function DoctorCard({
       style={{ background: "var(--color-ds-bento)", scrollMarginTop: 100 }}
     >
       {/* 사진 — 배경 제거된 인물 컷아웃(투명 PNG). 연한 teal 배경 위에 하단 정렬 */}
-      {DOCTOR_PHOTOS[doctor.name] ? (
+      {doctor.photoUrl ? (
         <div
           className="relative overflow-hidden"
           style={{
@@ -60,8 +53,8 @@ function DoctorCard({
         >
           {/* 인물 컷아웃 — 칸을 채우되 머리 기준(top) 정렬로 얼굴이 잘리지 않게 */}
           <img
-            src={DOCTOR_PHOTOS[doctor.name]}
-            alt={`${doctor.name} ${doctor.role}`}
+            src={doctor.photoUrl}
+            alt={`${doctor.name} ${doctor.title}`}
             className="absolute inset-0 w-full h-full object-cover object-top"
             loading="lazy"
           />
@@ -69,7 +62,7 @@ function DoctorCard({
       ) : (
         <div
           role="img"
-          aria-label={`${doctor.name} ${doctor.role} 프로필 사진 준비 중`}
+          aria-label={`${doctor.name} ${doctor.title} 프로필 사진 준비 중`}
           className="flex flex-col items-center justify-center gap-4"
           style={{ minHeight: 420, background: "#e9eeec" }}
         >
@@ -120,12 +113,14 @@ function DoctorCard({
             {doctor.name}
           </span>
           <span className="text-[17px] font-bold" style={{ color: "var(--color-ds-teal-deep)" }}>
-            {doctor.role}
+            {doctor.title}
           </span>
         </div>
-        <p className="text-[16px] mb-5" style={{ color: "#6b7975", lineHeight: 1.65 }}>
-          {doctor.cred}
-        </p>
+        {doctor.cred && (
+          <p className="text-[16px] mb-5" style={{ color: "#6b7975", lineHeight: 1.65 }}>
+            {doctor.cred}
+          </p>
+        )}
 
         {/* 담당 센터 배지 — 센터 상세로 크로스 링크 */}
         {centers.length > 0 && (
@@ -143,95 +138,113 @@ function DoctorCard({
           </div>
         )}
 
-        {detail && (
-          <>
-            {/* 진료 철학 인용구 */}
-            <blockquote
-              className="serif mb-7"
+        {/* 진료 철학 인용구 */}
+        {doctor.quote && (
+          <blockquote
+            className="serif mb-7"
+            style={{
+              fontSize: "clamp(20px, 2.2vw, 26px)",
+              lineHeight: 1.5,
+              color: "#0a7468",
+              fontStyle: "italic",
+              borderLeft: "3px solid var(--color-ds-teal)",
+              paddingLeft: 20,
+            }}
+          >
+            “{doctor.quote}”
+          </blockquote>
+        )}
+
+        {/* 인사말 */}
+        {doctor.greeting && (
+          <p
+            className="text-[16.5px] mb-10"
+            style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.9, maxWidth: "62ch" }}
+          >
+            {doctor.greeting}
+          </p>
+        )}
+
+        {/* 전체 약력 */}
+        {doctor.career.length > 0 && (
+          <div className="mt-auto">
+            <div
+              className="mb-4"
               style={{
-                fontSize: "clamp(20px, 2.2vw, 26px)",
-                lineHeight: 1.5,
-                color: "#0a7468",
-                fontStyle: "italic",
-                borderLeft: "3px solid var(--color-ds-teal)",
-                paddingLeft: 20,
+                font: "700 13px/1 ui-monospace, monospace",
+                letterSpacing: "0.2em",
+                color: "var(--color-ds-teal-deep)",
               }}
             >
-              “{detail.quote}”
-            </blockquote>
-
-            {/* 인사말 */}
-            <p
-              className="text-[16.5px] mb-10"
-              style={{ color: "var(--color-ds-text-sub)", lineHeight: 1.9, maxWidth: "62ch" }}
-            >
-              {detail.greeting}
-            </p>
-
-            {/* 전체 약력 */}
-            <div className="mt-auto">
-              <div
-                className="mb-4"
-                style={{
-                  font: "700 13px/1 ui-monospace, monospace",
-                  letterSpacing: "0.2em",
-                  color: "var(--color-ds-teal-deep)",
-                }}
-              >
-                CAREER
-              </div>
-              <ul className="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-2.5 list-none p-0 m-0">
-                {detail.career.map((c) => (
-                  <li
-                    key={c}
-                    className="flex gap-3 text-[15px]"
-                    style={{ color: "#5a554c", lineHeight: 1.7 }}
-                  >
-                    <span className="shrink-0 font-extrabold" style={{ color: "var(--color-ds-teal-deep)" }}>
-                      ·
-                    </span>
-                    {c}
-                  </li>
-                ))}
-              </ul>
+              CAREER
             </div>
-          </>
+            <ul className="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-2.5 list-none p-0 m-0">
+              {doctor.career.map((c, i) => (
+                <li
+                  key={`${i}-${c}`}
+                  className="flex gap-3 text-[15px]"
+                  style={{ color: "#5a554c", lineHeight: 1.7 }}
+                >
+                  <span className="shrink-0 font-extrabold" style={{ color: "var(--color-ds-teal-deep)" }}>
+                    ·
+                  </span>
+                  {c}
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
       </div>
     </article>
   );
 }
 
-export default function AboutDoctors() {
+export default function AboutDoctors({ loaderData }: Route.ComponentProps) {
+  const { chiefs, rest, total } = loaderData;
+
   return (
     <>
       <StickyBgHero
         bgImage={HERO_IMAGES.doctors}
         location={[{ label: "병원소개", to: "/about" }, { label: "의료진 소개" }]}
-        copy={"아이의 눈높이에서 한 번 더 생각하는\n여섯 명의 전문 의료진이 함께합니다."}
-        sub="경북대 3 · 건국대 2 · 충남대 1 — 전원 석사 이상의 전문 의료진"
+        copy={
+          total > 0
+            ? `아이의 눈높이에서 한 번 더 생각하는\n${total}명의 전문 의료진이 함께합니다.`
+            : "아이의 눈높이에서 한 번 더 생각하는\n전문 의료진이 함께합니다."
+        }
+        sub="경북대 · 건국대 · 충남대 — 전원 석사 이상의 전문 의료진"
       />
 
       <section className="max-w-[1320px] mx-auto px-8 py-24 md:py-28">
         {/* 대표원장 */}
-        <div className="mb-24">
-          <SectionHead eyebrow="CHIEF DIRECTORS" title="대표원장" className="mb-12 md:mb-12" />
-          <div className="flex flex-col gap-12">
-            {LEAD_DOCTORS.map((d) => (
-              <DoctorCard key={d.name} doctor={d} isChief />
-            ))}
+        {chiefs.length > 0 && (
+          <div className="mb-24">
+            <SectionHead eyebrow="CHIEF DIRECTORS" title="대표원장" className="mb-12 md:mb-12" />
+            <div className="flex flex-col gap-12">
+              {chiefs.map((d) => (
+                <DoctorCard key={d.id} doctor={d} isChief />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* 진료의 */}
-        <div>
-          <SectionHead eyebrow="VETERINARIANS" title="진료의" className="mb-12 md:mb-12" />
-          <div className="flex flex-col gap-12">
-            {REST_DOCTORS.map((d) => (
-              <DoctorCard key={d.name} doctor={d} />
-            ))}
+        {rest.length > 0 && (
+          <div>
+            <SectionHead eyebrow="VETERINARIANS" title="진료의" className="mb-12 md:mb-12" />
+            <div className="flex flex-col gap-12">
+              {rest.map((d) => (
+                <DoctorCard key={d.id} doctor={d} />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
+
+        {total === 0 && (
+          <p className="text-center text-[16px]" style={{ color: "var(--color-ds-text-sub)" }}>
+            의료진 정보를 준비 중입니다.
+          </p>
+        )}
       </section>
     </>
   );

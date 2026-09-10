@@ -87,6 +87,7 @@ export const ModelName = {
   board_templates: 'board_templates',
   comment_vote_log: 'comment_vote_log',
   comments: 'comments',
+  doctors: 'doctors',
   document_categories: 'document_categories',
   document_ip_view_log: 'document_ip_view_log',
   document_read_history: 'document_read_history',
@@ -146,7 +147,8 @@ export const Custom_oauth_providersScalarFieldEnum = {
   userinfo_url: 'userinfo_url',
   jwks_uri: 'jwks_uri',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  custom_claims_allowlist: 'custom_claims_allowlist'
 } as const
 
 export type Custom_oauth_providersScalarFieldEnum = (typeof Custom_oauth_providersScalarFieldEnum)[keyof typeof Custom_oauth_providersScalarFieldEnum]
@@ -657,6 +659,27 @@ export const CommentsScalarFieldEnum = {
 } as const
 
 export type CommentsScalarFieldEnum = (typeof CommentsScalarFieldEnum)[keyof typeof CommentsScalarFieldEnum]
+
+
+export const DoctorsScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  title: 'title',
+  cred: 'cred',
+  quote: 'quote',
+  greeting: 'greeting',
+  career: 'career',
+  centers: 'centers',
+  photo_file_id: 'photo_file_id',
+  photo_url: 'photo_url',
+  is_chief: 'is_chief',
+  is_active: 'is_active',
+  list_order: 'list_order',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type DoctorsScalarFieldEnum = (typeof DoctorsScalarFieldEnum)[keyof typeof DoctorsScalarFieldEnum]
 
 
 export const Document_categoriesScalarFieldEnum = {

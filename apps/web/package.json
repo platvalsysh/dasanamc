@@ -22,6 +22,7 @@
     "@repo/env": "workspace:*",
     "@repo/layout-admin": "workspace:*",
     "@repo/module-board": "workspace:*",
+    "@repo/module-doctors": "workspace:*",
     "@repo/module-editor": "workspace:*",
     "@repo/module-file": "workspace:*",
     "@repo/module-sms": "workspace:*",

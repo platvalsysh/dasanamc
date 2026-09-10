@@ -306,6 +306,9 @@ importers:
       '@repo/module-board':
         specifier: workspace:*
         version: link:../../packages/module-board
+      '@repo/module-doctors':
+        specifier: workspace:*
+        version: link:../../packages/module-doctors
       '@repo/module-editor':
         specifier: workspace:*
         version: link:../../packages/module-editor
@@ -960,6 +963,61 @@ importers:
       zod:
         specifier: 'catalog:'
         version: 3.25.76
+
+  packages/module-doctors:
+    dependencies:
+      '@repo/auth':
+        specifier: workspace:*
+        version: link:../auth
+      '@repo/config-typescript':
+        specifier: workspace:*
+        version: link:../config-typescript
+      '@repo/core':
+        specifier: workspace:*
+        version: link:../core
+      '@repo/database':
+        specifier: workspace:*
+        version: link:../database
+      '@repo/ui-admin':
+        specifier: workspace:*
+        version: link:../ui-admin
+      lucide-react:
+        specifier: 'catalog:'
+        version: 0.561.0(react@19.2.3)
+      zod:
+        specifier: 'catalog:'
+        version: 3.25.76
+    devDependencies:
+      '@react-router/dev':
+        specifier: 'catalog:'
+        version: 7.12.0(@react-router/serve@7.12.0(react-router@7.12.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(typescript@5.9.3))(@types/node@25.0.3)(babel-plugin-macros@3.1.0)(jiti@2.6.1)(lightningcss@1.30.2)(react-router@7.12.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(sass-embedded@1.97.2)(sass@1.97.2)(tsx@4.21.0)(typescript@5.9.3)(vite@7.3.0(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(sass-embedded@1.97.2)(sass@1.97.2)(tsx@4.21.0))
+      '@types/node':
+        specifier: 'catalog:'
+        version: 25.0.3
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.7
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.2.3(@types/react@19.2.7)
+      react:
+        specifier: 'catalog:'
+        version: 19.2.3
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.3(react@19.2.3)
+      react-router:
+        specifier: 'catalog:'
+        version: 7.12.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      vite:
+        specifier: 'catalog:'
+        version: 7.3.0(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(sass-embedded@1.97.2)(sass@1.97.2)(tsx@4.21.0)
+      vite-tsconfig-paths:
+        specifier: 'catalog:'
+        version: 6.0.3(typescript@5.9.3)(vite@7.3.0(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(sass-embedded@1.97.2)(sass@1.97.2)(tsx@4.21.0))
 
   packages/module-editor:
     dependencies:
@@ -3747,7 +3805,7 @@ packages:
   '@types/react-dom@19.2.3':
     resolution: {integrity: sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==}
     peerDependencies:
-      '@types/react': ^19.2.0
+      '@types/react': ^19.2.7
 
   '@types/react-transition-group@4.4.12':
     resolution: {integrity: sha512-8TV6R3h2j7a91c+1DXdJi3Syo69zzIZbz7Lg5tORM5LEJG7X/E6a1V3drRyBRZq7/utz7A+c4OgYLiLcYGHG6w==}
@@ -5445,8 +5503,8 @@ packages:
     resolution: {integrity: sha512-Atvv11yUKIid41cVrRBDVX5m8tF8kNpExRSlbpt6APClhDjtwQssgFHhQzejxw7/7YYbjHSPKBVbHo05BuJT5Q==}
     peerDependencies:
       '@emotion/is-prop-valid': '*'
-      react: ^18.0.0 || ^19.0.0
-      react-dom: ^18.0.0 || ^19.0.0
+      react: ^19.2.3
+      react-dom: ^19.2.3
     peerDependenciesMeta:
       '@emotion/is-prop-valid':
         optional: true

@@ -36,6 +36,7 @@
 | 모듈 | 도메인 |
 |---|---|
 | [@repo/module-board](module-board/) | 게시판 |
+| [@repo/module-doctors](module-doctors/) | 의료진 관리 (admin CRUD + 사진 업로드, `DoctorsService` 로 공개 페이지에 공급) |
 | [@repo/module-editor](module-editor/) | 위지위그 에디터 (TipTap) |
 | [@repo/module-file](module-file/) | 파일 업로드/관리 |
 | [@repo/module-sms](module-sms/) | SMS 발송 |

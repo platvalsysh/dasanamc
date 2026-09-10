@@ -336,6 +336,7 @@ export type filesWhereInput = {
   download_count?: Prisma.BigIntFilter<"files"> | bigint | number
   is_publish?: Prisma.BoolFilter<"files"> | boolean
   variants?: Prisma.JsonNullableFilter<"files">
+  doctors?: Prisma.DoctorsListRelationFilter
   documents?: Prisma.DocumentsListRelationFilter
   modules?: Prisma.XOR<Prisma.ModulesNullableScalarRelationFilter, Prisma.modulesWhereInput> | null
   users?: Prisma.XOR<Prisma.UsersNullableScalarRelationFilter, Prisma.usersWhereInput> | null
@@ -362,6 +363,7 @@ export type filesOrderByWithRelationInput = {
   download_count?: Prisma.SortOrder
   is_publish?: Prisma.SortOrder
   variants?: Prisma.SortOrderInput | Prisma.SortOrder
+  doctors?: Prisma.doctorsOrderByRelationAggregateInput
   documents?: Prisma.documentsOrderByRelationAggregateInput
   modules?: Prisma.modulesOrderByWithRelationInput
   users?: Prisma.usersOrderByWithRelationInput
@@ -391,6 +393,7 @@ export type filesWhereUniqueInput = Prisma.AtLeast<{
   download_count?: Prisma.BigIntFilter<"files"> | bigint | number
   is_publish?: Prisma.BoolFilter<"files"> | boolean
   variants?: Prisma.JsonNullableFilter<"files">
+  doctors?: Prisma.DoctorsListRelationFilter
   documents?: Prisma.DocumentsListRelationFilter
   modules?: Prisma.XOR<Prisma.ModulesNullableScalarRelationFilter, Prisma.modulesWhereInput> | null
   users?: Prisma.XOR<Prisma.UsersNullableScalarRelationFilter, Prisma.usersWhereInput> | null
@@ -469,6 +472,7 @@ export type filesCreateInput = {
   download_count?: bigint | number
   is_publish?: boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  doctors?: Prisma.doctorsCreateNestedManyWithoutFilesInput
   documents?: Prisma.documentsCreateNestedManyWithoutFilesInput
   modules?: Prisma.modulesCreateNestedOneWithoutFilesInput
   users?: Prisma.usersCreateNestedOneWithoutFilesInput
@@ -495,6 +499,7 @@ export type filesUncheckedCreateInput = {
   download_count?: bigint | number
   is_publish?: boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  doctors?: Prisma.doctorsUncheckedCreateNestedManyWithoutFilesInput
   documents?: Prisma.documentsUncheckedCreateNestedManyWithoutFilesInput
 }
 
@@ -517,6 +522,7 @@ export type filesUpdateInput = {
   download_count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   is_publish?: Prisma.BoolFieldUpdateOperationsInput | boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  doctors?: Prisma.doctorsUpdateManyWithoutFilesNestedInput
   documents?: Prisma.documentsUpdateManyWithoutFilesNestedInput
   modules?: Prisma.modulesUpdateOneWithoutFilesNestedInput
   users?: Prisma.usersUpdateOneWithoutFilesNestedInput
@@ -543,6 +549,7 @@ export type filesUncheckedUpdateInput = {
   download_count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   is_publish?: Prisma.BoolFieldUpdateOperationsInput | boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  doctors?: Prisma.doctorsUncheckedUpdateManyWithoutFilesNestedInput
   documents?: Prisma.documentsUncheckedUpdateManyWithoutFilesNestedInput
 }
 
@@ -789,6 +796,22 @@ export type filesUncheckedUpdateManyWithoutModulesNestedInput = {
   deleteMany?: Prisma.filesScalarWhereInput | Prisma.filesScalarWhereInput[]
 }
 
+export type filesCreateNestedOneWithoutDoctorsInput = {
+  create?: Prisma.XOR<Prisma.filesCreateWithoutDoctorsInput, Prisma.filesUncheckedCreateWithoutDoctorsInput>
+  connectOrCreate?: Prisma.filesCreateOrConnectWithoutDoctorsInput
+  connect?: Prisma.filesWhereUniqueInput
+}
+
+export type filesUpdateOneWithoutDoctorsNestedInput = {
+  create?: Prisma.XOR<Prisma.filesCreateWithoutDoctorsInput, Prisma.filesUncheckedCreateWithoutDoctorsInput>
+  connectOrCreate?: Prisma.filesCreateOrConnectWithoutDoctorsInput
+  upsert?: Prisma.filesUpsertWithoutDoctorsInput
+  disconnect?: Prisma.filesWhereInput | boolean
+  delete?: Prisma.filesWhereInput | boolean
+  connect?: Prisma.filesWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.filesUpdateToOneWithWhereWithoutDoctorsInput, Prisma.filesUpdateWithoutDoctorsInput>, Prisma.filesUncheckedUpdateWithoutDoctorsInput>
+}
+
 export type filesCreateNestedOneWithoutDocumentsInput = {
   create?: Prisma.XOR<Prisma.filesCreateWithoutDocumentsInput, Prisma.filesUncheckedCreateWithoutDocumentsInput>
   connectOrCreate?: Prisma.filesCreateOrConnectWithoutDocumentsInput
@@ -824,6 +847,7 @@ export type filesCreateWithoutUsersInput = {
   download_count?: bigint | number
   is_publish?: boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  doctors?: Prisma.doctorsCreateNestedManyWithoutFilesInput
   documents?: Prisma.documentsCreateNestedManyWithoutFilesInput
   modules?: Prisma.modulesCreateNestedOneWithoutFilesInput
 }
@@ -848,6 +872,7 @@ export type filesUncheckedCreateWithoutUsersInput = {
   download_count?: bigint | number
   is_publish?: boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  doctors?: Prisma.doctorsUncheckedCreateNestedManyWithoutFilesInput
   documents?: Prisma.documentsUncheckedCreateNestedManyWithoutFilesInput
 }
 
@@ -922,6 +947,7 @@ export type filesCreateWithoutModulesInput = {
   download_count?: bigint | number
   is_publish?: boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  doctors?: Prisma.doctorsCreateNestedManyWithoutFilesInput
   documents?: Prisma.documentsCreateNestedManyWithoutFilesInput
   users?: Prisma.usersCreateNestedOneWithoutFilesInput
 }
@@ -946,6 +972,7 @@ export type filesUncheckedCreateWithoutModulesInput = {
   download_count?: bigint | number
   is_publish?: boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  doctors?: Prisma.doctorsUncheckedCreateNestedManyWithoutFilesInput
   documents?: Prisma.documentsUncheckedCreateNestedManyWithoutFilesInput
 }
 
@@ -975,6 +1002,118 @@ export type filesUpdateManyWithWhereWithoutModulesInput = {
   data: Prisma.XOR<Prisma.filesUpdateManyMutationInput, Prisma.filesUncheckedUpdateManyWithoutModulesInput>
 }
 
+export type filesCreateWithoutDoctorsInput = {
+  id?: string
+  module: string
+  target_id?: string | null
+  original_name: string
+  file_size: bigint | number
+  mime_type?: string | null
+  extension?: string | null
+  storage_type: string
+  local_path?: string | null
+  s3_bucket?: string | null
+  s3_key?: string | null
+  s3_region?: string | null
+  status?: string
+  created_at?: Date | string | null
+  uploaded_at?: Date | string | null
+  download_count?: bigint | number
+  is_publish?: boolean
+  variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documents?: Prisma.documentsCreateNestedManyWithoutFilesInput
+  modules?: Prisma.modulesCreateNestedOneWithoutFilesInput
+  users?: Prisma.usersCreateNestedOneWithoutFilesInput
+}
+
+export type filesUncheckedCreateWithoutDoctorsInput = {
+  id?: string
+  module: string
+  module_id?: string | null
+  target_id?: string | null
+  original_name: string
+  file_size: bigint | number
+  mime_type?: string | null
+  extension?: string | null
+  storage_type: string
+  local_path?: string | null
+  s3_bucket?: string | null
+  s3_key?: string | null
+  s3_region?: string | null
+  status?: string
+  created_at?: Date | string | null
+  uploaded_at?: Date | string | null
+  uploaded_by?: string | null
+  download_count?: bigint | number
+  is_publish?: boolean
+  variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documents?: Prisma.documentsUncheckedCreateNestedManyWithoutFilesInput
+}
+
+export type filesCreateOrConnectWithoutDoctorsInput = {
+  where: Prisma.filesWhereUniqueInput
+  create: Prisma.XOR<Prisma.filesCreateWithoutDoctorsInput, Prisma.filesUncheckedCreateWithoutDoctorsInput>
+}
+
+export type filesUpsertWithoutDoctorsInput = {
+  update: Prisma.XOR<Prisma.filesUpdateWithoutDoctorsInput, Prisma.filesUncheckedUpdateWithoutDoctorsInput>
+  create: Prisma.XOR<Prisma.filesCreateWithoutDoctorsInput, Prisma.filesUncheckedCreateWithoutDoctorsInput>
+  where?: Prisma.filesWhereInput
+}
+
+export type filesUpdateToOneWithWhereWithoutDoctorsInput = {
+  where?: Prisma.filesWhereInput
+  data: Prisma.XOR<Prisma.filesUpdateWithoutDoctorsInput, Prisma.filesUncheckedUpdateWithoutDoctorsInput>
+}
+
+export type filesUpdateWithoutDoctorsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  module?: Prisma.StringFieldUpdateOperationsInput | string
+  target_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_name?: Prisma.StringFieldUpdateOperationsInput | string
+  file_size?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  mime_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_type?: Prisma.StringFieldUpdateOperationsInput | string
+  local_path?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  s3_bucket?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  s3_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  s3_region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploaded_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  download_count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  is_publish?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documents?: Prisma.documentsUpdateManyWithoutFilesNestedInput
+  modules?: Prisma.modulesUpdateOneWithoutFilesNestedInput
+  users?: Prisma.usersUpdateOneWithoutFilesNestedInput
+}
+
+export type filesUncheckedUpdateWithoutDoctorsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  module?: Prisma.StringFieldUpdateOperationsInput | string
+  module_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  target_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  original_name?: Prisma.StringFieldUpdateOperationsInput | string
+  file_size?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  mime_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storage_type?: Prisma.StringFieldUpdateOperationsInput | string
+  local_path?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  s3_bucket?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  s3_key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  s3_region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploaded_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploaded_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  download_count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  is_publish?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documents?: Prisma.documentsUncheckedUpdateManyWithoutFilesNestedInput
+}
+
 export type filesCreateWithoutDocumentsInput = {
   id?: string
   module: string
@@ -994,6 +1133,7 @@ export type filesCreateWithoutDocumentsInput = {
   download_count?: bigint | number
   is_publish?: boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  doctors?: Prisma.doctorsCreateNestedManyWithoutFilesInput
   modules?: Prisma.modulesCreateNestedOneWithoutFilesInput
   users?: Prisma.usersCreateNestedOneWithoutFilesInput
 }
@@ -1019,6 +1159,7 @@ export type filesUncheckedCreateWithoutDocumentsInput = {
   download_count?: bigint | number
   is_publish?: boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  doctors?: Prisma.doctorsUncheckedCreateNestedManyWithoutFilesInput
 }
 
 export type filesCreateOrConnectWithoutDocumentsInput = {
@@ -1056,6 +1197,7 @@ export type filesUpdateWithoutDocumentsInput = {
   download_count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   is_publish?: Prisma.BoolFieldUpdateOperationsInput | boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  doctors?: Prisma.doctorsUpdateManyWithoutFilesNestedInput
   modules?: Prisma.modulesUpdateOneWithoutFilesNestedInput
   users?: Prisma.usersUpdateOneWithoutFilesNestedInput
 }
@@ -1081,6 +1223,7 @@ export type filesUncheckedUpdateWithoutDocumentsInput = {
   download_count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   is_publish?: Prisma.BoolFieldUpdateOperationsInput | boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  doctors?: Prisma.doctorsUncheckedUpdateManyWithoutFilesNestedInput
 }
 
 export type filesCreateManyUsersInput = {
@@ -1124,6 +1267,7 @@ export type filesUpdateWithoutUsersInput = {
   download_count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   is_publish?: Prisma.BoolFieldUpdateOperationsInput | boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  doctors?: Prisma.doctorsUpdateManyWithoutFilesNestedInput
   documents?: Prisma.documentsUpdateManyWithoutFilesNestedInput
   modules?: Prisma.modulesUpdateOneWithoutFilesNestedInput
 }
@@ -1148,6 +1292,7 @@ export type filesUncheckedUpdateWithoutUsersInput = {
   download_count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   is_publish?: Prisma.BoolFieldUpdateOperationsInput | boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  doctors?: Prisma.doctorsUncheckedUpdateManyWithoutFilesNestedInput
   documents?: Prisma.documentsUncheckedUpdateManyWithoutFilesNestedInput
 }
 
@@ -1214,6 +1359,7 @@ export type filesUpdateWithoutModulesInput = {
   download_count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   is_publish?: Prisma.BoolFieldUpdateOperationsInput | boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  doctors?: Prisma.doctorsUpdateManyWithoutFilesNestedInput
   documents?: Prisma.documentsUpdateManyWithoutFilesNestedInput
   users?: Prisma.usersUpdateOneWithoutFilesNestedInput
 }
@@ -1238,6 +1384,7 @@ export type filesUncheckedUpdateWithoutModulesInput = {
   download_count?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   is_publish?: Prisma.BoolFieldUpdateOperationsInput | boolean
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  doctors?: Prisma.doctorsUncheckedUpdateManyWithoutFilesNestedInput
   documents?: Prisma.documentsUncheckedUpdateManyWithoutFilesNestedInput
 }
 
@@ -1269,10 +1416,12 @@ export type filesUncheckedUpdateManyWithoutModulesInput = {
  */
 
 export type FilesCountOutputType = {
+  doctors: number
   documents: number
 }
 
 export type FilesCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  doctors?: boolean | FilesCountOutputTypeCountDoctorsArgs
   documents?: boolean | FilesCountOutputTypeCountDocumentsArgs
 }
 
@@ -1284,6 +1433,13 @@ export type FilesCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
    * Select specific fields to fetch from the FilesCountOutputType
    */
   select?: Prisma.FilesCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * FilesCountOutputType without action
+ */
+export type FilesCountOutputTypeCountDoctorsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.doctorsWhereInput
 }
 
 /**
@@ -1315,6 +1471,7 @@ export type filesSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   download_count?: boolean
   is_publish?: boolean
   variants?: boolean
+  doctors?: boolean | Prisma.files$doctorsArgs<ExtArgs>
   documents?: boolean | Prisma.files$documentsArgs<ExtArgs>
   modules?: boolean | Prisma.files$modulesArgs<ExtArgs>
   users?: boolean | Prisma.files$usersArgs<ExtArgs>
@@ -1396,6 +1553,7 @@ export type filesSelectScalar = {
 
 export type filesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "module" | "module_id" | "target_id" | "original_name" | "file_size" | "mime_type" | "extension" | "storage_type" | "local_path" | "s3_bucket" | "s3_key" | "s3_region" | "status" | "created_at" | "uploaded_at" | "uploaded_by" | "download_count" | "is_publish" | "variants", ExtArgs["result"]["files"]>
 export type filesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  doctors?: boolean | Prisma.files$doctorsArgs<ExtArgs>
   documents?: boolean | Prisma.files$documentsArgs<ExtArgs>
   modules?: boolean | Prisma.files$modulesArgs<ExtArgs>
   users?: boolean | Prisma.files$usersArgs<ExtArgs>
@@ -1413,6 +1571,7 @@ export type filesIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type $filesPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "files"
   objects: {
+    doctors: Prisma.$doctorsPayload<ExtArgs>[]
     documents: Prisma.$documentsPayload<ExtArgs>[]
     modules: Prisma.$modulesPayload<ExtArgs> | null
     users: Prisma.$usersPayload<ExtArgs> | null
@@ -1832,6 +1991,7 @@ readonly fields: filesFieldRefs;
  */
 export interface Prisma__filesClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  doctors<T extends Prisma.files$doctorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.files$doctorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$doctorsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documents<T extends Prisma.files$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.files$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$documentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   modules<T extends Prisma.files$modulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.files$modulesArgs<ExtArgs>>): Prisma.Prisma__modulesClient<runtime.Types.Result.GetResult<Prisma.$modulesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   users<T extends Prisma.files$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.files$usersArgs<ExtArgs>>): Prisma.Prisma__usersClient<runtime.Types.Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -2277,6 +2437,30 @@ export type filesDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many files to delete.
    */
   limit?: number
+}
+
+/**
+ * files.doctors
+ */
+export type files$doctorsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the doctors
+   */
+  select?: Prisma.doctorsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the doctors
+   */
+  omit?: Prisma.doctorsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.doctorsInclude<ExtArgs> | null
+  where?: Prisma.doctorsWhereInput
+  orderBy?: Prisma.doctorsOrderByWithRelationInput | Prisma.doctorsOrderByWithRelationInput[]
+  cursor?: Prisma.doctorsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DoctorsScalarFieldEnum | Prisma.DoctorsScalarFieldEnum[]
 }
 
 /**

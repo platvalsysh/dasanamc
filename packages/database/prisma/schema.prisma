@@ -23,30 +23,31 @@ model audit_log_entries {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model custom_oauth_providers {
-  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  provider_type         String
-  identifier            String    @unique
-  name                  String
-  client_id             String
-  client_secret         String
-  acceptable_client_ids String[]  @default([])
-  scopes                String[]  @default([])
-  pkce_enabled          Boolean   @default(true)
-  attribute_mapping     Json      @default("{}")
-  authorization_params  Json      @default("{}")
-  enabled               Boolean   @default(true)
-  email_optional        Boolean   @default(false)
-  issuer                String?
-  discovery_url         String?
-  skip_nonce_check      Boolean   @default(false)
-  cached_discovery      Json?
-  discovery_cached_at   DateTime? @db.Timestamptz(6)
-  authorization_url     String?
-  token_url             String?
-  userinfo_url          String?
-  jwks_uri              String?
-  created_at            DateTime  @default(now()) @db.Timestamptz(6)
-  updated_at            DateTime  @default(now()) @db.Timestamptz(6)
+  id                      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  provider_type           String
+  identifier              String    @unique
+  name                    String
+  client_id               String
+  client_secret           String
+  acceptable_client_ids   String[]  @default([])
+  scopes                  String[]  @default([])
+  pkce_enabled            Boolean   @default(true)
+  attribute_mapping       Json      @default("{}")
+  authorization_params    Json      @default("{}")
+  enabled                 Boolean   @default(true)
+  email_optional          Boolean   @default(false)
+  issuer                  String?
+  discovery_url           String?
+  skip_nonce_check        Boolean   @default(false)
+  cached_discovery        Json?
+  discovery_cached_at     DateTime? @db.Timestamptz(6)
+  authorization_url       String?
+  token_url               String?
+  userinfo_url            String?
+  jwks_uri                String?
+  created_at              DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at              DateTime  @default(now()) @db.Timestamptz(6)
+  custom_claims_allowlist String[]  @default([])
 
   @@index([created_at])
   @@index([enabled])
@@ -696,6 +697,29 @@ model comments {
   @@schema("modules")
 }
 
+model doctors {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String    @db.VarChar(50)
+  title         String    @db.VarChar(100)
+  cred          String    @default("")
+  quote         String    @default("")
+  greeting      String    @default("")
+  career        Json      @default("[]")
+  centers       Json      @default("[]")
+  photo_file_id String?   @db.Uuid
+  photo_url     String?
+  is_chief      Boolean   @default(false)
+  is_active     Boolean   @default(true)
+  list_order    Int       @default(0)
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+  files         files?    @relation(fields: [photo_file_id], references: [id])
+
+  @@index([list_order])
+  @@index([photo_file_id])
+  @@schema("modules")
+}
+
 model document_categories {
   id                        String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   seq                       Int
@@ -823,6 +847,7 @@ model files {
   download_count BigInt      @default(0)
   is_publish     Boolean     @default(false)
   variants       Json?
+  doctors        doctors[]
   documents      documents[]
   modules        modules?    @relation(fields: [module_id], references: [id])
   users          users?      @relation(fields: [uploaded_by], references: [id])

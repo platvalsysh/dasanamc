@@ -420,6 +420,7 @@ export const ModelName = {
   board_templates: 'board_templates',
   comment_vote_log: 'comment_vote_log',
   comments: 'comments',
+  doctors: 'doctors',
   document_categories: 'document_categories',
   document_ip_view_log: 'document_ip_view_log',
   document_read_history: 'document_read_history',
@@ -441,7 +442,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "audit_log_entries" | "custom_oauth_providers" | "flow_state" | "identities" | "instances" | "mfa_amr_claims" | "mfa_challenges" | "mfa_factors" | "oauth_authorizations" | "oauth_client_states" | "oauth_clients" | "oauth_consents" | "one_time_tokens" | "refresh_tokens" | "saml_providers" | "saml_relay_states" | "schema_migrations" | "sessions" | "sso_domains" | "sso_providers" | "users" | "webauthn_challenges" | "webauthn_credentials" | "admin_permissions" | "admin_role_permissions" | "admin_roles" | "admin_user_roles" | "configs" | "deleted_modules" | "identifiers" | "modules" | "profiles" | "rate_limit_events" | "board_templates" | "comment_vote_log" | "comments" | "document_categories" | "document_ip_view_log" | "document_read_history" | "document_vote_log" | "documents" | "files"
+    modelProps: "audit_log_entries" | "custom_oauth_providers" | "flow_state" | "identities" | "instances" | "mfa_amr_claims" | "mfa_challenges" | "mfa_factors" | "oauth_authorizations" | "oauth_client_states" | "oauth_clients" | "oauth_consents" | "one_time_tokens" | "refresh_tokens" | "saml_providers" | "saml_relay_states" | "schema_migrations" | "sessions" | "sso_domains" | "sso_providers" | "users" | "webauthn_challenges" | "webauthn_credentials" | "admin_permissions" | "admin_role_permissions" | "admin_roles" | "admin_user_roles" | "configs" | "deleted_modules" | "identifiers" | "modules" | "profiles" | "rate_limit_events" | "board_templates" | "comment_vote_log" | "comments" | "doctors" | "document_categories" | "document_ip_view_log" | "document_read_history" | "document_vote_log" | "documents" | "files"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3109,6 +3110,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    doctors: {
+      payload: Prisma.$doctorsPayload<ExtArgs>
+      fields: Prisma.doctorsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.doctorsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$doctorsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.doctorsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$doctorsPayload>
+        }
+        findFirst: {
+          args: Prisma.doctorsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$doctorsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.doctorsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$doctorsPayload>
+        }
+        findMany: {
+          args: Prisma.doctorsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$doctorsPayload>[]
+        }
+        create: {
+          args: Prisma.doctorsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$doctorsPayload>
+        }
+        createMany: {
+          args: Prisma.doctorsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.doctorsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$doctorsPayload>[]
+        }
+        delete: {
+          args: Prisma.doctorsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$doctorsPayload>
+        }
+        update: {
+          args: Prisma.doctorsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$doctorsPayload>
+        }
+        deleteMany: {
+          args: Prisma.doctorsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.doctorsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.doctorsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$doctorsPayload>[]
+        }
+        upsert: {
+          args: Prisma.doctorsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$doctorsPayload>
+        }
+        aggregate: {
+          args: Prisma.DoctorsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDoctors>
+        }
+        groupBy: {
+          args: Prisma.doctorsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DoctorsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.doctorsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DoctorsCountAggregateOutputType> | number
+        }
+      }
+    }
     document_categories: {
       payload: Prisma.$document_categoriesPayload<ExtArgs>
       fields: Prisma.document_categoriesFieldRefs
@@ -3627,7 +3702,8 @@ export const Custom_oauth_providersScalarFieldEnum = {
   userinfo_url: 'userinfo_url',
   jwks_uri: 'jwks_uri',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  custom_claims_allowlist: 'custom_claims_allowlist'
 } as const
 
 export type Custom_oauth_providersScalarFieldEnum = (typeof Custom_oauth_providersScalarFieldEnum)[keyof typeof Custom_oauth_providersScalarFieldEnum]
@@ -4138,6 +4214,27 @@ export const CommentsScalarFieldEnum = {
 } as const
 
 export type CommentsScalarFieldEnum = (typeof CommentsScalarFieldEnum)[keyof typeof CommentsScalarFieldEnum]
+
+
+export const DoctorsScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  title: 'title',
+  cred: 'cred',
+  quote: 'quote',
+  greeting: 'greeting',
+  career: 'career',
+  centers: 'centers',
+  photo_file_id: 'photo_file_id',
+  photo_url: 'photo_url',
+  is_chief: 'is_chief',
+  is_active: 'is_active',
+  list_order: 'list_order',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type DoctorsScalarFieldEnum = (typeof DoctorsScalarFieldEnum)[keyof typeof DoctorsScalarFieldEnum]
 
 
 export const Document_categoriesScalarFieldEnum = {
@@ -4657,6 +4754,7 @@ export type GlobalOmitConfig = {
   board_templates?: Prisma.board_templatesOmit
   comment_vote_log?: Prisma.comment_vote_logOmit
   comments?: Prisma.commentsOmit
+  doctors?: Prisma.doctorsOmit
   document_categories?: Prisma.document_categoriesOmit
   document_ip_view_log?: Prisma.document_ip_view_logOmit
   document_read_history?: Prisma.document_read_historyOmit

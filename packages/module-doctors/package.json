@@ -1,0 +1,41 @@
+{
+  "name": "@repo/module-doctors",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./server": "./src/.server/index.ts",
+    "./module": "./src/module.server.ts",
+    "./types": "./src/types.ts",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@repo/auth": "workspace:*",
+    "@repo/core": "workspace:*",
+    "@repo/database": "workspace:*",
+    "@repo/ui-admin": "workspace:*",
+    "lucide-react": "catalog:",
+    "zod": "catalog:",
+    "@repo/config-typescript": "workspace:*"
+  },
+  "devDependencies": {
+    "@react-router/dev": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-tsconfig-paths": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:"
+  }
+}

@@ -1,6 +1,7 @@
 import { module as auth } from "@repo/auth/module";
 import { module as admin } from "@repo/admin/module";
 import { module as board } from "@repo/module-board/module";
+import { module as doctors } from "@repo/module-doctors/module";
 import { module as file } from "@repo/module-file/module";
 import { module as core } from "@repo/core/module";
 import { module as sms } from "@repo/module-sms/module";
@@ -14,6 +15,7 @@ const allModules = [
   board,
   file,
   sms,
+  doctors,
 ];
 
 // 화이트리스트 환경변수와 무관하게 항상 활성화되는 필수 모듈.

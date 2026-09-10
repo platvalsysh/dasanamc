@@ -197,8 +197,11 @@ export class ModuleManager {
   }
 
   /**
-   * 특정 모듈의 권한/역할을 DB 에 upsert. 역할의 권한 매핑은 코드 정의를 _완전 일치_ 시키므로
-   * DB 에만 추가된 매핑은 삭제됨에 주의.
+   * 특정 모듈의 권한을 DB 에 upsert 한 뒤, 역할 매핑을 전체 모듈 기준으로 재동기화.
+   *
+   * 역할은 여러 모듈이 같은 이름으로 선언할 수 있으므로(예: core 와 doctors 가
+   * 모두 `moderator` 에 권한을 보탬) 한 모듈만 보고 매핑을 덮어쓰면 안 된다.
+   * `syncRoles()` 가 등록된 모든 모듈의 선언을 합집합으로 만들어 _완전 일치_ 시킨다.
    */
   public async syncModule(moduleName: string) {
     const module = this.modules.get(moduleName);
@@ -207,76 +210,99 @@ export class ModuleManager {
     }
 
     console.log(`Syncing module ${moduleName} with database...`);
+    await this.syncPermissions(module);
+    await this.syncRoles();
+  }
 
-    if (module.permissions) {
-      for (const permission of module.permissions) {
-        await prisma.admin_permissions.upsert({
-          where: { name: permission.name },
-          update: {
-            display_name: permission.display_name,
-            description: permission.description,
-            category: module.name,
-            is_dangerous: permission.is_dangerous,
-          },
-          create: {
-            name: permission.name,
-            display_name: permission.display_name,
-            description: permission.description,
-            category: module.name,
-            is_dangerous: permission.is_dangerous,
-          },
-        });
+  private async syncPermissions(module: BaseModule) {
+    if (!module.permissions) return;
+    for (const permission of module.permissions) {
+      await prisma.admin_permissions.upsert({
+        where: { name: permission.name },
+        update: {
+          display_name: permission.display_name,
+          description: permission.description,
+          category: module.name,
+          is_dangerous: permission.is_dangerous,
+        },
+        create: {
+          name: permission.name,
+          display_name: permission.display_name,
+          description: permission.description,
+          category: module.name,
+          is_dangerous: permission.is_dangerous,
+        },
+      });
+    }
+  }
+
+  /**
+   * 등록된 모든 모듈의 역할 선언을 이름 기준으로 병합해 DB 와 동기화.
+   *
+   * - 표시명/설명: 먼저 등록된 모듈(보통 core)의 선언을 사용
+   * - 권한 매핑: 모든 모듈 선언의 합집합. 코드 정의를 _완전 일치_ 시키므로
+   *   DB 에만 추가된 매핑은 삭제됨에 주의. (어느 모듈도 권한을 선언하지 않은
+   *   역할은 매핑을 건드리지 않음)
+   */
+  private async syncRoles() {
+    const merged = new Map<
+      string,
+      { display_name: string; description?: string; permission_names: Set<string> }
+    >();
+
+    for (const module of this.modules.values()) {
+      for (const role of module.roles ?? []) {
+        const names = (role.permission_names ?? []) as readonly string[];
+        const entry = merged.get(role.name);
+        if (!entry) {
+          merged.set(role.name, {
+            display_name: role.display_name,
+            description: role.description,
+            permission_names: new Set(names),
+          });
+        } else {
+          for (const n of names) entry.permission_names.add(n);
+        }
       }
     }
 
-    if (module.roles) {
-      for (const role of module.roles) {
-        // 1. Upsert Role
-        const dbRole = await prisma.admin_roles.upsert({
-          where: { name: role.name },
-          update: {
-            display_name: role.display_name,
-            description: role.description,
-          },
-          create: {
-            name: role.name,
-            display_name: role.display_name,
-            description: role.description,
-            level: 99, // Default level for code-defined roles
-          },
+    for (const [name, role] of merged) {
+      const dbRole = await prisma.admin_roles.upsert({
+        where: { name },
+        update: {
+          display_name: role.display_name,
+          description: role.description,
+        },
+        create: {
+          name,
+          display_name: role.display_name,
+          description: role.description,
+          level: 99, // Default level for code-defined roles
+        },
+      });
+
+      if (role.permission_names.size === 0) continue;
+
+      const permissions = await prisma.admin_permissions.findMany({
+        where: { name: { in: Array.from(role.permission_names) } },
+        select: { id: true },
+      });
+      const permissionIds = permissions.map((p) => p.id);
+
+      await prisma.$transaction(async (tx) => {
+        await tx.admin_role_permissions.deleteMany({
+          where: { role_id: dbRole.id },
         });
-
-        // 2. Sync Role Permissions if defined
-        if (role.permission_names && role.permission_names.length > 0) {
-          const permissionNames = role.permission_names;
-          const permissions = await prisma.admin_permissions.findMany({
-            where: { name: { in: permissionNames as unknown as string[] } },
-            select: { id: true },
-          });
-
-          const permissionIds = permissions.map((p) => p.id);
-
-          // Transaction to update permissions
-          await prisma.$transaction(async (tx) => {
-            // Delete existing mappings for this role
-            // This is desired to ensure the role exactly matches the code definition
-            await tx.admin_role_permissions.deleteMany({
-              where: { role_id: dbRole.id },
-            });
-
-            // Insert new mappings
-            if (permissionIds.length > 0) {
-              await tx.admin_role_permissions.createMany({
-                data: permissionIds.map((pid) => ({
-                  role_id: dbRole.id,
-                  permission_id: pid,
-                })),
-                skipDuplicates: true,
-              });
-            }
+        if (permissionIds.length > 0) {
+          await tx.admin_role_permissions.createMany({
+            data: permissionIds.map((pid) => ({
+              role_id: dbRole.id,
+              permission_id: pid,
+            })),
+            skipDuplicates: true,
           });
         }
-      }
+      });
     }
   }
 
@@ -292,10 +318,11 @@ export class ModuleManager {
     console.log("Syncing modules with database...");
     const modules = Array.from(this.modules.values());
 
-    // 1. 활성 모듈 권한 upsert + 역할 매핑
+    // 1. 활성 모듈 권한 upsert → 역할 매핑은 전체 모듈 합집합으로 1회
     for (const module of modules) {
-      await this.syncModule(module.name);
+      await this.syncPermissions(module);
     }
+    await this.syncRoles();
 
     // 2. 코드 정의 권한 set
     const activeNames = new Set<string>();
