@@ -57,18 +57,39 @@ const EYEBROW: React.CSSProperties = {
 
 /* ═══════════════════════ 1. OUR PROMISE + 3 ONE ═══════════════════════ */
 
+/**
+ * 분기 래퍼 — pin 버전은 별도 컴포넌트로 마운트한다.
+ * motion `useScroll` 은 최초 effect 시점에 target ref 가 비어 있으면(작은 화면에서
+ * pin 섹션이 렌더되지 않아 ref=null) 추적을 시작하지 않고 이후 ref 가 붙어도
+ * 재시작하지 않는다. 훅을 래퍼에 두면 "작은 화면 → 큰 화면" 전환 시 진행률이
+ * 0 에 고정돼 장면이 안 보이므로, 전환마다 내부 컴포넌트가 새로 마운트되게 한다.
+ */
 export function PromiseScene() {
-  const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
   const compact = useCompact();
+  if (reduced || compact) return <PromiseFallback />;
+  return <PromisePinned />;
+}
+
+function PromisePinned() {
+  const ref = useRef<HTMLElement>(null);
   const p = useSceneProgress(ref);
 
-  // 선언문 — 등장 후 사라지지 않고 한 화면에 남아, 카드가 들어올 때 살짝 물러난다
-  const stOpacity = useTransform(p, [0, 0.12], [0, 1]);
-  const stY = useTransform(p, [0, 0.12, 0.55], [70, 0, -18]);
-  const stScale = useTransform(p, [0, 0.12, 0.55], [0.94, 1, 0.93]);
+  // 선언문 등장 — 섹션 상단이 뷰포트 하단에 닿는 순간(0)부터 뷰포트 55% 지점(1)까지.
+  // pin 진행률(p) 과 분리해, 섹션이 올라오는 동안 이미 보이고 pin 시점엔 완전 표시 상태.
+  // (예전엔 p 0→0.12 에 걸려 있어 pin 이후 36vh 를 더 내려야 떠서 늦고, 새로고침으로
+  //  그 구간에 복원되면 거의 투명한 채 멈추는 문제가 있었다)
+  const { scrollYProgress: enterRaw } = useScroll({
+    target: ref,
+    offset: ["start end", "start 0.55"],
+  });
+  const enter = useSpring(enterRaw, { stiffness: 140, damping: 28, restDelta: 0.001 });
+  const stOpacity = useTransform(enter, [0, 1], [0, 1]);
+  const stEnterY = useTransform(enter, [0, 1], [48, 0]);
 
-  if (reduced || compact) return <PromiseFallback />;
+  // 선언문 물러남 — 카드가 들어올 때 살짝 위로·작게 (pin 진행률 기준)
+  const stY = useTransform(p, [0, 0.45], [0, -18]);
+  const stScale = useTransform(p, [0, 0.45], [1, 0.93]);
 
   return (
     <section ref={ref} className="relative bg-white" style={{ height: "300vh" }}>
@@ -79,8 +100,9 @@ export function PromiseScene() {
         {/* 선언문 — 카드와 같은 화면에 계속 머무름 */}
         <motion.div
           className="text-center shrink-0"
-          style={{ opacity: stOpacity, y: stY, scale: stScale }}
+          style={{ opacity: stOpacity, y: stEnterY }}
         >
+        <motion.div style={{ y: stY, scale: stScale }}>
           <div className="mb-6" style={EYEBROW}>
             OUR PROMISE
           </div>
@@ -97,6 +119,7 @@ export function PromiseScene() {
             <br />
             다산원은 <span style={{ color: "var(--color-ds-teal-deep)" }}>세 가지 ‘ONE’</span>을 약속합니다.
           </p>
+        </motion.div>
         </motion.div>
 
         {/* 카드 — 선언문 아래에서 한 장씩 딜링되듯 들어옴 */}
@@ -123,8 +146,9 @@ function DealCard({
   ko: string;
   img: string;
 }) {
-  const start = 0.26 + index * 0.14;
-  const end = start + 0.22;
+  // pin 직후부터 바로 딜링 시작 (0.02 / 0.14 / 0.26), 각 카드 0.18 구간
+  const start = 0.02 + index * 0.12;
+  const end = start + 0.18;
   const opacity = useTransform(p, [start, end], [0, 1]);
   const y = useTransform(p, [start, end], [150, 0]);
   const scale = useTransform(p, [start, end], [0.86, 1]);
@@ -351,14 +375,19 @@ export function GoldBadge({ label, className = "" }: { label: string; className?
 
 /* ═══════════════════════ 3. ONE STOP CARE — 스크롤 단계 진행 ═══════════════════════ */
 
+/** 분기 래퍼 — PromiseScene 과 같은 이유로 pin 버전을 별도 마운트 */
 export function OneStopScene() {
-  const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
   const compact = useCompact();
+  if (reduced || compact) return <OneStopFallback />;
+  return <OneStopPinned />;
+}
+
+function OneStopPinned() {
+  const ref = useRef<HTMLElement>(null);
   const p = useSceneProgress(ref);
   const [step, setStep] = useState(0);
   const last = SOLUTION_TABS.length - 1;
-  // 훅은 조기 반환보다 위에서 모두 호출 (호출 순서 고정)
   const railScaleY = useTransform(p, [0.1, 0.9], [0, 1]);
 
   useMotionValueEvent(p, "change", (v) => {
@@ -366,8 +395,6 @@ export function OneStopScene() {
     const t = Math.min(Math.max((v - 0.1) / 0.8, 0), 0.9999);
     setStep(Math.min(last, Math.floor(t * SOLUTION_TABS.length)));
   });
-
-  if (reduced || compact) return <OneStopFallback />;
 
   return (
     <section ref={ref} className="relative bg-white" style={{ height: "340vh" }}>
@@ -507,11 +534,17 @@ function OneStopFallback() {
 
 /* ═══════════════════════ 4. SPECIALTY CENTERS — 가로 스크롤 pin ═══════════════════════ */
 
+/** 분기 래퍼 — PromiseScene 과 같은 이유로 pin 버전을 별도 마운트 */
 export function CentersScene() {
-  const ref = useRef<HTMLElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const compact = useCompact();
+  if (reduced || compact) return <CentersFallback />;
+  return <CentersPinned />;
+}
+
+function CentersPinned() {
+  const ref = useRef<HTMLElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const p = useSceneProgress(ref);
   const [distance, setDistance] = useState(0);
 
@@ -524,11 +557,9 @@ export function CentersScene() {
     measure();
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
-  }, [compact, reduced]);
+  }, []);
 
   const x = useTransform(p, [0.06, 0.96], [0, -distance]);
-
-  if (reduced || compact) return <CentersFallback />;
 
   return (
     <section

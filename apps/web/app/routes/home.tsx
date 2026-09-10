@@ -57,7 +57,7 @@ export function meta({}: Route.MetaArgs) {
 export default function Home() {
   return (
     <>
-      {/* ============ HERO — 스크롤 스토리텔링 (380vh, 3장면) ============ */}
+      {/* ============ HERO — 브랜드 필름 풀스크린 재생 (텍스트·오버레이 없음, pin 없음) ============ */}
       <section className="darkhero relative" style={{ background: "var(--color-ds-dark)", color: "#f4efe6" }}>
         {/* 통계 스트립은 HomeHero 안(첫 화면)으로 이동 */}
         <HomeHero />
