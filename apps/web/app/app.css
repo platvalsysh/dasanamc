@@ -567,3 +567,10 @@ body {
   writing-mode: vertical-rl;
   text-orientation: mixed;
 }
+
+/* 모바일 메뉴 열림 — theme(dark/light-over) 과 무관하게 헤더를 흰 배경 + 어두운 로고로 고정.
+   투명 헤더 상태에서 메뉴를 열면 상단 바로 hero 영상이 비쳐 보이던 문제 방지.
+   theme 규칙보다 뒤에 두어 같은 특이도의 !important 를 이긴다. */
+#siteheader[data-menu-open="1"] { background: #ffffff !important; backdrop-filter: none; }
+#siteheader[data-menu-open="1"] .logo-light { display: none !important; }
+#siteheader[data-menu-open="1"] .logo-dark { display: block !important; }

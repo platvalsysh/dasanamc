@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Link, useLocation } from "react-router";
 import { useAuth, checkUserPermissions, useIsAdmin } from "@repo/auth/ui";
 import { Menu, X, Settings, User, LogOut } from "lucide-react";
@@ -54,6 +54,29 @@ export function Header({ menuItems = [] }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
+  // 페이지 이동 시 모바일 메뉴 닫기
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
+
+  // 모바일 메뉴가 열려 있는 동안 뒤 페이지 스크롤 잠금.
+  // 화면이 데스크톱 폭(lg)으로 커지면 메뉴를 닫아 잠금이 남지 않게 한다.
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const root = document.documentElement;
+    const prev = root.style.overflow;
+    root.style.overflow = "hidden";
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const onChange = () => {
+      if (mq.matches) setMobileOpen(false);
+    };
+    mq.addEventListener("change", onChange);
+    return () => {
+      root.style.overflow = prev;
+      mq.removeEventListener("change", onChange);
+    };
+  }, [mobileOpen]);
+
   const filterItems = (items: SiteMenuConfigItem[]): SiteMenuConfigItem[] =>
     items
       .filter((item) => {
@@ -81,6 +104,7 @@ export function Header({ menuItems = [] }: HeaderProps) {
     <header
       id="siteheader"
       data-theme="dark"
+      data-menu-open={mobileOpen ? "1" : "0"}
       className="fixed top-0 left-0 right-0 z-50 w-full"
     >
       <div
@@ -194,9 +218,13 @@ export function Header({ menuItems = [] }: HeaderProps) {
         </div>
       </div>
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer — 상단 바(78px) 아래 화면 전체를 덮고, 내용이 길면 패널 안에서 스크롤.
+          data-lenis-prevent: Lenis 가 패널 내부 터치 스크롤을 가로채지 않게 함 */}
       {mobileOpen && (
-        <div className="lg:hidden border-t border-[color:var(--color-ds-border)] bg-white text-[color:var(--color-ds-text)]">
+        <div
+          data-lenis-prevent
+          className="lg:hidden h-[calc(100dvh-78px)] overflow-y-auto overscroll-contain border-t border-[color:var(--color-ds-border)] bg-white text-[color:var(--color-ds-text)]"
+        >
           <div className="container mx-auto px-4 py-4 space-y-3">
             {visibleItems.map((menu) => (
               <div key={menu.id} className="space-y-1">
