@@ -44,6 +44,13 @@ const MENU_ITEMS_FALLBACK: SiteMenuConfigItem[] = [
   },
 ];
 
+/**
+ * 상단 메뉴에서 조금 더 크고 굵게 강조할 항목 — 경로 기준.
+ * (메뉴는 admin 메뉴 빌더(DB)에서 바뀔 수 있어 id/라벨이 아닌 경로로 판별)
+ */
+const EMPHASIZED_PATHS = new Set(["/centers", "/emergency"]);
+const isEmphasized = (to?: string) => !!to && EMPHASIZED_PATHS.has(to.split("#")[0]);
+
 interface HeaderProps {
   menuItems?: SiteMenuConfigItem[];
 }
@@ -148,13 +155,20 @@ export function Header({ menuItems = [] }: HeaderProps) {
           {visibleItems.map((menu) => {
             const hasChildren = menu.children && menu.children.length > 0;
             const wide = hasChildren && menu.children!.length > 6;
+            const emphasized = isEmphasized(menu.to);
             return (
               <div key={menu.id} className="navitem">
                 <Link
                   to={menu.to || "#"}
                   data-active={isPathActive(menu.to) ? "1" : ""}
                   className="flex items-center transition-colors"
-                  style={{ padding: "0 2px", fontSize: "15.5px", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}
+                  style={{
+                    padding: "0 2px",
+                    fontSize: emphasized ? "17.5px" : "15.5px",
+                    fontWeight: emphasized ? 800 : undefined,
+                    letterSpacing: emphasized ? "-0.02em" : "-0.01em",
+                    whiteSpace: "nowrap",
+                  }}
                 >
                   {menu.label}
                 </Link>
@@ -230,7 +244,11 @@ export function Header({ menuItems = [] }: HeaderProps) {
               <div key={menu.id} className="space-y-1">
                 <Link
                   to={menu.to || "#"}
-                  className="block font-bold px-2 py-1"
+                  className={
+                    isEmphasized(menu.to)
+                      ? "block font-extrabold text-[18px] px-2 py-1"
+                      : "block font-bold px-2 py-1"
+                  }
                   onClick={() => setMobileOpen(false)}
                 >
                   {menu.label}
