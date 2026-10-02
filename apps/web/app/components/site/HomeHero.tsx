@@ -13,8 +13,8 @@ import { CountUp } from "~/components/site/motion-bits";
  * reduced-motion: 영상 대신 포스터 정적 표시.
  */
 const HERO_VIDEO = {
-  src: "/hero_movie.mp4",
-  poster: "/hero_movie_poster.jpg",
+  src: "/hero_movie.mp4?v=2",
+  poster: "/hero_movie_poster.jpg?v=2",
   alt: "다산원동물의료센터 브랜드 필름",
 } as const;
 
