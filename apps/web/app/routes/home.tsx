@@ -247,7 +247,6 @@ export default function Home() {
             <NaverMap
               lat={HOSPITAL.coords.lat}
               lng={HOSPITAL.coords.lng}
-              geocodeAddress={HOSPITAL.address}
               title={HOSPITAL.name}
               subtitle={HOSPITAL.address}
               zoom={16}
