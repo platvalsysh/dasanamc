@@ -15,12 +15,11 @@ export const HOSPITAL = {
   phone2: "031-522-5956",
   email: "dasanoneamc@gmail.com",
   address: "경기 남양주시 다산중앙로 15, 3층",
-  /** 지도 핀 좌표 (병원 건물 실측값, 37°36'52.4"N 127°09'19.3"E) */
-  coords: { lat: 37.6145454, lng: 127.1553532 },
+  /** 지도 핀 좌표 — 네이버 플레이스(place/2046282999) 등록 좌표와 동일 */
+  coords: { lat: 37.6146077, lng: 127.1552826 },
   blog: "https://blog.naver.com/dasanoneamc",
-  mapUrl:
-    "https://map.naver.com/p/search/" +
-    encodeURIComponent("남양주 다산원동물의료센터"),
+  /** 네이버 플레이스 단축 링크 (place/2046282999) — "네이버 지도로 길찾기" 버튼·퀵바 공용 */
+  mapUrl: "https://naver.me/FOZMvauZ",
   hours: {
     day: "09:30 ~ 21:00",
     night: "21:00 ~ 09:30",

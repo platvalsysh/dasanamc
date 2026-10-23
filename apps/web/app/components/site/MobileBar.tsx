@@ -1,4 +1,5 @@
 import { Phone, MapPin, PenSquare } from "lucide-react";
+import { HOSPITAL } from "~/data/dasanone-content";
 
 /**
  * 모바일(≤720px) 하단 고정 콘택트 바. 데스크탑은 QuickBar 가 대체.
@@ -21,7 +22,7 @@ export function MobileBar() {
           전화
         </a>
         <a
-          href="https://map.naver.com/p/search/24%EC%8B%9C%20%EB%8B%A4%EC%82%B0%20%EC%9B%90%EB%8F%99%EB%AC%BC%EC%9D%98%EB%A3%8C%EC%84%BC%ED%84%B0"
+          href={HOSPITAL.mapUrl}
           target="_blank"
           rel="noreferrer"
           className={itemCls + " border-r border-[color:var(--color-ds-border)]"}

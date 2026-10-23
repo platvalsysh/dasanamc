@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { HOSPITAL } from "~/data/dasanone-content";
 import { Link } from "react-router";
 import { PenSquare, Headset, MessageCircle, MapPin, ArrowUp } from "lucide-react";
 
@@ -32,7 +33,7 @@ export function QuickBar() {
     {
       kind: "a",
       label: "오시는 길",
-      href: "https://map.naver.com/p/search/%EB%82%A8%EC%96%91%EC%A3%BC%20%EB%8B%A4%EC%82%B0%EC%9B%90%EB%8F%99%EB%AC%BC%EC%9D%98%EB%A3%8C%EC%84%BC%ED%84%B0",
+      href: HOSPITAL.mapUrl,
       external: true,
       icon: <MapPin size={26} strokeWidth={1.7} />,
     },
