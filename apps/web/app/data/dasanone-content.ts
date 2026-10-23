@@ -15,6 +15,11 @@ export const HOSPITAL = {
   phone2: "031-522-5956",
   email: "dasanoneamc@gmail.com",
   address: "경기 남양주시 다산중앙로 15, 3층",
+  /**
+   * 지도 핀 기본 좌표 (다산중앙로 인근 근사값). 네이버 지도 로드 시 주소 지오코딩으로
+   * 보정되므로 정확한 번지 좌표를 알면 여기만 갱신하면 된다.
+   */
+  coords: { lat: 37.6187, lng: 127.1547 },
   blog: "https://blog.naver.com/dasanoneamc",
   mapUrl:
     "https://map.naver.com/p/search/" +

@@ -3,6 +3,7 @@ import type { Route } from "./+types/home";
 import { HOSPITAL, INFO_ROWS } from "~/data/dasanone-content";
 import { BLOG_LATEST, CASE_ARTICLES, blogPostUrl } from "~/data/case-archive";
 import { HomeHero } from "~/components/site/HomeHero";
+import { NaverMap } from "~/components/site/NaverMap";
 import {
   PromiseScene,
   StrengthsScene,
@@ -243,14 +244,25 @@ export default function Home() {
             className="rounded-2xl overflow-hidden"
             style={{ aspectRatio: "16/11", border: "1px solid rgba(255,255,255,0.14)", background: "#0a2e29" }}
           >
-            <iframe
-              title={`오시는 길 지도 — ${HOSPITAL.address}`}
-              src={`https://maps.google.com/maps?q=${encodeURIComponent(HOSPITAL.address)}&z=16&output=embed&hl=ko`}
+            <NaverMap
+              lat={HOSPITAL.coords.lat}
+              lng={HOSPITAL.coords.lng}
+              geocodeAddress={HOSPITAL.address}
+              title={HOSPITAL.name}
+              subtitle={HOSPITAL.address}
+              zoom={16}
               className="w-full h-full"
-              style={{ border: 0, filter: "saturate(0.92)" }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
+              fallback={
+                <iframe
+                  title={`오시는 길 지도 — ${HOSPITAL.address}`}
+                  src={`https://maps.google.com/maps?q=${encodeURIComponent(HOSPITAL.address)}&z=16&output=embed&hl=ko`}
+                  className="w-full h-full"
+                  style={{ border: 0, filter: "saturate(0.92)" }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  allowFullScreen
+                />
+              }
             />
           </div>
         </div>
