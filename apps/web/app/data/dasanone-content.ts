@@ -438,96 +438,219 @@ export const INFO_ROWS = [
   { k: "주차", v: `${HOSPITAL.parking.underground} · ${HOSPITAL.parking.public}` },
 ] as const;
 
-export interface CheckRow {
-  item: string;
-  head?: boolean;
-  sep?: boolean;
-  b: string;
-  s: string;
-  p: string;
+/**
+ * 건강검진 프로그램 — 강아지/고양이별 Basic·Standard·Premium (Figma 「건강검진 프로그램 시안 v1」).
+ *
+ * - plans: 카드. Basic 은 기본 검사 전체, Standard·Premium 은 "이전 단계 모두 포함" + 이 단계에서 추가되는 검사만
+ * - compare: 비교표. true = 포함, false = 미포함, 문자열 = 수치 배지 (Basic 과 다르면 확장 배지로 강조)
+ */
+export type CheckupTier = "Basic" | "Standard" | "Premium";
+export type CheckMark = boolean | string;
+
+export interface CheckupPlan {
+  tier: CheckupTier;
+  ko: string;
+  /** 추천 대상 — 카드 배지는 "추천 · " 접두, 비교표 헤더는 그대로 */
+  age: string;
+  desc: string;
+  /** "가장 많이 선택" 강조 카드 */
+  featured?: boolean;
+  groups: { name: string; items: string[] }[];
 }
 
-interface CheckGroup {
-  rows: { item: string; b: string; s: string; p: string }[];
+export interface CheckupProgram {
+  id: "dog" | "cat";
+  label: string;
+  en: string;
+  emoji: string;
+  plans: readonly [CheckupPlan, CheckupPlan, CheckupPlan];
+  compare: { name: string; rows: { item: string; v: readonly [CheckMark, CheckMark, CheckMark] }[] }[];
 }
 
-function buildRows(groups: readonly CheckGroup[]): CheckRow[] {
-  const mark = (v: string) => (v === "✓" ? "✓" : v ? v : "·");
-  const out: CheckRow[] = [];
-  groups.forEach((g, gi) => {
-    g.rows.forEach((r, ri) => {
-      out.push({
-        item: r.item,
-        b: mark(r.b),
-        s: mark(r.s),
-        p: mark(r.p),
-        head: ri === 0,
-        sep: ri === 0 && gi > 0,
-      });
-    });
-  });
-  return out;
-}
-
-const DOG_GROUPS: readonly CheckGroup[] = [
-  { rows: [
-    { item: "신체검사", b: "✓", s: "✓", p: "✓" },
-    { item: "혈압측정", b: "✓", s: "✓", p: "✓" },
-    { item: "검이경 검사", b: "✓", s: "✓", p: "✓" },
-    { item: "피부검사", b: "✓", s: "✓", p: "✓" },
-  ] },
-  { rows: [ { item: "치과 직접검안", b: "✓", s: "✓", p: "✓" } ] },
-  { rows: [ { item: "안압(토노펜) 검사", b: "", s: "", p: "✓" } ] },
-  { rows: [
-    { item: "심장초음파 검사", b: "", s: "✓", p: "✓" },
-    { item: "심전도 검사", b: "", s: "", p: "✓" },
-  ] },
-  { rows: [
-    { item: "혈구검사(CBC)", b: "✓", s: "✓", p: "✓" },
-    { item: "간·신장·혈당·전해질", b: "화학 10종", s: "화학 17종", p: "화학 17종" },
-    { item: "혈액가스(정맥혈)", b: "", s: "✓", p: "✓" },
-    { item: "조기신장기능(SDMA)", b: "", s: "✓", p: "✓" },
-    { item: "갑상선 호르몬(T4)", b: "", s: "", p: "✓" },
-  ] },
-  { rows: [ { item: "요검사(노스틱)", b: "", s: "", p: "✓" } ] },
-  { rows: [
-    { item: "흉·복부 방사선", b: "✓", s: "✓", p: "✓" },
-    { item: "복부 초음파", b: "", s: "✓", p: "✓" },
-  ] },
-  { rows: [
-    { item: "정형외과 검사", b: "✓", s: "✓", p: "✓" },
-    { item: "전지·후지 방사선", b: "", s: "", p: "✓" },
-  ] },
-  { rows: [ { item: "검진 비용 (예시)", b: "15만원", s: "29만원", p: "45만원" } ] },
+export const CHECKUP_PROGRAMS: readonly CheckupProgram[] = [
+  {
+    id: "dog",
+    label: "강아지",
+    en: "Dog",
+    emoji: "🐶",
+    plans: [
+      {
+        tier: "Basic",
+        ko: "기본 건강검진",
+        age: "3살 미만 강아지",
+        desc: "어린 강아지의 기초 건강 상태와 선천적인 문제를 확인하는 꼭 필요한 기본 검진이에요.",
+        groups: [
+          { name: "기초검진", items: ["신체검사", "혈압측정", "검이경 검사(귀)", "피부 검사"] },
+          { name: "치과검진", items: ["구강 직접 검안"] },
+          { name: "혈액검사", items: ["혈구검사(CBC)", "간·신장·혈당·전해질 (혈청화학 6종)"] },
+          { name: "내부장기 검진", items: ["흉부·복부 방사선", "복부 초음파"] },
+          { name: "근골격계 검진", items: ["고관절·슬개골 정형외과 검사"] },
+        ],
+      },
+      {
+        tier: "Standard",
+        ko: "스탠다드 건강검진",
+        age: "청년기 ~ 중년기",
+        desc: "혈액검사를 넓히고 눈·심장·관절까지 더 정밀하게 살펴, 만성 질환이 시작되는 시기를 대비해요.",
+        featured: true,
+        groups: [
+          { name: "안과검진", items: ["직접 검안 (필요 시 slit 검사)"] },
+          { name: "순환기 검진", items: ["심전도 검사"] },
+          { name: "혈액검사", items: ["혈청화학 17종으로 확장", "혈액가스(정맥혈)", "조기 신장기능 검사(SDMA)"] },
+          { name: "근골격계 검진", items: ["십자인대 정형외과 검사"] },
+        ],
+      },
+      {
+        tier: "Premium",
+        ko: "프리미엄 건강검진",
+        age: "중·노령견",
+        desc: "심장·내분비·비뇨기 질환까지 폭넓게 확인하는, 노령견에게 가장 알맞은 종합 검진이에요.",
+        groups: [
+          { name: "안과검진", items: ["안과 slit 검사"] },
+          { name: "순환기 검진", items: ["심장 초음파 검사"] },
+          { name: "혈액검사", items: ["갑상선 호르몬 검사(T4)"] },
+          { name: "비뇨기 검진", items: ["소변 검사(뇨스틱)"] },
+          { name: "근골격계 검진", items: ["앞다리·뒷다리 방사선"] },
+        ],
+      },
+    ],
+    compare: [
+      {
+        name: "기초검진",
+        rows: [
+          { item: "신체검사", v: [true, true, true] },
+          { item: "혈압측정", v: [true, true, true] },
+          { item: "검이경 검사", v: [true, true, true] },
+          { item: "피부 검사", v: [true, true, true] },
+        ],
+      },
+      { name: "치과검진", rows: [{ item: "구강 직접 검안", v: [true, true, true] }] },
+      {
+        name: "안과검진",
+        rows: [
+          { item: "직접 검안 (필요 시 slit)", v: [false, true, true] },
+          { item: "안과 slit 검사", v: [false, false, true] },
+        ],
+      },
+      {
+        name: "순환기 검진",
+        rows: [
+          { item: "심전도", v: [false, true, true] },
+          { item: "심장 초음파", v: [false, false, true] },
+        ],
+      },
+      {
+        name: "혈액검사",
+        rows: [
+          { item: "혈구검사(CBC)", v: [true, true, true] },
+          { item: "간·신장·혈당·전해질", v: ["6종", "17종", "17종"] },
+          { item: "혈액가스(정맥혈)", v: [false, true, true] },
+          { item: "조기 신장기능(SDMA)", v: [false, true, true] },
+          { item: "갑상선 호르몬(T4)", v: [false, false, true] },
+        ],
+      },
+      { name: "비뇨기 검진", rows: [{ item: "소변 검사(뇨스틱)", v: [false, false, true] }] },
+      {
+        name: "내부장기 검진",
+        rows: [
+          { item: "흉부·복부 방사선", v: [true, true, true] },
+          { item: "복부 초음파", v: [true, true, true] },
+        ],
+      },
+      {
+        name: "근골격계 검진",
+        rows: [
+          { item: "고관절·슬개골 검사", v: [true, true, true] },
+          { item: "십자인대 검사", v: [false, true, true] },
+          { item: "앞다리·뒷다리 방사선", v: [false, false, true] },
+        ],
+      },
+    ],
+  },
+  {
+    id: "cat",
+    label: "고양이",
+    en: "Cat",
+    emoji: "🐱",
+    plans: [
+      {
+        tier: "Basic",
+        ko: "기본 건강검진",
+        age: "3살 미만 고양이",
+        desc: "어린 시기에 발견하기 힘든 선천적인 질환이나 초기 문제를 빠르게 확인해요.",
+        groups: [
+          { name: "기초검진", items: ["신체검사", "혈압측정", "검이경 검사(귀)", "피부 검사"] },
+          { name: "치과검진", items: ["구강 직접 검안"] },
+          { name: "혈액검사", items: ["혈구검사(CBC)", "간·신장·혈당·전해질 (혈청화학 6종)"] },
+          { name: "내부장기 검진", items: ["흉부·복부 방사선", "복부 초음파"] },
+        ],
+      },
+      {
+        tier: "Standard",
+        ko: "스탠다드 건강검진",
+        age: "3 ~ 7살 고양이",
+        desc: "성묘기에 흔히 시작되는 만성 신장질환·심장질환을 혈액검사로 미리 확인해요.",
+        featured: true,
+        groups: [
+          {
+            name: "혈액검사",
+            items: ["일반화학 17종으로 확장", "혈액가스(정맥혈)", "심장 바이오마커(fBNP)", "조기 신장기능 검사(SDMA)"],
+          },
+        ],
+      },
+      {
+        tier: "Premium",
+        ko: "프리미엄 건강검진",
+        age: "8살 이상 고양이",
+        desc: "노령묘에게 잦은 심장병·신부전·갑상선 질환을 조기에 발견하고 관리해요.",
+        groups: [
+          { name: "순환기 검진", items: ["심장 초음파 검사"] },
+          { name: "혈액검사", items: ["갑상선 호르몬 검사(T4)"] },
+          { name: "비뇨기 검진", items: ["소변 검사(뇨스틱)"] },
+        ],
+      },
+    ],
+    compare: [
+      {
+        name: "기초검진",
+        rows: [
+          { item: "신체검사", v: [true, true, true] },
+          { item: "혈압측정", v: [true, true, true] },
+          { item: "검이경 검사", v: [true, true, true] },
+          { item: "피부 검사", v: [true, true, true] },
+        ],
+      },
+      { name: "치과검진", rows: [{ item: "구강 직접 검안", v: [true, true, true] }] },
+      { name: "순환기 검진", rows: [{ item: "심장 초음파", v: [false, false, true] }] },
+      {
+        name: "혈액검사",
+        rows: [
+          { item: "혈구검사(CBC)", v: [true, true, true] },
+          { item: "일반화학 검사", v: ["6종", "17종", "17종"] },
+          { item: "혈액가스(정맥혈)", v: [false, true, true] },
+          { item: "심장 바이오마커(fBNP)", v: [false, true, true] },
+          { item: "조기 신장기능(SDMA)", v: [false, true, true] },
+          { item: "갑상선 호르몬(T4)", v: [false, false, true] },
+        ],
+      },
+      { name: "비뇨기 검진", rows: [{ item: "소변 검사(뇨스틱)", v: [false, false, true] }] },
+      {
+        name: "내부장기 검진",
+        rows: [
+          { item: "흉부·복부 방사선", v: [true, true, true] },
+          { item: "복부 초음파", v: [true, true, true] },
+        ],
+      },
+    ],
+  },
 ];
 
-const CAT_GROUPS: readonly CheckGroup[] = [
-  { rows: [
-    { item: "신체검사", b: "✓", s: "✓", p: "✓" },
-    { item: "혈압측정", b: "✓", s: "✓", p: "✓" },
-    { item: "검이경 검사", b: "✓", s: "✓", p: "✓" },
-    { item: "피부검사", b: "✓", s: "✓", p: "✓" },
-  ] },
-  { rows: [ { item: "치과 직접검안", b: "✓", s: "✓", p: "✓" } ] },
-  { rows: [ { item: "심장초음파 검사", b: "", s: "✓", p: "✓" } ] },
-  { rows: [
-    { item: "혈구검사(CBC)", b: "✓", s: "✓", p: "✓" },
-    { item: "일반 화학 검사", b: "혈액 6종", s: "화학 17종", p: "화학 17종" },
-    { item: "혈액가스(정맥혈)", b: "", s: "✓", p: "✓" },
-    { item: "심장바이오마커(BNP)", b: "", s: "✓", p: "✓" },
-    { item: "조기신장기능(SDMA)", b: "", s: "✓", p: "✓" },
-    { item: "갑상선 호르몬(T4)", b: "", s: "", p: "✓" },
-  ] },
-  { rows: [ { item: "요검사(노스틱)", b: "", s: "", p: "✓" } ] },
-  { rows: [
-    { item: "흉·복부 방사선", b: "✓", s: "✓", p: "✓" },
-    { item: "복부 초음파", b: "", s: "✓", p: "✓" },
-  ] },
-  { rows: [ { item: "검진 비용 (예시)", b: "14만원", s: "27만원", p: "42만원" } ] },
-];
-
-export const DOG_ROWS: readonly CheckRow[] = buildRows(DOG_GROUPS);
-export const CAT_ROWS: readonly CheckRow[] = buildRows(CAT_GROUPS);
+/** 검진 안내 노트 (카드 3개) */
+export const CHECKUP_NOTES = [
+  { t: "검진 전 준비", d: "정확한 혈액검사를 위해 검진 전 8시간 이상 금식이 필요해요. 물은 마셔도 괜찮아요." },
+  { t: "소요 시간", d: "프로그램에 따라 반나절 정도 소요됩니다. 예약 시 정확한 시간을 안내해 드려요." },
+  { t: "결과 상담", d: "담당 수의사가 결과를 직접 설명하고, 이상 소견이 있으면 해당 특화센터로 바로 연결합니다." },
+] as const;
 
 /** 헤더 dropdown 메뉴 — 11개 센터 + 건강검진. 각 센터는 별도 라우트. */
 export interface CenterMenuItem {
@@ -636,25 +759,6 @@ export const EQUIPMENT_GROUPS: readonly EquipmentGroup[] = [
     ],
   },
 ];
-
-/** 건강검진 프로그램 선택 가이드 — 블로그 강아지/고양이 검진 소개 포스트 기반 */
-export const CHECKUP_GUIDE = [
-  {
-    level: "Basic",
-    target: "3살 미만 어린 아이",
-    desc: "기초 건강 상태와 선천 질환을 확인하는 필수 기본 검진. 어린 시기에 발견하기 힘든 초기 문제를 빠르게 확인합니다.",
-  },
-  {
-    level: "Standard",
-    target: "청년기 ~ 중년기",
-    desc: "혈청화학 17종·혈액가스·조기신장기능(SDMA) 등 정밀 혈액검사로 만성 신장·심장 질환이 시작되는 시기를 대비합니다.",
-  },
-  {
-    level: "Premium",
-    target: "중·노령",
-    desc: "심장초음파·호르몬·비뇨기 검진까지 — 심장병·신부전·내분비 질환을 폭넓게 확인하는 가장 종합적인 검진입니다.",
-  },
-] as const;
 
 /**
  * 센터별 관련 진료 케이스 — 네이버 블로그 실제 포스트 링크.

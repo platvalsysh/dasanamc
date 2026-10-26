@@ -382,9 +382,6 @@ body {
 .soltabs button:hover { color: #4a6b64; }
 /* 활성 밑줄은 motion layoutId 인디케이터가 그린다 */
 .soltabs button[data-active="1"] { font-weight: 800; color: var(--color-ds-teal-deep); }
-.hcheck tbody td:first-child { font-weight: 500; }
-.hcheck tbody td[data-head="1"] { font-weight: 700; }
-.hcheck tbody td[data-sep="1"] { border-top: 1px solid #dfe6e2; }
 
 .centertrack { scrollbar-width: none; -ms-overflow-style: none; cursor: none; }
 .centertrack::-webkit-scrollbar { display: none; }
